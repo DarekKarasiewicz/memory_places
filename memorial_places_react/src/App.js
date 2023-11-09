@@ -1,25 +1,15 @@
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from "./GoogleMap/GoogleMap";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 function App() {
-  const googleApiKey=process.env.REACT_APP_API_KEY;
-  const defaultProps = {
-    center: {
-      lat: 10.99835602,
-      lng: 77.01502627
-    },
-    zoom: 11
-  };
-  console.log(googleApiKey)
+  const googleApiKey = process.env.REACT_APP_API_KEY;
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: googleApiKey }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-      </GoogleMapReact>
-    </div>
+    <APIProvider apiKey={googleApiKey}>
+      <div className="w-screen h-screen">
+        <GoogleMap />
+      </div>
+    </APIProvider>
   );
 }
 
