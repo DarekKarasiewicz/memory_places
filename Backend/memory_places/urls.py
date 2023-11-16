@@ -16,13 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from memo_places import views
 
-router = routers.DefaultRouter()
-router.register(r'places', views.Place_view, 'place')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('memo_places/', include(router.urls)),
+    path('memo_places/', include("memo_places.urls")),
+    path('memo_places_forum/', include("memo_places_forum.urls")),
 ]
