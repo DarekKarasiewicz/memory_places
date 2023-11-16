@@ -79,17 +79,17 @@ render(){
         <main className="container">
             <div className="comment-list">
                 <ul>
-                    {this.renderCommentList}
+                    {this.renderCommentList()}
                 </ul>
             </div>
             <div className="post-list">
                 <ul>
-                    {this.renderPostList}
+                    {this.renderPostList()}
                 </ul>
             </div>
             <div className="sumforum-list">
                 <ul>
-                    {this.renderSumforumList}
+                    {this.renderSumforumList()}
                 </ul>
             </div>
 
