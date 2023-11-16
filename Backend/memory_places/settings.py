@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "memo_places",
+    "memo_places_forum"
 ]
 
 MIDDLEWARE = [
