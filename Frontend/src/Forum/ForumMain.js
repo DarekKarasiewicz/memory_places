@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios"
+import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
 
 class ForumMain extends Component{
     constructor(props){
@@ -10,7 +12,7 @@ class ForumMain extends Component{
             comment:[],
         };
     }
-
+    
     componentDidMount(){
         this.refreshList();
     }
@@ -28,7 +30,7 @@ class ForumMain extends Component{
 
         axios
           .get("http://127.0.0.1:8000/memo_places_forum/posts")
-          .then((res) => this.setState({ post: res.data }))
+          .then((res) => this.setState({ post: res.data}))
           .catch((err) => console.log(err));
     };
 
@@ -59,8 +61,10 @@ class ForumMain extends Component{
         ));
     }; 
 
+
     renderPostList = () =>{
-        return this.state.comment.map((item)=>(
+        return this.state.post.map((item)=>(
+            <>
                 <li
                   key={item.id}
                   className="list-of-posts"
@@ -68,31 +72,32 @@ class ForumMain extends Component{
                 <span
                   title={item.title}
                 >
-                    {item.content}
+                    <p>id: {item.id} subforum: {item.subforum} content:{item.content}</p>
                 </span>
                 </li>
+                <CommentForm postID={item.id}/>
+            </>
         ));
     }; 
+    handleSubmit = (item) =>{
+        axios
+            .post("/memo_places_forum/posts/", item)
+            .then((res) => this.refreshList());
+    }
+
 
 render(){
     return (
         <main className="container">
-            <div className="comment-list">
-                <ul>
-                    {this.renderCommentList()}
-                </ul>
-            </div>
             <div className="post-list">
+                <p>Post list</p>
                 <ul>
                     {this.renderPostList()}
                 </ul>
             </div>
-            <div className="sumforum-list">
-                <ul>
-                    {this.renderSumforumList()}
-                </ul>
+            <div className="add-post">
+                <PostForm/>
             </div>
-
         </main>
     );
   }
