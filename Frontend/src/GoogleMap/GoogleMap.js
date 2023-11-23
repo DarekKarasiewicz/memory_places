@@ -28,7 +28,7 @@ function GoogleMap() {
   const position = { lat: latitude, lng: longitude };
 
   return isLoaded ? (
-    <Map center={position} zoom={15}></Map>
+    <Map center={position} zoom={15} disableDefaultUI={true}></Map>
   ) : (
     <div>Loading...</div>
   );
