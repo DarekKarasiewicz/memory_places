@@ -1,3 +1,4 @@
+import React from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import { APIProvider } from '@vis.gl/react-google-maps';
