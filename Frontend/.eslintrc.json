@@ -16,7 +16,10 @@
         "react"
     ],
     "rules": {
+        "prettier/prettier": "warn", //this command prevent eslint and prettier from breaking
         "react/react-in-jsx-scope": "off",
-        "react/jsx-uses-react": "off"
+        "react/jsx-uses-react": "off",
+        "react/prop-types": "off",
+        "no-unused-vars": "warn"
     }
 }
