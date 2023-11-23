@@ -1,4 +1,5 @@
 import GoogleMap from "./GoogleMap/GoogleMap";
+import Navbar from "./Navbar/Navbar";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
 function App() {
@@ -6,8 +7,9 @@ function App() {
 
   return (
     <APIProvider apiKey={googleApiKey}>
-      <div className="w-screen h-screen">
+      <div className="w-screen h-screen relative">
         <GoogleMap />
+        <Navbar />
       </div>
     </APIProvider>
   );
