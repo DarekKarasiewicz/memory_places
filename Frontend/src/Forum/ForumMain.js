@@ -1,20 +1,28 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
 import axios from "axios"
-import PostForm from "./Postform";
+import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
+=======
+import React, { Component } from 'react';
+import axios from 'axios';
+import PostForm from './PostForm';
+import CommentForm from './CommentForm';
+>>>>>>> c591fca (Fix bug with for in label)
 
-class ForumMain extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            post:[],
-            subforum:[],
-            comment:[],
-        };
-    }
-    
-    componentDidMount(){
-        this.refreshList();
-    }
+class ForumMain extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: [],
+      subforum: [],
+      comment: [],
+    };
+  }
+
+  componentDidMount() {
+    this.refreshList();
+  }
 
   refreshList = () => {
     axios
@@ -27,11 +35,11 @@ class ForumMain extends Component{
       .then((res) => this.setState({ subforum: res.data }))
       .catch((err) => console.log(err));
 
-        axios
-          .get("http://127.0.0.1:8000/memo_places_forum/posts")
-          .then((res) => this.setState({ post: res.data}))
-          .catch((err) => console.log(err));
-    };
+    axios
+      .get('http://127.0.0.1:8000/memo_places_forum/posts')
+      .then((res) => this.setState({ post: res.data }))
+      .catch((err) => console.log(err));
+  };
 
   renderCommentList = () => {
     return this.state.comment.map((item) => (
@@ -56,8 +64,10 @@ class ForumMain extends Component{
     }; 
 
 
+
     renderPostList = () =>{
         return this.state.post.map((item)=>(
+            <>
                 <li
                   key={item.id}
                   className="list-of-posts"
@@ -66,30 +76,40 @@ class ForumMain extends Component{
                   title={item.title}
                 >
                     <p>id: {item.id} subforum: {item.subforum} content:{item.content}</p>
+                    <p>id: {item.id} subforum: {item.subforum} content:{item.content}</p>
                 </span>
                 </li>
+                <CommentForm postID={item.id}/>
+            </>
         ));
     }; 
-    handleSubmit = (item) =>{
-        axios
-            .post("/memo_places_forum/posts/", item)
-            .then((res) => this.refreshList());
-    }
 
+  renderPostList = () => {
+    return this.state.post.map((item) => (
+      <>
+        <li key={item.id} className='list-of-posts'>
+          <span title={item.title}>
+            <p>
+              id: {item.id} subforum: {item.subforum} content:{item.content}
+            </p>
+          </span>
+        </li>
+        <CommentForm postID={item.id} />
+      </>
+    ));
+  };
 
   render() {
     return (
-        <main className="container">
-            <div className="post-list">
-                <p>Post list</p>
-                <ul>
-                    {this.renderPostList()}
-                </ul>
-            </div>
-            <div className="add-post">
-                <PostForm/>
-            </div>
-        </main>
+      <main className='container'>
+        <div className='post-list'>
+          <p>Post list</p>
+          <ul>{this.renderPostList()}</ul>
+        </div>
+        <div className='add-post'>
+          <PostForm />
+        </div>
+      </main>
     );
   }
 }
