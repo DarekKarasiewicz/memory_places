@@ -1,10 +1,14 @@
 import { Map, useApiIsLoaded } from '@vis.gl/react-google-maps';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { selectLocation } from '../Redux/locationSlice';
+import { useSelector } from 'react-redux';
 
-function GoogleMap() {
+const GoogleMap = () => {
+  const location = useSelector(selectLocation);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const isLoaded = useApiIsLoaded();
+  const position = { lat: latitude, lng: longitude };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -25,13 +29,20 @@ function GoogleMap() {
     );
   }, []);
 
-  const position = { lat: latitude, lng: longitude };
+  useEffect(() => {
+    setLatitude(location.lat);
+    setLongitude(location.lng);
+  }, [location]);
 
   return isLoaded ? (
-    <Map center={position} zoom={15} disableDefaultUI={true}></Map>
+    <div className='absolute bottom-0 left-0 w-screen h-screen'>
+      <Map center={position} zoom={15} disableDefaultUI={true} clickableIcons={false}></Map>
+    </div>
   ) : (
-    <div>Loading...</div>
+    <div className='absolute bottom-0 left-0 w-screen h-screen'>
+      <div>Loading...</div>
+    </div>
   );
-}
+};
 
 export default GoogleMap;
