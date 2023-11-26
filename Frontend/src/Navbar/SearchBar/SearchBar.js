@@ -1,9 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useAutocomplete } from '@vis.gl/react-google-maps';
+import { setKey, fromAddress, fromLatLng } from 'react-geocode';
+import { locationActions } from '../../Redux/locationSlice';
+import { useDispatch } from 'react-redux';
+import './AutocompleteStyles.css';
 
 function SearchBar() {
+  const dispatch = useDispatch();
+  const inputRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const [searchedText, setSearchedText] = useState('');
+  setKey(process.env.REACT_APP_API_KEY);
+
+  useEffect(() => {
+    if (searchedText.length !== 0) {
+      const delayDebounceFn = setTimeout(() => {
+        fromAddress(searchedText)
+          .then(({ results }) => {
+            const { lat, lng } = results[0].geometry.location;
+            dispatch(locationActions.changeLocation({ lat, lng }));
+          })
+          .catch(console.error);
+      }, 1000);
+
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [searchedText, dispatch]);
+
+  const onPlaceChanged = (place) => {
+    if (place) {
+      setSearchedText(place.formatted_address || place.name);
+    }
+
+    inputRef.current && inputRef.current.focus();
+  };
+
+  useAutocomplete({
+    inputField: inputRef && inputRef.current,
+    onPlaceChanged,
+  });
 
   const handleClick = () => {
     if (searchedText.trim().length === 0) {
@@ -40,6 +76,7 @@ function SearchBar() {
               placeholder='Search...'
               className='rounded-l-lg h-10 w-80 border-black border-t-2 border-l-2 border-b-2 p-3'
               onChange={handleSearchChange}
+              ref={inputRef}
               value={searchedText}
             ></input>
             <img
