@@ -1,5 +1,5 @@
-import { Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
-import { useEffect, useState } from "react";
+import { Map, useApiIsLoaded } from '@vis.gl/react-google-maps';
+import { useEffect, useState } from 'react';
 
 function GoogleMap() {
   const [latitude, setLatitude] = useState(null);
@@ -14,21 +14,21 @@ function GoogleMap() {
       },
       (error) => {
         if (error.code === 1) {
-          alert("Premission Denied");
+          alert('Premission Denied');
         } else if (error.code === 2) {
-          alert("Position Unavilable");
+          alert('Position Unavilable');
         } else {
-          alert("Timeout");
+          alert('Timeout');
         }
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   }, []);
 
   const position = { lat: latitude, lng: longitude };
 
   return isLoaded ? (
-    <Map center={position} zoom={15}></Map>
+    <Map center={position} zoom={15} disableDefaultUI={true}></Map>
   ) : (
     <div>Loading...</div>
   );
