@@ -1,13 +1,10 @@
-import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import { initialize } from "@googlemaps/jest-mocks";
-import {
-  APILoadingStatus,
-  APIProviderContext,
-} from "@vis.gl/react-google-maps";
-import "@testing-library/jest-dom";
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { initialize } from '@googlemaps/jest-mocks';
+import { APILoadingStatus, APIProviderContext } from '@vis.gl/react-google-maps';
+import '@testing-library/jest-dom';
 
-import GoogleMap from "../GoogleMap/GoogleMap";
+import GoogleMap from '../GoogleMap/GoogleMap';
 
 let mockContextValue;
 let wrapper;
@@ -17,7 +14,7 @@ beforeEach(() => {
 
   const setStateMock = jest.fn();
   const useStateMock = (useState) => [useState, setStateMock];
-  jest.spyOn(React, "useEffect").mockImplementation(useStateMock);
+  jest.spyOn(React, 'useEffect').mockImplementation(useStateMock);
 
   mockContextValue = {
     importLibrary: jest.fn(),
@@ -30,11 +27,7 @@ beforeEach(() => {
   };
 
   wrapper = ({ children }) =>
-    React.createElement(
-      APIProviderContext.Provider,
-      { value: mockContextValue },
-      children
-    );
+    React.createElement(APIProviderContext.Provider, { value: mockContextValue }, children);
 });
 
 afterEach(() => {
@@ -48,9 +41,9 @@ it("when Api isn't loaded should display loading", () => {
   expect(screen.getByText(/loading.../i)).toBeInTheDocument();
 });
 
-it("when Api is loaded should display map", async () => {
+it('when Api is loaded should display map', async () => {
   mockContextValue.status = APILoadingStatus.LOADED;
   render(<GoogleMap />, { wrapper });
-  const data = await waitFor(() => screen.findByTestId("map"));
+  const data = await waitFor(() => screen.findByTestId('map'));
   expect(data).toBeTruthy();
 });

@@ -16,16 +16,16 @@ class ForumMain extends Component{
         this.refreshList();
     }
 
-    refreshList = () =>{
-        axios
-          .get("http://127.0.0.1:8000/memo_places_forum/comments")
-          .then((res) => this.setState({ comment: res.data }))
-          .catch((err) => console.log(err));
+  refreshList = () => {
+    axios
+      .get('http://127.0.0.1:8000/memo_places_forum/comments')
+      .then((res) => this.setState({ comment: res.data }))
+      .catch((err) => console.log(err));
 
-        axios
-          .get("http://127.0.0.1:8000/memo_places_forum/subforums")
-          .then((res) => this.setState({ subforum: res.data }))
-          .catch((err) => console.log(err));
+    axios
+      .get('http://127.0.0.1:8000/memo_places_forum/subforums')
+      .then((res) => this.setState({ subforum: res.data }))
+      .catch((err) => console.log(err));
 
         axios
           .get("http://127.0.0.1:8000/memo_places_forum/posts")
@@ -33,18 +33,13 @@ class ForumMain extends Component{
           .catch((err) => console.log(err));
     };
 
-    renderCommentList = () =>{
-        return this.state.comment.map((item)=>(
-                <li
-                  key={item.id}
-                  className="list-of-comments"
-                >
-                <span>
-                    {item.content}
-                </span>
-                </li>
-        ));
-    }; 
+  renderCommentList = () => {
+    return this.state.comment.map((item) => (
+      <li key={item.id} className='list-of-comments'>
+        <span>{item.content}</span>
+      </li>
+    ));
+  };
 
     renderSumforumList = () =>{
         return this.state.subforum.map((item)=>(
@@ -82,7 +77,7 @@ class ForumMain extends Component{
     }
 
 
-render(){
+  render() {
     return (
         <main className="container">
             <div className="post-list">
