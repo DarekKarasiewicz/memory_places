@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Provider } from "react-redux";
-import { store } from "./Redux/store.js";
-import { APIProvider } from "@vis.gl/react-google-maps";
+import { Provider } from 'react-redux';
+import { store } from './Redux/store.js';
+import { APIProvider } from '@vis.gl/react-google-maps';
 import App from './App';
 import ForumMain from './Forum/ForumMain.js';
 import './index.css';
@@ -23,7 +23,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <APIProvider apiKey={googleApiKey} libraries={["places"]}>
+      <APIProvider apiKey={googleApiKey} libraries={['places']}>
         <AppUrls />
       </APIProvider>
     </Provider>
