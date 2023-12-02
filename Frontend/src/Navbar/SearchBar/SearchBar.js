@@ -90,7 +90,7 @@ function SearchBar() {
         <div
           className={`${
             isActive ? 'rounded-r-lg' : 'rounded-full'
-          } border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-10 relative`}
+          } border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-5 relative`}
           onClick={handleClick}
         >
           <img
