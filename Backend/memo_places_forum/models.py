@@ -11,8 +11,8 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    subforum = models.ForeignKey(Subforum, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    subforum = models.ForeignKey(Subforum, on_delete=models.CASCADE,null=True)
     # Add other post-related fields as needed
 
 class Comment(models.Model):

@@ -1,5 +1,14 @@
+<<<<<<< HEAD
+import React, { Component } from "react";
+import axios from "axios"
+import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
+=======
 import React, { Component } from 'react';
 import axios from 'axios';
+import PostForm from './PostForm';
+import CommentForm from './CommentForm';
+>>>>>>> c591fca (Fix bug with for in label)
 
 class ForumMain extends Component {
   constructor(props) {
@@ -40,33 +49,65 @@ class ForumMain extends Component {
     ));
   };
 
-  renderSumforumList = () => {
-    return this.state.subforum.map((item) => (
-      <li key={item.id} className='list-of-subforum'>
-        <span title={item.name}>{item.description}</span>
-      </li>
-    ));
-  };
+    renderSumforumList = () =>{
+        return this.state.subforum.map((item)=>(
+                <li
+                  key={item.id}
+                  className="list-of-subforum"
+                >
+                <span 
+                title={item.name}>
+                    {item.description}
+                </span>
+                </li>
+        ));
+    }; 
+
+
+
+    renderPostList = () =>{
+        return this.state.post.map((item)=>(
+            <>
+                <li
+                  key={item.id}
+                  className="list-of-posts"
+                >
+                <span
+                  title={item.title}
+                >
+                    <p>id: {item.id} subforum: {item.subforum} content:{item.content}</p>
+                    <p>id: {item.id} subforum: {item.subforum} content:{item.content}</p>
+                </span>
+                </li>
+                <CommentForm postID={item.id}/>
+            </>
+        ));
+    }; 
 
   renderPostList = () => {
-    return this.state.comment.map((item) => (
-      <li key={item.id} className='list-of-posts'>
-        <span title={item.title}>{item.content}</span>
-      </li>
+    return this.state.post.map((item) => (
+      <>
+        <li key={item.id} className='list-of-posts'>
+          <span title={item.title}>
+            <p>
+              id: {item.id} subforum: {item.subforum} content:{item.content}
+            </p>
+          </span>
+        </li>
+        <CommentForm postID={item.id} />
+      </>
     ));
   };
 
   render() {
     return (
       <main className='container'>
-        <div className='comment-list'>
-          <ul>{this.renderCommentList()}</ul>
-        </div>
         <div className='post-list'>
+          <p>Post list</p>
           <ul>{this.renderPostList()}</ul>
         </div>
-        <div className='sumforum-list'>
-          <ul>{this.renderSumforumList()}</ul>
+        <div className='add-post'>
+          <PostForm />
         </div>
       </main>
     );
