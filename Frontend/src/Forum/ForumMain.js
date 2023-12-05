@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import PostForm from './PostForm';
 import CommentForm from './CommentForm';
 
@@ -10,7 +11,12 @@ class ForumMain extends Component {
       post: [],
       subforum: [],
       comment: [],
+      searchQuery: '',
+      filteredSubforums: [],
     };
+
+    // Initialize a variable to store the timeout ID
+    this.timeoutId = null;
   }
 
   componentDidMount() {
@@ -34,6 +40,24 @@ class ForumMain extends Component {
       .catch((err) => console.log(err));
   };
 
+  handleSearch = (event) => {
+    const searchQuery = event.target.value;
+    this.setState({ searchQuery }, () => {
+      // Clear the previous timeout
+      clearTimeout(this.timeoutId);
+      // Set a new timeout
+      this.timeoutId = setTimeout(this.filterSubforums, 300);
+    });
+  };
+
+  filterSubforums = () => {
+    const { subforum, searchQuery } = this.state;
+    const filteredSubforums = subforum.filter((item) =>
+      item.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    this.setState({ filteredSubforums });
+  };
+
   renderCommentList = () => {
     return this.state.comment.map((item) => (
       <li key={item.id} className='list-of-comments'>
@@ -42,35 +66,50 @@ class ForumMain extends Component {
     ));
   };
 
-  renderSumforumList = () => {
-    return this.state.subforum.map((item) => (
+  renderFilteredSubforums = () => {
+    return this.state.filteredSubforums.map((item) => (
       <li key={item.id} className='list-of-subforum'>
-        <span title={item.name}>{item.description}</span>
+        <Link to={`http://localhost:3000/forum/${item.id}`} title={item.name}>
+          {item.description}
+        </Link>
       </li>
     ));
   };
 
   renderPostList = () => {
     return this.state.post.map((item) => (
-      <>
-        <li key={item.id} className='list-of-posts'>
+      <React.Fragment key={item.id}>
+        <li className='list-of-posts'>
           <span title={item.title}>
             <p>
-              id: {item.id} subforum: {item.subforum} content:{item.content}
+              id: {item.id} subforum: {item.subforum} content:{' '}
+              {item.content}
             </p>
           </span>
         </li>
         <CommentForm postID={item.id} />
-      </>
+      </React.Fragment>
     ));
   };
 
   render() {
     return (
       <main className='container'>
-        <div className='post-list'>
+        <div className='search-bar'>
+          <input
+            type='text'
+            placeholder='Search forums...'
+            value={this.state.searchQuery}
+            onChange={this.handleSearch}
+          />
+        </div>
+        {/* <div className='post-list'>
           <p>Post list</p>
           <ul>{this.renderPostList()}</ul>
+        </div> */}
+        <div className='filtered-subforums'>
+          <p>Filtered Subforums</p>
+          <ul>{this.renderFilteredSubforums()}</ul>
         </div>
         <div className='add-post'>
           <PostForm />
