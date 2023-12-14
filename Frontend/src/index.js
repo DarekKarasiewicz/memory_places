@@ -7,6 +7,7 @@ import { APIProvider } from '@vis.gl/react-google-maps';
 import App from './App';
 import ForumMain from './Forum/ForumMain.js';
 import './index.css';
+import SubForum from './Forum/SubForum.jsx';
 
 export default function AppUrls() {
   return (
@@ -14,6 +15,7 @@ export default function AppUrls() {
       <Routes>
         <Route path='/' element={<App />} />
         <Route path='/forum' element={<ForumMain />} />
+        <Route path='/forum/:id' element={<SubForum />} />
       </Routes>
     </BrowserRouter>
   );

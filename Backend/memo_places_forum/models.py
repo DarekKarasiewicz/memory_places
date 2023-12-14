@@ -13,6 +13,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     subforum = models.ForeignKey(Subforum, on_delete=models.CASCADE,null=True)
+    like = models.IntegerField(null=True)
+    dislike = models.IntegerField(null=True)
     # Add other post-related fields as needed
 
 class Comment(models.Model):
@@ -20,4 +22,6 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    like = models.IntegerField(null=True)
+    dislike = models.IntegerField(null=True)
     # Add other comment-related fields as needed

@@ -53,7 +53,7 @@ class ForumMain extends Component {
   filterSubforums = () => {
     const { subforum, searchQuery } = this.state;
     const filteredSubforums = subforum.filter((item) =>
-      item.description.toLowerCase().includes(searchQuery.toLowerCase())
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
     this.setState({ filteredSubforums });
   };
@@ -82,8 +82,7 @@ class ForumMain extends Component {
         <li className='list-of-posts'>
           <span title={item.title}>
             <p>
-              id: {item.id} subforum: {item.subforum} content:{' '}
-              {item.content}
+              id: {item.id} subforum: {item.subforum} content: {item.content}
             </p>
           </span>
         </li>
