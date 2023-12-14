@@ -22,28 +22,74 @@ function SubForum() {
       });
   }, [id]);
 
+  const handleLike = (post, action) => {
+    // Clone the post object to avoid directly modifying the state
+    const updatedPost = { ...post };
+
+    if (action === 'like') {
+      // Increment the like count
+      updatedPost.like += 1;
+    } else if (action === 'dislike') {
+      // Increment the dislike count
+      updatedPost.dislike += 1;
+    }
+
+    // Update the post on the server
+    axios
+      .put(`http://127.0.0.1:8000/memo_places_forum/posts/${post.id}/`, updatedPost)
+      .then((res) => {
+        // Fetch the updated data
+        axios
+          .get(`http://127.0.0.1:8000/memo_places_forum/forum_posts/${id}`)
+          .then((res) => {
+            setPosts(res.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
-      <p>Hello form subforum id:{id}</p>
+      <p>Hello from subforum id:{id}</p>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <ul>
           {posts.map((post) => (
-            <>
-            <li key={post.id} 
+            <React.Fragment key={post.id}>
+              <li
                 style={{
                   border: '1px solid #ccc',
                   margin: '10px',
                   padding: '10px',
-            }}
-            >
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              {/* Add more details as needed */}
-            </li>
-            <CommentForm postID={post.id} />
-            </>
+                }}
+              >
+                <h2>{post.title}</h2>
+                <p>{post.content}</p>
+                {/* Add more details as needed */}
+                <label>
+                  Like: {post.like}
+                  <input
+                    type='checkbox'
+                    onChange={(e) => handleLike(post, 'like')}
+                    // onChange={(e) => handleLikeDislike(post.id, 'like', e.target.checked)}
+                  />
+                </label>
+                <br />
+                <label>
+                  Dislike: {post.dislike}
+                  <input type='checkbox' onChange={(e) => handleLike(post, 'dislike')} />
+                </label>
+              </li>
+              <CommentForm postID={post.id} />
+            </React.Fragment>
           ))}
         </ul>
       )}
