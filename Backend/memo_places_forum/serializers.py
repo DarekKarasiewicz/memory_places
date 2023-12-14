@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from .models import Subforum, Post, Comment 
 
@@ -10,7 +9,7 @@ class SubforumSerailizer(serializers.ModelSerializer):
 class PostSerailizer(serializers.ModelSerializer):
     class Meta:
         model = Post 
-        fields = ('id', 'title', 'content', 'created_at', 'subforum')
+        fields ='__all__'
 
 class CommentSerailizer(serializers.ModelSerializer):
     class Meta:
