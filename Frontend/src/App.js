@@ -2,32 +2,26 @@ import { useState } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
+import AddPlaceButton from './AddPlace/AddPlaceButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { formModalActions, selectFormModal } from './Redux/formModalSlice';
+import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 
-function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+function App(props) {
+  const dispatch = useDispatch();
+  const formModalData = useSelector(selectFormModal);
+  const addPlaceData = useSelector(selectAddPlaceLocation);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleModalVisability = () =>{
+    dispatch(formModalActions.changeIsModalOpen());
+  }
 
   return (
     <div className='w-screen h-screen relative'>
       <GoogleMap />
-      <Navbar />
-      {isModalOpen && <FormModal title='Example Name' closeModal={closeModal} />}
-      {/* Temporary div/button for modal display */}
-      <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2'>
-        <div
-          className='rounded-full border-2 h-12 w-auto p-2 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-10 relative'
-          onClick={openModal}
-        >
-          MODAL
-        </div>
-      </div>
+      {!addPlaceData.isSelecting && <Navbar />}
+      {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleModalVisability}/>}
+      {formModalData.isModalOpen && <FormModal title='Add place' closeModal={handleModalVisability}/>}
     </div>
   );
 }

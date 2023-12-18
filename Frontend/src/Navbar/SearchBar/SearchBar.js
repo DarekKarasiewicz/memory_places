@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAutocomplete } from '@vis.gl/react-google-maps';
-import { setKey, fromAddress, fromLatLng } from 'react-geocode';
+import { setKey, fromAddress } from 'react-geocode';
 import { locationActions } from '../../Redux/locationSlice';
 import { useDispatch } from 'react-redux';
 import './AutocompleteStyles.css';
