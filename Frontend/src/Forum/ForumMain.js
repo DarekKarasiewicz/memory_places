@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-import React, { Component } from "react";
-import axios from "axios"
-import PostForm from "./PostForm";
-import CommentForm from "./CommentForm";
-=======
 import React, { Component } from 'react';
 import axios from 'axios';
 import PostForm from './PostForm';
 import CommentForm from './CommentForm';
->>>>>>> c591fca (Fix bug with for in label)
 
 class ForumMain extends Component {
   constructor(props) {
