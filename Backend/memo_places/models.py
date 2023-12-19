@@ -8,8 +8,8 @@ class UserManager(BaseUserManager):
                       email,
                       password,
                       username,
-                      full_name,
-                      phone,
+                      full_name=None,
+                      phone=None,
                       fb_link=None,
                       admin=False,
                       master=False,
@@ -31,6 +31,20 @@ class UserManager(BaseUserManager):
 
             user_obj.save(using=self._db)
             return user_obj
+      
+      def create_superuser(self,email,password,username,phone,full_name):
+            user = self.create_user(
+                  email,
+                  password=password,
+                  username=username,
+                  phone=phone,
+                  full_name=full_name,
+                  fb_link='',
+                  master=False,
+                  admin=True
+            )
+            return user
+
 
 #User class model should be done one and never changed. If you whant add extend things
 #good practise is create seperate model eg. Profile and there add changes
@@ -48,7 +62,7 @@ class User(AbstractBaseUser):
 
       USERNAME_FIELD = 'email'
       #USERNAME_FIELD and password are required by default
-      REQUIRED_FIELDS = ['username', 'phone']
+      REQUIRED_FIELDS = ['username', 'phone','full_name']
       
       objects=UserManager()
 
