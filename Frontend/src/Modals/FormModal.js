@@ -22,7 +22,6 @@ function FormModal(props) {
       userId: null,
       placeName: nameRef.current.value,
       description: descriptionRef.current.value,
-      creationDate: new Date(),
       foundDate: dateRef.current.value,
       lat: latRef.current.value,
       lng: lngRef.current.value
