@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 
- const BaseInput = forwardRef( function BaseInput(props,ref) {
-
+const BaseInput = forwardRef(function BaseInput(props, ref) {
   return (
     <>
       <div className='w-full'>

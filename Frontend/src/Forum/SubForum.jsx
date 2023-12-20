@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CommentForm from './CommentForm';
 
-
-
 function SubForum() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
@@ -24,14 +22,12 @@ function SubForum() {
       });
   }, [id]);
 
-
   const handleLike = (post, action) => {
     // Clone the post object to avoid directly modifying the state
     const updatedPost = { ...post };
-    
 
-    action === 'like' ? updatedPost.like += 1 : updatedPost.dislike += 1;
-  
+    action === 'like' ? (updatedPost.like += 1) : (updatedPost.dislike += 1);
+
     // Update the post on the server
     axios
       .put(`http://127.0.0.1:8000/memo_places_forum/posts/${post.id}/`, updatedPost)
@@ -75,18 +71,15 @@ function SubForum() {
                 <label>
                   Like: {post.like}
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     onChange={(e) => handleLike(post, 'like')}
                     // onChange={(e) => handleLikeDislike(post.id, 'like', e.target.checked)}
                   />
                 </label>
-                <br/>
+                <br />
                 <label>
                   Dislike: {post.dislike}
-                  <input
-                    type="checkbox"
-                    onChange={(e) => handleLike(post, 'dislike')}
-                  />
+                  <input type='checkbox' onChange={(e) => handleLike(post, 'dislike')} />
                 </label>
               </li>
               <CommentForm postID={post.id} />

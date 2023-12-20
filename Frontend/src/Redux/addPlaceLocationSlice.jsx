@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   lat: null,
   lng: null,
-  isSelecting: false
+  isSelecting: false,
 };
 
 export const addPlaceLocationSlice = createSlice({
@@ -14,9 +14,9 @@ export const addPlaceLocationSlice = createSlice({
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },
-    changeIsSelecting: (state,action) =>{
+    changeIsSelecting: (state, action) => {
       state.isSelecting = action.payload.isSelecting;
-    }
+    },
   },
 });
 
