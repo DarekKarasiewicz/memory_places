@@ -7,12 +7,12 @@ import { forwardRef } from 'react';
       <div className='w-full'>
         <label className='block pl-2 text-lg'>{props.label}</label>
         <input
-          className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg`}
+          className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg px-2`}
           type={props.type}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
           ref={ref}
-        ></input>
+        />
       </div>
     </>
   );
