@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "memo_places_forum"
 ]
 
+AUTH_USER_MODEL='memo_places.User'
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
