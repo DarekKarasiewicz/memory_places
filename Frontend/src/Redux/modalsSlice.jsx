@@ -12,9 +12,9 @@ export const modalsSlice = createSlice({
     changeIsFormModalOpen: (state) => {
       state.isFormModalOpen = !state.isFormModalOpen;
     },
-    changeIsLoginAndRegisterOpen: (state) =>{
+    changeIsLoginAndRegisterOpen: (state) => {
       state.isLoginAndRegisterOpen = !state.isLoginAndRegisterOpen;
-    }
+    },
   },
 });
 

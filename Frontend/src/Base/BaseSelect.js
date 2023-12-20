@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 
-const BaseSelect = forwardRef( function BaseSelect(props,ref) {
-
+const BaseSelect = forwardRef(function BaseSelect(props, ref) {
   return (
     <>
       <div className='w-full'>

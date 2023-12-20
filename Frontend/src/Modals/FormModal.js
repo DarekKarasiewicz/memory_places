@@ -51,8 +51,8 @@ function FormModal(props) {
     { label: 'II Wojna Światowa (1939 – 1945)', value: 'world_war_II' },
     { label: 'Okres Stalinowski (1945 – 1953)', value: 'stalinist_period' },
   ];
-  
-  const handleConfirm =()=>{
+
+  const handleConfirm = () => {
     const place = {
       userId: null,
       placeName: nameRef.current.value,
@@ -63,8 +63,8 @@ function FormModal(props) {
       lng: lngRef.current.value,
       sortof: sortofRef.current.value,
       type: typeRef.current.value,
-      period: periodRef.current.value
-    }
+      period: periodRef.current.value,
+    };
 
     const isFormValid = formValidation();
 
@@ -72,103 +72,98 @@ function FormModal(props) {
       // axios.post(`http://localhost:8000/memo_places/places/`,{place}).then(() => {
       //   dispatch(formModalActions.changeIsModalOpen())
       // })
-      console.log(place)
-    }else{
-      alert("All boxes need to be filled");
+      console.log(place);
+    } else {
+      alert('All boxes need to be filled');
     }
+  };
 
-  }
-
-  const formValidation = () =>{
-    if(nameRef.current.value.length > 0 &&
+  const formValidation = () => {
+    if (
+      nameRef.current.value.length > 0 &&
       descriptionRef.current.value.length > 0 &&
       dateRef.current.value.length > 0 &&
       latRef.current.value.length > 0 &&
       lngRef.current.value.length > 0 &&
       sortofRef.current.value !== 'all' &&
       typeRef.current.value !== 'all' &&
-      periodRef.current.value !== 'all' ){
-        return true
-      }else{
-        return false
-      }
-  }
+      periodRef.current.value !== 'all'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
-    if(latRef.current){
-      latRef.current.value = addPlaceLocation.lat
-      lngRef.current.value = addPlaceLocation.lng
+    if (latRef.current) {
+      latRef.current.value = addPlaceLocation.lat;
+      lngRef.current.value = addPlaceLocation.lng;
     }
-  },[addPlaceLocation])
+  }, [addPlaceLocation]);
 
-  const handleSelectLocationBtn = () =>{
-    dispatch(addPlacelocationActions.changeIsSelecting({isSelecting: true}));
-    dispatch(formModalActions.changeIsModalOpen())
-    
-  }
+  const handleSelectLocationBtn = () => {
+    dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
+    dispatch(formModalActions.changeIsModalOpen());
+  };
 
   return (
     <Fragment>
       <BaseModal title={props.title} isOpen={props.isOpen} closeModal={props.closeModal}>
         <div className='p-2 max-h-[75vh] overflow-y-auto'>
+          <BaseInput
+            type='text'
+            placeholder='Search...'
+            name='nameInput'
+            label='Name'
+            ref={nameRef}
+          />
+          <BaseInput type='date' name='dateInput' label='Date' ref={dateRef} />
+          <div className='flex gap-8'>
             <BaseInput
-              type='text'
-              placeholder='Search...'
-              name='nameInput'
-              label='Name'
-              ref={nameRef}
-            />        
-            <BaseInput
-              type='date'
-              name='dateInput'
-              label='Date'
-              ref={dateRef}
+              type='number'
+              placeholder='latitude'
+              name='lat'
+              label='latitude'
+              value={addPlaceLocation.lat}
+              ref={latRef}
             />
-            <div className='flex gap-8'>
-              <BaseInput
-                type='number'
-                placeholder='latitude'
-                name='lat'
-                label='latitude'
-                value={addPlaceLocation.lat}
-                ref={latRef}
-                />
-              <BaseInput
-                type='number'
-                placeholder='longitude'
-                name='lng'
-                label='longitude'
-                value={addPlaceLocation.lng}
-                ref={lngRef}
-                />
-            </div>
-            <div className='p-2 flex gap-4 justify-center'>
-              <BaseButton name='Select location' onClick={handleSelectLocationBtn}/>
-              </div>
-            <div className='flex gap-8'>
-              <BaseSelect 
-                label='Rodzaj'
-                name='Rodzaj'
-                value={addPlaceLocation.sortof}
-                options={sortof_options}
-                ref={sortofRef}
-              />
-              <BaseSelect 
-                label='Typ'
-                name='Typ'
-                value={addPlaceLocation.type}
-                options={type_options}
-                ref={typeRef}
-              />
-            </div>
-              <BaseSelect 
-                label='Okres'
-                name='Okres'
-                value={addPlaceLocation.period}
-                options={period_options}
-                ref={periodRef}
-              />
-          <BaseTextarea rows='6' label='Description' ref={descriptionRef}/>
+            <BaseInput
+              type='number'
+              placeholder='longitude'
+              name='lng'
+              label='longitude'
+              value={addPlaceLocation.lng}
+              ref={lngRef}
+            />
+          </div>
+          <div className='p-2 flex gap-4 justify-center'>
+            <BaseButton name='Select location' onClick={handleSelectLocationBtn} />
+          </div>
+          <div className='flex gap-8'>
+            <BaseSelect
+              label='Rodzaj'
+              name='Rodzaj'
+              value={addPlaceLocation.sortof}
+              options={sortof_options}
+              ref={sortofRef}
+            />
+            <BaseSelect
+              label='Typ'
+              name='Typ'
+              value={addPlaceLocation.type}
+              options={type_options}
+              ref={typeRef}
+            />
+          </div>
+          <BaseSelect
+            label='Okres'
+            name='Okres'
+            value={addPlaceLocation.period}
+            options={period_options}
+            ref={periodRef}
+          />
+          <BaseTextarea rows='6' label='Description' ref={descriptionRef} />
         </div>
         <div className='p-2 flex gap-4 justify-center'>
           <BaseButton type='submit' name='Confirm' onClick={handleConfirm}></BaseButton>
