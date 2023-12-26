@@ -74,7 +74,7 @@ function SearchBar() {
             <input
               type='text'
               placeholder='Search...'
-              className='rounded-l-lg h-10 w-80 border-black border-t-2 border-l-2 border-b-2 p-3'
+              className='rounded-l-lg h-10 w-80 border-black border-t-2 border-l-2 border-b-2 pl-3 pt-3 pb-3 pr-6'
               onChange={handleSearchChange}
               ref={inputRef}
               value={searchedText}

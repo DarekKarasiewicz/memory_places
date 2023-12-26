@@ -13,21 +13,25 @@ function App(props) {
   const modalData = useSelector(selectModals);
   const addPlaceData = useSelector(selectAddPlaceLocation);
 
-  const handleFormModalVisability = () =>{
+  const handleFormModalVisability = () => {
     dispatch(modalsActions.changeIsFormModalOpen());
-  }
+  };
 
-  const handleLoginModalVisability = () =>{
+  const handleLoginModalVisability = () => {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
-  }
+  };
 
   return (
     <div className='w-screen h-screen relative'>
       <GoogleMap />
       {!addPlaceData.isSelecting && <Navbar />}
-      {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability}/>}
-      {modalData.isFormModalOpen && <FormModal title='Add place' closeModal={handleFormModalVisability}/>}
-      {modalData.isLoginAndRegisterOpen && <LoginAndRegisterModal closeModal={handleLoginModalVisability}/>}
+      {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
+      {modalData.isFormModalOpen && (
+        <FormModal title='Add place' closeModal={handleFormModalVisability} />
+      )}
+      {modalData.isLoginAndRegisterOpen && (
+        <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
+      )}
     </div>
   );
 }

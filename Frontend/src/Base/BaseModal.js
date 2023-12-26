@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 function BaseModal(props) {
   return (
     <>
-      <div className='absolute flex w-full h-screen bg-black bg-opacity-80 z-50'>
+      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
         <div className='m-auto w-1/3 rounded border-2 border-black h-auto p-2 bg-slate-300 relative'>
           <motion.div
             className='rounded-full absolute -top-5 -right-5 border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer'
