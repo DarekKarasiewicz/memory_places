@@ -4,7 +4,7 @@ function BaseButton(props) {
   return (
     <>
       <motion.button
-        className='rounded border-2 w-32 border-black text-lg'
+        className={`rounded border-2 w-32 border-black text-lg ${props.className}`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={props.onClick}

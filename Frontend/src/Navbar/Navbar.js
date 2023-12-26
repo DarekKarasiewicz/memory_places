@@ -3,13 +3,20 @@ import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DropdownItem from './DropdownItem/DropdownItem';
 import SearchBar from './SearchBar/SearchBar';
+import { useDispatch } from 'react-redux';
+import { modalsActions } from '../Redux/modalsSlice';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     setIsActive((current) => !current);
   };
+
+  const handleLoginModalOpen =()=>{
+    dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+  }
 
   return (
     <>
@@ -39,7 +46,7 @@ function Navbar() {
               <Link to='/forum'>
                 <DropdownItem icon='forum_icon' name='Forum'></DropdownItem>
               </Link>
-              <DropdownItem icon='forum_icon'></DropdownItem>
+              <DropdownItem icon='forum_icon' name='Login' onClick={handleLoginModalOpen}></DropdownItem>
             </motion.div>
           )}
         </div>
