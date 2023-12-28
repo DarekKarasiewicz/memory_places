@@ -3,11 +3,14 @@ import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DropdownItem from './DropdownItem/DropdownItem';
 import SearchBar from './SearchBar/SearchBar';
+import { useDispatch } from 'react-redux';
+import { modalsActions } from '../Redux/modalsSlice';
 import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     setIsActive((current) => !current);
@@ -35,6 +38,9 @@ function Navbar() {
     },
   };
 
+  const handleLoginModalOpen = () => {
+    dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+  };
   return (
     <>
       <nav className='relative flex justify-between p-3'>

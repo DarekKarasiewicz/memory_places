@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { formModalActions } from '../Redux/formModalSlice';
+import { modalsActions } from '../Redux/modalsSlice';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const GoogleMap = () => {
   const closeInfoWindow = () => setInfowindowShown(false);
 
   const handleConfirm = () => {
-    dispatch(formModalActions.changeIsModalOpen());
+    dispatch(modalsActions.changeIsFormModalOpen());
     dispatch(addPlacelocationActions.changeIsSelecting(false));
   };
 

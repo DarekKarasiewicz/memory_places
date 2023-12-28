@@ -7,7 +7,7 @@ import BaseButton from '../Base/BaseButton';
 import BaseSelect from '../Base/BaseSelect';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { formModalActions } from '../Redux/formModalSlice';
+import { modalsActions } from '../Redux/modalsSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -68,9 +68,9 @@ function FormModal(props) {
     const isFormValid = formValidation();
 
     if (isFormValid) {
-      // axios.post(`http://localhost:8000/memo_places/places/`,{place}).then(() => {
-      //   dispatch(formModalActions.changeIsModalOpen())
-      // })
+      axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
+        dispatch(modalsActions.changeIsFormModalOpen());
+      });
       console.log(place);
     } else {
       alert('All boxes need to be filled');
@@ -103,12 +103,12 @@ function FormModal(props) {
 
   const handleSelectLocationBtn = () => {
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
-    dispatch(formModalActions.changeIsModalOpen());
+    dispatch(modalsActions.changeIsFormModalOpen());
   };
 
   return (
     <Fragment>
-      <BaseModal title={props.title} isOpen={props.isOpen} closeModal={props.closeModal}>
+      <BaseModal title={props.title} closeModal={props.closeModal}>
         <div className='p-2 max-h-[75vh] overflow-y-auto'>
           <BaseInput
             type='text'

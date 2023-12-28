@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-function DropdownItem({ icon, name }) {
+function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseOver = () => {
@@ -19,7 +19,7 @@ function DropdownItem({ icon, name }) {
 
   return (
     <>
-      <div className='flex relative items-center'>
+      <div className='flex relative items-center' onClick={onClick}>
         <div
           className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-10 relative'
           onMouseOver={handleMouseOver}
