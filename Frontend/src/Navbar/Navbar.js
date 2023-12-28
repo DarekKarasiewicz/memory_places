@@ -6,6 +6,7 @@ import SearchBar from './SearchBar/SearchBar';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
 import MapFilter from './MapFilters/Mapfilter';
+import UserMenu from './UserMenu/UserMenu';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
@@ -18,6 +19,28 @@ function Navbar() {
   const handleLoginModalOpen = () => {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
   };
+  const dropdownItems = ['map', 'forum', 'forum'];
+
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const childItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <>
       <nav className='relative flex justify-between p-3'>
@@ -35,11 +58,11 @@ function Navbar() {
               ></img>
             </motion.div>
             {isActive && (
-              <motion.div
-                exit={{ opacity: 0 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <motion.ul
                 className='flex flex-col gap-2 mt-2 absolute'
+                variants={parentItem}
+                initial='hidden'
+                animate='visible'
               >
                 <Link to='/'>
                   <DropdownItem icon='map_icon' name='Main page'></DropdownItem>
@@ -52,12 +75,20 @@ function Navbar() {
                   name='Login'
                   onClick={handleLoginModalOpen}
                 ></DropdownItem>
-              </motion.div>
+                {dropdownItems.map((value, index) => (
+                  <motion.li key={index} className='childItem' variants={childItem}>
+                    <Link to={`/${value}`}>
+                      <DropdownItem icon={`${value}_icon`} name={`${value}`}></DropdownItem>
+                    </Link>
+                  </motion.li>
+                ))}
+              </motion.ul>
             )}
           </div>
           <SearchBar />
         </div>
-        <div>
+        <div className='flex gap-3'>
+          <UserMenu />
           <MapFilter />
         </div>
       </nav>

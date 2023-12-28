@@ -35,7 +35,7 @@ function DropdownItem({ icon, name,onClick }) {
             transition={{ duration: 0.5 }}
             className='h-12 w-32 absolute left-6 bg-slate-300 pointer-events-none z-0 pr-2 flex justify-end items-center border-2 border-black rounded-r-lg leading-4'
           >
-            <span className='ml-6'>{name ? name : 'Not given name'}</span>
+            <span className='ml-6 capitalize'>{name ? name : 'Not given name'}</span>
           </motion.div>
         )}
       </div>
