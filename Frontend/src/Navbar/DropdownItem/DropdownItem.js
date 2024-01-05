@@ -33,7 +33,7 @@ function DropdownItem({ icon, name,onClick }) {
             animate='visible'
             variants={variantsToFade}
             transition={{ duration: 0.5 }}
-            className='h-12 w-32 absolute left-6 bg-slate-300 pointer-events-none z-0 pr-2 flex justify-end items-center border-2 border-black rounded-r-lg leading-4'
+            className='h-12 w-24 absolute left-6 bg-slate-300 pointer-events-none z-0 pr-2 flex justify-end items-center border-2 border-black rounded-r-lg leading-4'
           >
             <span className='ml-6 capitalize'>{name ? name : 'Not given name'}</span>
           </motion.div>
