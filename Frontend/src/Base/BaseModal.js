@@ -13,7 +13,9 @@ function BaseModal(props) {
           >
             <img src='./assets/cancel_icon.svg' alt='cancel_icon' className='h-8 w-8'></img>
           </motion.div>
-          <div className='text-center border-b-2 border-black pb-2 text-xl'>{props.title}</div>
+          {props.title && (
+            <div className='text-center border-b-2 border-black pb-2 text-xl'>{props.title}</div>
+          )}
           {props.children}
         </div>
       </div>

@@ -11,17 +11,18 @@ const UserMenuOption = (props) => {
   return (
     <>
       <motion.div
-        whileHover={{ backgroundColor: isHovered ? '#FF0000' : '#00FF00' }}
+        whileHover={{ scale: 1.1, color: 'red' }}
         onHoverStart={handleHover}
         onHoverEnd={handleHover}
         className='w-full h-12 cursor-pointer flex gap-2 items-center pl-2'
+        onClick={props.onClick ? props.onClick : undefined}
       >
         <img
           src={`./assets/${props.icon}_icon.svg`}
           alt={`${props.icon}`}
           className='h-8 w-8'
         ></img>
-        <div className='capitalize'>{props.icon}</div>
+        <div className='capitalize leading-5'>{props.name}</div>
       </motion.div>
     </>
   );

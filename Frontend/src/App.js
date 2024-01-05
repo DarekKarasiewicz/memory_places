@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from './Redux/modalsSlice';
 import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
+import UserMenuSettings from './Modals/UserMenuSettingsModal';
 
 function App(props) {
   const dispatch = useDispatch();
@@ -21,6 +22,10 @@ function App(props) {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
   };
 
+  const handleUserSettingsVisability = () => {
+    dispatch(modalsActions.changeIsUserSettingsOpen());
+  };
+
   return (
     <div className='w-screen h-screen relative'>
       <GoogleMap />
@@ -31,6 +36,9 @@ function App(props) {
       )}
       {modalData.isLoginAndRegisterOpen && (
         <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
+      )}
+      {modalData.isUserSettingsOpen && (
+        <UserMenuSettings closeModal={handleUserSettingsVisability} />
       )}
     </div>
   );
