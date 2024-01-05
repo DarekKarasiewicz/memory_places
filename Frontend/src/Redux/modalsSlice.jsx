@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isFormModalOpen: false,
   isLoginAndRegisterOpen: false,
+  isUserSettingsOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -14,6 +15,9 @@ export const modalsSlice = createSlice({
     },
     changeIsLoginAndRegisterOpen: (state) => {
       state.isLoginAndRegisterOpen = !state.isLoginAndRegisterOpen;
+    },
+    changeIsUserSettingsOpen: (state) => {
+      state.isUserSettingsOpen = !state.isUserSettingsOpen;
     },
   },
 });
