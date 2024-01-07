@@ -1,9 +1,25 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import Places_serailizer
-from .models import Place 
+from .serializers import Places_serailizer, User_serializer
+from .models import Place, User
 from rest_framework.response import Response
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['username'] = user.username
+        token['admin'] = user.admin
+        token['master'] = user.master
+        token['email'] = user.email
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class=MyTokenObtainPairSerializer
 
 class Place_view(viewsets.ModelViewSet):
     serializer_class = Places_serailizer 
@@ -17,4 +33,9 @@ class Place_view(viewsets.ModelViewSet):
         serailizer= Places_serailizer(place, many=False)
         return Response(serailizer.data)
 
-# Create your views here.
+class User_view(viewsets.ModelViewSet):
+    serializer_class =User_serializer
+    http_method_names = ['post']
+
+    def get_queryset(self):
+        return User.objects.none()

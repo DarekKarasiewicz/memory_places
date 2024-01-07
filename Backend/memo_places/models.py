@@ -75,6 +75,12 @@ class User(AbstractBaseUser):
       def get_username(self) -> str:
             return super().get_username()
 
+      def has_perm(self, perm, obj=None):
+            return True
+      
+      def has_module_perms(slef, app_label):
+            return True
+
       @property
       def is_master(self):
             return self.master
