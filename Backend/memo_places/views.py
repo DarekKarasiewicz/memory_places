@@ -5,6 +5,7 @@ from .models import Place, User
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+import re
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -26,10 +27,20 @@ class Place_view(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return Place.objects.all()
-    
+ 
     def retrieve(self, request, *args, **kwargs):
-        place = get_object_or_404(Place, id=kwargs['pk'])
-        serializer = Places_serailizer(place, many=False)
+        key, value = re.match("(\w+)=(\d+)", kwargs['pk']).groups()
+        match key:
+            case "pk":
+                place = get_object_or_404(Place, id=value)
+                serializer = Places_serailizer(place, many=False)
+            case "user":
+                places = Place.objects.filter(user=value)
+                serializer = Places_serailizer(places, many=True)
+                return Response(serializer.data)  
+            case _:
+                place = None
+                return Response({'detail': 'Invalid key'})
         return Response(serializer.data)
 
 class User_view(viewsets.ModelViewSet):
