@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from .serializers import Places_serailizer, User_serializer
 from .models import Place, User
@@ -28,10 +28,9 @@ class Place_view(viewsets.ModelViewSet):
         return Place.objects.all()
     
     def retrieve(self, request, *args, **kwargs):
-        parms = kwargs
-        place = Place.objects.filter(id=parms['pk'])
-        serailizer= Places_serailizer(place, many=False)
-        return Response(serailizer.data)
+        place = get_object_or_404(Place, id=kwargs['pk'])
+        serializer = Places_serailizer(place, many=False)
+        return Response(serializer.data)
 
 class User_view(viewsets.ModelViewSet):
     serializer_class =User_serializer
