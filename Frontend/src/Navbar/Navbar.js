@@ -18,10 +18,10 @@ function Navbar() {
     setIsActive((current) => !current);
   };
 
-  const handleLoginModalOpen = () => {
-    dispatch(modalsActions.changeIsLoginAndRegisterOpen());
-  };
-  const dropdownItems = ['map', 'forum', 'forum'];
+  const dropdownItems = [
+    { link: '/', icon: 'map_icon', name: 'Main page' },
+    { link: '/forum', icon: 'forum_icon', name: 'Forum' },
+  ];
 
   const parentItem = {
     hidden: { opacity: 1, scale: 0 },
@@ -70,21 +70,10 @@ function Navbar() {
                 initial='hidden'
                 animate='visible'
               >
-                <Link to='/'>
-                  <DropdownItem icon='map_icon' name='Main page'></DropdownItem>
-                </Link>
-                <Link to='/forum'>
-                  <DropdownItem icon='forum_icon' name='Forum'></DropdownItem>
-                </Link>
-                <DropdownItem
-                  icon='forum_icon'
-                  name='Login'
-                  onClick={handleLoginModalOpen}
-                ></DropdownItem>
-                {dropdownItems.map((value, index) => (
+                {dropdownItems.map((item, index) => (
                   <motion.li key={index} className='childItem' variants={childItem}>
-                    <Link to={`/${value}`}>
-                      <DropdownItem icon={`${value}_icon`} name={`${value}`}></DropdownItem>
+                    <Link to={`/${item.link}`}>
+                      <DropdownItem icon={`${item.icon}`} name={`${item.name}`}></DropdownItem>
                     </Link>
                   </motion.li>
                 ))}
