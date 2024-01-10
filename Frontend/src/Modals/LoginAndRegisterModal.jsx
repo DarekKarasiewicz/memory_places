@@ -5,7 +5,6 @@ import BaseButton from '../Base/BaseButton';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
-import { jwtDecode } from 'jwt-decode';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState('Sign In');
@@ -56,9 +55,10 @@ const LoginAndRegisterModal = (props) => {
             password: `${user.password}`,
           })
           .then(function (data) {
-            const decoded = jwtDecode(data.data.access);
-            sessionStorage.setItem('user', decoded);
-            console.log(decoded);
+            localStorage.setItem('token', data.data.access);
+            localStorage.setItem('refreshToken', data.data.refresh);
+
+            location.reload();
           });
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       } else {

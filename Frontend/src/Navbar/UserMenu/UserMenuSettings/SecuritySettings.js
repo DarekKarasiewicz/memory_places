@@ -13,8 +13,15 @@ function SecuritySettings() {
     setIsValidPassword(passwordRegex.test(passwordRef.current.value));
   };
 
-  const handleBlurConfPassword = () => {
+  const handleBlurConfirmPassword = () => {
     setIsValidConfirmPassword(confirmPasswordRef.current.value === passwordRef.current.value);
+  };
+
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    // Before axios request should check if password is not the same as previous one
+    // HERE will be axios request to change data
+    console.log('account password changed!');
   };
 
   return (
@@ -42,13 +49,13 @@ function SecuritySettings() {
           name='confPassword'
           placeholder='Confirm Password'
           ref={confirmPasswordRef}
-          onBlur={handleBlurConfPassword}
+          onBlur={handleBlurConfirmPassword}
         />
         {isValidConfirmPassword === false && (
           <p className='text-red-500 text-xs'>Password must be similar</p>
         )}
         {isValidPassword && isValidConfirmPassword ? (
-          <BaseButton name='Zatwierdź' className='mt-2' />
+          <BaseButton name='Zatwierdź' className='mt-2' onClick={handleSumbit} />
         ) : (
           <BaseButton name='Zatwierdź' className='mt-2 cursor-not-allowed' disabled={true} />
         )}
