@@ -5,7 +5,7 @@ import BaseButton from '../Base/BaseButton';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState('Sign In');
@@ -50,15 +50,16 @@ const LoginAndRegisterModal = (props) => {
           email: emailRef.current.value,
           password: passwordRef.current.value,
         };
-        axios.post('http://localhost:8000/memo_places/token/', {
-          email: `${user.email}`,
-          password: `${user.password}`
-        })
-        .then(function (data) {
-          // console.log(data);
-          const decoded = jwtDecode(data.data.access);
-          console.log(decoded);
-        })
+        axios
+          .post('http://localhost:8000/memo_places/token/', {
+            email: `${user.email}`,
+            password: `${user.password}`,
+          })
+          .then(function (data) {
+            // console.log(data);
+            const decoded = jwtDecode(data.data.access);
+            console.log(decoded);
+          });
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       } else {
         alert('Check your Inputs, Something is wrong!');
@@ -72,7 +73,7 @@ const LoginAndRegisterModal = (props) => {
           /*Add fields after check link the same as this in axios.*/
         };
 
-        axios.post(`http://localhost:8000/memo_places/users/`, { newUser }) 
+        axios.post(`http://localhost:8000/memo_places/users/`, { newUser });
       } else {
         alert('Check your Inputs, Something is wrong!');
       }

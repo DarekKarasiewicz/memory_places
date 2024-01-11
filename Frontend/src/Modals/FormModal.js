@@ -54,23 +54,28 @@ function FormModal(props) {
 
   const handleConfirm = () => {
     const place = {
-      userId: null,
-      placeName: nameRef.current.value,
+      user: null,
+      place_name: nameRef.current.value,
       description: descriptionRef.current.value,
-      foundDate: dateRef.current.value,
+      found_date: dateRef.current.value,
       lat: latRef.current.value,
       lng: lngRef.current.value,
       sortof: sortofRef.current.value,
       type: typeRef.current.value,
       period: periodRef.current.value,
     };
-
     const isFormValid = formValidation();
 
     if (isFormValid) {
-      axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
-        dispatch(modalsActions.changeIsFormModalOpen());
-      });
+      axios
+        .post(`http://localhost:8000/memo_places/places/`, place, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(() => {
+          dispatch(modalsActions.changeIsFormModalOpen());
+        });
       console.log(place);
     } else {
       alert('All boxes need to be filled');

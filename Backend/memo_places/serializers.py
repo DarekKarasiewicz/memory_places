@@ -9,4 +9,4 @@ class User_serializer(serializers.ModelSerializer):
 class Places_serailizer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = ('id', 'place_name', 'description', 'creation_date', 'found_date','lng', 'lat','user')
+        fields = ('id', 'place_name', 'description', 'creation_date', 'found_date','lng', 'lat','user','sortof','type','period' )
