@@ -90,8 +90,13 @@ class User(AbstractBaseUser):
             return self.admin
 
       @property
+      def is_staff(self):
+            return self.admin,
+
+      @property
       def is_active(self):
             return self.active
+
 class Place(models.Model):
       user= models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
       place_name = models.CharField(max_length = 32, default=None)
