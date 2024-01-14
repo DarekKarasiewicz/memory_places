@@ -71,7 +71,7 @@ function FormModal(props) {
     if (isFormValid) {
       if (props.type === 'update') {
         axios
-          .put(`http://localhost:8000/memo_places/places/place&id=${updatePlaceData.place.id}`, {
+          .put(`http://localhost:8000/memo_places/places/place/id=${updatePlaceData.place.id}`, {
             place,
           })
           .then(() => {

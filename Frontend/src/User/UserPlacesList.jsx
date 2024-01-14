@@ -9,13 +9,13 @@ const UserPlacesList = () => {
   const user = sessionStorage.getItem('user');
   let userPlaces;
   useEffect(() => {
-    axios.get(`http://localhost:8000/memo_places/user=${user.id}`).then((data) => {
+    axios.get(`http://localhost:8000/memo_places/places/user=${user.id}`).then((data) => {
       userPlaces = data;
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/memo_places/user=${user.id}`).then((data) => {
+    axios.get(`http://localhost:8000/memo_places/places/user=${user.id}`).then((data) => {
       userPlaces = data;
     });
   }, [updatePlaceData]);
