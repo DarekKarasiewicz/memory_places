@@ -100,3 +100,6 @@ class Place(models.Model):
       found_date = models.DateField()
       lng= models.FloatField()
       lat=models.FloatField()
+      type=models.CharField(max_length=64)
+      sortof=models.CharField(max_length=64)
+      period=models.CharField(max_length=64)

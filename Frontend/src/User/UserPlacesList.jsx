@@ -4,34 +4,20 @@ import UserPlaceItem from './UserPlaceItem';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
-const userPlaces = {
-  1: {
-    id: 1,
-    title: 'test 1',
-  },
-  2: {
-    id: 2,
-    title: 'test 2',
-  },
-  3: {
-    id: 3,
-    title: 'test 3',
-  },
-  4: {
-    id: 4,
-    title: 'test 4',
-  },
-};
-
 const UserPlacesList = () => {
   const updatePlaceData = useSelector(selectUpdatePlace);
-  // Need to fix it when backend ready
+  const user = sessionStorage.getItem('user');
+  let userPlaces;
   useEffect(() => {
-    // axios.get(`http://localhost:8000/memo_places/places&id=${}`).then(() => {});
+    axios.get(`http://localhost:8000/memo_places/user=${user.id}`).then((data) => {
+      userPlaces = data;
+    });
   }, []);
 
   useEffect(() => {
-    // axios.get(`http://localhost:8000/memo_places/places&id=${}`).then(() => {});
+    axios.get(`http://localhost:8000/memo_places/user=${user.id}`).then((data) => {
+      userPlaces = data;
+    });
   }, [updatePlaceData]);
 
   const placesList = Object.keys(userPlaces).map((place, key) => (

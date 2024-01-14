@@ -58,6 +58,7 @@ const LoginAndRegisterModal = (props) => {
           .then(function (data) {
             const decoded = jwtDecode(data.data.access);
             sessionStorage.setItem('user', decoded);
+            console.log(decoded);
           });
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       } else {

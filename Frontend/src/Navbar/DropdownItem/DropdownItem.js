@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-function DropdownItem({ icon, name,onClick }) {
+function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseOver = () => {

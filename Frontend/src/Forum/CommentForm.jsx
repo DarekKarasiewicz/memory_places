@@ -7,9 +7,15 @@ function CommentForm(props) {
 
   const handleSubmit = () => {
     const item = { content: content, author: 1, post: postID };
-    axios.post('http://127.0.0.1:8000/memo_places_forum/comments/', item).catch((error) => {
-      console.log('Error with:', error);
-    });
+    axios
+      .post('http://127.0.0.1:8000/memo_places_forum/comments/', item, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .catch((error) => {
+        console.log('Error with:', error);
+      });
     console.log(`${content} ${postID}`);
   };
 
