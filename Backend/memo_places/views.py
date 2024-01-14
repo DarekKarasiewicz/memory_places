@@ -42,7 +42,33 @@ class Place_view(viewsets.ModelViewSet):
                 place = None
                 return Response({'detail': 'Invalid key'})
         return Response(serializer.data)
+   
+    def update(self, request, *args, **kwargs):
+        place_object = Place.objects.get(id=kwargs['pk'])
 
+        data = request.data
+
+        place_object.user = data["user"]
+        place_object.place_name = data["place_name"]
+        place_object.description = data["description"]
+        place_object.found_date = data["found_date"]
+        place_object.lat = data["lat"]
+        place_object.lng = data["lng"]
+        place_object.type = data["type"]
+        place_object.sortof = data["sortof"]
+        place_object.period = data["period"]
+
+        place_object.save()
+
+        serializer = Places_serailizer(place_object)
+        return Response(serializer.data)
+
+    def destroy(self, request,*args, **kwargs):
+        place_object = Place.objects.get(id=kwargs['pk'])
+
+        place_object.delete()
+        serializer = Places_serailizer(place_object)
+        return Response(serializer.data)
 class User_view(viewsets.ModelViewSet):
     serializer_class =User_serializer
     http_method_names = ['post']
