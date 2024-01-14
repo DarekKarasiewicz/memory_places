@@ -3,14 +3,16 @@ import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DropdownItem from './DropdownItem/DropdownItem';
 import SearchBar from './SearchBar/SearchBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
 import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
+import { selectUserPlaces } from '../Redux/userPlacesSlice';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
+  const userPlacesData = useSelector(selectUserPlaces);
 
   const handleClick = () => {
     setIsActive((current) => !current);
@@ -43,7 +45,11 @@ function Navbar() {
 
   return (
     <>
-      <nav className='relative flex justify-between p-3'>
+      <nav
+        className={`relative flex justify-between p-3 ${
+          userPlacesData.isOpen && 'w-2/3 float-right'
+        }`}
+      >
         <div className='flex gap-2 items-center'>
           <div>
             <motion.div

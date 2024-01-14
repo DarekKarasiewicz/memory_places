@@ -8,6 +8,7 @@ import BaseSelect from '../Base/BaseSelect';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions } from '../Redux/modalsSlice';
+import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -20,6 +21,7 @@ function FormModal(props) {
   const sortofRef = useRef();
   const typeRef = useRef();
   const periodRef = useRef();
+  const updatePlaceData = useSelector(selectUpdatePlace);
 
   const sortof_options = [
     { label: 'Wszystkie', value: 'all' },
@@ -68,10 +70,20 @@ function FormModal(props) {
     const isFormValid = formValidation();
 
     if (isFormValid) {
-      axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
-        dispatch(modalsActions.changeIsFormModalOpen());
-      });
-      console.log(place);
+      if (props.type === 'update') {
+        axios
+          .put(`http://localhost:8000/memo_places/places/place&id=${updatePlaceData.place.id}`, {
+            place,
+          })
+          .then(() => {
+            dispatch(modalsActions.changeIsUpdateModalOpen());
+          });
+      } else {
+        axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
+          dispatch(modalsActions.changeIsFormModalOpen());
+        });
+        console.log(place);
+      }
     } else {
       alert('All boxes need to be filled');
     }
@@ -115,6 +127,7 @@ function FormModal(props) {
             placeholder='Search...'
             name='nameInput'
             label='Name'
+            value={props.type === 'update' && updatePlaceData.place.name}
             ref={nameRef}
           />
           <BaseInput type='date' name='dateInput' label='Date' ref={dateRef} />
@@ -124,7 +137,7 @@ function FormModal(props) {
               placeholder='latitude'
               name='lat'
               label='latitude'
-              value={addPlaceLocation.lat}
+              value={props.type === 'update' ? updatePlaceData.place.lat : addPlaceLocation.lat}
               ref={latRef}
             />
             <BaseInput
@@ -132,7 +145,7 @@ function FormModal(props) {
               placeholder='longitude'
               name='lng'
               label='longitude'
-              value={addPlaceLocation.lng}
+              value={props.type === 'update' ? updatePlaceData.place.lng : addPlaceLocation.lng}
               ref={lngRef}
             />
           </div>
@@ -143,14 +156,16 @@ function FormModal(props) {
             <BaseSelect
               label='Rodzaj'
               name='Rodzaj'
-              value={addPlaceLocation.sortof}
+              value={
+                props.type === 'update' ? updatePlaceData.place.sortof : addPlaceLocation.sortof
+              }
               options={sortof_options}
               ref={sortofRef}
             />
             <BaseSelect
               label='Typ'
               name='Typ'
-              value={addPlaceLocation.type}
+              value={props.type === 'update' ? updatePlaceData.place.type : addPlaceLocation.type}
               options={type_options}
               ref={typeRef}
             />
@@ -158,7 +173,7 @@ function FormModal(props) {
           <BaseSelect
             label='Okres'
             name='Okres'
-            value={addPlaceLocation.period}
+            value={props.type === 'update' ? updatePlaceData.place.period : addPlaceLocation.period}
             options={period_options}
             ref={periodRef}
           />

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from '../../Redux/modalsSlice';
+import { userPlacesActions } from '../../Redux/userPlacesSlice';
 
 function UserMenu() {
   //In future get from session on storage current user
@@ -14,13 +15,17 @@ function UserMenu() {
     dispatch(modalsActions.changeIsUserSettingsOpen());
   };
 
+  const handleUserPlacesVisability = () => {
+    dispatch(userPlacesActions.changeIsOpen());
+  };
+
   const handleClick = () => {
     setIsActive((current) => !current);
   };
 
   const menuItems = [
     { icon: 'notification', name: 'notifications' },
-    { icon: 'pin', name: 'your memory places' },
+    { icon: 'pin', name: 'your memory places', func: handleUserPlacesVisability },
     { icon: 'settings', name: 'settings', func: handleUserSettingsVisability },
     { icon: 'help', name: 'help' },
     { icon: 'logout', name: 'logout' },

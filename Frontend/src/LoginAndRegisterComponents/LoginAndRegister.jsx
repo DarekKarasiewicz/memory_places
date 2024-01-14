@@ -46,6 +46,7 @@ const LoginAndRegister = ({
               Password must:
               <li>Be at least 8 characters long.</li>
               <li>Contains at least one digit.</li>
+              <li>Contains at least one special character.</li>
             </ul>
           )}
         </>

@@ -11,11 +11,13 @@ import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions } from '../Redux/modalsSlice';
+import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
+  const userPlacesData = useSelector(selectUserPlaces);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const isLoaded = useApiIsLoaded();
@@ -55,12 +57,16 @@ const GoogleMap = () => {
   }, [location]);
 
   const handleLocationMarker = (event) => {
-    dispatch(
-      addPlacelocationActions.changeLocation({
-        lat: event.detail.latLng.lat,
-        lng: event.detail.latLng.lng,
-      }),
-    );
+    if (userPlacesData.isOpen && !addPlaceLocation.isSelecting) {
+      dispatch(userPlacesActions.changeIsOpen());
+    } else {
+      dispatch(
+        addPlacelocationActions.changeLocation({
+          lat: event.detail.latLng.lat,
+          lng: event.detail.latLng.lng,
+        }),
+      );
+    }
   };
 
   const toggleInfoWindow = () => {
@@ -81,7 +87,11 @@ const GoogleMap = () => {
   }, [position]);
 
   return isLoaded && isPositionLoaded ? (
-    <div className='absolute bottom-0 left-0 w-screen h-screen'>
+    <div
+      className={`absolute bottom-0 h-screen transition-transform delay-150 ${
+        userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
+      }`}
+    >
       <Map
         center={position}
         zoom={15}

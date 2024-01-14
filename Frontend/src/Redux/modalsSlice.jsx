@@ -4,6 +4,7 @@ const initialState = {
   isFormModalOpen: false,
   isLoginAndRegisterOpen: false,
   isUserSettingsOpen: false,
+  isUpdateModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -18,6 +19,9 @@ export const modalsSlice = createSlice({
     },
     changeIsUserSettingsOpen: (state) => {
       state.isUserSettingsOpen = !state.isUserSettingsOpen;
+    },
+    changeIsUpdateModalOpen: (state) => {
+      state.isUpdateModalOpen = !state.isUpdateModalOpen;
     },
   },
 });
