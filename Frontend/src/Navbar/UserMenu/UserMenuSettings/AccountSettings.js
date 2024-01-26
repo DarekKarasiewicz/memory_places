@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { motion } from 'framer-motion';
 import BaseButton from '../../../Base/BaseButton';
 import BaseInput from '../../../Base/BaseInput';
@@ -7,9 +8,22 @@ function AccountSettings() {
   const [isValidName, setIsValidName] = useState(null);
   const [isValidSurname, setIsValidSurname] = useState(null);
   const [isValidEmail, setIsValidEmail] = useState(null);
+  const [userData, setUserData] = useState([]);
   const nameRef = useRef(null);
   const surnameRef = useRef(null);
   const emailRef = useRef(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      const decodedToken = jwtDecode(token);
+      setUserData(decodedToken);
+
+      if (nameRef.current) nameRef.current.value = decodedToken.username;
+      if (surnameRef.current) surnameRef.current.value = decodedToken.username;
+      if (emailRef.current) emailRef.current.value = decodedToken.email;
+    }
+  }, []);
 
   const handleBlurName = () => {
     const nameRegex = /^[A-Za-z]+$/;
@@ -24,6 +38,26 @@ function AccountSettings() {
   const handleBlurEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(emailRef.current.value));
+  };
+
+  const checkIsNotSameData = () => {
+    if (
+      userData.username === nameRef.current.value &&
+      userData.username === surnameRef.current.value &&
+      userData.email === emailRef.current.value
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    if (checkIsNotSameData() === false) {
+      // HERE will be axios request to change data
+      console.log('account data changed!');
+    }
   };
 
   return (
@@ -46,8 +80,8 @@ function AccountSettings() {
         </div>
 
         <div className='flex flex-col leading-5'>
-          <span className='text-lg'>name surname</span>
-          <span className='text-sm'>role</span>
+          <span className='text-lg'>{userData.username}</span>
+          <span className='text-sm uppercase'>{userData.admin ? 'admin' : 'user'}</span>
         </div>
       </div>
       <div className='border-black border-t-2 py-2 gap-2 flex flex-col items-center'>
@@ -79,7 +113,7 @@ function AccountSettings() {
         ></BaseInput>
         {isValidEmail === false && <p className='text-red-500 text-xs'>Email is incorrect!</p>}
         {isValidName || isValidSurname || isValidEmail ? (
-          <BaseButton name='Zatwierdź' className='mt-2' />
+          <BaseButton name='Zatwierdź' className='mt-2' onClick={handleSumbit} />
         ) : (
           <BaseButton name='Zatwierdź' className='mt-2 cursor-not-allowed' disabled={true} />
         )}
