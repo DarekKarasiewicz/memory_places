@@ -29,7 +29,7 @@ class Place_view(viewsets.ModelViewSet):
         return Place.objects.all()
  
     def retrieve(self, request, *args, **kwargs):
-        key, value = re.match("(\w+)=(\d+)", kwargs['pk']).groups()
+        key, value = re.match("(\w+)=(.+)", kwargs['pk']).groups()
         match key:
             case "pk":
                 place = get_object_or_404(Place, id=value)
@@ -83,11 +83,24 @@ class Place_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 class User_view(viewsets.ModelViewSet):
     serializer_class =User_serializer
-    # http_method_names = ['post','put','delete']
  
     def get_queryset(self):
-        return User.objects.all()
+        return User.objects.all() #change to .none() on production
 
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs['pk']).groups()
+        match key:
+            case 'pk':
+                user = get_object_or_404(User, id=value)
+                serializer = User_serializer(user, many=False)
+            case "email":
+                value = str(value).replace("&",".")
+                user = get_object_or_404(User, email=value)
+                serializer = User_serializer(user)
+            case _:
+                user = None
+                return Response({'detail': 'Invalid request'})
+        return Response(serializer.data)
     def update(self, request, *args, **kwargs):
         # user_object = User.objects.get(id=kwargs['pk'])
         try:
@@ -103,9 +116,6 @@ class User_view(viewsets.ModelViewSet):
         else:
             user_object.email = data["email"]
             user_object.username = data["username"]
-            user_object.full_name = data["full_name"]
-            user_object.phone = data["phone"]
-            user_object.fb_link = data["fb_link"]
 
         user_object.save()
 

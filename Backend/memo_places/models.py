@@ -2,44 +2,43 @@ from django.db import models
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+import secrets
+import string
+
 
 class UserManager(BaseUserManager):
       def create_user(self,
                       email,
                       password,
                       username,
-                      full_name=None,
-                      phone=None,
-                      fb_link=None,
                       admin=False,
+                      outside=False,
                       master=False,
                       ):
             if not email:
                   raise ValueError("User must have an email address")
-            if not password:
+            if not password and outside:
+                  alphabet = string.ascii_letters + string.digits + string.punctuation
+                  password = ''.join(secrets.choice(alphabet) for _ in range(48))   # 48 should be sufficient to meke strong password! 
+            elif not password:
                   raise ValueError("User must have password") 
             user_obj= self.model(
                   email=self.normalize_email(email)
             ) 
             user_obj.set_password(password)
             user_obj.username       = username
-            user_obj.full_name      = full_name
-            user_obj.phone          = phone
-            user_obj.fb_link        = fb_link
             user_obj.admin          = admin
             user_obj.master         = master
+            user_obj.outside        = outside
 
             user_obj.save(using=self._db)
             return user_obj
       
-      def create_superuser(self,email,password,username,phone,full_name):
+      def create_superuser(self,email,password,username):
             user = self.create_user(
                   email,
                   password=password,
                   username=username,
-                  phone=phone,
-                  full_name=full_name,
-                  fb_link='',
                   master=False,
                   admin=True
             )
@@ -51,9 +50,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
       email       = models.EmailField(max_length=255, unique=True)
       username    = models.CharField(max_length=64)
-      full_name   = models.CharField(max_length=255)
-      phone       = models.CharField(max_length=13)
-      fb_link     = models.CharField(max_length=240,default=None)
+      outside     = models.BooleanField(default=False) # I consider to use charfield to know from where we had user but did we need it?
       master      = models.BooleanField(default=False) #maser_user
       admin       = models.BooleanField(default=False) #superuser
       active      = models.BooleanField(default=True) 
@@ -62,16 +59,16 @@ class User(AbstractBaseUser):
 
       USERNAME_FIELD = 'email'
       #USERNAME_FIELD and password are required by default
-      REQUIRED_FIELDS = ['username', 'phone','full_name']
+      REQUIRED_FIELDS = ['username']
       
       objects=UserManager()
 
       def __str__(self):
             return self.email
-      
-      def get_full_name(self):
-            return self.full_name
-      
+
+      def get_id(self):
+            return self.pk
+
       def get_username(self) -> str:
             return super().get_username()
 
@@ -80,6 +77,9 @@ class User(AbstractBaseUser):
       
       def has_module_perms(slef, app_label):
             return True
+      
+      def is_outsider(self):
+            return self.outside
 
       @property
       def is_master(self):
