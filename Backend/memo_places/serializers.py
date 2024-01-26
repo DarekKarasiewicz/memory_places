@@ -5,7 +5,7 @@ from .models import Place, User
 class User_serializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields=('username', 'email', 'phone', 'full_name','fb_link',)
+        fields=('id','username', 'email',)
 class Places_serailizer(serializers.ModelSerializer):
     class Meta:
         model = Place
