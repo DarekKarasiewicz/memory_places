@@ -8,6 +8,8 @@ import App from './App';
 import ForumMain from './Forum/ForumMain.js';
 import './index.css';
 import SubForum from './Forum/SubForum.jsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { CookiesProvider } from 'react-cookie';
 
 export default function AppUrls() {
   return (
@@ -21,13 +23,18 @@ export default function AppUrls() {
   );
 }
 const googleApiKey = process.env.REACT_APP_API_KEY;
+const googleOauthKey = process.env.REACT_APP_GOOGLE_OAUTH_KEY;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <APIProvider apiKey={googleApiKey} libraries={['places']}>
-        <AppUrls />
-      </APIProvider>
-    </Provider>
+    <GoogleOAuthProvider clientId={googleOauthKey}>
+      <CookiesProvider defaultSetOptions={{ path: '/' }}>
+        <Provider store={store}>
+          <APIProvider apiKey={googleApiKey} libraries={['places']}>
+            <AppUrls />
+          </APIProvider>
+        </Provider>
+      </CookiesProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>,
 );

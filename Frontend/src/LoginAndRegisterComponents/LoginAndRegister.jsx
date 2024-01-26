@@ -6,14 +6,21 @@ const LoginAndRegister = ({
   emailRef,
   passwordRef,
   confPasswordRef,
+  usernameRef,
   isValidEmail,
   isValidPassword,
   isValidConfPassword,
+  isValidUsername,
   handleBlurEmail,
   handleBlurPassword,
   handleBlurConfPassword,
+  handleBlurUsername,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  const responseFacebook = (response) => {
+    console.log(response);
+  };
 
   const handlePasswordVisability = () => {
     setIsVisible(!isVisible);
@@ -26,7 +33,7 @@ const LoginAndRegister = ({
             type='text'
             label='Email'
             name='email'
-            placeholder='Your Email'
+            placeholder='Example@email.com'
             ref={emailRef}
             className={isValidEmail === false && 'bg-red-300'}
             onBlur={handleBlurEmail}
@@ -54,9 +61,20 @@ const LoginAndRegister = ({
         <>
           <BaseInput
             type='text'
+            label='Username'
+            name='username'
+            ref={usernameRef}
+            onBlur={handleBlurUsername}
+            className={isValidUsername === false && 'bg-red-300'}
+          />
+          {isValidUsername === false && (
+            <p className='text-red-500 text-xs'>This field can&apos;t be empty!</p>
+          )}
+          <BaseInput
+            type='text'
             label='Email'
             name='email'
-            placeholder='Your Email'
+            placeholder='Example@email.com'
             ref={emailRef}
             onBlur={handleBlurEmail}
             className={isValidEmail === false && 'bg-red-300'}
@@ -76,6 +94,7 @@ const LoginAndRegister = ({
               Password must:
               <li>Be at least 8 characters long.</li>
               <li>Contains at least one digit.</li>
+              <li>Contains at least one special character.</li>
             </ul>
           )}
           <BaseInput

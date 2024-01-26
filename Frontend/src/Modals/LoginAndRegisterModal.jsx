@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
 import { jwtDecode } from 'jwt-decode';
+import { GoogleLogin } from '@react-oauth/google';
+import { useCookies } from 'react-cookie';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState('Sign In');
@@ -13,10 +15,13 @@ const LoginAndRegisterModal = (props) => {
   const [isValidEmail, setIsValidEmail] = useState(null);
   const [isValidPassword, setIsValidPassword] = useState(null);
   const [isValidConfPassword, setIsValidConfPassword] = useState(null);
+  const [isUsernameValid, setIsUsernameValid] = useState(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confPasswordRef = useRef(null);
+  const usernameRef = useRef(null);
   const dispatch = useDispatch();
+  const [cookies, setCookie] = useCookies(['user']);
 
   const handleIsLogging = () => {
     setIsLogging(!isLogging);
@@ -41,13 +46,17 @@ const LoginAndRegisterModal = (props) => {
     setIsValidConfPassword(confPasswordRef.current.value === passwordRef.current.value);
   };
 
+  const handleBlurUsername = () => {
+    setIsUsernameValid(usernameRef.current.value.length > 0);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (isLogging) {
       if (isValidEmail && isValidPassword) {
         const user = {
-          email: emailRef.current.value,
+          email: emailRef.current.value.toLowerCase(),
           password: passwordRef.current.value,
         };
         axios
@@ -55,9 +64,9 @@ const LoginAndRegisterModal = (props) => {
             email: `${user.email}`,
             password: `${user.password}`,
           })
-          .then(function (data) {
-            const decoded = jwtDecode(data.data.access);
-            sessionStorage.setItem('user', decoded);
+          .then((response) => {
+            const decoded = jwtDecode(response.data.access);
+            setCookie('user', decoded);
             console.log(decoded);
           });
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
@@ -67,13 +76,20 @@ const LoginAndRegisterModal = (props) => {
     } else {
       if (isValidEmail && isValidPassword && isValidConfPassword) {
         const newUser = {
-          email: emailRef.current.value,
+          email: emailRef.current.value.toLowerCase(),
           password: passwordRef.current.value,
-          /*There must be more stuff like phone fb_link etc.*/
-          /*Add fields after check link the same as this in axios.*/
+          username: usernameRef.current.value,
         };
 
-        axios.post(`http://localhost:8000/memo_places/users/`, { newUser });
+        axios
+          .post(`http://localhost:8000/memo_places/users/`, newUser, {
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then((response) => {
+            //Co tu jest zwracane?
+            alert('You need to verify your account to Sing in!');
+            setIsLogging(true);
+          });
       } else {
         alert('Check your Inputs, Something is wrong!');
       }
@@ -88,12 +104,27 @@ const LoginAndRegisterModal = (props) => {
           emailRef={emailRef}
           passwordRef={passwordRef}
           confPasswordRef={confPasswordRef}
+          usernameRef={usernameRef}
           isValidEmail={isValidEmail}
           isValidPassword={isValidPassword}
           isValidConfPassword={isValidConfPassword}
+          isValidUsername={isUsernameValid}
           handleBlurEmail={handleBlurEmail}
           handleBlurPassword={handleBlurPassword}
           handleBlurConfPassword={handleBlurConfPassword}
+          handleBlurUsername={handleBlurUsername}
+        />
+        <div>-------- or use --------</div>
+        <GoogleLogin
+          shape='pill'
+          onSuccess={(credentialResponse) => {
+            const decoded = jwtDecode(credentialResponse.credential);
+            setCookie('user', decoded);
+            console.log(decoded);
+          }}
+          onError={() => {
+            alert('Login Failed');
+          }}
         />
         <BaseButton
           type='submit'
