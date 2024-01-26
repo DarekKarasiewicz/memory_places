@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from '../../Redux/modalsSlice';
 import { userPlacesActions } from '../../Redux/userPlacesSlice';
 
 function UserMenu() {
-  //In future get from session on storage current user
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [userData, setUserData] = useState([]);
   const dispatch = useDispatch();
 
   const handleUserSettingsVisability = () => {
@@ -17,6 +17,11 @@ function UserMenu() {
 
   const handleUserPlacesVisability = () => {
     dispatch(userPlacesActions.changeIsOpen());
+  }
+  
+  const handleLoginModalOpen = () => {
+    dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+    handleClick();
   };
 
   const handleClick = () => {
@@ -30,6 +35,15 @@ function UserMenu() {
     { icon: 'help', name: 'help' },
     { icon: 'logout', name: 'logout' },
   ];
+
+  useEffect(() => {
+    setIsLogged(localStorage.getItem('token') ? true : false);
+
+    if (localStorage.getItem('token') !== null) {
+      setIsLogged(true);
+      setUserData(jwtDecode(localStorage.getItem('token')));
+    }
+  }, []);
 
   const parentItem = {
     hidden: { opacity: 1, scale: 0 },
@@ -65,29 +79,40 @@ function UserMenu() {
             className='h-8 w-8'
           ></img>
         </motion.div>
-        {isActive && (
-          <motion.ul
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4'
-            variants={parentItem}
-            initial='hidden'
-            animate='visible'
-          >
-            <li className='capitalize text-xl'>Username here!</li>
-            <li className='uppercase text-sm'>admin</li>
+        {isActive &&
+          (isLogged ? (
+            <motion.ul
+              className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4'
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
+            >
+              <li className='capitalize text-xl'>{userData.username}</li>
+              <li className='uppercase text-sm'>{userData.admin ? 'admin' : 'user'}</li>
 
-            {menuItems.map((item, index) => (
-              <motion.li key={index} className='childItem' variants={childItem}>
-                {index === menuItems.length - 1 && <hr className='mb-2' />}
-                <UserMenuOption
-                  index={index}
-                  icon={item.icon}
-                  name={item.name}
-                  onClick={item.func}
-                />
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
+              {menuItems.map((item, index) => (
+                <motion.li key={index} className='childItem' variants={childItem}>
+                  {index === menuItems.length - 1 && <hr className='mb-2' />}
+                  <UserMenuOption
+                    index={index}
+                    icon={item.icon}
+                    name={item.name}
+                    onClick={item.func}
+                  />
+                </motion.li>
+              ))}
+            </motion.ul>
+          ) : (
+            <motion.div
+              className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4 justify-center items-center'
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
+            >
+              <span className='text-center'>For full app experience you need to log in!</span>
+              <BaseButton name='Log In' onClick={handleLoginModalOpen} />
+            </motion.div>
+          ))}
       </div>
     </>
   );

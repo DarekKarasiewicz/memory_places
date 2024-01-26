@@ -8,10 +8,11 @@ import { modalsActions, selectModals } from './Redux/modalsSlice';
 import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
+import NotificationModal from './Modals/NotificationModal';
 import UserMenu from './User/UserMenu';
 import { selectUserPlaces } from './Redux/userPlacesSlice';
 
-function App(props) {
+function App() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectModals);
   const addPlaceData = useSelector(selectAddPlaceLocation);
@@ -29,8 +30,8 @@ function App(props) {
     dispatch(modalsActions.changeIsUserSettingsOpen());
   };
 
-  const handleUpdateModalVisability = () => {
-    dispatch(modalsActions.changeIsUpdateModalOpen());
+  const handleNotificationModalVisability = () => {
+    dispatch(modalsActions.changeIsNotificationModalOpen());
   };
 
   return (
@@ -48,11 +49,13 @@ function App(props) {
       {modalData.isUserSettingsOpen && (
         <UserMenuSettings closeModal={handleUserSettingsVisability} />
       )}
-      {modalData.isUpdateModalOpen && (
-        <FormModal
-          title='Update your place'
-          type='update'
-          closeModal={handleUpdateModalVisability}
+
+      {modalData.isNotificationModalOpen && (
+        <NotificationModal
+          title='This is warning message!'
+          info='Are you sure you want to see this? There is no coming back!'
+          type='warning'
+          closeModal={handleNotificationModalVisability}
         />
       )}
     </div>
