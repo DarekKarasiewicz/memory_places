@@ -5,6 +5,7 @@ const initialState = {
   isLoginAndRegisterOpen: false,
   isUserSettingsOpen: false,
   isUpdateModalOpen: false,
+  isNotificationModalOpen: true,
 };
 
 export const modalsSlice = createSlice({
@@ -22,6 +23,9 @@ export const modalsSlice = createSlice({
     },
     changeIsUpdateModalOpen: (state) => {
       state.isUpdateModalOpen = !state.isUpdateModalOpen;
+    },
+    changeIsNotificationModalOpen: (state) => {
+      state.isNotificationModalOpen = !state.isNotificationModalOpen;
     },
   },
 });
