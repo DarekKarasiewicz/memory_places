@@ -9,6 +9,8 @@ import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
 import NotificationModal from './Modals/NotificationModal';
+import UserMenu from './User/UserMenu';
+import { selectUserPlaces } from './Redux/userPlacesSlice';
 
 function App() {
   const dispatch = useDispatch();
