@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
+import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ const GoogleMap = () => {
   const position = useMemo(() => ({ lat: latitude, lng: longitude }), [latitude, longitude]);
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infowindowShown, setInfowindowShown] = useState(false);
+  const [placeInfoBoxVisibility, setPlaceInfoBoxVisibility] = useState(false);
+  const [currentPlace, setCurrentPlace] = useState([]);
+  const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -56,6 +60,15 @@ const GoogleMap = () => {
     setLongitude(location.lng);
   }, [location]);
 
+  useEffect(() => {
+    const fetchDataAndFilter = async () => {
+      await dispatch(fetchMapPlaces());
+      dispatch(filterPlaces({ sortof: 'all', type: 'all', period: 'all' }));
+    };
+
+    fetchDataAndFilter();
+  }, [dispatch]);
+
   const handleLocationMarker = (event) => {
     if (userPlacesData.isOpen && !addPlaceLocation.isSelecting) {
       dispatch(userPlacesActions.changeIsOpen());
@@ -74,6 +87,13 @@ const GoogleMap = () => {
   };
 
   const closeInfoWindow = () => setInfowindowShown(false);
+
+  const togglePlaceInfoBox = (place) => {
+    setCurrentPlace(place);
+    setPlaceInfoBoxVisibility((previousState) => !previousState);
+  };
+
+  const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
 
   const handleConfirm = () => {
     dispatch(modalsActions.changeIsFormModalOpen());
@@ -95,6 +115,7 @@ const GoogleMap = () => {
       <Map
         center={position}
         zoom={15}
+        minZoom={5}
         disableDefaultUI={true}
         clickableIcons={false}
         onClick={handleLocationMarker}
@@ -113,6 +134,62 @@ const GoogleMap = () => {
               </InfoWindow>
             )}
           </AdvancedMarker>
+        )}
+
+        {filterItems && filterItems.length > 0 ? (
+          filterItems.map((place) => (
+            <AdvancedMarker
+              key={place.id}
+              onClick={() => togglePlaceInfoBox(place)}
+              position={{ lat: place.lat, lng: place.lng }}
+            >
+              <Pin background={'#FF0000'} glyphColor={'#000'} borderColor={'#000'} />
+            </AdvancedMarker>
+          ))
+        ) : (
+          <p>No items available</p>
+        )}
+
+        {placeInfoBoxVisibility && (
+          <InfoWindow
+            position={{ lat: currentPlace.lat, lng: currentPlace.lng }}
+            onCloseClick={closePlaceInfoBox}
+            options={{ pixelOffset: { width: 0, height: -30 } }}
+          >
+            <div className='flex flex-col'>
+              <span className='text-center font-bold'>{currentPlace.place_name}</span>
+              <span>
+                <span className='italic font-medium'>Opis:</span> {currentPlace.description}
+              </span>
+              <span>
+                <span className='italic font-medium'>Utworzony:</span> {currentPlace.creation_date}
+              </span>
+              <span>
+                <span className='italic font-medium'>Odnaleziony:</span> {currentPlace.found_date}
+              </span>
+              <section className='flex gap-2'>
+                <span>
+                  <span className='italic font-medium'>Lng:</span> {currentPlace.lng}
+                </span>
+                <span>
+                  <span className='italic font-medium'>Lat:</span> {currentPlace.lat}
+                </span>
+              </section>
+              {/* TODO should be username */}
+              <span>
+                <span className='italic font-medium'>Odkrył:</span> {currentPlace.user}
+              </span>
+              <span>
+                <span className='italic font-medium'>Rodzaj:</span> {currentPlace.sortof}
+              </span>
+              <span>
+                <span className='italic font-medium'>Typ:</span> {currentPlace.type}
+              </span>
+              <span>
+                <span className='italic font-medium'>Okres:</span> {currentPlace.period}
+              </span>
+            </div>
+          </InfoWindow>
         )}
       </Map>
     </div>

@@ -1,26 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import BaseInput from '../../Base/BaseInput';
 import BaseSelect from '../../Base/BaseSelect';
+import BaseButton from '../../Base/BaseButton';
+import { useDispatch } from 'react-redux';
+import { filterPlaces } from '../../Redux/allMapPlacesSlice';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
-  const [selectedTypeOption, setSelectedTypeOption] = useState('');
+  const [selectedSortOfOption, setSelectedSortOfOption] = useState('all');
+  const [selectedTypeOption, setSelectedTypeOption] = useState('all');
+  const [selectedPeriodOption, setSelectedPeriodOption] = useState('all');
   const [textValue, setTextValue] = useState('');
+  // const dispatch = useDispatch();
 
   const handleClick = () => {
     setIsActive((current) => !current);
   };
 
-  const handleSelectTypeChange = (name, value) => {
-    setSelectedTypeOption(value);
+  const handleSelectSortOfChange = (event) => {
+    setSelectedSortOfOption(event.target.value);
   };
 
-  const handleTextValueChange = (name, value) => {
+  const handleSelectTypeChange = (event) => {
+    setSelectedTypeOption(event.target.value);
+  };
+
+  const handleSelectPeriodChange = (event) => {
+    setSelectedPeriodOption(event.target.value);
+  };
+
+  const handleTextValueChange = (value) => {
     setTextValue(value);
   };
 
+  const handleFilterChange = () => {
+    dispatch(
+      filterPlaces({
+        sortof: selectedSortOfOption,
+        type: selectedTypeOption,
+        period: selectedPeriodOption,
+      }),
+    );
+  };
+
   //For each options later will be added more 9 options from client
+  //TODO Change points value to match this ones
   const sortof_options = [
     { label: 'Wszystkie', value: 'all' },
     { label: 'Istniejące', value: 'existing' },
@@ -43,7 +68,7 @@ function MapFilter() {
 
   const period_options = [
     { label: 'Wszystkie', value: 'all' },
-    { label: 'Polska przed 3cim rozbiorem  (< 1795)', value: 'poland_before_third_partition' },
+    { label: 'Polska przed 3cim rozbiorem (< 1795)', value: 'poland_before_third_partition' },
     { label: 'Wojny Napoleońskie (1799 – 1815)', value: 'napoleonic_wars' },
     { label: 'Polska po rozbiorach (1795 – 1914)', value: 'poland_after_partitions' },
     { label: 'I Wojna Światowa (1914 – 1918)', value: 'world_war_I' },
@@ -77,19 +102,19 @@ function MapFilter() {
           <div className='flex flex-col gap-y-3 justify-start items-center'>
             <div className='text-2xl border-b-2 border-black p-2'>Filtry</div>
             <div className='flex flex-col gap-2'>
-              <BaseInput
+              {/* <BaseInput
                 type='text'
                 label='Nazwa'
                 name='Nazwa'
                 value={textValue}
                 onChange={handleTextValueChange}
-              />
+              /> */}
               <BaseSelect
                 label='Rodzaj'
                 name='Rodzaj'
-                value={selectedTypeOption}
+                value={selectedSortOfOption}
                 options={sortof_options}
-                onChange={handleSelectTypeChange}
+                onChange={handleSelectSortOfChange}
               />
               <BaseSelect
                 label='Typ'
@@ -101,11 +126,12 @@ function MapFilter() {
               <BaseSelect
                 label='Okres'
                 name='Okres'
-                value={selectedTypeOption}
+                value={selectedPeriodOption}
                 options={period_options}
-                onChange={handleSelectTypeChange}
+                onChange={handleSelectPeriodChange}
               />
             </div>
+            <BaseButton onClick={handleFilterChange} name='Filtruj' />
           </div>
         </motion.div>
       )}
