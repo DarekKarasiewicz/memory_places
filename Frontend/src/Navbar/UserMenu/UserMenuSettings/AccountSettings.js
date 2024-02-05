@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { motion } from 'framer-motion';
+import { useCookies } from 'react-cookie';
 import BaseButton from '../../../Base/BaseButton';
 import BaseInput from '../../../Base/BaseInput';
 
@@ -8,20 +8,18 @@ function AccountSettings() {
   const [isValidName, setIsValidName] = useState(null);
   const [isValidSurname, setIsValidSurname] = useState(null);
   const [isValidEmail, setIsValidEmail] = useState(null);
-  const [userData, setUserData] = useState([]);
+  const [cookies] = useCookies(['user']);
   const nameRef = useRef(null);
   const surnameRef = useRef(null);
   const emailRef = useRef(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token !== null) {
-      const decodedToken = jwtDecode(token);
-      setUserData(decodedToken);
+  const user = cookies.user;
 
-      if (nameRef.current) nameRef.current.value = decodedToken.username;
-      if (surnameRef.current) surnameRef.current.value = decodedToken.username;
-      if (emailRef.current) emailRef.current.value = decodedToken.email;
+  useEffect(() => {
+    if (user) {
+      if (nameRef.current) nameRef.current.value = user.username;
+      if (surnameRef.current) surnameRef.current.value = user.username;
+      if (emailRef.current) emailRef.current.value = user.email;
     }
   }, []);
 
@@ -42,9 +40,9 @@ function AccountSettings() {
 
   const checkIsNotSameData = () => {
     if (
-      userData.username === nameRef.current.value &&
-      userData.username === surnameRef.current.value &&
-      userData.email === emailRef.current.value
+      user.username === nameRef.current.value &&
+      user.username === surnameRef.current.value &&
+      user.email === emailRef.current.value
     ) {
       return true;
     } else {
@@ -55,7 +53,9 @@ function AccountSettings() {
   const handleSumbit = (e) => {
     e.preventDefault();
     if (checkIsNotSameData() === false) {
-      // HERE will be axios request to change data
+      {
+        /*TODO HERE will be axios request to change data */
+      }
       console.log('account data changed!');
     }
   };
@@ -70,7 +70,7 @@ function AccountSettings() {
             src='./assets/user_icon.svg'
             alt='user_square_icon'
           ></img>
-          {/* In future on click possibility to change user avatar */}
+          {/*TODO In future on click possibility to change user avatar */}
           <motion.img
             whileHover={{ backgroundColor: '#FF0000' }}
             className='absolute -bottom-2 -right-2 h-8 p-1 bg-slate-300 border-black border rounded-full cursor-pointer'
@@ -80,8 +80,8 @@ function AccountSettings() {
         </div>
 
         <div className='flex flex-col leading-5'>
-          <span className='text-lg'>{userData.username}</span>
-          <span className='text-sm uppercase'>{userData.admin ? 'admin' : 'user'}</span>
+          <span className='text-lg'>{user.username}</span>
+          <span className='text-sm uppercase'>{user.admin ? 'admin' : 'user'}</span>
         </div>
       </div>
       <div className='border-black border-t-2 py-2 gap-2 flex flex-col items-center'>

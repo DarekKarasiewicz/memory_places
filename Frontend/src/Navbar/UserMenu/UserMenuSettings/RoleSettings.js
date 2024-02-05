@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 
 function RoleSettings() {
   const [currentRole, setCurrentRole] = useState(null);
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token !== null) {
-      const decodedToken = jwtDecode(token);
-      setCurrentRole(decodedToken.admin ? 'admin' : 'user');
+    if (user) {
+      setCurrentRole(user.admin ? 'admin' : 'user');
     }
   }, []);
   return (
