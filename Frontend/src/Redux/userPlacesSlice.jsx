@@ -8,7 +8,7 @@ export const userPlacesSlice = createSlice({
   name: 'userPlaces',
   initialState,
   reducers: {
-    changeIsOpen: (state,) => {
+    changeIsOpen: (state) => {
       state.isOpen = !state.isOpen;
     },
   },
