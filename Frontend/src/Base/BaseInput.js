@@ -12,9 +12,10 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
           type={props.type}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
+          defaultValue={props.value}
           ref={ref}
           onBlur={props.onBlur}
-          onChange={props.onBlur}
+          onChange={props.onChange}
         ></input>
       </div>
     </>

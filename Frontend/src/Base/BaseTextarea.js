@@ -10,6 +10,8 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
         name={props.name}
         rows={props.rows}
         ref={ref}
+        defaultValue={props.value}
+        onBlur={props.onBlur}
       />
     </>
   );

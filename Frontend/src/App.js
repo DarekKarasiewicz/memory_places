@@ -9,8 +9,9 @@ import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
 import NotificationModal from './Modals/NotificationModal';
-import UserMenu from './User/UserMenu';
+import UserPlacesMenu from './User/UserPlacesMenu';
 import { selectUserPlaces } from './Redux/userPlacesSlice';
+import { addPlaceActions } from './Redux/addPlaceSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function App() {
   const userPlacesData = useSelector(selectUserPlaces);
 
   const handleFormModalVisability = () => {
+    dispatch(addPlaceActions.reset());
     dispatch(modalsActions.changeIsFormModalOpen());
   };
 
@@ -36,7 +38,7 @@ function App() {
 
   return (
     <div className='w-screen h-screen relative'>
-      {userPlacesData.isOpen && <UserMenu />}
+      {userPlacesData.isOpen && <UserPlacesMenu />}
       <GoogleMap />
       {!addPlaceData.isSelecting && <Navbar />}
       {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from 'react';
+import { useState, useEffect, useRef, Fragment, useMemo } from 'react';
 import axios from 'axios';
 import BaseModal from '../Base/BaseModal';
 import BaseInput from '../Base/BaseInput';
@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions } from '../Redux/modalsSlice';
 import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
+import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -22,6 +23,7 @@ function FormModal(props) {
   const typeRef = useRef();
   const periodRef = useRef();
   const updatePlaceData = useSelector(selectUpdatePlace);
+  const addPlaceData = useSelector(selectAddPlace);
 
   const sortof_options = [
     { label: 'Wszystkie', value: 'all' },
@@ -54,18 +56,34 @@ function FormModal(props) {
     { label: 'Okres Stalinowski (1945 – 1953)', value: 'stalinist_period' },
   ];
 
+  useEffect(() => {
+    if (props.type === 'update') {
+      dispatch(addPlaceActions.changeName(updatePlaceData.place.place_name));
+      dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
+      dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
+      dispatch(addPlaceActions.changeLat(updatePlaceData.place.lat));
+      dispatch(addPlaceActions.changeLng(updatePlaceData.place.lng));
+      dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
+      dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
+      dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
+    }
+  }, []);
+
   const handleConfirm = () => {
     const place = {
       user: null,
-      place_name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      found_date: dateRef.current.value,
-      lat: latRef.current.value,
-      lng: lngRef.current.value,
-      sortof: sortofRef.current.value,
-      type: typeRef.current.value,
-      period: periodRef.current.value,
+      place_name: addPlaceData.place_name,
+      description: addPlaceData.description,
+      found_date: addPlaceData.found_date,
+      lat: addPlaceData.lat,
+      lng: addPlaceData.lng,
+      sortof: addPlaceData.sortof,
+      type: addPlaceData.type,
+      period: addPlaceData.period,
     };
+
+    console.log(place);
+
     const isFormValid = formValidation();
 
     if (isFormValid) {
@@ -81,7 +99,6 @@ function FormModal(props) {
         axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
           dispatch(modalsActions.changeIsFormModalOpen());
         });
-        console.log(place);
       }
     } else {
       alert('All boxes need to be filled');
@@ -90,14 +107,14 @@ function FormModal(props) {
 
   const formValidation = () => {
     if (
-      nameRef.current.value.length > 0 &&
-      descriptionRef.current.value.length > 0 &&
-      dateRef.current.value.length > 0 &&
-      latRef.current.value.length > 0 &&
-      lngRef.current.value.length > 0 &&
-      sortofRef.current.value !== 'all' &&
-      typeRef.current.value !== 'all' &&
-      periodRef.current.value !== 'all'
+      addPlaceData.place_name > 0 &&
+      addPlaceData.description > 0 &&
+      addPlaceData.found_date > 0 &&
+      addPlaceData.lat > 0 &&
+      addPlaceData.lng > 0 &&
+      addPlaceData.sortof !== 'all' &&
+      addPlaceData.type !== 'all' &&
+      addPlaceData.period !== 'all'
     ) {
       return true;
     } else {
@@ -106,10 +123,8 @@ function FormModal(props) {
   };
 
   useEffect(() => {
-    if (latRef.current) {
-      latRef.current.value = addPlaceLocation.lat;
-      lngRef.current.value = addPlaceLocation.lng;
-    }
+    dispatch(addPlaceActions.changeLat(addPlaceLocation.lat));
+    dispatch(addPlaceActions.changeLng(addPlaceLocation.lng));
   }, [addPlaceLocation]);
 
   const handleSelectLocationBtn = () => {
@@ -123,29 +138,48 @@ function FormModal(props) {
         <div className='p-2 max-h-[75vh] overflow-y-auto'>
           <BaseInput
             type='text'
-            placeholder='Search...'
             name='nameInput'
             label='Name'
-            value={props.type === 'update' && updatePlaceData.place.name}
+            value={props.type === 'update' ? updatePlaceData.place.name : addPlaceData.place_name}
+            onBlur={() => {
+              dispatch(addPlaceActions.changeName(nameRef.current.value));
+            }}
             ref={nameRef}
           />
-          <BaseInput type='date' name='dateInput' label='Date' ref={dateRef} />
+          <BaseInput
+            type='date'
+            name='dateInput'
+            label='Date'
+            ref={dateRef}
+            value={
+              props.type === 'update' ? updatePlaceData.place.found_date : addPlaceData.found_date
+            }
+            onBlur={() => {
+              dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
+            }}
+          />
           <div className='flex gap-8'>
             <BaseInput
               type='number'
               placeholder='latitude'
               name='lat'
               label='latitude'
-              value={props.type === 'update' ? updatePlaceData.place.lat : addPlaceLocation.lat}
+              value={props.type === 'update' ? updatePlaceData.place.lat : addPlaceData.lat}
               ref={latRef}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeLat(latRef.current.value));
+              }}
             />
             <BaseInput
               type='number'
               placeholder='longitude'
               name='lng'
               label='longitude'
-              value={props.type === 'update' ? updatePlaceData.place.lng : addPlaceLocation.lng}
+              value={props.type === 'update' ? updatePlaceData.place.lng : addPlaceData.lng}
               ref={lngRef}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeLng(lngRef.current.value));
+              }}
             />
           </div>
           <div className='p-2 flex gap-4 justify-center'>
@@ -155,28 +189,45 @@ function FormModal(props) {
             <BaseSelect
               label='Rodzaj'
               name='Rodzaj'
-              value={
-                props.type === 'update' ? updatePlaceData.place.sortof : addPlaceLocation.sortof
-              }
+              value={props.type === 'update' ? updatePlaceData.place.sortof : addPlaceData.sortof}
               options={sortof_options}
               ref={sortofRef}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
+              }}
             />
             <BaseSelect
               label='Typ'
               name='Typ'
-              value={props.type === 'update' ? updatePlaceData.place.type : addPlaceLocation.type}
+              value={props.type === 'update' ? updatePlaceData.place.type : addPlaceData.type}
               options={type_options}
               ref={typeRef}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeType(typeRef.current.value));
+              }}
             />
           </div>
           <BaseSelect
             label='Okres'
             name='Okres'
-            value={props.type === 'update' ? updatePlaceData.place.period : addPlaceLocation.period}
+            value={props.type === 'update' ? updatePlaceData.place.period : addPlaceData.period}
             options={period_options}
             ref={periodRef}
+            onBlur={() => {
+              dispatch(addPlaceActions.changePeriod(periodRef.current.value));
+            }}
           />
-          <BaseTextarea rows='6' label='Description' ref={descriptionRef} />
+          <BaseTextarea
+            rows='6'
+            label='Description'
+            ref={descriptionRef}
+            value={
+              props.type === 'update' ? updatePlaceData.place.description : addPlaceData.description
+            }
+            onBlur={() => {
+              dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
+            }}
+          />
         </div>
         <div className='p-2 flex gap-4 justify-center'>
           <BaseButton type='submit' name='Confirm' onClick={handleConfirm}></BaseButton>

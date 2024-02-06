@@ -4,6 +4,8 @@ import UserMenuOption from './UserMenuOption/UserMenuOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from '../../Redux/modalsSlice';
 import { userPlacesActions } from '../../Redux/userPlacesSlice';
+import { jwtDecode } from 'jwt-decode';
+import BaseButton from '../../Base/BaseButton';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
@@ -17,8 +19,8 @@ function UserMenu() {
 
   const handleUserPlacesVisability = () => {
     dispatch(userPlacesActions.changeIsOpen());
-  }
-  
+  };
+
   const handleLoginModalOpen = () => {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
     handleClick();
