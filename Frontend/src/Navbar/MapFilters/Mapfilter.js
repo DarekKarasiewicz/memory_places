@@ -12,8 +12,7 @@ function MapFilter() {
   const [selectedTypeOption, setSelectedTypeOption] = useState('all');
   const [selectedPeriodOption, setSelectedPeriodOption] = useState('all');
   const [textValue, setTextValue] = useState('');
-  // const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
   const handleClick = () => {
     setIsActive((current) => !current);
   };
