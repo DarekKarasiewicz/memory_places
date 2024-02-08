@@ -118,7 +118,28 @@ const LoginAndRegisterModal = (props) => {
         <GoogleLogin
           shape='pill'
           onSuccess={(credentialResponse) => {
-            const decoded = jwtDecode(credentialResponse.credential);
+            let decoded = jwtDecode(credentialResponse.credential);
+            console.log(decoded.email.replace(/\./g,"%26"))
+            axios
+              .get(`http://localhost:8000/memo_places/users/email%3D${decoded.email.replace(/\./g,"&")}`,
+               {
+                headers: { 'Content-Type': 'application/json' },
+              }).then(response =>{ 
+                decoded = {...decoded,id: response.id}
+                setCookie('user', decoded);
+                console.log(decoded);
+              }
+              ).catch(error =>{
+                axios.post(`http://localhost:8000/memo_places/outside_users/`,{
+                  email:decoded.email,
+                  username:decoded.name
+                  },
+                  {headers: { 'Content-Type': 'application/json' },
+                }).then(response=>{
+                  decoded = {...decoded,id: response.id}
+                  setCookie('user', decoded);
+                })
+              })
             setCookie('user', decoded);
             console.log(decoded);
           }}
