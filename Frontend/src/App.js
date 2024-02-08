@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';

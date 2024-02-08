@@ -1,17 +1,18 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
-import { useDispatch, useSelector } from 'react-redux';
-import { modalsActions, selectModals } from '../../Redux/modalsSlice';
+import { useDispatch } from 'react-redux';
+import { modalsActions } from '../../Redux/modalsSlice';
 import { userPlacesActions } from '../../Redux/userPlacesSlice';
-import { jwtDecode } from 'jwt-decode';
 import BaseButton from '../../Base/BaseButton';
+import { useCookies } from 'react-cookie';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [userData, setUserData] = useState([]);
+  const [cookies] = useCookies(['user']);
   const dispatch = useDispatch();
+  const user = cookies.user;
 
   const handleUserSettingsVisability = () => {
     dispatch(modalsActions.changeIsUserSettingsOpen());
@@ -39,12 +40,7 @@ function UserMenu() {
   ];
 
   useEffect(() => {
-    setIsLogged(localStorage.getItem('token') ? true : false);
-
-    if (localStorage.getItem('token') !== null) {
-      setIsLogged(true);
-      setUserData(jwtDecode(localStorage.getItem('token')));
-    }
+    setIsLogged(user ? true : false);
   }, []);
 
   const parentItem = {
@@ -75,6 +71,7 @@ function UserMenu() {
           className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
           onClick={handleClick}
         >
+          {/*TODO when avatars will be implemented rewrite this code */}
           <img
             src={`./assets/${isLogged ? 'user_icon' : 'user_icon'}.svg`}
             alt={`${isLogged ? 'user_icon' : 'user_icon'}`}
@@ -89,8 +86,8 @@ function UserMenu() {
               initial='hidden'
               animate='visible'
             >
-              <li className='capitalize text-xl'>{userData.username}</li>
-              <li className='uppercase text-sm'>{userData.admin ? 'admin' : 'user'}</li>
+              <li className='capitalize text-xl'>{user.username}</li>
+              <li className='uppercase text-sm'>{user.admin ? 'admin' : 'user'}</li>
 
               {menuItems.map((item, index) => (
                 <motion.li key={index} className='childItem' variants={childItem}>

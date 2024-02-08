@@ -12,6 +12,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           ref={ref}
           defaultValue={props.value}
           onBlur={props.onBlur}
+          onChange={props.onChange}
         >
           {props.options.map((option) => (
             <option key={option.value} value={option.value}>
