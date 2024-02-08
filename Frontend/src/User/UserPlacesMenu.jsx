@@ -1,4 +1,6 @@
 import UserPlacesList from './UserPlacesList';
+import BaseButton from '../Base/BaseButton';
+import { jwtDecode } from 'jwt-decode';
 
 const UserMenu = () => {
   return (

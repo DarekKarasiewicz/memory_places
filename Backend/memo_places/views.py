@@ -5,7 +5,10 @@ from .models import Place, User
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
 import re
+import secrets
+import string
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -81,8 +84,34 @@ class Place_view(viewsets.ModelViewSet):
         place_object.delete()
         serializer = Places_serailizer(place_object)
         return Response(serializer.data)
+
+class Outside_user_view(viewsets.ModelViewSet):
+    serializer_class = User_serializer
+    http_method_names=["post"]
+
+    def create(self, request, *args, **kwargs):
+        user_data = request.data
+
+        alphabet = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(secrets.choice(alphabet) for _ in range(42))
+
+        new_user = User.objects.create_user(
+            email=user_data['email'],
+            username=user_data['username'],
+            password=password
+        )
+
+
+        # new_user.set_password(raw_password=password)
+        new_user.save()
+
+        serializer = User_serializer(new_user)
+
+        return Response(serializer.data)
+        
+
 class User_view(viewsets.ModelViewSet):
-    serializer_class =User_serializer
+    serializer_class = User_serializer
  
     def get_queryset(self):
         return User.objects.all() #change to .none() on production

@@ -5,8 +5,9 @@ from .models import Place, User
 class User_serializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields=('id','username', 'email',)
+        fields=('id', 'username', 'email',)
+
 class Places_serailizer(serializers.ModelSerializer):
     class Meta:
         model = Place
-        fields = ('id', 'place_name', 'description', 'creation_date', 'found_date','lng', 'lat','user','sortof','type','period' )
+        fields = ('id', 'place_name', 'description', 'creation_date', 'found_date','lng', 'lat','user','sortof','type','period',)

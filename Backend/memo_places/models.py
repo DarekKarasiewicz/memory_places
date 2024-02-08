@@ -56,6 +56,7 @@ class User(AbstractBaseUser):
       active      = models.BooleanField(default=True) 
       confirmed   = models.BooleanField(default=False)
       data_join   = models.DateField(auto_now_add=True) 
+      outside     = models.BooleanField(default=False)
 
       USERNAME_FIELD = 'email'
       #USERNAME_FIELD and password are required by default
