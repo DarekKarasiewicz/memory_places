@@ -118,44 +118,56 @@ const LoginAndRegisterModal = (props) => {
         <GoogleLogin
           shape='pill'
           onSuccess={(credentialResponse) => {
-            let done; 
+            let done;
             let decoded = jwtDecode(credentialResponse.credential);
-            console.log(decoded.email.replace(/\./g,"%26"))
-            axios.get(`http://localhost:8000/memo_places/users/email%3D${decoded.email.replace(/\./g,"&")}`, {
-              headers: { 'Content-Type': 'application/json' },
-          }).then(response => { 
-              decoded = { ...decoded, id: response.id }
-              setCookie('user', decoded);
-              console.log(decoded);
-          }).catch(error => {
-            console.log(error)
-              if (error.response.status === 404) {
-                  axios.post(
+            console.log(decoded.email.replace(/\./g, '%26'));
+            axios
+              .get(
+                `http://localhost:8000/memo_places/users/email%3D${decoded.email.replace(
+                  /\./g,
+                  '&',
+                )}`,
+                {
+                  headers: { 'Content-Type': 'application/json' },
+                },
+              )
+              .then((response) => {
+                decoded = { ...decoded, id: response.id };
+                setCookie('user', decoded);
+                console.log(decoded);
+              })
+              .catch((error) => {
+                console.log(error);
+                if (error.response.status === 404) {
+                  axios
+                    .post(
                       'http://localhost:8000/memo_places/outside_users/',
                       {
-                          email: decoded.email,
-                          username: decoded.name
+                        email: decoded.email,
+                        username: decoded.name,
                       },
                       {
-                          headers: {
-                              'Content-Type': 'application/json'
-                          }
-                      }
-                  ).then(response => {
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                      },
+                    )
+                    .then((response) => {
                       // Handle successful response
                       console.log(response.data);
                       decoded = { ...decoded, id: response.data.id };
                       setCookie('user', decoded);
-                  }).catch(error => {
+                    })
+                    .catch((error) => {
                       // Handle error
                       console.error('Error:', error);
-                  });
-              } else {
+                    });
+                } else {
                   // Handle other errors from GET request
                   console.error('Error:', error);
-              }
-          });
-              console.log(done)
+                }
+              });
+            console.log(done);
             setCookie('user', decoded);
             console.log(decoded);
           }}
