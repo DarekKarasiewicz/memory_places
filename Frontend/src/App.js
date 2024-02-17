@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
@@ -11,12 +12,17 @@ import NotificationModal from './Modals/NotificationModal';
 import UserPlacesMenu from './User/UserPlacesMenu';
 import { selectUserPlaces } from './Redux/userPlacesSlice';
 import { addPlaceActions } from './Redux/addPlaceSlice';
+import CookiesInfo from './Cookies/CookieInfo';
+import { useCookies } from 'react-cookie';
 
 function App() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectModals);
   const addPlaceData = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
+  const [showCookiesInfo, setShowCookiesInfo] = useState(false);
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
 
   const handleFormModalVisability = () => {
     dispatch(addPlaceActions.reset());
@@ -34,6 +40,20 @@ function App() {
   const handleNotificationModalVisability = () => {
     dispatch(modalsActions.changeIsNotificationModalOpen());
   };
+
+  const handleCookiesInfoVisability = () => {
+    dispatch(modalsActions.changeIsCookiesInfoOpen());
+  };
+
+  useEffect(() => {
+    if (user) {
+      if (user.cookies === false) {
+        setShowCookiesInfo(true);
+      }
+    } else {
+      setShowCookiesInfo(true);
+    }
+  }, []);
 
   return (
     <div className='w-screen h-screen relative'>
@@ -59,6 +79,9 @@ function App() {
           closeModal={handleNotificationModalVisability}
         />
       )}
+
+      {/* TO DO Save user cookie preferences in db */}
+      {showCookiesInfo && modalData.isCookiesInfoOpen && <CookiesInfo closeModal={handleCookiesInfoVisability}/>}
     </div>
   );
 }
