@@ -41,7 +41,7 @@ function UserMenu() {
 
   useEffect(() => {
     setIsLogged(user ? true : false);
-  }, []);
+  }, [user]);
 
   const parentItem = {
     hidden: { opacity: 1, scale: 0 },

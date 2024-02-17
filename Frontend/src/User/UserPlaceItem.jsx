@@ -4,31 +4,43 @@ import axios from 'axios';
 import { modalsActions } from '../Redux/modalsSlice';
 import { updatePlaceActions } from '../Redux/updatePlaceSlice';
 import { useDispatch } from 'react-redux';
+import { locationActions } from '../Redux/locationSlice';
 
 const UserPlaceItem = (props) => {
   const [visability, setVisability] = useState('flex');
   const dispatch = useDispatch();
 
   const handleUpdateModalVisability = () => {
-    dispatch(modalsActions.changeIsUpdateModalOpen());
     dispatch(updatePlaceActions.changeUpdatePlace(props.place));
+    dispatch(modalsActions.changeIsUpdateModalOpen());
+  };
+
+  const directToPlaceOnMap = () => {
+    dispatch(locationActions.changeLocation({ lat: props.place.lat, lng: props.place.lng }));
+    props.setClicked(props.place.id);
   };
 
   const handlePlaceDelete = () => {
-    // Need to fix it when backend ready
-    // axios.delete(`http://localhost:8000/memo_places/places/place&id=${place.id}`).then(() => {
-    setVisability('hidden');
-    // });
+    if (confirm('Are you sure you want to delete this place?')) {
+      axios
+        .delete(`http://localhost:8000/memo_places/places/${props.place.id}`)
+        .then(() => {
+          setVisability('hidden');
+        })
+        .catch((error) => {
+          alert('Something went wrong try again.');
+        });
+    }
   };
 
   return (
     <li
-      className={`bg-white h-34 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row `}
-      onClick={props.onClick}
-      //need to add display place info on click when component ready
+      className={` h-34 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row ${
+        props.clickedItem === props.place.id ? 'bg-gray-200' : 'bg-white'
+      }`}
       key={props.place.id}
     >
-      <div className='w-1/3 h-full'>
+      <div className='w-1/3 h-full cursor-pointer' onClick={directToPlaceOnMap}>
         <img
           src='../../assets/memorial_places_logo.png'
           alt='Place foto'
@@ -37,11 +49,8 @@ const UserPlaceItem = (props) => {
       </div>
       <div className='w-2/3'>
         <div className='w-full h-1/2 pl-1'>
-          <h2 className='truncate'>{props.place.title}</h2>
-          <p className='text-end text-xs'>
-            date
-            {/* {place.found_date} */}
-          </p>
+          <h2 className='truncate'>{props.place.place_name}</h2>
+          <p className='text-end text-xs'>{props.place.found_date}</p>
         </div>
         <div className='w-full h-1/2 pl-1 flex justify-end items-center'>
           <motion.div

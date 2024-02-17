@@ -14,6 +14,7 @@ import { selectUserPlaces } from './Redux/userPlacesSlice';
 import { addPlaceActions } from './Redux/addPlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
+import { updatePlaceActions } from './Redux/updatePlaceSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,8 +26,18 @@ function App() {
   const user = cookies.user;
 
   const handleFormModalVisability = () => {
-    dispatch(addPlaceActions.reset());
+    if (modalData.isFormModalOpen === true) {
+      dispatch(addPlaceActions.reset());
+    }
     dispatch(modalsActions.changeIsFormModalOpen());
+  };
+
+  const handleEditFormModalVisability = () => {
+    if (modalData.isUpdateModalOpen === true) {
+      dispatch(addPlaceActions.reset());
+      dispatch(updatePlaceActions.reset());
+    }
+    dispatch(modalsActions.changeIsUpdateModalOpen());
   };
 
   const handleLoginModalVisability = () => {
@@ -63,6 +74,13 @@ function App() {
       {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
       {modalData.isFormModalOpen && (
         <FormModal title='Add place' type='create' closeModal={handleFormModalVisability} />
+      )}
+      {modalData.isUpdateModalOpen && (
+        <FormModal
+          title='Edit your place'
+          type='update'
+          closeModal={handleEditFormModalVisability}
+        />
       )}
       {modalData.isLoginAndRegisterOpen && (
         <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
