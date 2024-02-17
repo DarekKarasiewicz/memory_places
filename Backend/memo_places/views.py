@@ -63,7 +63,7 @@ class Place_view(viewsets.ModelViewSet):
 
         data = request.data
 
-        place_object.user = data["user"]
+        # place_object.user = data["user"]
         place_object.place_name = data["place_name"]
         place_object.description = data["description"]
         place_object.found_date = data["found_date"]

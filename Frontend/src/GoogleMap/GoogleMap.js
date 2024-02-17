@@ -13,12 +13,14 @@ import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPla
 import { modalsActions, selectModals } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
+import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
+  const updatePlaceData = useSelector(selectUpdatePlace);
   const modalsData = useSelector(selectModals);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -73,7 +75,7 @@ const GoogleMap = () => {
   const handleLocationMarker = (event) => {
     if (userPlacesData.isOpen && !addPlaceLocation.isSelecting) {
       dispatch(userPlacesActions.changeIsOpen());
-    } else {
+    } else if (addPlaceLocation.isSelecting) {
       dispatch(
         addPlacelocationActions.changeLocation({
           lat: event.detail.latLng.lat,
@@ -98,10 +100,10 @@ const GoogleMap = () => {
 
   const handleConfirm = () => {
     dispatch(addPlacelocationActions.changeIsSelecting(false));
-    if (modalsData.isFormModalOpen === false) {
-      dispatch(modalsActions.changeIsFormModalOpen());
-    } else {
+    if (updatePlaceData.isDataLoaded === true) {
       dispatch(modalsActions.changeIsUpdateModalOpen());
+    } else {
+      dispatch(modalsActions.changeIsFormModalOpen());
     }
   };
 
