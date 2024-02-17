@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions, selectModals } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
 
@@ -19,6 +19,7 @@ const GoogleMap = () => {
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
+  const modalsData = useSelector(selectModals);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const isLoaded = useApiIsLoaded();
@@ -96,8 +97,12 @@ const GoogleMap = () => {
   const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
 
   const handleConfirm = () => {
-    dispatch(modalsActions.changeIsFormModalOpen());
     dispatch(addPlacelocationActions.changeIsSelecting(false));
+    if (modalsData.isFormModalOpen === false) {
+      dispatch(modalsActions.changeIsFormModalOpen());
+    } else {
+      dispatch(modalsActions.changeIsUpdateModalOpen());
+    }
   };
 
   useEffect(() => {
