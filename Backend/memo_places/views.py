@@ -100,9 +100,8 @@ class Outside_user_view(viewsets.ModelViewSet):
             username=user_data['username'],
             password=password
         )
-
-
-        # new_user.set_password(raw_password=password)
+        
+        new_user.outside=True
         new_user.save()
 
         serializer = User_serializer(new_user)
@@ -112,9 +111,23 @@ class Outside_user_view(viewsets.ModelViewSet):
 
 class User_view(viewsets.ModelViewSet):
     serializer_class = User_serializer
- 
+    
     def get_queryset(self):
         return User.objects.all() #change to .none() on production
+    
+    #TODO Secure it  
+    def create(self, request, *args, **kwargs):
+        new_user=User.objects.create_user(
+            email=request.data['email'],
+            username=request.data['username'],
+            password=request.data['password']
+        )
+
+        new_user.save()
+
+        serializer = User_serializer(new_user)
+
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs['pk']).groups()
