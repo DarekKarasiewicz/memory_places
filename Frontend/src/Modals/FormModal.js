@@ -25,6 +25,8 @@ function FormModal(props) {
   const periodRef = useRef();
   const updatePlaceData = useSelector(selectUpdatePlace);
   const addPlaceData = useSelector(selectAddPlace);
+  const [lat, setLat] = useState();
+  const [lng, setLng] = useState();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
 
@@ -70,7 +72,10 @@ function FormModal(props) {
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
       dispatch(addPlaceActions.changeLat(updatePlaceData.place.lat));
+      updatePlaceData.place.lat;
+      setLat(updatePlaceData.place.lat);
       dispatch(addPlaceActions.changeLng(updatePlaceData.place.lng));
+      setLng(updatePlaceData.place.lng);
       dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
       dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
       dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
@@ -78,25 +83,39 @@ function FormModal(props) {
     }
   }, []);
 
-  const handleConfirm = () => {
-    const place = {
-      user: user.id,
-      place_name: addPlaceData.place_name,
-      description: addPlaceData.description,
-      found_date: addPlaceData.found_date,
-      lat: addPlaceData.lat,
-      lng: addPlaceData.lng,
-      sortof: addPlaceData.sortof,
-      type: addPlaceData.type,
-      period: addPlaceData.period,
-    };
+  useEffect(() => {
+    if (updatePlaceData.isDataLoaded === true) {
+      dispatch(addPlaceActions.changeLat(addPlaceLocation.lat));
+      dispatch(addPlaceActions.changeLng(addPlaceLocation.lng));
+      setLat(addPlaceLocation.lat);
+      setLng(addPlaceLocation.lng);
+    }
+  }, []);
 
+  const formValidation = () => {
+    if (
+      addPlaceData.place_name.lenght > 0 &&
+      addPlaceData.description.lenght > 0 &&
+      addPlaceData.found_date.lenght > 0 &&
+      addPlaceData.lat > 0 &&
+      addPlaceData.lng > 0 &&
+      addPlaceData.sortof !== 'all' &&
+      addPlaceData.type !== 'all' &&
+      addPlaceData.period !== 'all'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleConfirm = () => {
     const isFormValid = formValidation();
 
     if (isFormValid) {
       if (props.type === 'update') {
         axios
-          .put(`http://localhost:8000/memo_places/places/place/${updatePlaceData.place.id}`, {
+          .put(`http://localhost:8000/memo_places/places/${updatePlaceData.place.id}/`, {
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
             found_date: addPlaceData.found_date,
@@ -108,33 +127,30 @@ function FormModal(props) {
           })
           .then(() => {
             dispatch(addPlaceActions.reset());
+            dispatch(updatePlaceActions.reset());
             dispatch(modalsActions.changeIsUpdateModalOpen());
           });
       } else {
-        axios.post(`http://localhost:8000/memo_places/places/`, { place }).then(() => {
-          dispatch(addPlaceActions.reset());
-          dispatch(modalsActions.changeIsFormModalOpen());
-        });
+        axios
+          .post(`http://localhost:8000/memo_places/places/`, {
+            user: user.id,
+            place_name: addPlaceData.place_name,
+            description: addPlaceData.description,
+            found_date: addPlaceData.found_date,
+            lat: addPlaceData.lat,
+            lng: addPlaceData.lng,
+            sortof: addPlaceData.sortof,
+            type: addPlaceData.type,
+            period: addPlaceData.period,
+          })
+          .then(() => {
+            dispatch(addPlaceActions.reset());
+            dispatch(addPlacelocationActions.resetLocation());
+            dispatch(modalsActions.changeIsFormModalOpen());
+          });
       }
     } else {
       alert('All boxes need to be filled');
-    }
-  };
-
-  const formValidation = () => {
-    if (
-      addPlaceData.place_name > 0 &&
-      addPlaceData.description > 0 &&
-      addPlaceData.found_date > 0 &&
-      addPlaceData.lat > 0 &&
-      addPlaceData.lng > 0 &&
-      addPlaceData.sortof !== 'all' &&
-      addPlaceData.type !== 'all' &&
-      addPlaceData.period !== 'all'
-    ) {
-      return true;
-    } else {
-      return false;
     }
   };
 
@@ -155,11 +171,7 @@ function FormModal(props) {
             type='text'
             name='nameInput'
             label='Name'
-            value={
-              props.type === 'update' && !updatePlaceData.isDataLoaded
-                ? updatePlaceData.place.place_name
-                : addPlaceData.place_name
-            }
+            value={addPlaceData.place_name}
             onBlur={() => {
               dispatch(addPlaceActions.changeName(nameRef.current.value));
             }}
@@ -170,11 +182,7 @@ function FormModal(props) {
             name='dateInput'
             label='Date'
             ref={dateRef}
-            value={
-              props.type === 'update' && !updatePlaceData.isDataLoaded
-                ? updatePlaceData.place.found_date
-                : addPlaceData.found_date
-            }
+            value={addPlaceData.found_date}
             onBlur={() => {
               dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
             }}
@@ -185,14 +193,11 @@ function FormModal(props) {
               placeholder='latitude'
               name='lat'
               label='latitude'
-              value={
-                props.type === 'update' && !updatePlaceData.isDataLoaded
-                  ? updatePlaceData.place.lat
-                  : addPlaceData.lat
-              }
+              value={props.type === 'update' ? lat : addPlaceData.lat}
               ref={latRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeLat(latRef.current.value));
+                setLat(latRef.current.value);
               }}
             />
             <BaseInput
@@ -200,14 +205,11 @@ function FormModal(props) {
               placeholder='longitude'
               name='lng'
               label='longitude'
-              value={
-                props.type === 'update' && !updatePlaceData.isDataLoaded
-                  ? updatePlaceData.place.lng
-                  : addPlaceData.lng
-              }
+              value={props.type === 'update' ? lng : addPlaceData.lng}
               ref={lngRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeLng(lngRef.current.value));
+                setLng(lngRef.current.value);
               }}
             />
           </div>
@@ -262,11 +264,7 @@ function FormModal(props) {
             rows='6'
             label='Description'
             ref={descriptionRef}
-            value={
-              props.type === 'update' && !updatePlaceData.isDataLoaded
-                ? updatePlaceData.place.description
-                : addPlaceData.description
-            }
+            value={addPlaceData.description}
             onBlur={() => {
               dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
             }}

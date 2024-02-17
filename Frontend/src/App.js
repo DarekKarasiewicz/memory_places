@@ -15,6 +15,7 @@ import { addPlaceActions } from './Redux/addPlaceSlice';
 import { updatePlaceActions } from './Redux/updatePlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
+import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
 
 function App() {
   const dispatch = useDispatch();

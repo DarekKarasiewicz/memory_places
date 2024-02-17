@@ -5,6 +5,7 @@ import { modalsActions } from '../Redux/modalsSlice';
 import { updatePlaceActions } from '../Redux/updatePlaceSlice';
 import { useDispatch } from 'react-redux';
 import { locationActions } from '../Redux/locationSlice';
+import { deletePlace } from '../Redux/allMapPlacesSlice';
 
 const UserPlaceItem = (props) => {
   const [visability, setVisability] = useState('flex');
@@ -22,14 +23,10 @@ const UserPlaceItem = (props) => {
 
   const handlePlaceDelete = () => {
     if (confirm('Are you sure you want to delete this place?')) {
-      axios
-        .delete(`http://localhost:8000/memo_places/places/${props.place.id}`)
-        .then(() => {
-          setVisability('hidden');
-        })
-        .catch((error) => {
-          alert('Something went wrong try again.');
-        });
+      axios.delete(`http://localhost:8000/memo_places/places/${props.place.id}`).then(() => {
+        setVisability('hidden');
+        dispatch(deletePlace(props.place.id));
+      });
     }
   };
 
