@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   place: null,
+  isDataLoaded: false,
 };
 
 export const updatePlaceSlice = createSlice({
@@ -9,8 +10,12 @@ export const updatePlaceSlice = createSlice({
   initialState,
   reducers: {
     changeUpdatePlace: (state, action) => {
-      state.place = action.payload.place;
+      state.place = action.payload;
     },
+    dataIsLoaded: (state) => {
+      state.isDataLoaded = true;
+    },
+    reset: () => initialState,
   },
 });
 

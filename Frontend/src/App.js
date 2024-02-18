@@ -12,6 +12,10 @@ import NotificationModal from './Modals/NotificationModal';
 import UserPlacesMenu from './User/UserPlacesMenu';
 import { selectUserPlaces } from './Redux/userPlacesSlice';
 import { addPlaceActions } from './Redux/addPlaceSlice';
+import { updatePlaceActions } from './Redux/updatePlaceSlice';
+import CookiesInfo from './Cookies/CookieInfo';
+import { useCookies } from 'react-cookie';
+import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
 
@@ -25,8 +29,18 @@ function App() {
   const user = cookies.user;
 
   const handleFormModalVisability = () => {
-    dispatch(addPlaceActions.reset());
+    if (modalData.isFormModalOpen === true) {
+      dispatch(addPlaceActions.reset());
+    }
     dispatch(modalsActions.changeIsFormModalOpen());
+  };
+
+  const handleEditFormModalVisability = () => {
+    if (modalData.isUpdateModalOpen === true) {
+      dispatch(addPlaceActions.reset());
+      dispatch(updatePlaceActions.reset());
+    }
+    dispatch(modalsActions.changeIsUpdateModalOpen());
   };
 
   const handleLoginModalVisability = () => {
@@ -64,6 +78,13 @@ function App() {
       {modalData.isFormModalOpen && (
         <FormModal title='Add place' type='create' closeModal={handleFormModalVisability} />
       )}
+      {modalData.isUpdateModalOpen && (
+        <FormModal
+          title='Edit your place'
+          type='update'
+          closeModal={handleEditFormModalVisability}
+        />
+      )}
       {modalData.isLoginAndRegisterOpen && (
         <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
       )}
@@ -81,7 +102,9 @@ function App() {
       )}
 
       {/* TO DO Save user cookie preferences in db */}
-      {showCookiesInfo && modalData.isCookiesInfoOpen && <CookiesInfo closeModal={handleCookiesInfoVisability}/>}
+      {showCookiesInfo && modalData.isCookiesInfoOpen && (
+        <CookiesInfo closeModal={handleCookiesInfoVisability} />
+      )}
     </div>
   );
 }

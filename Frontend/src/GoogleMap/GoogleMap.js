@@ -10,15 +10,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions, selectModals } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
+import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
+  const updatePlaceData = useSelector(selectUpdatePlace);
+  const modalsData = useSelector(selectModals);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const isLoaded = useApiIsLoaded();
@@ -72,7 +75,7 @@ const GoogleMap = () => {
   const handleLocationMarker = (event) => {
     if (userPlacesData.isOpen && !addPlaceLocation.isSelecting) {
       dispatch(userPlacesActions.changeIsOpen());
-    } else {
+    } else if (addPlaceLocation.isSelecting) {
       dispatch(
         addPlacelocationActions.changeLocation({
           lat: event.detail.latLng.lat,
@@ -96,8 +99,12 @@ const GoogleMap = () => {
   const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
 
   const handleConfirm = () => {
-    dispatch(modalsActions.changeIsFormModalOpen());
     dispatch(addPlacelocationActions.changeIsSelecting(false));
+    if (updatePlaceData.isDataLoaded === true) {
+      dispatch(modalsActions.changeIsUpdateModalOpen());
+    } else {
+      dispatch(modalsActions.changeIsFormModalOpen());
+    }
   };
 
   useEffect(() => {
