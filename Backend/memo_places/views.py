@@ -156,8 +156,13 @@ class User_view(viewsets.ModelViewSet):
         if key == "password_reset":
             user_object.set_password(data['password'])
         else:
-            user_object.email = data["email"]
-            user_object.username = data["username"]
+            # should we consider update email
+            if 'email' in data and 'username' in data:
+                user_object.email = data["email"]
+                user_object.username = data["username"]
+            else:
+                user_object.username = data["username"]
+
 
         user_object.save()
 
@@ -167,9 +172,11 @@ class User_view(viewsets.ModelViewSet):
     def destroy(self, request,*args, **kwargs):
         user_object = User.objects.get(id=kwargs['pk'])
 
-        user_object.active=False
-
-        user_object.save()
+        if user_object.confirmed == True:
+            user_object.active=False
+            user_object.save()
+        else:
+            user_object.delete()
 
         serializer = User_serializer(user_object)
         return Response(serializer.data)
