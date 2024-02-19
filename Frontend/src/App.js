@@ -16,8 +16,6 @@ import { updatePlaceActions } from './Redux/updatePlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
 import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
-import CookiesInfo from './Cookies/CookieInfo';
-import { useCookies } from 'react-cookie';
 
 function App() {
   const dispatch = useDispatch();
@@ -74,7 +72,6 @@ function App() {
       {userPlacesData.isOpen && <UserPlacesMenu />}
       <GoogleMap />
       {!addPlaceData.isSelecting && <Navbar />}
-      {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
       {modalData.isFormModalOpen && (
         <FormModal title='Add place' type='create' closeModal={handleFormModalVisability} />
       )}

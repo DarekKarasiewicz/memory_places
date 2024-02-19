@@ -14,6 +14,8 @@ import { modalsActions, selectModals } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
 import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
+import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
+import AddPlaceButton from '../AddPlace/AddPlaceButton';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const GoogleMap = () => {
   const [placeInfoBoxVisibility, setPlaceInfoBoxVisibility] = useState(false);
   const [currentPlace, setCurrentPlace] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
+  const addPlaceData = useSelector(selectAddPlace);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -113,6 +116,13 @@ const GoogleMap = () => {
     }
   }, [position]);
 
+  const handleFormModalVisability = () => {
+    if (modalsData.isFormModalOpen === true) {
+      dispatch(addPlaceActions.reset());
+    }
+    dispatch(modalsActions.changeIsFormModalOpen());
+  };
+
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
@@ -128,6 +138,7 @@ const GoogleMap = () => {
         onClick={handleLocationMarker}
         mapId='1'
       >
+        {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
         {addPlaceLocation.isSelecting && (
           <AdvancedMarker
             onClick={toggleInfoWindow}

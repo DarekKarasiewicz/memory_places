@@ -10,6 +10,7 @@ import './index.css';
 import SubForum from './Forum/SubForum.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CookiesProvider } from 'react-cookie';
+import PageNotFound from './ErrorPage/PageNotFound.jsx';
 
 export default function AppUrls() {
   return (
@@ -18,6 +19,7 @@ export default function AppUrls() {
         <Route path='/' element={<App />} />
         <Route path='/forum' element={<ForumMain />} />
         <Route path='/forum/:id' element={<SubForum />} />
+        <Route path='/*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
