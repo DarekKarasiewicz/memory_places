@@ -74,7 +74,6 @@ function App() {
       {userPlacesData.isOpen && <UserPlacesMenu />}
       <GoogleMap />
       {!addPlaceData.isSelecting && <Navbar />}
-      {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
       {modalData.isFormModalOpen && (
         <FormModal title='Add place' type='create' closeModal={handleFormModalVisability} />
       )}
