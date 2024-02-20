@@ -30,6 +30,28 @@ class Place_view(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return Place.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        creator = get_object_or_404(User, id= request.data['user'])
+
+        new_place =Place(
+            user          =creator,
+            place_name    = request.data['place_name'],
+            description   = request.data['description'],
+            creation_date = request.data['creation_date'],
+            found_date    = request.data['found_date'],
+            lng           = request.data['lng'],
+            lat           = request.data['lat'],
+            type          = request.data['type'],
+            sortof        = request.data['sortof'],
+            period        = request.data['period'],
+        )
+
+        new_place.save()
+        
+        serializer = Places_serailizer(new_place)
+
+        return Response(serializer.data)
  
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs['pk']).groups()
@@ -62,16 +84,26 @@ class Place_view(viewsets.ModelViewSet):
         place_object = Place.objects.get(id=kwargs['pk'])
 
         data = request.data
-
-        # place_object.user = data["user"]
-        place_object.place_name = data["place_name"]
-        place_object.description = data["description"]
-        place_object.found_date = data["found_date"]
-        place_object.lat = data["lat"]
-        place_object.lng = data["lng"]
-        place_object.type = data["type"]
-        place_object.sortof = data["sortof"]
-        place_object.period = data["period"]
+        for i in data.keys():
+            match i:
+                case "place_name":
+                    place_object.place_name = data["place_name"]
+                case "description":
+                    place_object.description = data["description"]
+                case "found_date":
+                    place_object.found_date = data["found_date"]
+                case "lat":
+                    place_object.lat = data["lat"]
+                case "lng":
+                    place_object.lng = data["lng"]
+                case "type":
+                    place_object.type = data["type"]
+                case "sortof":
+                    place_object.sortof = data["sortof"]
+                case "period":
+                    place_object.period = data["period"]
+                case _:
+                    pass
 
         place_object.save()
 
