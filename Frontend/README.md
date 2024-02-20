@@ -7,3 +7,5 @@ JWT decode: npm install jwt-decode </br>
 Google Sign in: npm install @react-oauth/google@latest </br>
 Facebook Sign in: npm i --save @greatsumini/react-facebook-login </br>
 Cookies: npm i react-cookie </br>
+i18next: npm install react-i18next i18next --save </br>
+i18next + auto_detect npm install i18next-http-backend i18next-browser-languagedetector --save </br>

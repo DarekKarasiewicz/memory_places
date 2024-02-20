@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import BaseButton from '../../../Base/BaseButton';
 import BaseInput from '../../../Base/BaseInput';
+import { useTranslation } from 'react-i18next';
 
 function AccountSettings() {
   const [isValidName, setIsValidName] = useState(null);
@@ -12,6 +13,7 @@ function AccountSettings() {
   const nameRef = useRef(null);
   const surnameRef = useRef(null);
   const emailRef = useRef(null);
+  const { t } = useTranslation();
 
   const user = cookies.user;
 
@@ -56,13 +58,13 @@ function AccountSettings() {
       {
         /*TODO HERE will be axios request to change data */
       }
-      console.log('account data changed!');
+      // console.log('account data changed!');
     }
   };
 
   return (
     <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>Account</div>
+      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.account')}</div>
       <div className='flex gap-4 h-14 items-center my-4'>
         <div className='relative'>
           <img
@@ -81,28 +83,30 @@ function AccountSettings() {
 
         <div className='flex flex-col leading-5'>
           <span className='text-lg'>{user.username}</span>
-          <span className='text-sm uppercase'>{user.admin ? 'admin' : 'user'}</span>
+          <span className='text-sm uppercase'>{user.admin ? t('user.admin') : t('user.user')}</span>
         </div>
       </div>
       <div className='border-black border-t-2 py-2 gap-2 flex flex-col items-center'>
         <BaseInput
           type='text'
-          placeholder='Name'
+          placeholder={t('user.name')}
           name='nameInput'
-          label='Name'
+          label={t('user.name')}
           ref={nameRef}
           onBlur={handleBlurName}
         ></BaseInput>
-        {isValidName === false && <p className='text-red-500 text-xs'>Name is incorrect!</p>}
+        {isValidName === false && <p className='text-red-500 text-xs'>{t('user.name_error')}</p>}
         <BaseInput
           type='text'
-          placeholder='Surname'
+          placeholder={t('user.surname')}
           name='surnameInput'
-          label='Surname'
+          label={t('user.surname')}
           ref={surnameRef}
           onBlur={handleBlurSurnName}
         ></BaseInput>
-        {isValidSurname === false && <p className='text-red-500 text-xs'>Surname is incorrect!</p>}
+        {isValidSurname === false && (
+          <p className='text-red-500 text-xs'>{t('user.surname_error')}</p>
+        )}
         <BaseInput
           type='text'
           placeholder='Email'
@@ -111,11 +115,15 @@ function AccountSettings() {
           ref={emailRef}
           onBlur={handleBlurEmail}
         ></BaseInput>
-        {isValidEmail === false && <p className='text-red-500 text-xs'>Email is incorrect!</p>}
+        {isValidEmail === false && <p className='text-red-500 text-xs'>{t('user.email_error')}</p>}
         {isValidName || isValidSurname || isValidEmail ? (
-          <BaseButton name='Zatwierdź' className='mt-2' onClick={handleSumbit} />
+          <BaseButton name={t('user.confirm')} className='mt-2' onClick={handleSumbit} />
         ) : (
-          <BaseButton name='Zatwierdź' className='mt-2 cursor-not-allowed' disabled={true} />
+          <BaseButton
+            name={t('user.confirm')}
+            className='mt-2 cursor-not-allowed'
+            disabled={true}
+          />
         )}
       </div>
     </div>

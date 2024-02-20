@@ -5,12 +5,14 @@ import { setKey, fromAddress } from 'react-geocode';
 import { locationActions } from '../../Redux/locationSlice';
 import { useDispatch } from 'react-redux';
 import './AutocompleteStyles.css';
+import { useTranslation } from 'react-i18next';
 
 function SearchBar() {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const [searchedText, setSearchedText] = useState('');
+  const { t } = useTranslation();
   setKey(process.env.REACT_APP_API_KEY);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function SearchBar() {
           >
             <input
               type='text'
-              placeholder='Search...'
+              placeholder={t('common.search')}
               className='rounded-l-lg h-10 w-80 border-black border-t-2 border-l-2 border-b-2 pl-3 pt-3 pb-3 pr-6'
               onChange={handleSearchChange}
               ref={inputRef}

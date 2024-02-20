@@ -5,6 +5,7 @@ import BaseSelect from '../../Base/BaseSelect';
 import BaseButton from '../../Base/BaseButton';
 import { useDispatch } from 'react-redux';
 import { filterPlaces } from '../../Redux/allMapPlacesSlice';
+import { useTranslation } from 'react-i18next';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
@@ -13,6 +14,8 @@ function MapFilter() {
   const [selectedPeriodOption, setSelectedPeriodOption] = useState('all');
   const [textValue, setTextValue] = useState('');
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const handleClick = () => {
     setIsActive((current) => !current);
   };
@@ -46,34 +49,34 @@ function MapFilter() {
   //For each options later will be added more 9 options from client
   //TODO Change points value to match this ones
   const sortof_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Istniejące', value: 'existing' },
-    { label: 'Nieistniejące', value: 'non_existing' },
-    { label: 'Tablica upamiętniająca', value: 'commemorative_plaque' },
-    { label: 'Pomnik upamiętniający', value: 'commemorative_monument' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.existing'), value: 'existing' },
+    { label: t('modal.non_existing'), value: 'non_existing' },
+    { label: t('modal.commemorative_plaque'), value: 'commemorative_plaque' },
+    { label: t('modal.commemorative_monument'), value: 'commemorative_monument' },
   ];
 
   const type_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Cmentarz wojenny', value: 'war_emetery' },
-    { label: 'Cmentarz cywilny', value: 'civilian_cemetery' },
-    { label: 'Miejsce pochówku', value: 'burial_site' },
-    { label: 'Miejsce egzekucji, straceń', value: 'place_of_executions' },
-    { label: 'Miejsce bitwy, potyczki', value: 'place_of_battle_skirmish' },
-    { label: 'Miejsce archeologiczne', value: 'archaeological_site' },
-    { label: 'Kapliczka', value: 'chapel' },
-    { label: 'Zabytek', value: 'monument' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.war_cemetery'), value: 'war_emetery' },
+    { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
+    { label: t('modal.burial_site'), value: 'burial_site' },
+    { label: t('modal.execution_site'), value: 'execution_site' },
+    { label: t('modal.battlefield'), value: 'battlefield' },
+    { label: t('modal.archaeological_site'), value: 'archaeological_site' },
+    { label: t('modal.wayside_shrine'), value: 'wayside_shrine' },
+    { label: t('modal.historical_monument'), value: 'historical_monument' },
   ];
 
   const period_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Polska przed 3cim rozbiorem (< 1795)', value: 'poland_before_third_partition' },
-    { label: 'Wojny Napoleońskie (1799 – 1815)', value: 'napoleonic_wars' },
-    { label: 'Polska po rozbiorach (1795 – 1914)', value: 'poland_after_partitions' },
-    { label: 'I Wojna Światowa (1914 – 1918)', value: 'world_war_I' },
-    { label: 'Okres Międzywojenny (1918 – 1939)', value: 'interwar_period' },
-    { label: 'II Wojna Światowa (1939 – 1945)', value: 'world_war_II' },
-    { label: 'Okres Stalinowski (1945 – 1953)', value: 'stalinist_period' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.poland_before_third_partition'), value: 'poland_before_third_partition' },
+    { label: t('modal.napoleonic_wars'), value: 'napoleonic_wars' },
+    { label: t('modal.poland_after_partitions'), value: 'poland_after_partitions' },
+    { label: t('modal.world_war_I'), value: 'world_war_I' },
+    { label: t('modal.interwar_period'), value: 'interwar_period' },
+    { label: t('modal.world_war_II'), value: 'world_war_II' },
+    { label: t('modal.stalinist_period'), value: 'stalinist_period' },
   ];
 
   return (
@@ -99,38 +102,38 @@ function MapFilter() {
           className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-300 rounded-s-lg'
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2'>Filtry</div>
+            <div className='text-2xl border-b-2 border-black p-2'>{t('common.filter1')}</div>
             <div className='flex flex-col gap-2'>
               {/* <BaseInput
                 type='text'
-                label='Nazwa'
-                name='Nazwa'
+                label={t('common.name')}
+                name={t('common.name')}
                 value={textValue}
                 onChange={handleTextValueChange}
               /> */}
               <BaseSelect
-                label='Rodzaj'
-                name='Rodzaj'
+                label={t('common.type_of')}
+                name={t('common.type_of')}
                 value={selectedSortOfOption}
                 options={sortof_options}
                 onChange={handleSelectSortOfChange}
               />
               <BaseSelect
-                label='Typ'
-                name='Typ'
+                label={t('common.type')}
+                name={t('common.type')}
                 value={selectedTypeOption}
                 options={type_options}
                 onChange={handleSelectTypeChange}
               />
               <BaseSelect
-                label='Okres'
-                name='Okres'
+                label={t('common.period')}
+                name={t('common.period')}
                 value={selectedPeriodOption}
                 options={period_options}
                 onChange={handleSelectPeriodChange}
               />
             </div>
-            <BaseButton onClick={handleFilterChange} name='Filtruj' />
+            <BaseButton onClick={handleFilterChange} name={t('common.filter2')} />
           </div>
         </motion.div>
       )}

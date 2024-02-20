@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);
+  const { t } = useTranslation();
 
   const handleMouseOver = () => {
     setIsHovering(true);
@@ -35,7 +37,9 @@ function DropdownItem({ icon, name, onClick }) {
             transition={{ duration: 0.5 }}
             className='h-12 w-24 absolute left-6 bg-slate-300 pointer-events-none z-0 pr-2 flex justify-end items-center border-2 border-black rounded-r-lg leading-4'
           >
-            <span className='ml-6 capitalize text-right'>{name ? name : 'Not given name'}</span>
+            <span className='ml-6 capitalize text-right'>
+              {name ? name : t('common.not_given_name')}
+            </span>
           </motion.div>
         )}
       </div>

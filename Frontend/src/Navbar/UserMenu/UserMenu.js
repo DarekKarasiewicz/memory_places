@@ -6,6 +6,7 @@ import { modalsActions } from '../../Redux/modalsSlice';
 import { userPlacesActions } from '../../Redux/userPlacesSlice';
 import BaseButton from '../../Base/BaseButton';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
@@ -15,6 +16,7 @@ function UserMenu() {
   const dispatch = useDispatch();
   const user = cookies.user;
   const popupRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!isLogged) {
@@ -55,11 +57,11 @@ function UserMenu() {
   };
 
   const menuItems = [
-    { icon: 'notification', name: 'notifications' },
-    { icon: 'pin', name: 'your memory places', func: handleUserPlacesVisability },
-    { icon: 'settings', name: 'settings', func: handleUserSettingsVisability },
-    { icon: 'help', name: 'help' },
-    { icon: 'logout', name: 'logout' },
+    { icon: 'notification', name: t('user.notificiations') },
+    { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
+    { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
+    { icon: 'help', name: t('user.help') },
+    { icon: 'logout', name: t('user.logout') },
   ];
 
   useEffect(() => {
@@ -110,7 +112,7 @@ function UserMenu() {
             animate='visible'
           >
             <li className='capitalize text-xl'>{user.username}</li>
-            <li className='uppercase text-sm'>{user.admin ? 'admin' : 'user'}</li>
+            <li className='uppercase text-sm'>{user.admin ? t('user.admin') : t('user.user')}</li>
 
             {menuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
@@ -132,8 +134,8 @@ function UserMenu() {
             initial='hidden'
             animate='visible'
           >
-            <span className='text-center'>For full app experience you need to log in!</span>
-            <BaseButton name='Log In' onClick={handleLoginModalOpen} />
+            <span className='text-center'>{t('user.login_info')}</span>
+            <BaseButton name={t('user.login')} onClick={handleLoginModalOpen} />
             <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-l border-t border-black'></div>
           </motion.div>
         )}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import BaseInput from '../Base/BaseInput';
+import { useTranslation } from 'react-i18next';
 
 const LoginAndRegister = ({
   isLogging,
@@ -17,6 +18,7 @@ const LoginAndRegister = ({
   handleBlurUsername,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const { t } = useTranslation();
 
   const responseFacebook = (response) => {
     console.log(response);
@@ -33,27 +35,29 @@ const LoginAndRegister = ({
             type='text'
             label='Email'
             name='email'
-            placeholder='Example@email.com'
+            placeholder={t('log_reg_form.example_mail')}
             ref={emailRef}
             className={isValidEmail === false && 'bg-red-300'}
             onBlur={handleBlurEmail}
           />
-          {isValidEmail === false && <p className='text-red-500 text-xs'>Email is incorrect!</p>}
+          {isValidEmail === false && (
+            <p className='text-red-500 text-xs'>{t('log_reg_form.mail_warning')}</p>
+          )}
           <BaseInput
             type={!isVisible ? 'password' : 'text'}
-            label='Password'
+            label={t('common.pass')}
             name='password'
-            placeholder='Your Password'
+            placeholder={t('log_reg_form.your_password')}
             ref={passwordRef}
             onBlur={handleBlurPassword}
             className={isValidPassword === false && 'bg-red-300'}
           />
           {isValidPassword === false && (
             <ul role='list' className='text-red-500 text-xs'>
-              Password must:
-              <li>Be at least 8 characters long.</li>
-              <li>Contains at least one digit.</li>
-              <li>Contains at least one special character.</li>
+              {t('log_reg_form.pass_title')}
+              <li>{t('log_reg_form.pass_info1')}</li>
+              <li>{t('log_reg_form.pass_info2')}</li>
+              <li>{t('log_reg_form.pass_info3')}</li>
             </ul>
           )}
         </>
@@ -61,53 +65,55 @@ const LoginAndRegister = ({
         <>
           <BaseInput
             type='text'
-            label='Username'
-            name='username'
+            label={t('common.username')}
+            name='Username'
             ref={usernameRef}
             onBlur={handleBlurUsername}
             className={isValidUsername === false && 'bg-red-300'}
           />
           {isValidUsername === false && (
-            <p className='text-red-500 text-xs'>This field can&apos;t be empty!</p>
+            <p className='text-red-500 text-xs'>{t('log_reg_form.field_info')}</p>
           )}
           <BaseInput
             type='text'
             label='Email'
             name='email'
-            placeholder='Example@email.com'
+            placeholder={t('log_reg_form.example_mail')}
             ref={emailRef}
             onBlur={handleBlurEmail}
             className={isValidEmail === false && 'bg-red-300'}
           />
-          {isValidEmail === false && <p className='text-red-500 text-xs'>Email is incorrect!</p>}
+          {isValidEmail === false && (
+            <p className='text-red-500 text-xs'>{t('log_reg_form.mail_warning')}</p>
+          )}
           <BaseInput
             type={!isVisible ? 'password' : 'text'}
-            label='Password'
-            name='password'
-            placeholder='Your Password'
+            label={t('common.pass')}
+            name='Password'
+            placeholder={t('log_reg_form.your_password')}
             ref={passwordRef}
             onBlur={handleBlurPassword}
             className={isValidPassword === false && 'bg-red-300'}
           />
           {isValidPassword === false && (
             <ul role='list' className='text-red-500 text-xs'>
-              Password must:
-              <li>Be at least 8 characters long.</li>
-              <li>Contains at least one digit.</li>
-              <li>Contains at least one special character.</li>
+              {t('log_reg_form.pass_title')}
+              <li>{t('log_reg_form.pass_info1')}</li>
+              <li>{t('log_reg_form.pass_info2')}</li>
+              <li>{t('log_reg_form.pass_info3')}</li>
             </ul>
           )}
           <BaseInput
             type={!isVisible ? 'password' : 'text'}
-            label='Confirm Password'
+            label={t('log_reg_form.confirm_pass')}
             name='confPassword'
-            placeholder='Confirm Password'
+            placeholder={t('log_reg_form.confirm_pass')}
             ref={confPasswordRef}
             onBlur={handleBlurConfPassword}
             className={isValidConfPassword === false && 'bg-red-300'}
           />
           {isValidConfPassword === false && (
-            <p className='text-red-500 text-xs'>Password must be similar</p>
+            <p className='text-red-500 text-xs'>{t('log_reg_form.pass_similar')}</p>
           )}
         </>
       )}
@@ -115,23 +121,26 @@ const LoginAndRegister = ({
         {isVisible ? (
           <>
             {' '}
-            <img
-              onClick={handlePasswordVisability}
-              src='./assets/eye_close_icon.svg'
-              alt='eye_close_icon'
-              className='h-6 w-6 cursor-pointer'
-            />
-            <span>Hide password</span>
+            <div className='flex cursor-pointer hover:scale-110' onClick={handlePasswordVisability}>
+              <img
+                src='./assets/eye_close_icon.svg'
+                alt='eye_close_icon'
+                className='h-6 w-6 cursor-pointer'
+              />
+              <span>{t('log_reg_form.hide_pass')}</span>
+            </div>
           </>
         ) : (
           <>
-            <img
-              onClick={handlePasswordVisability}
-              src='./assets/eye_open_icon.svg'
-              alt='eye_open_icon'
-              className='h-6 w-6 cursor-pointer'
-            />
-            <span>Show password</span>
+            <div className='flex cursor-pointer hover:scale-110' onClick={handlePasswordVisability}>
+              <img
+                onClick={handlePasswordVisability}
+                src='./assets/eye_open_icon.svg'
+                alt='eye_open_icon'
+                className='h-6 w-6 cursor-pointer'
+              />
+              <span>{t('log_reg_form.show_pass')}</span>
+            </div>
           </>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import BaseModal from '../Base/BaseModal';
 import LoginAndRegister from '../LoginAndRegisterComponents/LoginAndRegister';
 import BaseButton from '../Base/BaseButton';
@@ -8,9 +8,10 @@ import { modalsActions } from '../Redux/modalsSlice';
 import { jwtDecode } from 'jwt-decode';
 import { GoogleLogin } from '@react-oauth/google';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 const LoginAndRegisterModal = (props) => {
-  const [title, setTitle] = useState('Sign In');
+  const [title, setTitle] = useState();
   const [isLogging, setIsLogging] = useState(true);
   const [isValidEmail, setIsValidEmail] = useState(null);
   const [isValidPassword, setIsValidPassword] = useState(null);
@@ -22,13 +23,18 @@ const LoginAndRegisterModal = (props) => {
   const usernameRef = useRef(null);
   const dispatch = useDispatch();
   const [cookies, setCookie] = useCookies(['user']);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    setTitle(t('common.sign_in'));
+  }, []);
 
   const handleIsLogging = () => {
     setIsLogging(!isLogging);
-    if (title === 'Sign In') {
-      setTitle('Sign Up');
+    if (isLogging) {
+      setTitle(t('common.sign_up'));
     } else {
-      setTitle('Sign In');
+      setTitle(t('common.sign_in'));
     }
   };
 
@@ -67,11 +73,11 @@ const LoginAndRegisterModal = (props) => {
           .then((response) => {
             const decoded = jwtDecode(response.data.access);
             setCookie('user', decoded);
-            console.log(decoded);
+            // console.log(decoded);
           });
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       } else {
-        alert('Check your Inputs, Something is wrong!');
+        alert(t('common.check_inputs'));
       }
     } else {
       if (isValidEmail && isValidPassword && isValidConfPassword) {
@@ -87,11 +93,11 @@ const LoginAndRegisterModal = (props) => {
           })
           .then((response) => {
             //Co tu jest zwracane?
-            alert('You need to verify your account to Sing in!');
+            alert(t('common.verify_account'));
             setIsLogging(true);
           });
       } else {
-        alert('Check your Inputs, Something is wrong!');
+        alert(t('common.check_inputs'));
       }
     }
   };
@@ -114,11 +120,10 @@ const LoginAndRegisterModal = (props) => {
           handleBlurConfPassword={handleBlurConfPassword}
           handleBlurUsername={handleBlurUsername}
         />
-        <div>-------- or use --------</div>
+        <div className='my-2'>{t('common.or')}</div>
         <GoogleLogin
           shape='pill'
           onSuccess={(credentialResponse) => {
-            let done;
             let decoded = jwtDecode(credentialResponse.credential);
             console.log(decoded.email.replace(/\./g, '%26'));
             axios
@@ -134,7 +139,7 @@ const LoginAndRegisterModal = (props) => {
               .then((response) => {
                 decoded = { ...decoded, id: response.id };
                 setCookie('user', decoded);
-                console.log(decoded);
+                // console.log(decoded);
               })
               .catch((error) => {
                 console.log(error);
@@ -153,42 +158,49 @@ const LoginAndRegisterModal = (props) => {
                       },
                     )
                     .then((response) => {
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                      },
+                    )
+                    .then((response) => {
                       // Handle successful response
-                      console.log(response.data);
+                      // console.log(response.data);
                       decoded = { ...decoded, id: response.data.id };
                       setCookie('user', decoded);
                     })
                     .catch((error) => {
+                    })
+                    .catch((error) => {
                       // Handle error
-                      console.error('Error:', error);
+                      // console.error('Error:', error);
                     });
                 } else {
                   // Handle other errors from GET request
-                  console.error('Error:', error);
+                  // console.error('Error:', error);
                 }
               });
-            console.log(done);
             setCookie('user', decoded);
-            console.log(decoded);
+            // console.log(decoded);
           }}
           onError={() => {
-            alert('Login Failed');
+            alert(t('common.login_error'));
           }}
         />
         <BaseButton
           type='submit'
-          name={isLogging ? 'Sign in' : 'Sign up'}
+          name={isLogging ? t('common.sign_in') : t('common.sign_up')}
           className='mt-5 mb-5'
           onClick={handleSubmit}
         />
         {isLogging ? (
           <p>
-            Don&apos;t have account yet?{' '}
+            {t('common.question_account')}{' '}
             <span
               onClick={handleIsLogging}
               className='cursor-pointer text-blue-400 hover:text-blue-600 hover:underline'
             >
-              Just create one!
+              {t('common.create_account')}
             </span>
           </p>
         ) : (
@@ -196,7 +208,7 @@ const LoginAndRegisterModal = (props) => {
             onClick={handleIsLogging}
             className='cursor-pointer text-blue-400 hover:text-blue-600 hover:underline'
           >
-            Sign in to your account!
+            {t('common.sign_account')}
           </p>
         )}
       </div>

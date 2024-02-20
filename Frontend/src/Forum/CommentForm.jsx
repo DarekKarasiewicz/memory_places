@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function CommentForm(props) {
   const [content, setContent] = useState('');
   const { postID } = props;
+  const { t } = useTranslation();
 
   const handleSubmit = () => {
     const item = { content: content, author: 1, post: postID };
@@ -22,7 +24,7 @@ function CommentForm(props) {
   return (
     <>
       <div>
-        <label htmlFor='comment-content'>Comment-Content</label>
+        <label htmlFor='comment-content'>{t('forum.comment_content')}</label>
         <br />
         <input
           type='text'
@@ -32,7 +34,7 @@ function CommentForm(props) {
           onChange={(e) => setContent(e.target.value)}
         />
         <br />
-        <input type='submit' onClick={handleSubmit} value='Save' />
+        <input type='submit' onClick={handleSubmit} value={t('common.save')} />
       </div>
     </>
   );

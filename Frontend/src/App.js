@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, Suspense } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
@@ -15,9 +15,11 @@ import { addPlaceActions } from './Redux/addPlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
 import { updatePlaceActions } from './Redux/updatePlaceSlice';
-import CookiesInfo from './Cookies/CookieInfo';
-import { useCookies } from 'react-cookie';
 import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
+import Loader from './Loader/Loader.js';
+import LocaleContext from './LocaleContext.js';
+import i18n from './i18n';
+import { useTranslation } from 'react-i18next';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +29,8 @@ function App() {
   const [showCookiesInfo, setShowCookiesInfo] = useState(false);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [locale, setLocale] = useState(i18n.language);
+  const { t } = useTranslation();
 
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
@@ -70,39 +74,47 @@ function App() {
   }, []);
 
   return (
-    <div className='w-screen h-screen relative'>
-      {userPlacesData.isOpen && <UserPlacesMenu />}
-      <GoogleMap />
-      {!addPlaceData.isSelecting && <Navbar />}
-      {modalData.isFormModalOpen && (
-        <FormModal title='Add place' type='create' closeModal={handleFormModalVisability} />
-      )}
-      {modalData.isUpdateModalOpen && (
-        <FormModal
-          title='Edit your place'
-          type='update'
-          closeModal={handleEditFormModalVisability}
-        />
-      )}
-      {modalData.isLoginAndRegisterOpen && (
-        <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
-      )}
-      {modalData.isUserSettingsOpen && (
-        <UserMenuSettings closeModal={handleUserSettingsVisability} />
-      )}
+    <LocaleContext.Provider value={{ locale, setLocale }}>
+      <Suspense fallback={<Loader />}>
+        <div className='w-screen h-screen relative'>
+          {userPlacesData.isOpen && <UserPlacesMenu />}
+          <GoogleMap />
+          {!addPlaceData.isSelecting && <Navbar />}
+          {modalData.isFormModalOpen && (
+            <FormModal
+              title={t('common.add_place')}
+              type='create'
+              closeModal={handleFormModalVisability}
+            />
+          )}
+          {modalData.isUpdateModalOpen && (
+            <FormModal
+              title='Edit your place'
+              type='update'
+              closeModal={handleEditFormModalVisability}
+            />
+           )}
+          {modalData.isLoginAndRegisterOpen && (
+            <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
+          )}
+          {modalData.isUserSettingsOpen && (
+            <UserMenuSettings closeModal={handleUserSettingsVisability} />
+          )}
 
-      {modalData.isNotificationModalOpen && (
-        <NotificationModal
-          title='This is warning message!'
-          info='Are you sure you want to see this? There is no coming back!'
-          type='warning'
-          closeModal={handleNotificationModalVisability}
-        />
-      )}
-
+          {modalData.isNotificationModalOpen && (
+            <NotificationModal
+              title={t('common.warning_title')}
+              info={t('common.warning_info')}
+              type='warning'
+              closeModal={handleNotificationModalVisability}
+            />
+          )}
+    
       {/* TO DO Save user cookie preferences in db */}
       {showCookiesInfo && modalData.isCookiesInfoOpen && <CookiesInfo closeModal={handleCookiesInfoVisability}/>}
     </div>
+      </Suspense>
+    </LocaleContext.Provider>
   );
 }
 

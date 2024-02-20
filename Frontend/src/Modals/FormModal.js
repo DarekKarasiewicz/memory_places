@@ -11,6 +11,7 @@ import { modalsActions } from '../Redux/modalsSlice';
 import { selectUpdatePlace, updatePlaceActions } from '../Redux/updatePlaceSlice';
 import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -29,36 +30,37 @@ function FormModal(props) {
   const [lng, setLng] = useState();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const { t } = useTranslation();
 
   const sortof_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Istniejące', value: 'existing' },
-    { label: 'Nieistniejące', value: 'non_existing' },
-    { label: 'Tablica upamiętniająca', value: 'commemorative_plaque' },
-    { label: 'Pomnik upamiętniający', value: 'commemorative_monument' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.existing'), value: 'existing' },
+    { label: t('modal.non_existing'), value: 'non_existing' },
+    { label: t('modal.commemorative_plaque'), value: 'commemorative_plaque' },
+    { label: t('modal.commemorative_monument'), value: 'commemorative_monument' },
   ];
 
   const type_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Cmentarz wojenny', value: 'war_cemetery' },
-    { label: 'Cmentarz cywilny', value: 'civilian_cemetery' },
-    { label: 'Miejsce pochówku', value: 'burial_site' },
-    { label: 'Miejsce egzekucji, straceń', value: 'place_of_executions' },
-    { label: 'Miejsce bitwy, potyczki', value: 'place_of_battle_skirmish' },
-    { label: 'Miejsce archeologiczne', value: 'archaeological_site' },
-    { label: 'Kapliczka', value: 'chapel' },
-    { label: 'Zabytek', value: 'monument' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.war_cemetery'), value: 'war_emetery' },
+    { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
+    { label: t('modal.burial_site'), value: 'burial_site' },
+    { label: t('modal.execution_site'), value: 'execution_site' },
+    { label: t('modal.battlefield'), value: 'battlefield' },
+    { label: t('modal.archaeological_site'), value: 'archaeological_site' },
+    { label: t('modal.wayside_shrine'), value: 'wayside_shrine' },
+    { label: t('modal.historical_monument'), value: 'historical_monument' },
   ];
 
   const period_options = [
-    { label: 'Wszystkie', value: 'all' },
-    { label: 'Polska przed 3cim rozbiorem  (< 1795)', value: 'poland_before_third_partition' },
-    { label: 'Wojny Napoleońskie (1799 – 1815)', value: 'napoleonic_wars' },
-    { label: 'Polska po rozbiorach (1795 – 1914)', value: 'poland_after_partitions' },
-    { label: 'I Wojna Światowa (1914 – 1918)', value: 'world_war_I' },
-    { label: 'Okres Międzywojenny (1918 – 1939)', value: 'interwar_period' },
-    { label: 'II Wojna Światowa (1939 – 1945)', value: 'world_war_II' },
-    { label: 'Okres Stalinowski (1945 – 1953)', value: 'stalinist_period' },
+    { label: t('modal.all'), value: 'all' },
+    { label: t('modal.poland_before_third_partition'), value: 'poland_before_third_partition' },
+    { label: t('modal.napoleonic_wars'), value: 'napoleonic_wars' },
+    { label: t('modal.poland_after_partitions'), value: 'poland_after_partitions' },
+    { label: t('modal.world_war_I'), value: 'world_war_I' },
+    { label: t('modal.interwar_period'), value: 'interwar_period' },
+    { label: t('modal.world_war_II'), value: 'world_war_II' },
+    { label: t('modal.stalinist_period'), value: 'stalinist_period' },
   ];
 
   useEffect(() => {
@@ -150,7 +152,7 @@ function FormModal(props) {
           });
       }
     } else {
-      alert('All boxes need to be filled');
+      alert(t('modal.filled_box_error'));
     }
   };
 
@@ -164,13 +166,13 @@ function FormModal(props) {
   };
 
   return (
-    <Fragment>
+    <>
       <BaseModal title={props.title} closeModal={props.closeModal}>
         <div className='p-2 max-h-[75vh] overflow-y-auto'>
           <BaseInput
             type='text'
             name='nameInput'
-            label='Name'
+            label={t('common.name')}
             value={addPlaceData.place_name}
             onBlur={() => {
               dispatch(addPlaceActions.changeName(nameRef.current.value));
@@ -180,7 +182,7 @@ function FormModal(props) {
           <BaseInput
             type='date'
             name='dateInput'
-            label='Date'
+            label={t('common.date')}
             ref={dateRef}
             value={addPlaceData.found_date}
             onBlur={() => {
@@ -190,9 +192,9 @@ function FormModal(props) {
           <div className='flex gap-8'>
             <BaseInput
               type='number'
-              placeholder='latitude'
+              placeholder={t('common.latitude')}
               name='lat'
-              label='latitude'
+              label={t('common.latitude')}
               value={props.type === 'update' ? lat : addPlaceData.lat}
               ref={latRef}
               onBlur={() => {
@@ -202,9 +204,9 @@ function FormModal(props) {
             />
             <BaseInput
               type='number'
-              placeholder='longitude'
+              placeholder={t('common.longitude')}
               name='lng'
-              label='longitude'
+              label={t('common.longitude')}
               value={props.type === 'update' ? lng : addPlaceData.lng}
               ref={lngRef}
               onBlur={() => {
@@ -214,12 +216,12 @@ function FormModal(props) {
             />
           </div>
           <div className='p-2 flex gap-4 justify-center'>
-            <BaseButton name='Select location' onClick={handleSelectLocationBtn} />
+            <BaseButton name={t('common.location_select')} onClick={handleSelectLocationBtn} />
           </div>
           <div className='flex gap-8'>
             <BaseSelect
-              label='Rodzaj'
-              name='Rodzaj'
+              label={t('common.type_of')}
+              name={t('common.type_of')}
               value={
                 props.type === 'update' && !updatePlaceData.isDataLoaded
                   ? updatePlaceData.place.sortof
@@ -232,8 +234,8 @@ function FormModal(props) {
               }}
             />
             <BaseSelect
-              label='Typ'
-              name='Typ'
+              label={t('common.type')}
+              name={t('common.type')}
               value={
                 props.type === 'update' && !updatePlaceData.isDataLoaded
                   ? updatePlaceData.place.type
@@ -247,8 +249,8 @@ function FormModal(props) {
             />
           </div>
           <BaseSelect
-            label='Okres'
-            name='Okres'
+            label={t('common.period')}
+            name={t('common.period')}
             value={
               props.type === 'update' && !updatePlaceData.isDataLoaded
                 ? updatePlaceData.place.period
@@ -262,7 +264,7 @@ function FormModal(props) {
           />
           <BaseTextarea
             rows='6'
-            label='Description'
+            label={t('common.description')}
             ref={descriptionRef}
             value={addPlaceData.description}
             onBlur={() => {
@@ -271,10 +273,10 @@ function FormModal(props) {
           />
         </div>
         <div className='p-2 flex gap-4 justify-center'>
-          <BaseButton type='submit' name='Confirm' onClick={handleConfirm}></BaseButton>
+          <BaseButton type='submit' name={t('common.confirm')} onClick={handleConfirm}></BaseButton>
         </div>
       </BaseModal>
-    </Fragment>
+    </>
   );
 }
 

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function PostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { t } = useTranslation();
 
   const handleSubmit = () => {
     const item = { title: title, content: content, author_id: 1, subforum: 1 };
@@ -22,26 +24,26 @@ function PostForm() {
   return (
     <>
       <div>
-        <label htmlFor='post-title'>Title</label>
+        <label htmlFor='post-title'>{t('forum.title')}</label>
         <input
           type='text'
           id='post-title'
           name='title'
-          placeholder='Post title'
+          placeholder={t('forum.post_title')}
           onChange={(e) => setTitle(e.target.value)}
         />
         <br />
 
-        <label htmlFor='post-content'>Content</label>
+        <label htmlFor='post-content'>{t('forum.content')}</label>
         <input
           type='text'
           id='post=content'
           name='content'
-          placeholder='Content'
+          placeholder={t('forum.content')}
           onChange={(e) => setContent(e.target.value)}
         />
         <br />
-        <input type='submit' onClick={handleSubmit} value='Save' />
+        <input type='submit' onClick={handleSubmit} value={t('common.save')} />
       </div>
     </>
   );

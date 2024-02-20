@@ -16,6 +16,8 @@ import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
 import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
 import AddPlaceButton from '../AddPlace/AddPlaceButton';
+import Loader from '../Loader/Loader';
+import { useTranslation } from 'react-i18next';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -35,6 +37,7 @@ const GoogleMap = () => {
   const [currentPlace, setCurrentPlace] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const addPlaceData = useSelector(selectAddPlace);
+  const { t } = useTranslation();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -50,11 +53,11 @@ const GoogleMap = () => {
       },
       (error) => {
         if (error.code === 1) {
-          alert('Premission Denied');
+          alert(t('google_maps.error1_info'));
         } else if (error.code === 2) {
-          alert('Position Unavilable');
+          alert(t('google_maps.error2_info'));
         } else {
-          alert('Timeout');
+          alert(t('google_maps.error3_info'));
         }
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -148,7 +151,7 @@ const GoogleMap = () => {
             <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
-                <button onClick={handleConfirm}>Confirm</button>
+                <button onClick={handleConfirm}>{t('common.confirm')}</button>
               </InfoWindow>
             )}
           </AdvancedMarker>
@@ -165,7 +168,7 @@ const GoogleMap = () => {
             </AdvancedMarker>
           ))
         ) : (
-          <p>No items available</p>
+          <p>{t('google_maps.no_items')}</p>
         )}
 
         {placeInfoBoxVisibility && (
@@ -177,34 +180,42 @@ const GoogleMap = () => {
             <div className='flex flex-col'>
               <span className='text-center font-bold'>{currentPlace.place_name}</span>
               <span>
-                <span className='italic font-medium'>Opis:</span> {currentPlace.description}
+                <span className='italic font-medium'>{t('commmon.description')}</span>{' '}
+                {currentPlace.description}
               </span>
               <span>
-                <span className='italic font-medium'>Utworzony:</span> {currentPlace.creation_date}
+                <span className='italic font-medium'>{t('common.created')}</span>{' '}
+                {currentPlace.creation_date}
               </span>
               <span>
-                <span className='italic font-medium'>Odnaleziony:</span> {currentPlace.found_date}
+                <span className='italic font-medium'>{t('common.founded')}</span>{' '}
+                {currentPlace.found_date}
               </span>
               <section className='flex gap-2'>
                 <span>
-                  <span className='italic font-medium'>Lng:</span> {currentPlace.lng}
+                  <span className='italic font-medium'>{t('common.latitude')}</span>{' '}
+                  {currentPlace.lng}
                 </span>
                 <span>
-                  <span className='italic font-medium'>Lat:</span> {currentPlace.lat}
+                  <span className='italic font-medium'>{t('common.longitude')}</span>{' '}
+                  {currentPlace.lat}
                 </span>
               </section>
               {/* TODO should be username */}
               <span>
-                <span className='italic font-medium'>Odkrył:</span> {currentPlace.user}
+                <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
+                {currentPlace.user}
               </span>
               <span>
-                <span className='italic font-medium'>Rodzaj:</span> {currentPlace.sortof}
+                <span className='italic font-medium'>{t('common.type_of')}</span>{' '}
+                {currentPlace.sortof}
               </span>
               <span>
-                <span className='italic font-medium'>Typ:</span> {currentPlace.type}
+                <span className='italic font-medium'>{t('common.type')}</span> {currentPlace.type}
               </span>
               <span>
-                <span className='italic font-medium'>Okres:</span> {currentPlace.period}
+                <span className='italic font-medium'>{t('common.period')}</span>{' '}
+                {currentPlace.period}
               </span>
             </div>
           </InfoWindow>
@@ -212,9 +223,7 @@ const GoogleMap = () => {
       </Map>
     </div>
   ) : (
-    <div className='absolute bottom-0 left-0 w-screen h-screen'>
-      <div>Loading...</div>
-    </div>
+    <Loader />
   );
 };
 

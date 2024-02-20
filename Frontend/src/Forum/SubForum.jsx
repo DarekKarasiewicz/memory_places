@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CommentForm from './CommentForm';
+import { useTranslation } from 'react-i18next';
 
 function SubForum() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -51,7 +53,10 @@ function SubForum() {
 
   return (
     <>
-      <p>Hello from subforum id:{id}</p>
+      <p>
+        {t('forum.welcome_id')}
+        {id}
+      </p>
       {loading ? (
         <p>Loading...</p>
       ) : (

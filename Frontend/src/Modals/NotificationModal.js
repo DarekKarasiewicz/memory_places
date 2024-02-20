@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import BaseButton from '../Base/BaseButton';
+import { useTranslation } from 'react-i18next';
 
 function NotificationModal(props) {
   const [typeColor, setTypeColor] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (props.type === 'alert') {
@@ -44,8 +46,8 @@ function NotificationModal(props) {
             <span className='text-lg'>{props.info}</span>
           </div>
           <div className='flex justify-end gap-2 mb-2'>
-            <BaseButton name='cancel' onClick={props.closeModal}></BaseButton>
-            <BaseButton name='confirm'></BaseButton>
+            <BaseButton name={t('common.cancel')} onClick={props.closeModal}></BaseButton>
+            <BaseButton name={t('common.confirm')}></BaseButton>
           </div>
         </div>
       </div>

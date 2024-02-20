@@ -3,24 +3,24 @@ import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DropdownItem from './DropdownItem/DropdownItem';
 import SearchBar from './SearchBar/SearchBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { modalsActions } from '../Redux/modalsSlice';
+import { useSelector } from 'react-redux';
 import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
 import { selectUserPlaces } from '../Redux/userPlacesSlice';
+import { useTranslation } from 'react-i18next';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
-  const dispatch = useDispatch();
   const userPlacesData = useSelector(selectUserPlaces);
+  const { t } = useTranslation();
 
   const handleClick = () => {
     setIsActive((current) => !current);
   };
 
   const dropdownItems = [
-    { link: '/', icon: 'map_icon', name: 'Main page' },
-    { link: '/forum', icon: 'forum_icon', name: 'Forum' },
+    { link: '/', icon: 'map_icon', name: t('navbar.main_page') },
+    { link: '/forum', icon: 'forum_icon', name: t('navbar.forum') },
   ];
 
   const parentItem = {

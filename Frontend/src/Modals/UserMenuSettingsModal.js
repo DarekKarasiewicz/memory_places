@@ -7,9 +7,11 @@ import RoleSettings from '../Navbar/UserMenu/UserMenuSettings/RoleSettings';
 import NotificiationsSettings from '../Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
 import LanguageSettings from '../Navbar/UserMenu/UserMenuSettings/LanguageSettings';
 import PreferencesSettings from '../Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
+import { useTranslation } from 'react-i18next';
 
 function UserMenuSettingsModal(props) {
   const [currentOption, setCurrentOption] = useState(null);
+  const { t } = useTranslation();
 
   const handleCurrentOption = (option) => {
     setCurrentOption(option);
@@ -46,7 +48,7 @@ function UserMenuSettingsModal(props) {
       <BaseModal closeModal={props.closeModal} width='2/6'>
         <div className='flex p-2'>
           <div className='w-2/6 text-xl flex flex-col gap-2 pr-4'>
-            <div>General</div>
+            <div>{t('user.general')}</div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
                 currentOption === 'account' ? 'bg-red-600' : ''
@@ -55,7 +57,7 @@ function UserMenuSettingsModal(props) {
               onClick={() => handleCurrentOption('account')}
             >
               <img src='./assets/account_icon.svg' alt='account_icon' className='h-5 w-5' />
-              Account
+              {t('user.account')}
             </motion.div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
@@ -65,7 +67,7 @@ function UserMenuSettingsModal(props) {
               onClick={() => handleCurrentOption('security')}
             >
               <img src='./assets/shield_lock_icon.svg' alt='shield_lock_icon' className='h-5 w-5' />
-              Security
+              {t('user.security')}
             </motion.div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
@@ -75,9 +77,9 @@ function UserMenuSettingsModal(props) {
               onClick={() => handleCurrentOption('role')}
             >
               <img src='./assets/user_role_icon.svg' alt='user_role_icon' className='h-5 w-5' />
-              Role
+              {t('user.role')}
             </motion.div>
-            <div>System</div>
+            <div>{t('user.system')}</div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
                 currentOption === 'notificiations' ? 'bg-red-600' : ''
@@ -93,7 +95,7 @@ function UserMenuSettingsModal(props) {
                 alt='notification_icon'
                 className='h-5 w-5'
               />
-              Notificiations
+              {t('user.notificiations')}
             </motion.div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
@@ -103,7 +105,7 @@ function UserMenuSettingsModal(props) {
               onClick={() => handleCurrentOption('language')}
             >
               <img src='./assets/language_icon.svg' alt='preferences_icon' className='h-5 w-5' />
-              Language
+              {t('user.language')}
             </motion.div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-lg pl-2 ${
@@ -113,7 +115,7 @@ function UserMenuSettingsModal(props) {
               onClick={() => handleCurrentOption('preferences')}
             >
               <img src='./assets/preferences_icon.svg' alt='preferences_icon' className='h-5 w-5' />
-              Preferences
+              {t('user.preferences')}
             </motion.div>
           </div>
           <div className='w-4/6 text-xl'>{contentComponent}</div>
