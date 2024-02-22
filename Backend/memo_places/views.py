@@ -5,6 +5,7 @@ from .models import Place, User
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.core.mail import send_mail
 
 import re
 import secrets
@@ -141,7 +142,16 @@ class Outside_user_view(viewsets.ModelViewSet):
         serializer = User_serializer(new_user)
 
         return Response(serializer.data)
+class VerificationMail(viewsets.ModelViewSet):
+    serializer_class = User_serializer
+    http_method_names = ["put"]
 
+    def update(self, request, *args, **kwargs):
+        user_object = User.objects.get(id=kwargs["pk"])
+        user_object.confirmed=True
+        user_object.save()
+
+        return Response("User activate") 
 
 class User_view(viewsets.ModelViewSet):
     serializer_class = User_serializer
@@ -158,8 +168,14 @@ class User_view(viewsets.ModelViewSet):
         )
 
         new_user.save()
-
         serializer = User_serializer(new_user)
+        send_mail("Verifictation mail"
+                , f'http://localhost:3000/userVerification/{serializer["id"].value}'
+                #Env not in views
+                ,'info@miejscapamieci.org.pl'
+                , [serializer['email'].value]
+                , fail_silently=False)
+                # , html_message=)
 
         return Response(serializer.data)
 

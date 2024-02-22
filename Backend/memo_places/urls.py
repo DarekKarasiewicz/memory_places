@@ -11,6 +11,7 @@ router = routers.DefaultRouter()
 router.register(r"places", views.Place_view, "place")
 router.register(r"users", views.User_view, "user")
 router.register(r"outside_users", views.Outside_user_view, "outside_user")
+router.register(r"user_verifi", views.VerificationMail, "user_verifi")
 # router.register(r'token/', views.MyTokenObtainPairView,'token_obtain_pair'),
 
 urlpatterns = [
