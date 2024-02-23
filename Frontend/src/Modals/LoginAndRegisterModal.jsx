@@ -158,18 +158,10 @@ const LoginAndRegisterModal = (props) => {
                       },
                     )
                     .then((response) => {
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                      },
-                    )
-                    .then((response) => {
                       // Handle successful response
                       // console.log(response.data);
                       decoded = { ...decoded, id: response.data.id };
                       setCookie('user', decoded);
-                    })
-                    .catch((error) => {
                     })
                     .catch((error) => {
                       // Handle error

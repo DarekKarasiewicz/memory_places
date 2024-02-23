@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
