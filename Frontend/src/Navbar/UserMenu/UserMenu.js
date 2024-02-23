@@ -57,7 +57,7 @@ function UserMenu() {
   };
 
   const menuItems = [
-    { icon: 'notification', name: t('user.notificiations') },
+    { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
     { icon: 'help', name: t('user.help') },
@@ -105,14 +105,14 @@ function UserMenu() {
           ></img>
         </motion.div>
         {isActive && (
-          <motion.ul
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4'
-            variants={parentItem}
-            initial='hidden'
-            animate='visible'
-          >
-            <li className='capitalize text-xl'>{user.username}</li>
-            <li className='uppercase text-sm'>{user.admin ? t('user.admin') : t('user.user')}</li>
+            <motion.ul
+              className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4 z-10'
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
+            >
+              <li className='capitalize text-xl'>{user.username}</li>
+              <li className='uppercase text-sm'>{user.admin ? t('user.admin') : t('user.user')}</li>
 
             {menuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
