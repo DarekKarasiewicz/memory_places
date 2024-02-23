@@ -20,6 +20,7 @@ import Loader from './Loader/Loader.js';
 import LocaleContext from './LocaleContext.js';
 import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher.js';
 
 function App() {
   const dispatch = useDispatch();
@@ -100,7 +101,6 @@ function App() {
           {modalData.isUserSettingsOpen && (
             <UserMenuSettings closeModal={handleUserSettingsVisability} />
           )}
-
           {modalData.isNotificationModalOpen && (
             <NotificationModal
               title={t('common.warning_title')}
@@ -112,6 +112,8 @@ function App() {
     
       {/* TO DO Save user cookie preferences in db */}
       {showCookiesInfo && modalData.isCookiesInfoOpen && <CookiesInfo closeModal={handleCookiesInfoVisability}/>}
+      
+      <LanguageSwitcher />
     </div>
       </Suspense>
     </LocaleContext.Provider>

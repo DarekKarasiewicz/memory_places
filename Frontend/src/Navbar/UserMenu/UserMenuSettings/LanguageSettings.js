@@ -19,7 +19,8 @@ function LanguageSettings() {
   const lang_options = [
     { label: t('user.pl'), value: 'polish' },
     { label: t('user.en'), value: 'english' },
-    { label: t('user.ger'), value: 'german' },
+    { label: t('user.de'), value: 'german' },
+    { label: t('user.ru'), value: 'russian' },
   ];
 
   const date_format_options = [

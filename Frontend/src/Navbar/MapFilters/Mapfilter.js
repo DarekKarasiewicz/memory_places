@@ -99,7 +99,7 @@ function MapFilter() {
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-300 rounded-s-lg'
+          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-300 rounded-s-lg z-10'
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
             <div className='text-2xl border-b-2 border-black p-2'>{t('common.filter1')}</div>
