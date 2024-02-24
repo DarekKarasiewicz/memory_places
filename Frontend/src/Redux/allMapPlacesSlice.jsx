@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const initialState = {
+  name: '',
   sortof: 'all',
   type: 'all',
   period: 'all',
@@ -15,22 +16,28 @@ export const allMapPlacesSlice = createSlice({
   initialState,
   reducers: {
     filterPlaces: (state, action) => {
-      const { sortof, type, period } = action.payload;
+      const { name, sortof, type, period } = action.payload;
 
-      if (sortof === 'all' && type === 'all' && period === 'all') {
-        state.filterItems = state.allItems;
-      } else {
-        state.filterItems = state.allItems.filter(
-          (item) =>
-            (sortof === 'all' || item.sortof === sortof) &&
-            (type === 'all' || item.type === type) &&
-            (period === 'all' || item.period === period),
-        );
-      }
-
+      state.name = name;
       state.sortof = sortof;
       state.type = type;
       state.period = period;
+
+      if (name === '' && sortof === 'all' && type === 'all' && period === 'all') {
+        state.filterItems = state.allItems;
+      } else {
+        state.filterItems = state.allItems.filter((item) => {
+          const itemName = item.place_name ? item.place_name.toLowerCase() : '';
+          const filterName = name ? name.toLowerCase() : '';
+
+          return (
+            (name === '' || itemName.includes(filterName)) &&
+            (sortof === 'all' || item.sortof === sortof) &&
+            (type === 'all' || item.type === type) &&
+            (period === 'all' || item.period === period)
+          );
+        });
+      }
     },
     deletePlace: (state, action) => {
       const placeId = action.payload;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import BaseInput from '../../Base/BaseInput';
 import BaseSelect from '../../Base/BaseSelect';
@@ -32,13 +32,14 @@ function MapFilter() {
     setSelectedPeriodOption(event.target.value);
   };
 
-  const handleTextValueChange = (value) => {
-    setTextValue(value);
+  const handleTextValueChange = (event) => {
+    setTextValue(event.target.value);
   };
 
   const handleFilterChange = () => {
     dispatch(
       filterPlaces({
+        name: textValue,
         sortof: selectedSortOfOption,
         type: selectedTypeOption,
         period: selectedPeriodOption,
@@ -47,7 +48,6 @@ function MapFilter() {
   };
 
   //For each options later will be added more 9 options from client
-  //TODO Change points value to match this ones
   const sortof_options = [
     { label: t('modal.all'), value: 'all' },
     { label: t('modal.existing'), value: 'existing' },
@@ -104,13 +104,13 @@ function MapFilter() {
           <div className='flex flex-col gap-y-3 justify-start items-center'>
             <div className='text-2xl border-b-2 border-black p-2'>{t('common.filter1')}</div>
             <div className='flex flex-col gap-2'>
-              {/* <BaseInput
+              <BaseInput
                 type='text'
                 label={t('common.name')}
                 name={t('common.name')}
                 value={textValue}
                 onChange={handleTextValueChange}
-              /> */}
+              />
               <BaseSelect
                 label={t('common.type_of')}
                 name={t('common.type_of')}
