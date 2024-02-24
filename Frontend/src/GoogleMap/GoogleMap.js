@@ -180,7 +180,7 @@ const GoogleMap = () => {
             <div className='flex flex-col'>
               <span className='text-center font-bold'>{currentPlace.place_name}</span>
               <span>
-                <span className='italic font-medium'>{t('commmon.description')}</span>{' '}
+                <span className='italic font-medium'>{t('common.description')}</span>{' '}
                 {currentPlace.description}
               </span>
               <span>
