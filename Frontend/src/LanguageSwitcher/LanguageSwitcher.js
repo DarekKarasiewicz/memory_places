@@ -9,7 +9,6 @@ function LanguageSwitcher() {
   const { t } = useTranslation();
 
   const handleLanguageChange = (value) => {
-    console.log(value);
     setLanguage(value);
     i18n.changeLanguage(value);
     setIsOpen(false);
@@ -28,7 +27,7 @@ function LanguageSwitcher() {
         <div className='relative inline-block'>
           <button
             type='button'
-            className='inline-flex gap-2 justify-center items-center  w-full rounded-lg border border-gray-600 bg-gray-300 px-4 py-2 text-sm leading-5 font-medium text-gray-700 shadow-sm hover:text-gray-500 active:bg-gray-50 active:text-gray-800'
+            className='inline-flex gap-1 justify-center items-center  w-full rounded-lg border border-gray-600 bg-gray-300 px-4 py-2 text-sm leading-5 font-medium text-gray-700 shadow-sm hover:text-gray-500 active:bg-gray-50 active:text-gray-800'
             aria-haspopup='true'
             aria-expanded='true'
             onClick={() => setIsOpen(!isOpen)}
@@ -38,7 +37,15 @@ function LanguageSwitcher() {
               alt={lang_options.find((option) => option.value === language).alt}
               className='h-4 w-5 shadow-2xl border-1 border-black'
             />
-            {isOpen ? <span>&#11205;</span> : <span>&#11206;</span>}
+            {isOpen ? (
+              <img className='h-6 w-6' src='./assets/arrow_up_icon.svg' alt='up arrow icon'></img>
+            ) : (
+              <img
+                className='h-6 w-6'
+                src='./assets/arrow_down_icon.svg'
+                alt='down arrow icon'
+              ></img>
+            )}
           </button>
 
           {isOpen && (

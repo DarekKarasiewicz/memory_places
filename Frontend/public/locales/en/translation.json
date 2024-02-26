@@ -7,8 +7,10 @@
         "save": "Save",
         "name": "Name",
         "date": "Date",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
+        "latitude": "Latitude:",
+        "longitude": "Longitude:",
+        "wiki-link": "Wikipedia link:",
+        "topic-link": "Topic page link:",
         "location_select": "Select location",
         "type_of": "Type of:",
         "type": "Type:",
@@ -32,7 +34,9 @@
         "not_given_name": "Not given name",
         "filter1": "Filters",
         "filter2": "Filter",
-        "search": "Search..."
+        "search": "Search...",
+        "axios_warning": "Something went wrong, try again later",
+        "place_warning": "No added place yet"
     },
     "forum": {
         "comment_content": "Comment-Content",
