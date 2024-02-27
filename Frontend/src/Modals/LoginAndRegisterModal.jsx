@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { GoogleLogin } from '@react-oauth/google';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import useAuth from '../Hooks/useAuth';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState();
@@ -17,6 +18,7 @@ const LoginAndRegisterModal = (props) => {
   const [isValidPassword, setIsValidPassword] = useState(null);
   const [isValidConfPassword, setIsValidConfPassword] = useState(null);
   const [isUsernameValid, setIsUsernameValid] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confPasswordRef = useRef(null);
@@ -24,6 +26,7 @@ const LoginAndRegisterModal = (props) => {
   const dispatch = useDispatch();
   const [cookies, setCookie] = useCookies(['user']);
   const { t } = useTranslation();
+  const { setUserCredentials } = useAuth();
 
   useEffect(() => {
     setTitle(t('common.sign_in'));
@@ -66,16 +69,46 @@ const LoginAndRegisterModal = (props) => {
           password: passwordRef.current.value,
         };
         axios
-          .post('http://localhost:8000/memo_places/token/', {
-            email: `${user.email}`,
-            password: `${user.password}`,
-          })
+          .post(
+            'http://localhost:8000/memo_places/token/',
+            {
+              email: `${user.email}`,
+              password: `${user.password}`,
+            },
+            { headers: { 'Content-Type': 'application/json' } },
+          )
           .then((response) => {
             const decoded = jwtDecode(response.data.access);
-            setCookie('user', decoded);
-            // console.log(decoded);
+            console.log(decoded);
+            // setCookie(
+            //   'user',
+            //   {
+            //     admin: decoded.admin,
+            //     master: decoded.master,
+            //     user_id: decoded.user_id,
+            //     email: decoded.email,
+            //     username: decoded.username,
+            //   },
+            //   { expires: new Date(decoded.exp * 1000) },
+            // );
+            //set as HTTPOnly and secure
+            setUserCredentials({
+              user: { user_id: decoded.user_id, username: decoded.username, email: decoded.email },
+              isAdmin: decoded.admin,
+              isMaster: decoded.master,
+              accessToken: decoded.jti,
+            });
+            dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+          })
+          .catch((error) => {
+            if (!error.response) {
+              setErrorMsg('No Server Response');
+            } else if (error.response.status === 401) {
+              setErrorMsg('Unauthorized');
+            } else {
+              setErrorMsg('Login Failed');
+            }
           });
-        dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       } else {
         alert(t('common.check_inputs'));
       }
