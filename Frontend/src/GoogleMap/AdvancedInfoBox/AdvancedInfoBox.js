@@ -12,12 +12,15 @@ const AdvancedInfoBox = (props) => {
   const SliderData = [
     {
       image: 'https://placehold.co/600x400/000000/FFFFFF/png',
+      alt: 'Example alt 1',
     },
     {
       image: 'https://placehold.co/600x400/000000/FF0000/png',
+      alt: 'Example alt 2',
     },
     {
       image: 'https://placehold.co/600x400/000000/0000FF/png',
+      alt: 'Example alt 3',
     },
   ];
 

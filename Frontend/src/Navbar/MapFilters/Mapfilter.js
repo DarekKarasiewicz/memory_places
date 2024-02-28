@@ -58,7 +58,7 @@ function MapFilter() {
 
   const type_options = [
     { label: t('modal.all'), value: 'all' },
-    { label: t('modal.war_cemetery'), value: 'war_emetery' },
+    { label: t('modal.war_cemetery'), value: 'war_cemetery' },
     { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
     { label: t('modal.burial_site'), value: 'burial_site' },
     { label: t('modal.execution_site'), value: 'execution_site' },

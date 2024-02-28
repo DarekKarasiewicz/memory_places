@@ -198,6 +198,7 @@ const GoogleMap = () => {
             options={{ pixelOffset: { width: 0, height: -30 } }}
           >
             <div className='flex flex-col items-center'>
+              {/* TODO when from backend will be array of images get first one and put it here */}
               <section>
                 <img src='https://placehold.co/300x200' alt='placeholder-image'></img>
               </section>
@@ -215,7 +216,7 @@ const GoogleMap = () => {
               </section>
               <BaseButton
                 className='text-sm'
-                name='Więcej informacji'
+                name={t('common.more_info')}
                 onClick={fetchSelectedPlaceInfo}
               />
             </div>

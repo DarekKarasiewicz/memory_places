@@ -36,7 +36,8 @@
         "filter2": "Filter",
         "search": "Search...",
         "axios_warning": "Something went wrong, try again later",
-        "place_warning": "No added place yet"
+        "place_warning": "No added place yet",
+        "more_info": "More info"
     },
     "forum": {
         "comment_content": "Comment-Content",

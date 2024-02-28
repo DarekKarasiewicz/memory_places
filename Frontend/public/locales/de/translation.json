@@ -36,7 +36,8 @@
         "filter2": "Filtern",
         "search": "Suchen...",
         "axios_warning": "Etwas ist schiefgelaufen, versuchen Sie es später erneut",
-        "place_warning": "Noch kein Ort hinzugefügt"
+        "place_warning": "Noch kein Ort hinzugefügt",
+        "more_info": "Mehr Informationen"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
