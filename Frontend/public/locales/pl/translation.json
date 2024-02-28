@@ -36,7 +36,8 @@
         "filter2": "Filtruj",
         "search": "Szukaj...",
         "axios_warning": "Coś poszło nie tak, spróbuj ponownie później",
-        "place_warning": "Brak dodanych miejsc pamięci"
+        "place_warning": "Brak dodanych miejsc pamięci",
+        "more_info": "Więcej informacji"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
