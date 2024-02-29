@@ -1,7 +1,6 @@
 Backend/db.sqlite3
 Backend/.env
 Backend/memo_places/__pycache__
-Backend/memo_places/__pycache__
 Backend/memo_places/migrations
 Backend/memo_places_forum/__pycache__
 Backend/memo_places_forum/migrations
