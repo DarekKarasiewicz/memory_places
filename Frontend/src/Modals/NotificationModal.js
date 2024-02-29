@@ -31,11 +31,7 @@ function NotificationModal(props) {
         >
           <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
             <div className='flex justify-center items-center gap-2 text-xl'>
-              <img
-                src={`./assets/dialog/${iconName}.svg`}
-                alt={iconName}
-                className='h-8 w-8'
-              ></img>
+              <img src={`./assets/dialog/${iconName}.svg`} alt={iconName} className='h-8 w-8'></img>
               <span className={`capitalize font-medium ${typeColor}`}>{props.title}</span>
             </div>
             <motion.div
