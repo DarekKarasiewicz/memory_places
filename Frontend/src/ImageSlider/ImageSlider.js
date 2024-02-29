@@ -35,12 +35,27 @@ function ImageSlider(props) {
           }}
         >
           {props.slides.map((slide, index) => (
-            <img key={index} src={slide.image} alt={slide.alt} className='h-auto max-w-full w-auto object-fit' style={{ maxHeight: '24rem' }}  />
+            <img
+              key={index}
+              src={slide.image}
+              alt={slide.alt}
+              className='h-auto max-w-full w-auto object-fit'
+              style={{ maxHeight: '24rem' }}
+            />
           ))}
         </div>
-        <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-slate-600 flex gap-1 p-2 rounded-full mb-2 ${slidesLength === 1 ? 'pointer-events-none hidden' : 'cursor-pointer'}`}>
+        <div
+          className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-slate-600 flex gap-1 p-2 rounded-full mb-2 ${
+            slidesLength === 1 ? 'pointer-events-none hidden' : 'cursor-pointer'
+          }`}
+        >
           {props.slides.map((slide, index) => (
-            <div key={index} className={`h-3 w-3 rounded-full ${colors} ${index === currentSlide ? 'bg-white' : 'bg-slate-400'}`}></div>
+            <div
+              key={index}
+              className={`h-3 w-3 rounded-full ${colors} ${
+                index === currentSlide ? 'bg-white' : 'bg-slate-400'
+              }`}
+            ></div>
           ))}
         </div>
       </div>
