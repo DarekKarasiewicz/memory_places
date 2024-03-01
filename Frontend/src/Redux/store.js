@@ -15,6 +15,6 @@ export const store = configureStore({
     userPlaces: userPlacesReducer,
     addPlace: addPlaceReducer,
     updatePlace: updatePlaceReducer,
-    allMapPlaces: allMapPlacesReducer
+    allMapPlaces: allMapPlacesReducer,
   },
 });

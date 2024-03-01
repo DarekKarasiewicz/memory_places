@@ -7,8 +7,10 @@
         "save": "Speichern",
         "name": "Name",
         "date": "Datum",
-        "latitude": "Breitengrad",
-        "longitude": "Längengrad",
+        "latitude": "Breitengrad:",
+        "longitude": "Längengrad:",
+        "wiki-link": "Wikipedia-Link:",
+        "topic-link": "Themen-Seiten-Link:",
         "location_select": "Ort auswählen",
         "type_of": "Art:",
         "type": "Typ:",
@@ -32,7 +34,10 @@
         "not_given_name": "Kein Name angegeben",
         "filter1": "Filter",
         "filter2": "Filtern",
-        "search": "Suchen..."
+        "search": "Suchen...",
+        "axios_warning": "Etwas ist schiefgelaufen, versuchen Sie es später erneut",
+        "place_warning": "Noch kein Ort hinzugefügt",
+        "more_info": "Mehr Informationen"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",

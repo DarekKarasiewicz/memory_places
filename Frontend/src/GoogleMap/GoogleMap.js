@@ -18,6 +18,9 @@ import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
 import AddPlaceButton from '../AddPlace/AddPlaceButton';
 import Loader from '../Loader/Loader';
 import { useTranslation } from 'react-i18next';
+import BaseButton from '../Base/BaseButton';
+import axios from 'axios';
+import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -35,6 +38,7 @@ const GoogleMap = () => {
   const [infowindowShown, setInfowindowShown] = useState(false);
   const [placeInfoBoxVisibility, setPlaceInfoBoxVisibility] = useState(false);
   const [currentPlace, setCurrentPlace] = useState([]);
+  const [currentPlaceData, setCurrentPlaceData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
@@ -125,6 +129,22 @@ const GoogleMap = () => {
     }
     dispatch(modalsActions.changeIsFormModalOpen());
   };
+  const fetchSelectedPlaceInfo = async () => {
+    if (!currentPlace) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/memo_places/places/pk=${currentPlace.id}`,
+      );
+      setCurrentPlaceData(response.data);
+      dispatch(modalsActions.changeIsAdvancedInfoOpen());
+    } catch (error) {
+      alert(t('common.axios_warning'));
+    }
+  };
+
+  const handleAdvancedInfoBoxVisability = () => {
+    dispatch(modalsActions.changeIsAdvancedInfoOpen());
+  };
 
   return isLoaded && isPositionLoaded ? (
     <div
@@ -177,48 +197,34 @@ const GoogleMap = () => {
             onCloseClick={closePlaceInfoBox}
             options={{ pixelOffset: { width: 0, height: -30 } }}
           >
-            <div className='flex flex-col'>
-              <span className='text-center font-bold'>{currentPlace.place_name}</span>
-              <span>
-                <span className='italic font-medium'>{t('commmon.description')}</span>{' '}
-                {currentPlace.description}
-              </span>
-              <span>
-                <span className='italic font-medium'>{t('common.created')}</span>{' '}
-                {currentPlace.creation_date}
-              </span>
-              <span>
-                <span className='italic font-medium'>{t('common.founded')}</span>{' '}
-                {currentPlace.found_date}
-              </span>
-              <section className='flex gap-2'>
+            <div className='flex flex-col items-center'>
+              {/* TODO when from backend will be array of images get first one and put it here */}
+              <section>
+                <img src='https://placehold.co/300x200' alt='placeholder-image'></img>
+              </section>
+              <section className='flex flex-col gap-1 my-1 justify-center items-center'>
+                <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
-                  <span className='italic font-medium'>{t('common.latitude')}</span>{' '}
-                  {currentPlace.lng}
+                  <span className='italic font-medium'>{t('common.created')}</span>{' '}
+                  {currentPlace.creation_date}
                 </span>
+                {/* TODO should be username */}
                 <span>
-                  <span className='italic font-medium'>{t('common.longitude')}</span>{' '}
-                  {currentPlace.lat}
+                  <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
+                  {currentPlace.user}
                 </span>
               </section>
-              {/* TODO should be username */}
-              <span>
-                <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
-                {currentPlace.user}
-              </span>
-              <span>
-                <span className='italic font-medium'>{t('common.type_of')}</span>{' '}
-                {currentPlace.sortof}
-              </span>
-              <span>
-                <span className='italic font-medium'>{t('common.type')}</span> {currentPlace.type}
-              </span>
-              <span>
-                <span className='italic font-medium'>{t('common.period')}</span>{' '}
-                {currentPlace.period}
-              </span>
+              <BaseButton
+                className='text-sm'
+                name={t('common.more_info')}
+                onClick={fetchSelectedPlaceInfo}
+              />
             </div>
           </InfoWindow>
+        )}
+
+        {modalsData.isAdvancedInfoOpen && (
+          <AdvancedInfoBox data={currentPlaceData} closeInfo={handleAdvancedInfoBoxVisability} />
         )}
       </Map>
     </div>

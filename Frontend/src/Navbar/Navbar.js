@@ -46,8 +46,8 @@ function Navbar() {
   return (
     <>
       <nav
-        className={`relative flex justify-between p-3 ${
-          userPlacesData.isOpen && 'w-2/3 float-right'
+        className={`relative flex justify-between p-3 z-10${
+          userPlacesData.isOpen ? 'w-2/3 float-right' : ''
         }`}
       >
         <div className='flex gap-2 items-center'>

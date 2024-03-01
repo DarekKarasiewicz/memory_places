@@ -7,8 +7,10 @@
         "save": "Zapisz",
         "name": "Nazwa",
         "date": "Data",
-        "latitude": "Szerokość geograficzna",
-        "longitude": "Długość geograficzna",
+        "latitude": "Szerokość geograficzna:",
+        "longitude": "Długość geograficzna:",
+        "wiki-link": "Link do wikipedii:",
+        "topic-link": "Link do strony tematycznej:",
         "location_select": "Wybierz miejsce",
         "type_of": "Rodzaj:",
         "type": "Typ:",
@@ -32,7 +34,10 @@
         "not_given_name": "Nie podano nazwy",
         "filter1": "Filtry",
         "filter2": "Filtruj",
-        "search": "Szukaj..."
+        "search": "Szukaj...",
+        "axios_warning": "Coś poszło nie tak, spróbuj ponownie później",
+        "place_warning": "Brak dodanych miejsc pamięci",
+        "more_info": "Więcej informacji"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
