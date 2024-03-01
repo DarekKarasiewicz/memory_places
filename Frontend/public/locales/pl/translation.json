@@ -1,6 +1,7 @@
 {
     "common": {
         "add_place": "Dodaj miejsce",
+        "edit_place": "Edytuj miejsce",
         "warning_title": "Ostrzeżenie!",
         "warning_info": "Jesteś pewny swojej decyzji? Nie może jej później zmienić.",
         "confirm": "Zatwierdź",
@@ -16,6 +17,7 @@
         "type": "Typ:",
         "period": "Okres:",
         "description": "Opis:",
+        "description-max": "maks. 1000 znaków",
         "created": "Utworzony:",
         "founded": "Odnaleziony:",
         "founded_by": "Odkrył:",

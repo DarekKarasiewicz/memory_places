@@ -1,6 +1,7 @@
 {
     "common": {
         "add_place": "Add place",
+        "edit_place": "Edit your place",
         "warning_title": "This is warning message!",
         "warning_info": "Are you sure you want to see this? There is no coming back.",
         "confirm": "Confirm",
@@ -16,6 +17,7 @@
         "type": "Type:",
         "period": "Period:",
         "description": "Description:",
+        "description-max": "max. 1000 characters",
         "created": "Created:",
         "founded": "Founded:",
         "founded_by": "Founded by:",
