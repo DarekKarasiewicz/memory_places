@@ -32,8 +32,8 @@ const UserPlaceItem = (props) => {
 
   return (
     <li
-      className={` h-34 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row ${
-        props.clickedItem === props.place.id ? 'bg-gray-200' : 'bg-white'
+      className={`h-34 mt-5 mx-5 p-4 rounded-lg ${visability} flex-row ${
+        props.clickedItem === props.place.id ? 'bg-slate-400' : 'bg-slate-300'
       }`}
       key={props.place.id}
     >
@@ -46,23 +46,23 @@ const UserPlaceItem = (props) => {
       </div>
       <div className='w-2/3'>
         <div className='w-full h-1/2 pl-1'>
-          <h2 className='truncate'>{props.place.place_name}</h2>
-          <p className='text-end text-xs'>{props.place.found_date}</p>
+          <h2 className='truncate font-semibold'>{props.place.place_name}</h2>
+          <p className='text-end text-sm'>{props.place.found_date}</p>
         </div>
-        <div className='w-full h-1/2 pl-1 flex justify-end items-center'>
+        <div className='w-full h-1/2 flex justify-end items-center gap-4'>
           <motion.div
-            className='rounded-full bg-green-700 h-10 w-10 mr-5 flex justify-center items-center hover:bg-green-900'
+            className='rounded-full bg-green-700 h-12 w-12 flex justify-center items-center hover:bg-green-900 cursor-pointer'
             onClick={handleUpdateModalVisability}
             whileHover={{
-              scale: 1.1,
+              scale: 1.05,
             }}
           >
             <img src='../../assets/edit_white_icon.svg' className='w-6 h-6' />
           </motion.div>
           <motion.div
-            className='rounded-full bg-red-700 h-10 w-10 flex justify-center items-center hover:bg-red-900'
+            className='rounded-full bg-red-700 h-12 w-12 flex justify-center items-center hover:bg-red-900 cursor-pointer'
             whileHover={{
-              scale: 1.1,
+              scale: 1.05,
             }}
             onClick={handlePlaceDelete}
           >

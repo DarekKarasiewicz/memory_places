@@ -37,7 +37,7 @@ const UserMenu = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-slate-300 pb-5 ${
+      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-slate-600 pb-5 shadow-xl${
         userPlaces && userPlaces.length < 1 && 'flex justify-center items-center'
       }`}
     >

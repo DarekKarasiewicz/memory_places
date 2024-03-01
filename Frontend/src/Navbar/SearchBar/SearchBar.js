@@ -89,7 +89,9 @@ function SearchBar() {
             ></img>
           </motion.div>
         )}
-        <div
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
           className={`${
             isActive ? 'rounded-r-lg' : 'rounded-full'
           } border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-5 relative`}
@@ -104,7 +106,7 @@ function SearchBar() {
             }
             className='h-6 w-6'
           ></img>
-        </div>
+        </motion.div>
       </div>
     </>
   );

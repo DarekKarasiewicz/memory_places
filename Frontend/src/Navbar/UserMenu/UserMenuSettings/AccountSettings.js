@@ -117,11 +117,12 @@ function AccountSettings() {
         ></BaseInput>
         {isValidEmail === false && <p className='text-red-500 text-xs'>{t('user.email_error')}</p>}
         {isValidName || isValidSurname || isValidEmail ? (
-          <BaseButton name={t('user.confirm')} className='mt-2' onClick={handleSumbit} />
+          <BaseButton name={t('user.confirm')} className='mt-2' btnBg='blue' onClick={handleSumbit} />
         ) : (
           <BaseButton
             name={t('user.confirm')}
             className='mt-2 cursor-not-allowed'
+            btnBg='blue'
             disabled={true}
           />
         )}

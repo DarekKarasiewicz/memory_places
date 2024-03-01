@@ -58,11 +58,12 @@ function SecuritySettings() {
           <p className='text-red-500 text-xs'>{t('log_reg_form.pass_similar')}</p>
         )}
         {isValidPassword && isValidConfirmPassword ? (
-          <BaseButton name={t('common.confirm')} className='mt-2' onClick={handleSumbit} />
+          <BaseButton name={t('common.confirm')} className='mt-2' btnBg='blue' onClick={handleSumbit} />
         ) : (
           <BaseButton
             name={t('common.confirm')}
             className='mt-2 cursor-not-allowed'
+            btnBg='blue'
             disabled={true}
           />
         )}

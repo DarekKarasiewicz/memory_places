@@ -82,9 +82,11 @@ function MapFilter() {
   return (
     <div className='flex'>
       <motion.div
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.05 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300 ${
-          isActive ? 'right-72 absolute mr-3' : ''
+          isActive ? 'right-72 absolute mr-3 top-2' : ''
         }`}
         onClick={handleClick}
       >
@@ -99,11 +101,11 @@ function MapFilter() {
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-300 rounded-s-lg z-10'
+          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-600 rounded-s-lg z-10 shadow-xl'
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2'>{t('common.filter1')}</div>
-            <div className='flex flex-col gap-2'>
+            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>{t('common.filter1')}</div>
+            <div className='flex flex-col gap-2 mb-2'>
               <BaseInput
                 type='text'
                 label={t('common.name')}
@@ -133,7 +135,7 @@ function MapFilter() {
                 onChange={handleSelectPeriodChange}
               />
             </div>
-            <BaseButton onClick={handleFilterChange} name={t('common.filter2')} />
+            <BaseButton onClick={handleFilterChange} btnBg='blue' name={t('common.filter2')} />
           </div>
         </motion.div>
       )}

@@ -183,6 +183,7 @@ const LoginAndRegisterModal = (props) => {
           type='submit'
           name={isLogging ? t('common.sign_in') : t('common.sign_up')}
           className='mt-5 mb-5'
+          btnBg='blue'
           onClick={handleSubmit}
         />
         {isLogging ? (

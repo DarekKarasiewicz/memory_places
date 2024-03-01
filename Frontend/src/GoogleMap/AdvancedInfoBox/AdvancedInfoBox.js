@@ -110,7 +110,7 @@ const AdvancedInfoBox = (props) => {
                 </section>
               </section>
               <section className='mx-auto'>
-                <BaseButton name='close info' onClick={props.closeInfo}></BaseButton>
+                <BaseButton name='close info' btnBg='red' onClick={props.closeInfo}></BaseButton>
               </section>
             </div>
           </div>

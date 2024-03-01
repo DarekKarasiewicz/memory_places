@@ -34,7 +34,7 @@ function NotificiationsSettings() {
         </div>
         {/* Describe what each level mean */}
         <span className='text-center italic text-lg whitespace-pre-line'>{message}</span>
-        <BaseButton name={t('user.confirm')} className='mt-2' />
+        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
     </div>
   );
