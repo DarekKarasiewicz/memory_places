@@ -2,6 +2,7 @@
     "common": {
         "add_place": "Ort hinzufügen",
         "warning_title": "Warnung!",
+        "edit_place": "Bearbeiten Sie Ihren Ort",
         "warning_info": "Bist du sicher über deine Entscheidung? Du kannst sie später nicht ändern.",
         "confirm": "Bestätigen",
         "save": "Speichern",
@@ -16,6 +17,7 @@
         "type": "Typ:",
         "period": "Zeitraum:",
         "description": "Beschreibung:",
+        "description-max": "max. 1000 Zeichen",
         "created": "Erstellt:",
         "founded": "Gegründet:",
         "founded_by": "Gefunden von:",
