@@ -104,7 +104,9 @@ function MapFilter() {
           className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-600 rounded-s-lg z-10 shadow-xl'
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>{t('common.filter1')}</div>
+            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>
+              {t('common.filter1')}
+            </div>
             <div className='flex flex-col gap-2 mb-2'>
               <BaseInput
                 type='text'

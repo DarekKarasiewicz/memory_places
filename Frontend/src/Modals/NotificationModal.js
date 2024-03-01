@@ -47,7 +47,11 @@ function NotificationModal(props) {
             <span className='text-lg'>{props.info}</span>
           </div>
           <div className='flex justify-end gap-2 mb-2'>
-            <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal}></BaseButton>
+            <BaseButton
+              name={t('common.cancel')}
+              btnBg='red'
+              onClick={props.closeModal}
+            ></BaseButton>
             <BaseButton name={t('common.confirm')} btnBg='blue'></BaseButton>
           </div>
         </div>

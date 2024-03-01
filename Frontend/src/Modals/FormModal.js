@@ -216,7 +216,11 @@ function FormModal(props) {
             />
           </div>
           <div className='p-2 flex justify-center mt-2'>
-            <BaseButton name={t('common.location_select')} btnBg='blue' onClick={handleSelectLocationBtn} />
+            <BaseButton
+              name={t('common.location_select')}
+              btnBg='blue'
+              onClick={handleSelectLocationBtn}
+            />
           </div>
           <div className='flex gap-8'>
             <BaseSelect
@@ -274,7 +278,12 @@ function FormModal(props) {
           />
         </div>
         <div className='p-2 flex gap-4 justify-center'>
-          <BaseButton type='submit' name={t('common.confirm')} btnBg='blue' onClick={handleConfirm}></BaseButton>
+          <BaseButton
+            type='submit'
+            name={t('common.confirm')}
+            btnBg='blue'
+            onClick={handleConfirm}
+          ></BaseButton>
         </div>
       </BaseModal>
     </>

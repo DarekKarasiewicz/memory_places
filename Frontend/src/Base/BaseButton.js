@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 function BaseButton(props) {
-  const [currentBg, setCurrentBg] = useState('')
+  const [currentBg, setCurrentBg] = useState('');
 
   useEffect(() => {
     if (props.btnBg === 'blue') {
