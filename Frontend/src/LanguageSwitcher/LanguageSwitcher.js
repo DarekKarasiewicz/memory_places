@@ -23,11 +23,11 @@ function LanguageSwitcher() {
 
   return (
     <>
-      <div className='absolute right-0 my-auto'>
+      <div className='absolute right-0 top-20 my-auto'>
         <div className='relative inline-block'>
           <button
             type='button'
-            className='inline-flex gap-1 justify-center items-center  w-full rounded-lg border border-gray-600 bg-gray-300 px-4 py-2 text-sm leading-5 font-medium text-gray-700 shadow-sm hover:text-gray-500 active:bg-gray-50 active:text-gray-800'
+            className='inline-flex gap-1 justify-center items-center w-full rounded-l-lg border border-gray-600 bg-slate-300 pl-3 pr-1 py-2 active:bg-slate-50'
             aria-haspopup='true'
             aria-expanded='true'
             onClick={() => setIsOpen(!isOpen)}
@@ -35,7 +35,7 @@ function LanguageSwitcher() {
             <img
               src={lang_options.find((option) => option.value === language).image}
               alt={lang_options.find((option) => option.value === language).alt}
-              className='h-4 w-5 shadow-2xl border-1 border-black'
+              className='h-4 w-5 drop-shadow-md border-1 border-black'
             />
             {isOpen ? (
               <img className='h-6 w-6' src='./assets/arrow_up_icon.svg' alt='up arrow icon'></img>
@@ -49,9 +49,9 @@ function LanguageSwitcher() {
           </button>
 
           {isOpen && (
-            <div className='origin-top-right absolute right-0 mt-2 w-24 rounded-md shadow-lg bg-gray-300'>
+            <div className='absolute right-0 mt-2 w-24 rounded-l-lg shadow-lg bg-slate-600'>
               <div
-                className='py-1'
+                className='py-1 origin-top'
                 role='menu'
                 aria-orientation='vertical'
                 aria-labelledby='options-menu'
@@ -60,10 +60,10 @@ function LanguageSwitcher() {
                   <motion.div
                     key={option.value}
                     onClick={() => handleLanguageChange(option.value)}
-                    className='block px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-200 hover:text-red-600 cursor-pointer'
+                    className='block px-4 py-2 text-sm text-center text-white hover:bg-slate-400 hover:text-red-500 hover:font-bold cursor-pointer'
                     role='menuitem'
                   >
-                    <img src={option.image} alt={option.alt} />
+                    <img src={option.image} alt={option.alt} className='drop-shadow-md' />
                     {option.label}
                   </motion.div>
                 ))}

@@ -4,7 +4,7 @@ import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from './Redux/modalsSlice';
-import { selectAddPlaceLocation, addPlacelocationActions } from './Redux/addPlaceLocationSlice';
+import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
 import NotificationModal from './Modals/NotificationModal';
@@ -17,6 +17,7 @@ import { updatePlaceActions } from './Redux/updatePlaceSlice';
 import Loader from './Loader/Loader.js';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher.js';
+import Footer from './Footer/Footer.js';
 
 function App() {
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ function App() {
         )}
         {modalData.isUpdateModalOpen && (
           <FormModal
-            title='Edit your place'
+            title={t('common.edit_place')}
             type='update'
             closeModal={handleEditFormModalVisability}
           />
@@ -108,6 +109,8 @@ function App() {
         {showCookiesInfo && modalData.isCookiesInfoOpen && (
           <CookiesInfo closeModal={handleCookiesInfoVisability} />
         )}
+
+        {!addPlaceData.isSelecting && <Footer />}
 
         <LanguageSwitcher />
       </div>

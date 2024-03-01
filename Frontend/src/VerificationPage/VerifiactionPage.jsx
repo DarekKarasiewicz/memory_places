@@ -29,7 +29,7 @@ const VerifiactionPage = () => {
           <p className='text-3xl mb-3'>Your account has been verified</p>
           <p className='text-lg mb-2'>Now you can enjoy the full experience of Memorial Places</p>
           <Link to='/' className='flex justify-center items-center'>
-            <BaseButton name='Go back to main page' className={'w-56'} />
+            <BaseButton name='Go back to main page' className={'w-56'} btnBg='blue' />
           </Link>
         </div>
       )}

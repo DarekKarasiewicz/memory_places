@@ -12,7 +12,7 @@ function BaseModal(props) {
           <motion.div
             className='rounded-full absolute -top-5 -right-5 border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer'
             onClick={props.closeModal}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.9 }}
           >
             <img src='./assets/cancel_icon.svg' alt='cancel_icon' className='h-8 w-8'></img>

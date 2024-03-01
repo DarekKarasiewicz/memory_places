@@ -37,7 +37,7 @@ function NotificationModal(props) {
             <motion.div
               className='flex justify-center items-center cursor-pointer'
               onClick={props.closeModal}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
             >
               <img src='./assets/cancel_icon.svg' alt='cancel_icon' className='h-8 w-8'></img>
@@ -47,8 +47,8 @@ function NotificationModal(props) {
             <span className='text-lg'>{props.info}</span>
           </div>
           <div className='flex justify-end gap-2 mb-2'>
-            <BaseButton name={t('common.cancel')} onClick={props.closeModal}></BaseButton>
-            <BaseButton name={t('common.confirm')}></BaseButton>
+            <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal}></BaseButton>
+            <BaseButton name={t('common.confirm')} btnBg='blue'></BaseButton>
           </div>
         </div>
       </div>

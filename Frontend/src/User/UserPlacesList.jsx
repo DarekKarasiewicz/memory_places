@@ -13,7 +13,7 @@ const UserPlacesList = ({ userPlaces }) => {
     />
   ));
 
-  return <ul className='w-full h-full overflow-scroll '>{placesList}</ul>;
+  return <ul className='w-full h-full overflow-auto'>{placesList}</ul>;
 };
 
 export default UserPlacesList;

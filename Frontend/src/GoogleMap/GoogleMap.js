@@ -216,6 +216,7 @@ const GoogleMap = () => {
               </section>
               <BaseButton
                 className='text-sm'
+                btnBg='blue'
                 name={t('common.more_info')}
                 onClick={fetchSelectedPlaceInfo}
               />
