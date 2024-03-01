@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from .serializers import Places_serailizer, User_serializer
+from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer
 from .models import Place, User
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -28,7 +28,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
 
 class Place_view(viewsets.ModelViewSet):
     serializer_class = Places_serailizer
@@ -122,6 +121,13 @@ class Place_view(viewsets.ModelViewSet):
         place_object.delete()
         serializer = Places_serailizer(place_object)
         return Response(serializer.data)
+
+class Short_place_view(viewsets.ModelViewSet):
+    http_method_names=["get"]
+    serializer_class =Short_Places_serailizer
+
+    def get_queryset(self):
+        return Place.objects.all()
 
 
 class Outside_user_view(viewsets.ModelViewSet):
