@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core.mail import send_mail
+from rest_framework.renderers import JSONRenderer
 
 import re
 import secrets
@@ -63,6 +64,7 @@ class Place_view(viewsets.ModelViewSet):
             case "pk":
                 place = get_object_or_404(Place, id=value)
                 serializer = Places_serailizer(place, many=False)
+                return Response(serializer.data)
             case "user":
                 places = Place.objects.filter(user=value)
                 serializer = Places_serailizer(places, many=True)
