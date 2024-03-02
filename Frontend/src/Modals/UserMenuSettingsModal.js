@@ -10,7 +10,7 @@ import PreferencesSettings from '../Navbar/UserMenu/UserMenuSettings/Preferences
 import { useTranslation } from 'react-i18next';
 
 function UserMenuSettingsModal(props) {
-  const [currentOption, setCurrentOption] = useState(null);
+  const [currentOption, setCurrentOption] = useState('account');
   const { t } = useTranslation();
 
   const handleCurrentOption = (option) => {
