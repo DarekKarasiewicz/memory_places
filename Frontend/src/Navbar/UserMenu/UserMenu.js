@@ -49,7 +49,7 @@ function UserMenu() {
 
   const handleLogout = () => {
     setIsActive(false);
-    removeCookie('user', { path: '/', domain: 'localhost' });
+    removeCookie('user', { path: '/' });
   };
 
   const handleClick = (event) => {
@@ -70,7 +70,7 @@ function UserMenu() {
   ];
 
   useEffect(() => {
-    setIsLogged(user ? true : false);
+    setIsLogged(user.refreshToken ? true : false);
   }, [user]);
 
   const parentItem = {
