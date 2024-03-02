@@ -14,7 +14,7 @@ const AddPlaceButton = (props) => {
   const popupRef = useRef(null);
 
   useEffect(() => {
-    setIsLogged(user ? true : false);
+    setIsLogged(user.refreshToken ? true : false);
   }, [user]);
 
   useEffect(() => {
