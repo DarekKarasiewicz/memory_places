@@ -3,9 +3,12 @@ import { forwardRef } from 'react';
 const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
   return (
     <>
-      <label className='block pl-2 text-lg'>{props.label}</label>
+      <div className='flex justify-between items-center'>
+        <label className='block pl-1 pb-1 text-base'>{props.label}</label>
+        <label className='block pr-1 text-sm'>{props.secondLabel}</label>
+      </div>
       <textarea
-        className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg px-2`}
+        className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg p-2`}
         placeholder={props.placeholder ? props.placeholder : ''}
         name={props.name}
         rows={props.rows}

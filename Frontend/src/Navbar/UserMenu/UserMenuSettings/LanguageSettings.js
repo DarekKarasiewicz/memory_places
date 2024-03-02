@@ -8,11 +8,11 @@ function LanguageSettings() {
   const [selectedDateFormatOption, setSelectedDateFormatOption] = useState('');
   const { t } = useTranslation();
 
-  const handleSelectLanguageChange = (name, value) => {
+  const handleSelectLanguageChange = (value) => {
     setSelectedLanguageOption(value);
   };
 
-  const handleSelectDateFormatChange = (name, value) => {
+  const handleSelectDateFormatChange = (value) => {
     setSelectedDateFormatOption(value);
   };
 
@@ -53,7 +53,7 @@ function LanguageSettings() {
             />
           </div>
         </div>
-        <BaseButton name={t('user.confirm')} className='mt-2' />
+        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
     </div>
   );

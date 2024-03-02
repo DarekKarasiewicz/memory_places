@@ -61,7 +61,7 @@ const AddPlaceButton = (props) => {
 
   const parentItem = {
     hover: {
-      scale: isActive ? 1 : 1.1,
+      scale: isActive ? 1 : 1.05,
     },
   };
 
@@ -70,7 +70,7 @@ const AddPlaceButton = (props) => {
       whileHover={'hover'}
       variants={parentItem}
       onClick={handleAddClick}
-      className={`absolute bottom-4 border-2 border-black bg-slate-300 h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto`}
+      className={`absolute bottom-7 border-2 border-black bg-slate-300 h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto`}
       ref={popupRef}
     >
       {isActive && (
@@ -82,7 +82,7 @@ const AddPlaceButton = (props) => {
         >
           <div className='flex flex-col justify-center items-center'>
             <p className='pb-2'>To add place you need to be logged in!</p>
-            <BaseButton name='Log in' onClick={handleLoginRedirect} />
+            <BaseButton name='Log in' btnBg='blue' onClick={handleLoginRedirect} />
           </div>
           <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-r border-b border-black'></div>
         </motion.div>

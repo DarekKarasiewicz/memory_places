@@ -13,7 +13,8 @@ i18n
       publicPath: '/locales',
     },
     fallbackLng: 'en',
-    debug: 'true',
+    supportedLngs: ['en', 'pl', 'ru', 'de'],
+    debug: true,
     interpolation: {
       escapeValue: false,
     },

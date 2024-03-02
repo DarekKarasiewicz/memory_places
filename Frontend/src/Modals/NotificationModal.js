@@ -5,17 +5,22 @@ import { useTranslation } from 'react-i18next';
 
 function NotificationModal(props) {
   const [typeColor, setTypeColor] = useState('');
+  const [iconName, setIconName] = useState('');
   const { t } = useTranslation();
 
   useEffect(() => {
     if (props.type === 'alert') {
       setTypeColor('text-yellow-500');
+      setIconName('alert_circle_icon');
     } else if (props.type === 'warning') {
       setTypeColor('text-red-500');
+      setIconName('warning_circle_icon');
     } else if (props.type === 'success') {
       setTypeColor('text-green-500');
+      setIconName('check_circle_icon');
     } else {
       setTypeColor('text-black');
+      setIconName('warning_circle_icon');
     }
   }, [props.type]);
   return (
@@ -26,17 +31,13 @@ function NotificationModal(props) {
         >
           <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
             <div className='flex justify-center items-center gap-2 text-xl'>
-              <img
-                src='./assets/dialog/warning_circle_icon.svg'
-                alt='warning_circle_icon'
-                className='h-8 w-8'
-              ></img>
+              <img src={`./assets/dialog/${iconName}.svg`} alt={iconName} className='h-8 w-8'></img>
               <span className={`capitalize font-medium ${typeColor}`}>{props.title}</span>
             </div>
             <motion.div
               className='flex justify-center items-center cursor-pointer'
               onClick={props.closeModal}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
             >
               <img src='./assets/cancel_icon.svg' alt='cancel_icon' className='h-8 w-8'></img>
@@ -46,8 +47,12 @@ function NotificationModal(props) {
             <span className='text-lg'>{props.info}</span>
           </div>
           <div className='flex justify-end gap-2 mb-2'>
-            <BaseButton name={t('common.cancel')} onClick={props.closeModal}></BaseButton>
-            <BaseButton name={t('common.confirm')}></BaseButton>
+            <BaseButton
+              name={t('common.cancel')}
+              btnBg='red'
+              onClick={props.closeModal}
+            ></BaseButton>
+            <BaseButton name={t('common.confirm')} btnBg='blue'></BaseButton>
           </div>
         </div>
       </div>

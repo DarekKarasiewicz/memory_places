@@ -74,7 +74,7 @@ function PreferencesSettings() {
             onChange={handleSelectAppThemeChange}
           />
         </div>
-        <BaseButton name={t('user.confirm')} className='mt-2' />
+        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
     </div>
   );

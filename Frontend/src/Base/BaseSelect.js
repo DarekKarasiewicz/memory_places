@@ -4,9 +4,9 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
   return (
     <>
       <div className='w-full'>
-        <label className='block pl-2 text-lg'>{props.label}</label>
+        <label className='block pl-1 pb-1 text-base'>{props.label}</label>
         <select
-          className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg px-1`}
+          className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg p-2`}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
           ref={ref}

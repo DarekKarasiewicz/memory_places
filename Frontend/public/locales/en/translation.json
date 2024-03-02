@@ -1,19 +1,23 @@
 {
     "common": {
         "add_place": "Add place",
+        "edit_place": "Edit your place",
         "warning_title": "This is warning message!",
         "warning_info": "Are you sure you want to see this? There is no coming back.",
         "confirm": "Confirm",
         "save": "Save",
         "name": "Name",
         "date": "Date",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
+        "latitude": "Latitude:",
+        "longitude": "Longitude:",
+        "wiki-link": "Wikipedia link:",
+        "topic-link": "Topic page link:",
         "location_select": "Select location",
         "type_of": "Type of:",
         "type": "Type:",
         "period": "Period:",
         "description": "Description:",
+        "description-max": "max. 1000 characters",
         "created": "Created:",
         "founded": "Founded:",
         "founded_by": "Founded by:",
@@ -32,7 +36,10 @@
         "not_given_name": "Not given name",
         "filter1": "Filters",
         "filter2": "Filter",
-        "search": "Search..."
+        "search": "Search...",
+        "axios_warning": "Something went wrong, try again later",
+        "place_warning": "No added place yet",
+        "more_info": "More info"
     },
     "forum": {
         "comment_content": "Comment-Content",

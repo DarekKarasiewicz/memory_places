@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import BaseInput from '../../Base/BaseInput';
 import BaseSelect from '../../Base/BaseSelect';
@@ -32,13 +32,14 @@ function MapFilter() {
     setSelectedPeriodOption(event.target.value);
   };
 
-  const handleTextValueChange = (value) => {
-    setTextValue(value);
+  const handleTextValueChange = (event) => {
+    setTextValue(event.target.value);
   };
 
   const handleFilterChange = () => {
     dispatch(
       filterPlaces({
+        name: textValue,
         sortof: selectedSortOfOption,
         type: selectedTypeOption,
         period: selectedPeriodOption,
@@ -47,7 +48,6 @@ function MapFilter() {
   };
 
   //For each options later will be added more 9 options from client
-  //TODO Change points value to match this ones
   const sortof_options = [
     { label: t('modal.all'), value: 'all' },
     { label: t('modal.existing'), value: 'existing' },
@@ -58,7 +58,7 @@ function MapFilter() {
 
   const type_options = [
     { label: t('modal.all'), value: 'all' },
-    { label: t('modal.war_cemetery'), value: 'war_emetery' },
+    { label: t('modal.war_cemetery'), value: 'war_cemetery' },
     { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
     { label: t('modal.burial_site'), value: 'burial_site' },
     { label: t('modal.execution_site'), value: 'execution_site' },
@@ -82,9 +82,11 @@ function MapFilter() {
   return (
     <div className='flex'>
       <motion.div
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.05 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300 ${
-          isActive ? 'right-72 absolute mr-3' : ''
+          isActive ? 'right-72 absolute mr-3 top-2' : ''
         }`}
         onClick={handleClick}
       >
@@ -99,18 +101,20 @@ function MapFilter() {
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-300 rounded-s-lg z-10'
+          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-600 rounded-s-lg z-10 shadow-xl'
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2'>{t('common.filter1')}</div>
-            <div className='flex flex-col gap-2'>
-              {/* <BaseInput
+            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>
+              {t('common.filter1')}
+            </div>
+            <div className='flex flex-col gap-2 mb-2'>
+              <BaseInput
                 type='text'
                 label={t('common.name')}
                 name={t('common.name')}
                 value={textValue}
                 onChange={handleTextValueChange}
-              /> */}
+              />
               <BaseSelect
                 label={t('common.type_of')}
                 name={t('common.type_of')}
@@ -133,7 +137,7 @@ function MapFilter() {
                 onChange={handleSelectPeriodChange}
               />
             </div>
-            <BaseButton onClick={handleFilterChange} name={t('common.filter2')} />
+            <BaseButton onClick={handleFilterChange} btnBg='blue' name={t('common.filter2')} />
           </div>
         </motion.div>
       )}

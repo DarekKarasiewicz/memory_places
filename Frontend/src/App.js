@@ -2,7 +2,6 @@ import { useState, Suspense, useEffect } from 'react';
 import GoogleMap from './GoogleMap/GoogleMap';
 import Navbar from './Navbar/Navbar';
 import FormModal from './Modals/FormModal';
-import AddPlaceButton from './AddPlace/AddPlaceButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from './Redux/modalsSlice';
 import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
@@ -15,12 +14,10 @@ import { addPlaceActions } from './Redux/addPlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
 import { updatePlaceActions } from './Redux/updatePlaceSlice';
-import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
 import Loader from './Loader/Loader.js';
-import LocaleContext from './LocaleContext.js';
-import i18n from './i18n';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher.js';
+import Footer from './Footer/Footer.js';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,7 +27,6 @@ function App() {
   const [showCookiesInfo, setShowCookiesInfo] = useState(false);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-  const [locale, setLocale] = useState(i18n.language);
   const { t } = useTranslation();
 
   const handleFormModalVisability = () => {
@@ -75,48 +71,50 @@ function App() {
   }, []);
 
   return (
-    <LocaleContext.Provider value={{ locale, setLocale }}>
-      <Suspense fallback={<Loader />}>
-        <div className='w-screen h-screen relative'>
-          {userPlacesData.isOpen && <UserPlacesMenu />}
-          <GoogleMap />
-          {!addPlaceData.isSelecting && <Navbar />}
-          {modalData.isFormModalOpen && (
-            <FormModal
-              title={t('common.add_place')}
-              type='create'
-              closeModal={handleFormModalVisability}
-            />
-          )}
-          {modalData.isUpdateModalOpen && (
-            <FormModal
-              title='Edit your place'
-              type='update'
-              closeModal={handleEditFormModalVisability}
-            />
-           )}
-          {modalData.isLoginAndRegisterOpen && (
-            <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
-          )}
-          {modalData.isUserSettingsOpen && (
-            <UserMenuSettings closeModal={handleUserSettingsVisability} />
-          )}
-          {modalData.isNotificationModalOpen && (
-            <NotificationModal
-              title={t('common.warning_title')}
-              info={t('common.warning_info')}
-              type='warning'
-              closeModal={handleNotificationModalVisability}
-            />
-          )}
-    
-      {/* TO DO Save user cookie preferences in db */}
-      {showCookiesInfo && modalData.isCookiesInfoOpen && <CookiesInfo closeModal={handleCookiesInfoVisability}/>}
-      
-      <LanguageSwitcher />
-    </div>
-      </Suspense>
-    </LocaleContext.Provider>
+    <Suspense fallback={<Loader />}>
+      <div className='w-screen h-screen relative'>
+        {userPlacesData.isOpen && <UserPlacesMenu />}
+        <GoogleMap />
+        {!addPlaceData.isSelecting && <Navbar />}
+        {modalData.isFormModalOpen && (
+          <FormModal
+            title={t('common.add_place')}
+            type='create'
+            closeModal={handleFormModalVisability}
+          />
+        )}
+        {modalData.isUpdateModalOpen && (
+          <FormModal
+            title={t('common.edit_place')}
+            type='update'
+            closeModal={handleEditFormModalVisability}
+          />
+        )}
+        {modalData.isLoginAndRegisterOpen && (
+          <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
+        )}
+        {modalData.isUserSettingsOpen && (
+          <UserMenuSettings closeModal={handleUserSettingsVisability} />
+        )}
+        {modalData.isNotificationModalOpen && (
+          <NotificationModal
+            title={t('common.warning_title')}
+            info={t('common.warning_info')}
+            type='warning'
+            closeModal={handleNotificationModalVisability}
+          />
+        )}
+
+        {/* TO DO Save user cookie preferences in db */}
+        {showCookiesInfo && modalData.isCookiesInfoOpen && (
+          <CookiesInfo closeModal={handleCookiesInfoVisability} />
+        )}
+
+        {!addPlaceData.isSelecting && <Footer />}
+
+        <LanguageSwitcher />
+      </div>
+    </Suspense>
   );
 }
 

@@ -46,14 +46,14 @@ function Navbar() {
   return (
     <>
       <nav
-        className={`relative flex justify-between p-3 ${
+        className={`relative flex justify-between p-2 bg-slate-600 shadow-xl ${
           userPlacesData.isOpen && 'w-2/3 float-right'
         }`}
       >
         <div className='flex gap-2 items-center'>
           <div>
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
               onClick={handleClick}
             >
@@ -65,7 +65,7 @@ function Navbar() {
             </motion.div>
             {isActive && (
               <motion.ul
-                className='flex flex-col gap-2 mt-2 absolute'
+                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-slate-600 rounded-b-lg'
                 variants={parentItem}
                 initial='hidden'
                 animate='visible'
@@ -82,7 +82,14 @@ function Navbar() {
           </div>
           <SearchBar />
         </div>
-        <div className='flex gap-3'>
+        <div className='absolute top-0 left-1/2 transform -translate-x-1/2'>
+          <img
+            src='assets/memorial_places_logo.png'
+            alt='memory_place_logo'
+            className='w-24 h-24 bg-slate-600 rounded-full m-2 shadow-lg'
+          ></img>
+        </div>
+        <div className='flex gap-3 items-center'>
           <UserMenu />
           <MapFilter />
         </div>

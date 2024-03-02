@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
 
 router = routers.DefaultRouter()
 router.register(r"places", views.Place_view, "place")
+router.register(r"short_places", views.Short_place_view, "short_place")
 router.register(r"users", views.User_view, "user")
 router.register(r"outside_users", views.Outside_user_view, "outside_user")
 router.register(r"user_verifi", views.VerificationMail, "user_verifi")

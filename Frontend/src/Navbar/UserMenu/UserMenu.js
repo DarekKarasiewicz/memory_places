@@ -97,7 +97,7 @@ function UserMenu() {
     <>
       <div className='relative'>
         <motion.div
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
           onClick={handleClick}
           ref={popupRef}
@@ -140,7 +140,7 @@ function UserMenu() {
             animate='visible'
           >
             <span className='text-center'>{t('user.login_info')}</span>
-            <BaseButton name={t('user.login')} onClick={handleLoginModalOpen} />
+            <BaseButton name={t('user.login')} btnBg='blue' onClick={handleLoginModalOpen} />
             <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-l border-t border-black'></div>
           </motion.div>
         )}

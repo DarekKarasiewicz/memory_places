@@ -1,20 +1,13 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 const UserMenuOption = (props) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleHover = () => {
-    setIsHovered((current) => !current);
-  };
-
   return (
     <>
       <motion.div
-        whileHover={{ scale: 1.1, color: 'red' }}
-        onHoverStart={handleHover}
-        onHoverEnd={handleHover}
-        className='w-full h-12 cursor-pointer flex gap-2 items-center pl-2'
+        whileHover={{ scale: 1.05 }}
+        className={`w-full h-12 cursor-pointer flex gap-2 items-center pl-2 rounded-md hover:bg-slate-400 ${
+          props.isActive === true ? 'bg-slate-400' : ''
+        }`}
         onClick={props.onClick ? props.onClick : undefined}
       >
         <img
