@@ -19,7 +19,7 @@ export const authSlice = createSlice({
     setIsMaster: (state, action) => {
       state.isMaster = action.payload;
     },
-    setAccesToken: (state, action) => {
+    setAccessToken: (state, action) => {
       state.accesToken = action.payload;
     },
   },
