@@ -35,8 +35,8 @@ function LanguageSettings() {
       <div className='flex flex-col items-center py-2 gap-2'>
         <div className='flex flex-col items-center gap-2'>
           <div className='pb-2'>
-            {t('user.app_language')}
             <BaseSelect
+              label={t('user.app_language')}
               name='AppLanguage'
               value={selectedLanguageOption}
               options={lang_options}
@@ -44,8 +44,8 @@ function LanguageSettings() {
             />
           </div>
           <div className='pt-2 border-t-2 border-t-black'>
-            {t('user.date_format')}
             <BaseSelect
+              label={t('user.date_format')}
               name='DateFormat'
               value={selectedDateFormatOption}
               options={date_format_options}

@@ -52,22 +52,22 @@ function PreferencesSettings() {
       <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.preferences')}</div>
       <div className='flex flex-col items-center py-2 gap-2'>
         <div className='flex flex-col items-center gap-2'>
-          {t('user.font')}
           <BaseSelect
+            label={t('user.font')}
             name='NotifyLevel'
             value={selectedFontOption}
             options={font_options}
             onChange={handleSelectFontChange}
           />
-          {t('user.font_size')}
           <BaseSelect
+            label={t('user.font_size')}
             name='NotifyLevel'
             value={selectedFontSizeOption}
             options={font_size_options}
             onChange={handleSelectFontSizeChange}
           />
-          {t('user.app_theme')}
           <BaseSelect
+            label={t('user.app_theme')}
             name='NotifyLevel'
             value={selectedAppThemeOption}
             options={app_theme_options}

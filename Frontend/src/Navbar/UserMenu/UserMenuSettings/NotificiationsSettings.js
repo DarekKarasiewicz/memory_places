@@ -21,18 +21,17 @@ function NotificiationsSettings() {
 
   return (
     <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.notificiations')}</div>
+      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.notifications')}</div>
       <div className='flex flex-col items-center py-2 gap-2'>
         <div className='flex flex-col items-center gap-2'>
-          {t('user.notificiation_level')}
           <BaseSelect
+            label={t('user.notificiation_level')}
             name='NotifyLevel'
             value={selectedNotifyLevelOption}
             options={notify_level_options}
             onChange={handleSelectNotifyLevelChange}
           />
         </div>
-        {/* Describe what each level mean */}
         <span className='text-center italic text-lg whitespace-pre-line'>{message}</span>
         <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
