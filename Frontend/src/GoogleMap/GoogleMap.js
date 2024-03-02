@@ -197,8 +197,12 @@ const GoogleMap = () => {
           >
             <div className='flex flex-col items-center'>
               {/* TODO when from backend will be array of images get first one and put it here */}
-              <section>
-                <img src='https://placehold.co/300x200' alt='placeholder-image'></img>
+              <section className='w-72 h-52 overflow-hidden'>
+                <img
+                  src='https://placehold.co/300x300'
+                  alt='placeholder-image'
+                  className='w-full h-full object-cover'
+                ></img>
               </section>
               <section className='flex flex-col gap-1 my-1 justify-center items-center'>
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
@@ -206,14 +210,13 @@ const GoogleMap = () => {
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
                   {currentPlace.creation_date}
                 </span>
-                {/* TODO should be username */}
                 <span>
                   <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
-                  {currentPlace.user}
+                  {currentPlace.username}
                 </span>
               </section>
               <BaseButton
-                className='text-sm'
+                className='text-sm my-1'
                 btnBg='blue'
                 name={t('common.more_info')}
                 onClick={fetchSelectedPlaceInfo}

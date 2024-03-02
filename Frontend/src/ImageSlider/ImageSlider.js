@@ -17,31 +17,32 @@ function ImageSlider(props) {
   };
 
   return (
-    <section className='relative'>
+    <section className='relative w-full h-full'>
       <div
         className={`absolute -left-3 top-1/2 transform -translate-y-1/2 rounded-full border-2 h-10 w-10 z-10 bg-white border-slate-600 flex justify-center items-center ${
           slidesLength === 1 ? 'pointer-events-none hidden' : 'cursor-pointer'
         } ${currentSlide === 0 ? 'pointer-events-none hidden' : 'cursor-pointer'}`}
         onClick={previousSlide}
       >
-        <img src='./assets/arrow_left_icon.svg' alt='left arrow icon'></img>
+        <img
+          src='./assets/arrow_left_icon.svg'
+          alt='left arrow icon'
+          style={{ maxWidth: '100%', maxHeight: '100%' }}
+        ></img>
       </div>
-      <div className='overflow-x-hidden w-[32rem]'>
+      <div className='overflow-x-hidden w-full h-full'>
         <div
-          className='flex z-0'
+          className='flex z-0 w-full h-full'
           style={{
             transform: `translateX(${translation}%)`,
             transition: 'transform 0.5s ease',
           }}
         >
           {props.slides.map((slide, index) => (
-            <img
-              key={index}
-              src={slide.image}
-              alt={slide.alt}
-              className='h-auto max-w-full w-auto object-fit'
-              style={{ maxHeight: '24rem' }}
-            />
+            <div key={index} className='flex-shrink-0 w-full'>
+              {/* If want to preserve the image dimension change object-cover to object-scale-down */}
+              <img src={slide.image} alt={slide.alt} className='w-full h-full object-cover' />
+            </div>
           ))}
         </div>
         <div
