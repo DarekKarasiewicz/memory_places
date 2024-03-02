@@ -61,7 +61,7 @@ export const fetchMapPlaces = () => async (dispatch) => {
   dispatch(allMapPlacesSlice.actions.fetchMapPlacesStart());
 
   try {
-    const response = await axios.get('http://localhost:8000/memo_places/places/');
+    const response = await axios.get('http://localhost:8000/memo_places/short_places/');
     dispatch(allMapPlacesSlice.actions.fetchMapPlacesSuccess(response.data));
   } catch (error) {
     dispatch(allMapPlacesSlice.actions.fetchMapPlacesFailure());
