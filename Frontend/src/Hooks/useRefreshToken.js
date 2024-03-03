@@ -11,12 +11,7 @@ const useRefreshToken = () => {
     var token;
     axios
       .post('http://localhost:8000/memo_places/token/refresh/', user.refreshToken)
-      .then((response) => {
-        // setUserCredentials((prev) => {
-        //   return { ...prev, accessToken: response.data.accessToken };
-        // });
-        // token = response.data.accessToken;
-      });
+      .then((response) => {});
     return token;
   };
   return refreshToken;
