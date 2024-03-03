@@ -68,17 +68,6 @@ const LoginComponent = () => {
               expires: new Date(refreshDecoded.exp * 1000),
             },
           );
-          //set as HTTPOnly and secure
-          // setUserCredentials({
-          //   user: {
-          //     user_id: accessDecoded.user_id,
-          //     username: accessDecoded.username,
-          //     email: accessDecoded.email,
-          //   },
-          //   isAdmin: accessDecoded.admin,
-          //   isMaster: accessDecoded.master,
-          //   accessToken: accessDecoded.jti,
-          // });
           dispatch(modalsActions.changeIsLoginAndRegisterOpen());
         })
         .catch((error) => {
@@ -122,7 +111,6 @@ const LoginComponent = () => {
             .then((response) => {
               decoded = { ...decoded, id: response.id };
               setCookie('user', decoded);
-              // console.log(decoded);
             })
             .catch((error) => {
               console.log(error);
@@ -141,22 +129,17 @@ const LoginComponent = () => {
                     },
                   )
                   .then((response) => {
-                    // Handle successful response
-                    // console.log(response.data);
                     decoded = { ...decoded, id: response.data.id };
                     setCookie('user', decoded);
                   })
                   .catch((error) => {
                     // Handle error
-                    // console.error('Error:', error);
                   });
               } else {
                 // Handle other errors from GET request
-                // console.error('Error:', error);
               }
             });
           setCookie('user', decoded);
-          // console.log(decoded);
         }}
         onError={() => {
           alert(t('common.login_error'));
