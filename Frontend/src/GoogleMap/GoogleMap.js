@@ -83,9 +83,7 @@ const GoogleMap = () => {
   }, [dispatch]);
 
   const handleLocationMarker = (event) => {
-    if (userPlacesData.isOpen && !addPlaceLocation.isSelecting) {
-      dispatch(userPlacesActions.changeIsOpen());
-    } else if (addPlaceLocation.isSelecting) {
+    if (addPlaceLocation.isSelecting) {
       dispatch(
         addPlacelocationActions.changeLocation({
           lat: event.detail.latLng.lat,
