@@ -6,6 +6,7 @@ import userPlacesReducer from './userPlacesSlice';
 import addPlaceReducer from './addPlaceSlice';
 import updatePlaceReducer from './updatePlaceSlice';
 import allMapPlacesReducer from './allMapPlacesSlice';
+import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     addPlace: addPlaceReducer,
     updatePlace: updatePlaceReducer,
     allMapPlaces: allMapPlacesReducer,
+    auth: authReducer,
   },
 });

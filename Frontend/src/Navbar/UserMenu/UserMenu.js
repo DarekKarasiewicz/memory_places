@@ -12,7 +12,7 @@ function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [cookies] = useCookies(['user']);
+  const [cookies, removeCookie] = useCookies(['user']);
   const dispatch = useDispatch();
   const user = cookies.user;
   const popupRef = useRef(null);
@@ -47,6 +47,11 @@ function UserMenu() {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
   };
 
+  const handleLogout = () => {
+    setIsActive(false);
+    removeCookie('user', { path: '/', domain: 'localhost' });
+  };
+
   const handleClick = (event) => {
     if (isLogged) {
       setIsActive((current) => !current);
@@ -61,7 +66,7 @@ function UserMenu() {
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
     { icon: 'help', name: t('user.help') },
-    { icon: 'logout', name: t('user.logout') },
+    { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
 
   useEffect(() => {
