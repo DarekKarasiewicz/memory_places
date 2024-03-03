@@ -13,7 +13,7 @@ const UserPlacesList = ({ userPlaces }) => {
     />
   ));
 
-  return <ul className='w-full h-full overflow-auto'>{placesList}</ul>;
+  return <ul className='w-full overflow-y-auto max-h-[calc(100%)]'>{placesList}</ul>;
 };
 
 export default UserPlacesList;
