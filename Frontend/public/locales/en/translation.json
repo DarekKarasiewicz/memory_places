@@ -39,7 +39,8 @@
         "search": "Search...",
         "axios_warning": "Something went wrong, try again later",
         "place_warning": "No added place yet",
-        "more_info": "More info"
+        "more_info": "More info",
+        "no_response": "No Server Response"
     },
     "forum": {
         "comment_content": "Comment-Content",

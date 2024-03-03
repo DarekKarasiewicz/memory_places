@@ -39,7 +39,8 @@
         "search": "Szukaj...",
         "axios_warning": "Coś poszło nie tak, spróbuj ponownie później",
         "place_warning": "Brak dodanych miejsc pamięci",
-        "more_info": "Więcej informacji"
+        "more_info": "Więcej informacji",
+        "no_response": "Brak odpowiedzi serwera"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",

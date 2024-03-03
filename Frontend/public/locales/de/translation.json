@@ -39,7 +39,8 @@
         "search": "Suchen...",
         "axios_warning": "Etwas ist schiefgelaufen, versuchen Sie es später erneut",
         "place_warning": "Noch kein Ort hinzugefügt",
-        "more_info": "Mehr Informationen"
+        "more_info": "Mehr Informationen",
+        "no_response": "Keine Serverantwort"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
