@@ -49,6 +49,9 @@ class Place_view(viewsets.ModelViewSet):
             type=request.data["type"],
             sortof=request.data["sortof"],
             period=request.data["period"],
+            wiki_link=request.data["wiki_link"],
+            topic_link=request.data["topic_link"],
+            img=request.data["img"],
         )
 
         new_place.save()
