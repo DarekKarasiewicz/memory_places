@@ -5,6 +5,7 @@ import FormModal from './Modals/FormModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from './Redux/modalsSlice';
 import { selectAddPlaceLocation } from './Redux/addPlaceLocationSlice';
+import { addPlacelocationActions } from './Redux/addPlaceLocationSlice';
 import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
 import NotificationModal from './Modals/NotificationModal';
@@ -20,6 +21,7 @@ import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher.js';
 import FAQ from './FAQ/FAQ.js';
 import Footer from './Footer/Footer.js';
 import ContactForm from './Modals/ContactForm.js';
+import Infobar from './Navbar/Infobar.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ function App() {
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
       dispatch(addPlaceActions.reset());
+      dispatch(addPlacelocationActions.clearLocation());
     }
     dispatch(modalsActions.changeIsFormModalOpen());
   };
@@ -42,6 +45,7 @@ function App() {
     if (modalData.isUpdateModalOpen === true) {
       dispatch(addPlaceActions.reset());
       dispatch(updatePlaceActions.reset());
+      dispatch(addPlacelocationActions.clearLocation());
     }
     dispatch(modalsActions.changeIsUpdateModalOpen());
   };
@@ -86,6 +90,7 @@ function App() {
         {userPlacesData.isOpen && <UserPlacesMenu />}
         <GoogleMap />
         {!addPlaceData.isSelecting && <Navbar />}
+        {addPlaceData.isSelecting && <Infobar />}
         {modalData.isFormModalOpen && (
           <FormModal
             title={t('common.add_place')}
@@ -126,7 +131,7 @@ function App() {
 
         {!addPlaceData.isSelecting && <Footer />}
 
-        <LanguageSwitcher />
+        {!addPlaceData.isSelecting && <LanguageSwitcher />}
       </div>
     </Suspense>
   );

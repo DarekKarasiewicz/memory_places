@@ -48,12 +48,6 @@ const GoogleMap = () => {
       (position) => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
-        dispatch(
-          addPlacelocationActions.changeLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }),
-        );
       },
       (error) => {
         if (error.code === 1) {
@@ -159,8 +153,8 @@ const GoogleMap = () => {
         onClick={handleLocationMarker}
         mapId='1'
       >
-        {!addPlaceData.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
-        {addPlaceLocation.isSelecting && (
+        {!addPlaceLocation.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
+        {addPlaceLocation.isSelecting && addPlaceLocation.lat && (
           <AdvancedMarker
             onClick={toggleInfoWindow}
             ref={markerRef}

@@ -17,6 +17,10 @@ export const addPlaceLocationSlice = createSlice({
     changeIsSelecting: (state, action) => {
       state.isSelecting = action.payload.isSelecting;
     },
+    clearLocation: (state) => {
+      state.lat = null;
+      state.lng = null;
+    },
   },
 });
 
