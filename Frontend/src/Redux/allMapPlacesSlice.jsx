@@ -9,7 +9,7 @@ const initialState = {
   filterItems: [],
   allItems: [],
   loading: false,
-  filterItemsLength: 0
+  filterItemsLength: 0,
 };
 
 export const allMapPlacesSlice = createSlice({
@@ -40,7 +40,7 @@ export const allMapPlacesSlice = createSlice({
         });
       }
 
-      state.filterItemsLength = state.filterItems.length
+      state.filterItemsLength = state.filterItems.length;
     },
     deletePlace: (state, action) => {
       const placeId = action.payload;
