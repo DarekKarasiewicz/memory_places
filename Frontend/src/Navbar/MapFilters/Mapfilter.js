@@ -6,6 +6,7 @@ import BaseButton from '../../Base/BaseButton';
 import { useDispatch } from 'react-redux';
 import { filterPlaces } from '../../Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
@@ -14,6 +15,7 @@ function MapFilter() {
   const [selectedPeriodOption, setSelectedPeriodOption] = useState('all');
   const [textValue, setTextValue] = useState('');
   const dispatch = useDispatch();
+  const filterItemsLength = useSelector(state => state.allMapPlaces.filterItemsLength);
   const { t } = useTranslation();
 
   const handleClick = () => {
@@ -105,7 +107,8 @@ function MapFilter() {
         >
           <div className='flex flex-col gap-y-3 justify-start items-center'>
             <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>
-              {t('common.filter1')}
+              <span>{t('common.filter1')}</span>
+              <span className='font-semibold'>{' ('+filterItemsLength+')'}</span>
             </div>
             <div className='flex flex-col gap-2 mb-2'>
               <BaseInput
