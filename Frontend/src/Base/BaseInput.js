@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import moment from 'moment';
 
 const BaseInput = forwardRef(function BaseInput(props, ref) {
   return (
@@ -16,6 +17,7 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
           ref={ref}
           onBlur={props.onBlur}
           onChange={props.onChange}
+          max={props.blockFuture ? moment().format('YYYY-MM-DD') : null}
         ></input>
       </div>
     </>

@@ -9,6 +9,8 @@ const initialState = {
   period: '',
   lat: '',
   lng: '',
+  wiki_link: '',
+  topic_link: '',
 };
 
 export const addPlaceSlice = createSlice({
@@ -38,6 +40,12 @@ export const addPlaceSlice = createSlice({
     },
     changeLng: (state, action) => {
       state.lng = action.payload;
+    },
+    changeWikiLink: (state, action) => {
+      state.wiki_link = action.payload;
+    },
+    changeTopicLink: (state, action) => {
+      state.topic_link = action.payload;
     },
     reset: () => initialState,
   },

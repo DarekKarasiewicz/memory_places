@@ -24,6 +24,8 @@ function FormModal(props) {
   const sortofRef = useRef();
   const typeRef = useRef();
   const periodRef = useRef();
+  const wikiLinkRef = useRef();
+  const topicLinkRef = useRef();
   const updatePlaceData = useSelector(selectUpdatePlace);
   const addPlaceData = useSelector(selectAddPlace);
   const [lat, setLat] = useState();
@@ -31,6 +33,7 @@ function FormModal(props) {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { t } = useTranslation();
+  const [isValidName, setIsValidName] = useState(null);
 
   const sortof_options = [
     { label: t('modal.all'), value: 'all' },
@@ -74,13 +77,14 @@ function FormModal(props) {
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
       dispatch(addPlaceActions.changeLat(updatePlaceData.place.lat));
-      updatePlaceData.place.lat;
       setLat(updatePlaceData.place.lat);
       dispatch(addPlaceActions.changeLng(updatePlaceData.place.lng));
       setLng(updatePlaceData.place.lng);
       dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
       dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
       dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
+      dispatch(addPlaceActions.changeWikiLink(updatePlaceData.place.wiki_link));
+      dispatch(addPlaceActions.changeTopicLink(updatePlaceData.place.topic_link));
       dispatch(updatePlaceActions.dataIsLoaded());
     }
   }, []);
@@ -111,8 +115,10 @@ function FormModal(props) {
     }
   };
 
+  const validateName = (name) => {};
+
   const handleConfirm = () => {
-    const isFormValid = formValidation();
+    const isFormValid = true;
 
     if (isFormValid) {
       if (props.type === 'update') {
@@ -126,16 +132,32 @@ function FormModal(props) {
             sortof: addPlaceData.sortof,
             type: addPlaceData.type,
             period: addPlaceData.period,
+            wiki_link: addPlaceData.wiki_link,
+            topic_link: addPlaceData.topic_link,
           })
           .then(() => {
             dispatch(addPlaceActions.reset());
             dispatch(updatePlaceActions.reset());
+            dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsUpdateModalOpen());
           });
       } else {
+        console.log({
+          user: user.user_id,
+          place_name: addPlaceData.place_name,
+          description: addPlaceData.description,
+          found_date: addPlaceData.found_date,
+          lat: addPlaceData.lat,
+          lng: addPlaceData.lng,
+          sortof: addPlaceData.sortof,
+          type: addPlaceData.type,
+          period: addPlaceData.period,
+          wiki_link: addPlaceData.wiki_link,
+          topic_link: addPlaceData.topic_link,
+        });
         axios
           .post(`http://localhost:8000/memo_places/places/`, {
-            user: user.id,
+            user: user.user_id,
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
             found_date: addPlaceData.found_date,
@@ -144,10 +166,12 @@ function FormModal(props) {
             sortof: addPlaceData.sortof,
             type: addPlaceData.type,
             period: addPlaceData.period,
+            wiki_link: addPlaceData.wiki_link,
+            topic_link: addPlaceData.topic_link,
           })
           .then(() => {
             dispatch(addPlaceActions.reset());
-            dispatch(addPlacelocationActions.resetLocation());
+            dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsFormModalOpen());
           });
       }
@@ -183,6 +207,7 @@ function FormModal(props) {
             type='date'
             name='dateInput'
             label={t('common.date')}
+            blockFuture={true}
             ref={dateRef}
             value={addPlaceData.found_date}
             onBlur={() => {
@@ -270,12 +295,44 @@ function FormModal(props) {
             rows='6'
             label={t('common.description')}
             secondLabel={t('common.description-max')}
+            maxLength={1000}
             ref={descriptionRef}
             value={addPlaceData.description}
             onBlur={() => {
               dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
             }}
           />
+          <div className='mt-1'>
+            <p>Przydatne linki (opcjonalne):</p>
+            <div className='flex'>
+              <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
+                <img src='./assets/wiki_icon.svg' alt='wiki_icon' />
+              </div>
+              <BaseInput
+                type='text'
+                name='wikiLinkInput'
+                value={addPlaceData.wiki_link}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeWikiLink(wikiLinkRef.current.value));
+                }}
+                ref={wikiLinkRef}
+              />
+            </div>
+            <div className='flex'>
+              <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
+                <img src='./assets/web_icon.svg' alt='web_icon' />
+              </div>
+              <BaseInput
+                type='text'
+                name='topicLinkInput'
+                value={addPlaceData.topic_link}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeTopicLink(topicLinkRef.current.value));
+                }}
+                ref={topicLinkRef}
+              />
+            </div>
+          </div>
         </div>
         <div className='p-2 flex gap-4 justify-center'>
           <BaseButton

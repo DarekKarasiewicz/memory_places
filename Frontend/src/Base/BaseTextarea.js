@@ -12,6 +12,7 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
         placeholder={props.placeholder ? props.placeholder : ''}
         name={props.name}
         rows={props.rows}
+        maxLength={props.maxLength}
         ref={ref}
         defaultValue={props.value}
         onBlur={props.onBlur}

@@ -79,7 +79,7 @@ function UserMenu() {
   ];
 
   useEffect(() => {
-    setIsLogged(user.refreshToken ? true : false);
+    setIsLogged(user?.refreshToken ? true : false);
   }, [user]);
 
   const parentItem = {
