@@ -40,7 +40,9 @@
         "axios_warning": "Etwas ist schiefgelaufen, versuchen Sie es später erneut",
         "place_warning": "Noch kein Ort hinzugefügt",
         "more_info": "Mehr Informationen",
-        "no_response": "Keine Serverantwort"
+        "no_response": "Keine Serverantwort",
+        "close": "Schließen",
+        "send": "Senden"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -141,7 +143,14 @@
         "help": "Hilfe",
         "logout": "Ausloggen",
         "login": "Anmelden",
-        "login_info": "Melden Sie sich an, um alle Funktionen der Website nutzen zu können."
+        "login_info": "Melden Sie sich an, um alle Funktionen der Website nutzen zu können.",
+        "contact": "Kontakt",
+        "contact_us": "Kontaktieren Sie uns!",
+        "contact_info": "Haben Sie Fragen oder Vorschläge? Füllen Sie das Formular aus, um Kontakt mit uns aufzunehmen!",
+        "contact_success": "Ihre Nachricht wurde erfolgreich gesendet!",
+        "directly_email": "Sie können uns direkt per E-Mail erreichen unter",
+        "FAQ_title": "Häufig gestellte Fragen",
+        "FAQ_subtitle": "Finden Sie Antworten auf häufig gestellte Fragen zu unserer Seite!"
     },
     "navbar": {
         "main_page": "Startseite",

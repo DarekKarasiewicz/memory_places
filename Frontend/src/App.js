@@ -17,7 +17,9 @@ import { updatePlaceActions } from './Redux/updatePlaceSlice';
 import Loader from './Loader/Loader.js';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher/LanguageSwitcher.js';
+import FAQ from './FAQ/FAQ.js';
 import Footer from './Footer/Footer.js';
+import ContactForm from './Modals/ContactForm.js';
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +60,14 @@ function App() {
 
   const handleCookiesInfoVisability = () => {
     dispatch(modalsActions.changeIsCookiesInfoOpen());
+  };
+
+  const handleFAQVisability = () => {
+    dispatch(modalsActions.changeIsFAQOpen());
+  };
+
+  const handleContactFormVisability = () => {
+    dispatch(modalsActions.changeIsContactFormOpen());
   };
 
   useEffect(() => {
@@ -109,6 +119,10 @@ function App() {
         {showCookiesInfo && modalData.isCookiesInfoOpen && (
           <CookiesInfo closeModal={handleCookiesInfoVisability} />
         )}
+
+        {modalData.isFAQOpen && <FAQ closeModal={handleFAQVisability} />}
+
+        {modalData.isContactFormOpen && <ContactForm closeModal={handleContactFormVisability} />}
 
         {!addPlaceData.isSelecting && <Footer />}
 

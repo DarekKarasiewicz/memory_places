@@ -40,7 +40,9 @@
         "axios_warning": "Coś poszło nie tak, spróbuj ponownie później",
         "place_warning": "Brak dodanych miejsc pamięci",
         "more_info": "Więcej informacji",
-        "no_response": "Brak odpowiedzi serwera"
+        "no_response": "Brak odpowiedzi serwera",
+        "close": "Zamknij",
+        "send": "Wyślij"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -141,7 +143,14 @@
         "help": "Pomoc",
         "logout": "Wyloguj",
         "login": "Zaloguj",
-        "login_info": "Zaloguj się aby móc w pełni korzystać z fukcjonalności strony"
+        "login_info": "Zaloguj się aby móc w pełni korzystać z fukcjonalności strony",
+        "contact": "Kontakt",
+        "contact_us": "Skontaktuj się z nami!",
+        "contact_info": "Masz jakieś pytania lub sugestie? Wypełnij formularz, aby się z nami skontaktować!",
+        "contact_success": "Twoja wiadomość została wysłana!",
+        "directly_email": "Możesz napisać do nas bezpośrednio na adres",
+        "FAQ_title": "Najczęściej zadawane pytania",
+        "FAQ_subtitle": "Znajdź odpowiedzi na Najczęściej zadawane pytania dotyczące naszej strony!"
     },
     "navbar": {
         "main_page": "Strona główna",
