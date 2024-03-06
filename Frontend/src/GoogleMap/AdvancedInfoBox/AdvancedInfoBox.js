@@ -7,7 +7,7 @@ const AdvancedInfoBox = (props) => {
   const { t } = useTranslation();
 
   // temp solution when images not provide yet
-  const SliderData = [
+  const sliderData = [
     {
       image: 'https://placehold.co/300x200/000000/FFFFFF/png',
       alt: 'Example alt 1',
@@ -31,7 +31,7 @@ const AdvancedInfoBox = (props) => {
           <div className='flex'>
             <div className='flex flex-col w-[32rem] mr-3'>
               <section className='flex flex-col justify-center w-[32rem] h-[22rem]'>
-                <ImageSlider slides={SliderData} />
+                <ImageSlider slides={sliderData} />
               </section>
               <section className='flex flex-col my-3'>
                 <span className='text-center font-bold'>{receivedData.place_name}</span>
@@ -111,7 +111,7 @@ const AdvancedInfoBox = (props) => {
             </div>
           </div>
           <div className='flex justify-center border-black border-t-2 pt-3 mt-1'>
-            <BaseButton name='close info' btnBg='red' onClick={props.closeInfo}></BaseButton>
+            <BaseButton name={t('common.close')} btnBg='red' onClick={props.closeInfo}></BaseButton>
           </div>
         </div>
       </div>

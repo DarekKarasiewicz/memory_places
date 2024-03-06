@@ -52,6 +52,14 @@ function UserMenu() {
     removeCookie('user', { path: '/' });
   };
 
+  const handleFAQVisability = () => {
+    dispatch(modalsActions.changeIsFAQOpen());
+  };
+
+  const handleContactFormVisability = () => {
+    dispatch(modalsActions.changeIsContactFormOpen());
+  };
+
   const handleClick = (event) => {
     if (isLogged) {
       setIsActive((current) => !current);
@@ -65,7 +73,8 @@ function UserMenu() {
     { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
-    { icon: 'help', name: t('user.help') },
+    { icon: 'help', name: t('user.help'), func: handleFAQVisability },
+    { icon: 'contact', name: t('user.contact'), func: handleContactFormVisability },
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
 

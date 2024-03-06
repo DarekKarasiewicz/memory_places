@@ -40,7 +40,9 @@
         "axios_warning": "Something went wrong, try again later",
         "place_warning": "No added place yet",
         "more_info": "More info",
-        "no_response": "No Server Response"
+        "no_response": "No Server Response",
+        "close": "Close",
+        "send": "Send"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -141,7 +143,14 @@
         "help": "help",
         "logout": "logout",
         "login": "Log In",
-        "login_info": "For full app experience you need to log in!"
+        "login_info": "For full app experience you need to log in!",
+        "contact": "Contact",
+        "contact_us": "Contact us!",
+        "contact_info": "Got any questions or suggestions? Fill out this form to reach out!",
+        "contact_success": "Your message was sent succesfully!",
+        "directly_email": "You can email us directly at",
+        "FAQ_title": "Frequently asked questions",
+        "FAQ_subtitle": "Find answers to commonly asked questions about our page!"
     },
     "navbar": {
         "main_page": "Main page",

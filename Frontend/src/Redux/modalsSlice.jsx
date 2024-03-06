@@ -8,6 +8,8 @@ const initialState = {
   isNotificationModalOpen: false,
   isCookiesInfoOpen: true,
   isAdvancedInfoOpen: false,
+  isFAQOpen: false,
+  isContactFormOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -34,6 +36,12 @@ export const modalsSlice = createSlice({
     },
     changeIsAdvancedInfoOpen: (state) => {
       state.isAdvancedInfoOpen = !state.isAdvancedInfoOpen;
+    },
+    changeIsFAQOpen: (state) => {
+      state.isFAQOpen = !state.isFAQOpen;
+    },
+    changeIsContactFormOpen: (state) => {
+      state.isContactFormOpen = !state.isContactFormOpen;
     },
   },
 });
