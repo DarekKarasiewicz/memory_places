@@ -42,18 +42,13 @@ class Place_view(viewsets.ModelViewSet):
             user=creator,
             place_name=request.data["place_name"],
             description=request.data["description"],
-            creation_date=request.data["creation_date"],
             found_date=request.data["found_date"],
             lng=request.data["lng"],
             lat=request.data["lat"],
             type=request.data["type"],
             sortof=request.data["sortof"],
             period=request.data["period"],
-            wiki_link=request.data["wiki_link"],
-            topic_link=request.data["topic_link"],
-            img=request.data["img"],
         )
-
         new_place.save()
 
         serializer = Places_serailizer(new_place)
