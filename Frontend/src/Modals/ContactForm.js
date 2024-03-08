@@ -20,15 +20,13 @@ function ContactForm(props) {
     event.preventDefault();
 
     const contact_form_req = {
-      name: nameRef.current.value,
       email: emailRef.current.value,
       title: titleRef.current.value,
       desc: descRef.current.value,
     };
 
-    // TODO - create endpoint on backend to make it work
     axios
-      .post('http://localhost:8000/memo_places/', contact_form_req, {
+      .post('http://localhost:8000/memo_places/contact_us', contact_form_req, {
         headers: { 'Content-Type': 'application/json' },
       })
       .then((response) => {

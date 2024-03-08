@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer
-from .models import Place, User
+from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer
+from .models import Place, User, Questions
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -236,3 +236,37 @@ class User_view(viewsets.ModelViewSet):
 
         serializer = User_serializer(user_object)
         return Response(serializer.data)
+    
+class Contact_us(viewsets.ModelViewSet):
+    http_method_names = ['post','get']
+    serializer_class = Questions_serializer
+
+    def get_queryset(self):
+        return Questions.objects.all() 
+
+    def create(self, request, *args, **kwargs):
+        try:
+            user_object = User.objects.get(email=request.data['email'])
+        except:
+            user_object=None
+        
+        new_question = Questions(
+            user=user_object,
+            title=request.data['title'],
+            description=request.data['desc'],
+            done=False
+        )
+        new_question.save()
+
+        send_mail("Thanks for contact"
+                #Rethink about it 
+                , "Thanks for your ....."
+                #Env not in views
+                ,'info@miejscapamieci.org.pl'
+                , [request.data['email']]
+                , fail_silently=False)
+                # , html_message=) 
+
+        serializer = Questions_serializer(new_question)
+        return Response(serializer.data) 
+        

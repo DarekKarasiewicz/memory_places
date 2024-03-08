@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Place, User
+from .models import Place, User, Questions
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -47,3 +47,22 @@ class Short_Places_serailizer(serializers.ModelSerializer):
             "img",
         )
 
+class Questions_serializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Questions
+        fields = (
+            "id",
+            "title",
+            "user",
+            "username", 
+            "description", 
+            "done",
+        )
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data.get('user') is None:
+            data.pop('username', None)
+        return data
