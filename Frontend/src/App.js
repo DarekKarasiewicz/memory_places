@@ -22,6 +22,7 @@ import FAQ from './FAQ/FAQ.js';
 import Footer from './Footer/Footer.js';
 import ContactForm from './Modals/ContactForm.js';
 import Infobar from './Navbar/Infobar.jsx';
+import { formValidationActions } from './Redux/formValidationSlice.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
     if (modalData.isFormModalOpen === true) {
       dispatch(addPlaceActions.reset());
       dispatch(addPlacelocationActions.clearLocation());
+      dispatch(formValidationActions.reset());
     }
     dispatch(modalsActions.changeIsFormModalOpen());
   };
@@ -46,6 +48,7 @@ function App() {
       dispatch(addPlaceActions.reset());
       dispatch(updatePlaceActions.reset());
       dispatch(addPlacelocationActions.clearLocation());
+      dispatch(formValidationActions.reset());
     }
     dispatch(modalsActions.changeIsUpdateModalOpen());
   };

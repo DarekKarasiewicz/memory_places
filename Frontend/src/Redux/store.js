@@ -7,6 +7,7 @@ import addPlaceReducer from './addPlaceSlice';
 import updatePlaceReducer from './updatePlaceSlice';
 import allMapPlacesReducer from './allMapPlacesSlice';
 import authReducer from './authSlice';
+import formValidationReducer from './formValidationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     updatePlace: updatePlaceReducer,
     allMapPlaces: allMapPlacesReducer,
     auth: authReducer,
+    formValidation: formValidationReducer,
   },
 });

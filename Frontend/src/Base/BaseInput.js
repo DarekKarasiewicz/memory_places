@@ -9,7 +9,9 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
         <input
           className={`block w-${
             props.width ? props.width : 'full'
-          } rounded-l-lg rounded-r-lg p-2 pl-3 ${props.className ? props.className : ''}`}
+          } rounded-l-lg rounded-r-lg p-2 pl-3 ${props.className ? props.className : ''} ${
+            props.isValid === false ? 'bg-red-500' : ''
+          }`}
           type={props.type}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}

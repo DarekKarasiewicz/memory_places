@@ -42,7 +42,9 @@
         "more_info": "Więcej informacji",
         "no_response": "Brak odpowiedzi serwera",
         "close": "Zamknij",
-        "send": "Wyślij"
+        "send": "Wyślij",
+        "useful_links": "Przydatne linki (opcjonalne):",
+        "illegal_characters": "Pole zawiera niedozwolone znaki lub jest puste!"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",

@@ -12,9 +12,11 @@ import { selectUpdatePlace, updatePlaceActions } from '../Redux/updatePlaceSlice
 import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { formValidationActions, selectFormValidation } from '../Redux/formValidationSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
+  const formValidation = useSelector(selectFormValidation);
   const dispatch = useDispatch();
   const nameRef = useRef();
   const dateRef = useRef();
@@ -45,7 +47,7 @@ function FormModal(props) {
 
   const type_options = [
     { label: t('modal.all'), value: 'all' },
-    { label: t('modal.war_cemetery'), value: 'war_emetery' },
+    { label: t('modal.war_cemetery'), value: 'war_cemetery' },
     { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
     { label: t('modal.burial_site'), value: 'burial_site' },
     { label: t('modal.execution_site'), value: 'execution_site' },
@@ -67,47 +69,50 @@ function FormModal(props) {
   ];
 
   useEffect(() => {
-    dispatch(addPlaceActions.changeLat(addPlaceLocation.lat));
-    dispatch(addPlaceActions.changeLng(addPlaceLocation.lng));
-  }, [addPlaceLocation]);
+    if (updatePlaceData.isDataLoaded === true || props.type !== 'update') {
+      if (addPlaceLocation.lat || addPlaceLocation.lng) {
+        validateLat(addPlaceLocation.lat);
+        validateLng(addPlaceLocation.lng);
+      }
+      setLat(addPlaceLocation.lat);
+      setLng(addPlaceLocation.lng);
+    }
+  }, []);
 
   useEffect(() => {
     if (props.type === 'update' && updatePlaceData.isDataLoaded === false) {
       dispatch(addPlaceActions.changeName(updatePlaceData.place.place_name));
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
-      dispatch(addPlaceActions.changeLat(updatePlaceData.place.lat));
       setLat(updatePlaceData.place.lat);
-      dispatch(addPlaceActions.changeLng(updatePlaceData.place.lng));
       setLng(updatePlaceData.place.lng);
       dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
       dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
       dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
       dispatch(addPlaceActions.changeWikiLink(updatePlaceData.place.wiki_link));
       dispatch(addPlaceActions.changeTopicLink(updatePlaceData.place.topic_link));
+      validateName(updatePlaceData.place.place_name);
+      validateDescription(updatePlaceData.place.description);
+      dispatch(formValidationActions.changeIsValidDate(isNaN(updatePlaceData.place.found_date)));
+      validateLat(updatePlaceData.place.lat);
+      validateLng(updatePlaceData.place.lng);
+      dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== 'all'));
+      dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== 'all'));
+      dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== 'all'));
       dispatch(updatePlaceActions.dataIsLoaded());
     }
   }, []);
 
-  useEffect(() => {
-    if (updatePlaceData.isDataLoaded === true) {
-      dispatch(addPlaceActions.changeLat(addPlaceLocation.lat));
-      dispatch(addPlaceActions.changeLng(addPlaceLocation.lng));
-      setLat(addPlaceLocation.lat);
-      setLng(addPlaceLocation.lng);
-    }
-  }, []);
-
-  const formValidation = () => {
+  const validateForm = () => {
     if (
-      addPlaceData.place_name.lenght > 0 &&
-      addPlaceData.description.lenght > 0 &&
-      addPlaceData.found_date.lenght > 0 &&
-      addPlaceData.lat > 0 &&
-      addPlaceData.lng > 0 &&
-      addPlaceData.sortof !== 'all' &&
-      addPlaceData.type !== 'all' &&
-      addPlaceData.period !== 'all'
+      formValidation.isValidName === true &&
+      formValidation.isValidDate === true &&
+      formValidation.isValidLat === true &&
+      formValidation.isValidLng === true &&
+      formValidation.isValidType === true &&
+      formValidation.isValidSortof === true &&
+      formValidation.isValidPeriod === true &&
+      formValidation.isValidDescription === true
     ) {
       return true;
     } else {
@@ -115,10 +120,31 @@ function FormModal(props) {
     }
   };
 
-  const validateName = (name) => {};
+  const validateName = (name) => {
+    const nameRegex = /[\w'():-]+/;
+    dispatch(formValidationActions.changeIsValidName(nameRegex.test(name)));
+  };
+
+  const validateLat = (lat) => {
+    const latRegex = /^(-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,})$/;
+    dispatch(formValidationActions.changeIsValidLat(latRegex.test(lat)));
+  };
+
+  const validateLng = (lng) => {
+    const lngRegex = /^(-?((1[0-7]|[1-9]?)[0-9]|[0-9])\.{1}\d{1,})$/;
+    dispatch(formValidationActions.changeIsValidLng(lngRegex.test(lng)));
+  };
+
+  const validateDescription = (desc) => {
+    if (desc.length > 0) {
+      dispatch(formValidationActions.changeIsValidDescription(true));
+    } else {
+      dispatch(formValidationActions.changeIsValidDescription(false));
+    }
+  };
 
   const handleConfirm = () => {
-    const isFormValid = true;
+    const isFormValid = validateForm();
 
     if (isFormValid) {
       if (props.type === 'update') {
@@ -127,8 +153,8 @@ function FormModal(props) {
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
             found_date: addPlaceData.found_date,
-            lat: addPlaceData.lat,
-            lng: addPlaceData.lng,
+            lat: lat,
+            lng: lng,
             sortof: addPlaceData.sortof,
             type: addPlaceData.type,
             period: addPlaceData.period,
@@ -140,6 +166,7 @@ function FormModal(props) {
             dispatch(updatePlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsUpdateModalOpen());
+            dispatch(formValidationActions.reset());
           });
       } else {
         console.log({
@@ -161,8 +188,8 @@ function FormModal(props) {
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
             found_date: addPlaceData.found_date,
-            lat: addPlaceData.lat,
-            lng: addPlaceData.lng,
+            lat: lat,
+            lng: lng,
             sortof: addPlaceData.sortof,
             type: addPlaceData.type,
             period: addPlaceData.period,
@@ -173,6 +200,7 @@ function FormModal(props) {
             dispatch(addPlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsFormModalOpen());
+            dispatch(formValidationActions.reset());
           });
       }
     } else {
@@ -200,9 +228,17 @@ function FormModal(props) {
             value={addPlaceData.place_name}
             onBlur={() => {
               dispatch(addPlaceActions.changeName(nameRef.current.value));
+              validateName(nameRef.current.value);
+            }}
+            onChange={() => {
+              validateName(nameRef.current.value);
             }}
             ref={nameRef}
+            isValid={formValidation.isValidName}
           />
+          {formValidation.isValidName === false && (
+            <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
+          )}
           <BaseInput
             type='date'
             name='dateInput'
@@ -212,7 +248,12 @@ function FormModal(props) {
             value={addPlaceData.found_date}
             onBlur={() => {
               dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
+              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
             }}
+            onChange={() => {
+              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+            }}
+            isValid={formValidation.isValidDate}
           />
           <div className='flex gap-8'>
             <BaseInput
@@ -220,24 +261,34 @@ function FormModal(props) {
               placeholder={t('common.latitude')}
               name='lat'
               label={t('common.latitude')}
-              value={props.type === 'update' ? lat : addPlaceData.lat}
+              value={lat}
               ref={latRef}
               onBlur={() => {
-                dispatch(addPlaceActions.changeLat(latRef.current.value));
                 setLat(latRef.current.value);
+                validateLat(lat);
               }}
+              onChange={() => {
+                setLat(latRef.current.value);
+                validateLat(lat);
+              }}
+              isValid={formValidation.isValidLat}
             />
             <BaseInput
               type='number'
               placeholder={t('common.longitude')}
               name='lng'
               label={t('common.longitude')}
-              value={props.type === 'update' ? lng : addPlaceData.lng}
+              value={lng}
               ref={lngRef}
               onBlur={() => {
-                dispatch(addPlaceActions.changeLng(lngRef.current.value));
                 setLng(lngRef.current.value);
+                validateLng(lng);
               }}
+              onChange={() => {
+                setLng(lngRef.current.value);
+                validateLng(lngRef);
+              }}
+              isValid={formValidation.isValidLng}
             />
           </div>
           <div className='p-2 flex justify-center mt-2'>
@@ -260,7 +311,16 @@ function FormModal(props) {
               ref={sortofRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
+                dispatch(
+                  formValidationActions.changeIsValidSortof(sortofRef.current.value !== 'all'),
+                );
               }}
+              onChange={() => {
+                dispatch(
+                  formValidationActions.changeIsValidSortof(sortofRef.current.value !== 'all'),
+                );
+              }}
+              isValid={formValidationActions.isValidSortof}
             />
             <BaseSelect
               label={t('common.type')}
@@ -274,7 +334,12 @@ function FormModal(props) {
               ref={typeRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeType(typeRef.current.value));
+                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
               }}
+              onChange={() => {
+                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
+              }}
+              isValid={formValidation.isValidType}
             />
           </div>
           <BaseSelect
@@ -289,7 +354,16 @@ function FormModal(props) {
             ref={periodRef}
             onBlur={() => {
               dispatch(addPlaceActions.changePeriod(periodRef.current.value));
+              dispatch(
+                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
+              );
             }}
+            onChange={() => {
+              dispatch(
+                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
+              );
+            }}
+            isValid={formValidation.isValidPeriod}
           />
           <BaseTextarea
             rows='6'
@@ -300,10 +374,15 @@ function FormModal(props) {
             value={addPlaceData.description}
             onBlur={() => {
               dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
+              validateDescription(descriptionRef.current.value);
             }}
+            onChange={() => {
+              validateDescription(descriptionRef.current.value);
+            }}
+            isValid={formValidation.isValidDescription}
           />
           <div className='mt-1'>
-            <p>Przydatne linki (opcjonalne):</p>
+            <p>{t('common.useful_links')}</p>
             <div className='flex'>
               <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
                 <img src='./assets/wiki_icon.svg' alt='wiki_icon' />

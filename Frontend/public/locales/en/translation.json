@@ -42,7 +42,9 @@
         "more_info": "More info",
         "no_response": "No Server Response",
         "close": "Close",
-        "send": "Send"
+        "send": "Send",
+        "useful_links": "Useful links (optional):",
+        "illegal_characters": "This field contains illegal characters or is empty!"
     },
     "forum": {
         "comment_content": "Comment-Content",
