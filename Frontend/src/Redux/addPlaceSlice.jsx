@@ -39,12 +39,6 @@ export const addPlaceSlice = createSlice({
     changeTopicLink: (state, action) => {
       state.topic_link = action.payload;
     },
-    changeWikiLink: (state, action) => {
-      state.wiki_link = action.payload;
-    },
-    changeTopicLink: (state, action) => {
-      state.topic_link = action.payload;
-    },
     reset: () => initialState,
   },
 });

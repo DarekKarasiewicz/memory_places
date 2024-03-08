@@ -35,7 +35,6 @@ function FormModal(props) {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { t } = useTranslation();
-  const [isValidName, setIsValidName] = useState(null);
 
   const sortof_options = [
     { label: t('modal.all'), value: 'all' },
@@ -169,19 +168,6 @@ function FormModal(props) {
             dispatch(formValidationActions.reset());
           });
       } else {
-        console.log({
-          user: user.user_id,
-          place_name: addPlaceData.place_name,
-          description: addPlaceData.description,
-          found_date: addPlaceData.found_date,
-          lat: addPlaceData.lat,
-          lng: addPlaceData.lng,
-          sortof: addPlaceData.sortof,
-          type: addPlaceData.type,
-          period: addPlaceData.period,
-          wiki_link: addPlaceData.wiki_link,
-          topic_link: addPlaceData.topic_link,
-        });
         axios
           .post(`http://localhost:8000/memo_places/places/`, {
             user: user.user_id,
