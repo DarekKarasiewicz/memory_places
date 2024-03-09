@@ -156,6 +156,7 @@
     },
     "navbar": {
         "main_page": "Main page",
-        "forum": "Forum"
+        "forum": "Forum",
+        "click_to_select": "Click on the map to select location!"
     }
 }
