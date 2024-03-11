@@ -43,6 +43,7 @@ const GoogleMap = () => {
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
+  const mapId = process.env.REACT_APP_MAP_ID;
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -151,7 +152,7 @@ const GoogleMap = () => {
         disableDefaultUI={true}
         clickableIcons={false}
         onClick={handleLocationMarker}
-        mapId='1'
+        mapId={mapId}
       >
         {!addPlaceLocation.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
         {addPlaceLocation.isSelecting && addPlaceLocation.lat && (
