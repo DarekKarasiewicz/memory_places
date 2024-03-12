@@ -22,7 +22,7 @@ function ContactForm(props) {
     const contact_form_req = {
       email: emailRef.current.value,
       title: titleRef.current.value,
-      desc: descRef.current.value,
+      description: descRef.current.value,
     };
 
     axios

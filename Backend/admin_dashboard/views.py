@@ -13,6 +13,8 @@ import secrets
 import string
 
 
+def json_bool(str):
+    return str.lower()=="true"
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -154,8 +156,6 @@ class User_view(viewsets.ModelViewSet):
             username=data["username"],
             password=data["password"],
         )
-        def json_bool(str):
-            return str.lower()=="true"
         
         for key in data.keys():
             match key:
@@ -264,8 +264,7 @@ class User_view(viewsets.ModelViewSet):
         serializer = User_serializer(user_object)
         return Response(serializer.data)
     
-class Contact_us(viewsets.ModelViewSet):
-    http_method_names = ['post','get']
+class Questions(viewsets.ModelViewSet):
     serializer_class = Questions_serializer
 
     def get_queryset(self):
@@ -276,11 +275,12 @@ class Contact_us(viewsets.ModelViewSet):
             user_object = User.objects.get(email=request.data['email'])
         except:
             user_object=None
+        print(request.data)
         
         new_question = Question(
             user=user_object,
             title=request.data['title'],
-            description=request.data['desc'],
+            description=request.data['description'],
             done=False
         )
         new_question.save()
@@ -296,4 +296,59 @@ class Contact_us(viewsets.ModelViewSet):
 
         serializer = Questions_serializer(new_question)
         return Response(serializer.data) 
-        
+
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                question_object = get_object_or_404(User, id=value)
+                serializer = Questions_serializer(question_object, many=False)
+            case "user":
+                # user_object = get_object_or_404(User, pk=value)
+                question_object = Question.objects.filter(user=value)
+                serializer = Questions_serializer(question_object,many=True)
+            case "title":
+                question_object = Question.objects.filter(username=value)
+                serializer = Questions_serializer(question_object,many=True)
+            case "email":
+                value = str(value).replace("&", ".")
+                user_object = get_object_or_404(User, email=value)
+                question_object = Question.objects.filter(user=user_object.pk)
+                serializer = Questions_serializer(question_object, many=True)
+            case "done":
+                question_object = Question.objects.filter(done=json_bool(value))
+                serializer = Questions_serializer(question_object, many=True)
+            case _:
+                question = None
+                return Response({"detail": "Invalid request"})
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        question_object = Question.objects.get(id=kwargs['pk'])
+
+        data = request.data
+
+        for i in data.keys():
+            match i:
+                case "user":
+                    question_object.user = data["user"]
+                case "title":
+                    question_object.title = data["title"]
+                case "description":
+                    question_object.description = data["description"]
+                case "done":
+                    question_object.done =json_bool(data["done"])
+                case _:
+                    pass
+
+        question_object.save()
+
+        serializer =Questions_serializer(question_object) 
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        question_object = Question.objects.get(id=kwargs["pk"])
+        question_object.delete()
+
+        serializer = Questions_serializer(question_object)
+        return Response(serializer.data)
