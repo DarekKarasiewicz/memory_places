@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer
-from .models import Place, User, Questions
+from .models import Place, User, Question
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -242,7 +242,7 @@ class Contact_us(viewsets.ModelViewSet):
     serializer_class = Questions_serializer
 
     def get_queryset(self):
-        return Questions.objects.all() 
+        return Question.objects.all() 
 
     def create(self, request, *args, **kwargs):
         try:
@@ -250,7 +250,7 @@ class Contact_us(viewsets.ModelViewSet):
         except:
             user_object=None
         
-        new_question = Questions(
+        new_question = Question(
             user=user_object,
             title=request.data['title'],
             description=request.data['desc'],

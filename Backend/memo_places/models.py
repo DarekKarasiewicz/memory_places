@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
             alphabet = string.ascii_letters + string.digits + string.punctuation
             password = "".join(
                 secrets.choice(alphabet) for _ in range(48)
-            )  # 48 should be sufficient to meke strong password!
+            )  # 48 should be sufficient to make strong password!
         elif not password:
             raise ValueError("User must have password")
         user_obj = self.model(email=self.normalize_email(email))
@@ -56,7 +56,6 @@ class User(AbstractBaseUser):
     active = models.BooleanField(default=True)
     confirmed = models.BooleanField(default=False)
     data_join = models.DateField(auto_now_add=True)
-    outside = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     # USERNAME_FIELD and password are required by default
@@ -114,7 +113,7 @@ class Place(models.Model):
     topic_link    = models.CharField(max_length=64, default=None, null=True)
     img           = models.CharField(max_length=256, default=None,null=True)
 
-class Questions(models.Model):
+class Question(models.Model):
     user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     title       = models.CharField(max_length=64, default=None)
     description = models.CharField(max_length=360, default=None)
