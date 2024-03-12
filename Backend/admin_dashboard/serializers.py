@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from memo_places.models import Place, User, Questions
+from memo_places.models import Place, User, Question
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -61,7 +61,7 @@ class Questions_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
 
     class Meta:
-        model = Questions
+        model = Question
         fields = (
             "id",
             "title",

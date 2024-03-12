@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer
-from memo_places.models import Place, User, Questions
+from .serializers import Places_serailizer, User_serializer, Questions_serializer
+from memo_places.models import Place, User, Question
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -120,14 +120,6 @@ class Place_view(viewsets.ModelViewSet):
         serializer = Places_serailizer(place_object)
         return Response(serializer.data)
 
-class Short_place_view(viewsets.ModelViewSet):
-    http_method_names=["get"]
-    serializer_class =Short_Places_serailizer
-
-    def get_queryset(self):
-        return Place.objects.all()
-
-
 class Outside_user_view(viewsets.ModelViewSet):
     serializer_class = User_serializer
     http_method_names = ["post"]
@@ -148,31 +140,36 @@ class Outside_user_view(viewsets.ModelViewSet):
         serializer = User_serializer(new_user)
 
         return Response(serializer.data)
-class VerificationMail(viewsets.ModelViewSet):
-    serializer_class = User_serializer
-    http_method_names = ["put"]
-
-    def update(self, request, *args, **kwargs):
-        user_object = User.objects.get(id=kwargs["pk"])
-        user_object.confirmed=True
-        user_object.save()
-
-        return Response("User activate") 
 
 class User_view(viewsets.ModelViewSet):
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return User.objects.all()  # change to .none() on production
+        return User.objects.all()  
 
-    # TODO Secure it
     def create(self, request, *args, **kwargs):
+        data= request.data
         new_user = User.objects.create_user(
-            email=request.data["email"],
-            username=request.data["username"],
-            password=request.data["password"],
+            email=data["email"],
+            username=data["username"],
+            password=data["password"],
         )
-
+        def json_bool(str):
+            return str.lower()=="true"
+        
+        for key in data.keys():
+            match key:
+                case "admin":
+                    print(json_bool(data["admin"]))
+                    new_user.admin=json_bool(data["admin"])
+                case "master":
+                    new_user.master=json_bool(data["master"])
+                case "outside":
+                    new_user.outside=json_bool(data["outside"]) 
+                case "active":
+                    new_user.active=json_bool(data["active"])
+                case "confirmed":
+                    new_user.confirmed=json_bool(data["confirmed"]) 
         new_user.save()
         serializer = User_serializer(new_user)
         send_mail("Verifictation mail"
@@ -195,6 +192,27 @@ class User_view(viewsets.ModelViewSet):
                 value = str(value).replace("&", ".")
                 user = get_object_or_404(User, email=value)
                 serializer = User_serializer(user)
+            case "username":
+                user = get_object_or_404(User, username=value)
+                serializer = User_serializer(user)
+            case "admin":
+                user = User.objects.filter(admin=True)
+                serializer = User_serializer(user, many=True)
+            case "active":
+                user = User.objects.filter(active=True)
+                serializer = User_serializer(user, many=True)
+            case "confirmed":
+                user = User.objects.filter(confirmed=True)
+                serializer = User_serializer(user, many=True)
+            case "outside":
+                user = User.objects.filter(outside=True)
+                serializer = User_serializer(user, many=True)
+            case "master":
+                user = User.objects.filter(master=True)
+                serializer = User_serializer(user, many=True)
+            # case "data_join":
+            #     #TODO 
+            #     return Response({"detail": "Invalid request"})
             case _:
                 user = None
                 return Response({"detail": "Invalid request"})
@@ -203,22 +221,36 @@ class User_view(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         # user_object = User.objects.get(id=kwargs['pk'])
         try:
-            print(isinstance(int(kwargs["pk"]), int))
+            isinstance(int(kwargs["pk"]), int)
             user_object = User.objects.get(id=kwargs["pk"])
         except:
             key, value = re.match("(\w+)=(\d+)", kwargs["pk"]).groups()
             user_object = User.objects.get(id=value)
 
         data = request.data
-        if key == "password_reset":
-            user_object.set_password(data["password"])
-        else:
-            # should we consider update email
-            if "email" in data and "username" in data:
-                user_object.email = data["email"]
-                user_object.username = data["username"]
-            else:
-                user_object.username = data["username"]
+
+        for i in data.keys():
+            match i:
+                case "email":
+                    user_object.email = data["email"]
+                case "username":
+                    user_object.username = data["username"]
+                case "password":
+                    user_object.password = data["password"]
+                case "outside":
+                    user_object.outside = data["outside"]
+                case "master":
+                    user_object.master = data["master"]
+                case "admin":
+                    user_object.admin = data["admin"]
+                case "active":
+                    user_object.active = data["active"]
+                case "confirmed":
+                    user_object.confirmed = data["confirmed"]
+                case "data_join":
+                    user_object.data_join = data["data_join"]
+                case _:
+                    pass
 
         user_object.save()
 
@@ -227,12 +259,7 @@ class User_view(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         user_object = User.objects.get(id=kwargs["pk"])
-
-        if user_object.confirmed == True:
-            user_object.active = False
-            user_object.save()
-        else:
-            user_object.delete()
+        user_object.delete()
 
         serializer = User_serializer(user_object)
         return Response(serializer.data)
@@ -242,7 +269,7 @@ class Contact_us(viewsets.ModelViewSet):
     serializer_class = Questions_serializer
 
     def get_queryset(self):
-        return Questions.objects.all() 
+        return Question.objects.all() 
 
     def create(self, request, *args, **kwargs):
         try:
@@ -250,7 +277,7 @@ class Contact_us(viewsets.ModelViewSet):
         except:
             user_object=None
         
-        new_question = Questions(
+        new_question = Question(
             user=user_object,
             title=request.data['title'],
             description=request.data['desc'],
@@ -269,3 +296,4 @@ class Contact_us(viewsets.ModelViewSet):
 
         serializer = Questions_serializer(new_question)
         return Response(serializer.data) 
+        
