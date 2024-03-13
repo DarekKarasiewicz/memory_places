@@ -101,7 +101,7 @@ const GoogleMap = () => {
   const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
 
   const handleConfirm = () => {
-    dispatch(addPlacelocationActions.changeIsSelecting(false));
+    dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: false }));
     if (updatePlaceData.isDataLoaded === true) {
       dispatch(modalsActions.changeIsUpdateModalOpen());
     } else {
@@ -137,7 +137,7 @@ const GoogleMap = () => {
   const handleAdvancedInfoBoxVisability = () => {
     dispatch(modalsActions.changeIsAdvancedInfoOpen());
   };
-
+  console.log(addPlaceLocation.isSelecting);
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
@@ -160,7 +160,13 @@ const GoogleMap = () => {
             ref={markerRef}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+            <div className='w-9 h-9 bg-gray-400 rounded-t-full rounded-bl-full rotate-45 border border-black'>
+              <img
+                className='-rotate-45 w-6 h-6 absolute transform left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                src={`./assets/plus_icon.svg`}
+                alt='plus_icon'
+              />
+            </div>
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
                 <button onClick={handleConfirm}>{t('common.confirm')}</button>
@@ -173,10 +179,16 @@ const GoogleMap = () => {
           filterItems.map((place) => (
             <AdvancedMarker
               key={place.id}
-              onClick={() => togglePlaceInfoBox(place)}
+              onClick={() => addPlaceLocation.isSelecting === false && togglePlaceInfoBox(place)}
               position={{ lat: place.lat, lng: place.lng }}
             >
-              <Pin background={'#FF0000'} glyphColor={'#000'} borderColor={'#000'} />
+              <div className='w-9 h-9 bg-gray-400 rounded-t-full rounded-bl-full rotate-45 border border-black'>
+                <img
+                  className='-rotate-45 w-6 h-6 absolute transform left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                  src={`../../assets/places_icons/${place.type}_icon.svg`}
+                  alt='place_pin_icon'
+                />
+              </div>
             </AdvancedMarker>
           ))
         ) : (
