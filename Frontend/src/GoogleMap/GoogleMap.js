@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import BaseButton from '../Base/BaseButton';
 import axios from 'axios';
 import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
+import GoogleMapPin from './GoogleMapPin.jsx';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -159,13 +160,7 @@ const GoogleMap = () => {
             ref={markerRef}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <div className='w-9 h-9 bg-gray-400 rounded-t-full rounded-bl-full rotate-45 border border-black'>
-              <img
-                className='-rotate-45 w-6 h-6 absolute transform left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                src={`./assets/plus_icon.svg`}
-                alt='plus_icon'
-              />
-            </div>
+            <GoogleMapPin iconPath={'./assets/plus_icon.svg'} />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
                 <button onClick={handleConfirm}>{t('common.confirm')}</button>
@@ -181,13 +176,7 @@ const GoogleMap = () => {
               onClick={() => addPlaceLocation.isSelecting === false && togglePlaceInfoBox(place)}
               position={{ lat: place.lat, lng: place.lng }}
             >
-              <div className='w-9 h-9 bg-gray-400 rounded-t-full rounded-bl-full rotate-45 border border-black'>
-                <img
-                  className='-rotate-45 w-6 h-6 absolute transform left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                  src={`../../assets/places_icons/${place.type}_icon.svg`}
-                  alt='place_pin_icon'
-                />
-              </div>
+              <GoogleMapPin iconPath={`../../assets/places_icons/${place.type}_icon.svg`} />
             </AdvancedMarker>
           ))
         ) : (
