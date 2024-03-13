@@ -40,17 +40,26 @@ class Place_view(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
 
+        data = request.data
         new_place = Place(
-            user=creator,
-            place_name=request.data["place_name"],
-            description=request.data["description"],
-            found_date=request.data["found_date"],
-            lng=request.data["lng"],
-            lat=request.data["lat"],
-            type=request.data["type"],
-            sortof=request.data["sortof"],
-            period=request.data["period"],
+            user        = creator,
+            place_name  = data["place_name"],
+            description = data["description"],
+            found_date  = data["found_date"],
+            lng         = data["lng"],
+            lat         = data["lat"],
+            type        = data["type"],
+            sortof      = data["sortof"],
+            period      = data["period"],
         )
+        for key in data.keys():
+            match key:
+                case "wiki_link":
+                    new_place.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    new_place.topic_link = data["topic_link"]
+                case "outside":
+                    new_place.img = data["img"]
         new_place.save()
 
         serializer = Places_serailizer(new_place)
@@ -80,6 +89,15 @@ class Place_view(viewsets.ModelViewSet):
                 places = Place.objects.filter(period=value)
                 serializer = Places_serailizer(places, many=True)
                 return Response(serializer.data)
+            case "place_name":
+                places = Place.objects.filter(place_name=value)
+                serializer = Places_serailizer(places, many=True)
+                return Response(serializer.data)
+            #TODO
+            # case "found_date":
+            #     return Response(serializer.data)
+            # case "creation_date":
+            #     return Response(serializer.data)
             case _:
                 place = None
                 return Response({"detail": "Invalid key"})
@@ -91,12 +109,16 @@ class Place_view(viewsets.ModelViewSet):
         data = request.data
         for i in data.keys():
             match i:
+                case "user":
+                    place_object.user = data["user"]
                 case "place_name":
                     place_object.place_name = data["place_name"]
                 case "description":
                     place_object.description = data["description"]
                 case "found_date":
                     place_object.found_date = data["found_date"]
+                case "creation_date":
+                    place_object.creation_date = data["creation_date"]
                 case "lat":
                     place_object.lat = data["lat"]
                 case "lng":
@@ -107,6 +129,12 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.sortof = data["sortof"]
                 case "period":
                     place_object.period = data["period"]
+                case "wiki_link":
+                    place_object.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    place_object.topic_link = data["topic_link"]
+                case "img":
+                    place_object.img = data["img"]
                 case _:
                     pass
 
