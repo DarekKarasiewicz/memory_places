@@ -137,7 +137,6 @@ const GoogleMap = () => {
   const handleAdvancedInfoBoxVisability = () => {
     dispatch(modalsActions.changeIsAdvancedInfoOpen());
   };
-  console.log(addPlaceLocation.isSelecting);
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
