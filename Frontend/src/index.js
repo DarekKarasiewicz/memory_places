@@ -12,6 +12,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CookiesProvider } from 'react-cookie';
 import PageNotFound from './ErrorPage/PageNotFound.jsx';
 import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
+import AdminDashboard from './AdminDashboard/AdminDashboard.js';
 
 export default function AppUrls() {
   return (
@@ -21,6 +22,7 @@ export default function AppUrls() {
         <Route path='/forum' element={<ForumMain />} />
         <Route path='/forum/:id' element={<SubForum />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
+        <Route path='/adminDashboard' element={<AdminDashboard />} />
         <Route path='/*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
