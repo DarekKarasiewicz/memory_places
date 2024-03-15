@@ -34,7 +34,7 @@ function ContentNavbar() {
         <div className='flex'>
           <div className='p-2 pr-4 border-r-2'>
             <div className='flex justify-end items-center gap-8'>
-              <span className='capitalize'>{date}</span>
+              <span className='capitalize font-semibold'>{date}</span>
               <LanguageSwitcher variant='admin_dashboard' />
             </div>
           </div>

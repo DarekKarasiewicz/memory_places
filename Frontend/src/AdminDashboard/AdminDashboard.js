@@ -11,7 +11,7 @@ function AdminDashboard() {
         <div className='w-64 p-4 flex justify-center shadow-lg'>
           <AdminMenu />
         </div>
-        <div className='w-full flex flex-col'>
+        <div className='w-full flex flex-col max-h-screen'>
           <ContentNavbar />
           <Content />
         </div>
