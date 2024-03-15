@@ -13,6 +13,7 @@ import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { formValidationActions, selectFormValidation } from '../Redux/formValidationSlice';
+import { addPlace, deletePlace } from '../Redux/allMapPlacesSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -160,7 +161,9 @@ function FormModal(props) {
             wiki_link: addPlaceData.wiki_link,
             topic_link: addPlaceData.topic_link,
           })
-          .then(() => {
+          .then((response) => {
+            dispatch(deletePlace(response.data.id));
+            dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
             dispatch(updatePlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
@@ -182,7 +185,8 @@ function FormModal(props) {
             wiki_link: addPlaceData.wiki_link,
             topic_link: addPlaceData.topic_link,
           })
-          .then(() => {
+          .then((response) => {
+            dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsFormModalOpen());

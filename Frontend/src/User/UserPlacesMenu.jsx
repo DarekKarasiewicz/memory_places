@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
 const UserMenu = () => {
+  const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const updatePlaceData = useSelector(selectUpdatePlace);
   const dispatch = useDispatch();
   const [cookies] = useCookies(['user']);
@@ -36,7 +37,7 @@ const UserMenu = () => {
       .catch((error) => {
         alert(t('common.axios_warning'));
       });
-  }, [updatePlaceData]);
+  }, [filterItems]);
 
   const handleUserPlacesClose = () => {
     dispatch(userPlacesActions.changeIsOpen());

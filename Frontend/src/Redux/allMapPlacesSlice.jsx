@@ -42,6 +42,9 @@ export const allMapPlacesSlice = createSlice({
 
       state.filterItemsLength = state.filterItems.length;
     },
+    addPlace: (state, action) => {
+      state.filterItems = state.filterItems.concat(action.payload);
+    },
     deletePlace: (state, action) => {
       const placeId = action.payload;
       state.filterItems = state.filterItems.filter((place) => place.id !== placeId);
@@ -71,6 +74,6 @@ export const fetchMapPlaces = () => async (dispatch) => {
   }
 };
 
-export const { filterPlaces, deletePlace } = allMapPlacesSlice.actions;
+export const { filterPlaces, deletePlace, addPlace } = allMapPlacesSlice.actions;
 
 export default allMapPlacesSlice.reducer;
