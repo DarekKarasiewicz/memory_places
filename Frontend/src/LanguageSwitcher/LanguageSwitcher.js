@@ -25,7 +25,7 @@ function LanguageSwitcher(props) {
     <>
       <div
         className={`${
-          props.variant !== 'admin_dashboard' ? 'absolute right-0 top-20 my-auto' : 'relative'
+          props.variant !== 'admin_dashboard' ? 'absolute right-0 top-20 my-auto' : 'relative z-10'
         }`}
       >
         <div className='relative inline-block'>
