@@ -72,7 +72,7 @@ function Navbar() {
               >
                 {dropdownItems.map((item, index) => (
                   <motion.li key={index} className='childItem' variants={childItem}>
-                    <Link to={`/${item.link}`}>
+                    <Link to={`${item.link}`}>
                       <DropdownItem icon={`${item.icon}`} name={`${item.name}`}></DropdownItem>
                     </Link>
                   </motion.li>
