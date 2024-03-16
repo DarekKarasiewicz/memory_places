@@ -1,5 +1,4 @@
 import {
-  Pin,
   Map,
   useApiIsLoaded,
   useAdvancedMarkerRef,
@@ -164,7 +163,14 @@ const GoogleMap = () => {
             <GoogleMapPin iconPath={'./assets/plus_icon.svg'} />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
-                <button onClick={handleConfirm}>{t('common.confirm')}</button>
+                <div className='w-[134px] h-[42px] flex justify-center items-center'>
+                  <BaseButton
+                    onClick={handleConfirm}
+                    type='submit'
+                    name={t('common.confirm')}
+                    btnBg='blue'
+                  ></BaseButton>
+                </div>
               </InfoWindow>
             )}
           </AdvancedMarker>
