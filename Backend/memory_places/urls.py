@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('memo_places/', include("memo_places.urls")),
     path('memo_places_forum/', include("memo_places_forum.urls")),
+    path('admin_dashboard/', include("admin_dashboard.urls")),
 ]
