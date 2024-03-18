@@ -1,5 +1,4 @@
 import {
-  Pin,
   Map,
   useApiIsLoaded,
   useAdvancedMarkerRef,
@@ -21,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import BaseButton from '../Base/BaseButton';
 import axios from 'axios';
 import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
+import GoogleMapPin from './GoogleMapPin.jsx';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ const GoogleMap = () => {
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
+  const mapId = process.env.REACT_APP_MAP_ID;
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -101,7 +102,7 @@ const GoogleMap = () => {
   const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
 
   const handleConfirm = () => {
-    dispatch(addPlacelocationActions.changeIsSelecting(false));
+    dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: false }));
     if (updatePlaceData.isDataLoaded === true) {
       dispatch(modalsActions.changeIsUpdateModalOpen());
     } else {
@@ -137,7 +138,6 @@ const GoogleMap = () => {
   const handleAdvancedInfoBoxVisability = () => {
     dispatch(modalsActions.changeIsAdvancedInfoOpen());
   };
-
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
@@ -151,7 +151,7 @@ const GoogleMap = () => {
         disableDefaultUI={true}
         clickableIcons={false}
         onClick={handleLocationMarker}
-        mapId='1'
+        mapId={mapId}
       >
         {!addPlaceLocation.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
         {addPlaceLocation.isSelecting && addPlaceLocation.lat && (
@@ -160,10 +160,17 @@ const GoogleMap = () => {
             ref={markerRef}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+            <GoogleMapPin iconPath={'./assets/plus_icon.svg'} />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
-                <button onClick={handleConfirm}>{t('common.confirm')}</button>
+                <div className='w-36 h-12 flex justify-center items-center'>
+                  <BaseButton
+                    onClick={handleConfirm}
+                    type='submit'
+                    name={t('common.confirm')}
+                    btnBg='blue'
+                  ></BaseButton>
+                </div>
               </InfoWindow>
             )}
           </AdvancedMarker>
@@ -173,10 +180,10 @@ const GoogleMap = () => {
           filterItems.map((place) => (
             <AdvancedMarker
               key={place.id}
-              onClick={() => togglePlaceInfoBox(place)}
+              onClick={() => addPlaceLocation.isSelecting === false && togglePlaceInfoBox(place)}
               position={{ lat: place.lat, lng: place.lng }}
             >
-              <Pin background={'#FF0000'} glyphColor={'#000'} borderColor={'#000'} />
+              <GoogleMapPin iconPath={`../../assets/places_icons/${place.type}_icon.svg`} />
             </AdvancedMarker>
           ))
         ) : (
