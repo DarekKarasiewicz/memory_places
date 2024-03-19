@@ -44,7 +44,11 @@
         "close": "Close",
         "send": "Send",
         "useful_links": "Useful links (optional):",
-        "illegal_characters": "This field contains illegal characters or is empty!"
+        "illegal_characters": "This field contains illegal characters or is empty!",
+        "upload_file": "Upload file",
+        "file_too_large": "File is too large.",
+        "only_images": "You can only upload images.",
+        "max_files_number": "The maximum number of files is "
     },
     "forum": {
         "comment_content": "Comment-Content",
