@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 
-function BasicTable({ data, columns }) {
+function UsersTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
 
@@ -164,4 +164,4 @@ function BasicTable({ data, columns }) {
   );
 }
 
-export default BasicTable;
+export default UsersTable;
