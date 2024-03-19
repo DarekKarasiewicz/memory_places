@@ -17,20 +17,22 @@ function AdminTileStat(props) {
         </span>
         <div className='flex justify-between mx-4'>
           <span className='text-3xl font-semibold'>{props.value}</span>
-          <span
-            className={`flex items-center justify-center gap-1 rounded-full font-semibold px-2 ${
-              props.trend === 'up' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'
-            }`}
-          >
-            {props.trend && (
-              <img
-                src={`./assets/admin/trending_${props.trend}_icon.svg`}
-                alt={`trending_${props.trend}_icon`}
-                className='h-4 w-4'
-              ></img>
-            )}
-            <span>{props.percentage}%</span>
-          </span>
+          {props.percentage && (
+            <span
+              className={`flex items-center justify-center gap-1 rounded-full font-semibold px-2 ${
+                props.trend === 'up' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'
+              }`}
+            >
+              {props.trend && (
+                <img
+                  src={`./assets/admin/trending_${props.trend}_icon.svg`}
+                  alt={`trending_${props.trend}_icon`}
+                  className='h-4 w-4'
+                ></img>
+              )}
+              <span>{props.percentage}%</span>
+            </span>
+          )}
         </div>
       </div>
     </>
