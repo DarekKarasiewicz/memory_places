@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 
-from Backend.memo_places.serializers import Chagnes_serializer
-from .serializers import Places_serailizer, User_serializer, Questions_serializer
-from memo_places.models import Place, User, Question,Change
+from memo_places.serializers import Changes_serializer 
+from .serializers import Places_serailizer, User_serializer, Questions_serializer,Types_serializer,Period_serializer,Sortof_serializer
+from memo_places.models import Place, User, Question, Change, Sortof, Type, Period
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -392,7 +392,104 @@ class Questions_view(viewsets.ModelViewSet):
 
 
 class Changes_view(viewsets.ModelViewSet):
-    serializer_class = Chagnes_serializer
+    serializer_class = Changes_serializer
 
     def get_queryset(self):
         return Change.objects.all()  
+
+
+class Types_view(viewsets.ModelViewSet):
+    serializer_class = Types_serializer 
+
+    def get_queryset(self):
+        return Type.objects.all()  
+
+    def create(self, request, *args, **kwargs):
+        new_type = Type(
+            name=request.data['name'],
+        )
+        new_type.save()
+
+        serializer = Types_serializer(new_type)
+        return Response(serializer.data) 
+
+    def update(self, request, *args, **kwargs):
+        type_object = Type.objects.get(id=kwargs['pk'])
+
+        type_object.name = request.data['name']
+
+        type_object.save()
+
+        serializer = Types_serializer(type_object) 
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        type_object = Type.objects.get(id=kwargs["pk"])
+        type_object.delete()
+
+        serializer = Types_serializer(type_object)
+        return Response(serializer.data)
+
+class Sortofs_view(viewsets.ModelViewSet):
+    serializer_class = Sortof_serializer 
+
+    def get_queryset(self):
+        return Sortof.objects.all()  
+
+    def create(self, request, *args, **kwargs):
+        new_sortof = Sortof(
+            name=request.data['name'],
+        )
+        new_sortof.save()
+
+        serializer = Sortof_serializer(new_sortof)
+        return Response(serializer.data) 
+
+    def update(self, request, *args, **kwargs):
+        sortof_object = Sortof.objects.get(id=kwargs['pk'])
+
+        sortof_object.name = request.data['name']
+
+        sortof_object.save()
+
+        serializer = Sortof_serializer(sortof_object) 
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        sortof_object = Sortof.objects.get(id=kwargs["pk"])
+        sortof_object.delete()
+
+        serializer = Sortof_serializer(sortof_object)
+        return Response(serializer.data)
+
+class Periods_view(viewsets.ModelViewSet):
+    serializer_class = Period_serializer 
+
+    def get_queryset(self):
+        return Period.objects.all()  
+
+    def create(self, request, *args, **kwargs):
+        new_period = Period(
+            name=request.data['name'],
+        )
+        new_period.save()
+
+        serializer = Period_serializer(new_period)
+        return Response(serializer.data) 
+
+    def update(self, request, *args, **kwargs):
+        period_object = Period.objects.get(id=kwargs['pk'])
+
+        period_object.name = request.data['name']
+
+        period_object.save()
+
+        serializer = Period_serializer(period_object) 
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        period_object = Period.objects.get(id=kwargs["pk"])
+        period_object.delete()
+
+        serializer = Period_serializer(period_object)
+        return Response(serializer.data)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from memo_places.models import Place, User, Question
+from memo_places.models import Place, User, Question, Type, Sortof, Period
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -76,3 +76,25 @@ class Questions_serializer(serializers.ModelSerializer):
         if data.get('user') is None:
             data.pop('username', None)
         return data
+
+class Types_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Type 
+        fields = (
+            "id",
+            "name",
+        )
+class Sortof_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sortof
+        fields = (
+            "id",
+            "name",
+        )
+class Period_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Period 
+        fields = (
+            "id",
+            "name",
+        )

@@ -98,6 +98,12 @@ class User(AbstractBaseUser):
         return self.active
 
 
+class Type(models.Model):
+    name = models.CharField(max_length=64)
+class Sortof(models.Model):
+    name = models.CharField(max_length=64)
+class Period(models.Model):
+    name = models.CharField(max_length=64)
 class Place(models.Model):
     user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     place_name    = models.CharField(max_length=32, default=None)
@@ -106,9 +112,9 @@ class Place(models.Model):
     found_date    = models.DateField()
     lng           = models.FloatField()
     lat           = models.FloatField()
-    type          = models.CharField(max_length=64)
-    sortof        = models.CharField(max_length=64)
-    period        = models.CharField(max_length=64)
+    type          = models.ForeignKey(Type, on_delete=models.CASCADE)
+    sortof        = models.ForeignKey(Sortof, on_delete=models.CASCADE)
+    period        = models.ForeignKey(Period, on_delete=models.CASCADE)
     wiki_link     = models.CharField(max_length=64, default=None,null=True)
     topic_link    = models.CharField(max_length=64, default=None, null=True)
     img           = models.CharField(max_length=256, default=None,null=True)

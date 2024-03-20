@@ -67,7 +67,7 @@ class Questions_serializer(serializers.ModelSerializer):
             data.pop('username', None)
         return data
 
-class Chagnes_serializer(serializers.ModelSerializer):
+class Changes_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     class Meta:
         model = Question
