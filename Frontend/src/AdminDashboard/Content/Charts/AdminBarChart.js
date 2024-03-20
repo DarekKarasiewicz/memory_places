@@ -11,69 +11,6 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  {
-    name: 'January',
-    sname: 'Jan.',
-    users: 4000,
-  },
-  {
-    name: 'February',
-    sname: 'Feb.',
-    users: 3000,
-  },
-  {
-    name: 'March',
-    sname: 'Mar.',
-    users: 2000,
-  },
-  {
-    name: 'April',
-    sname: 'Apr.',
-    users: 2780,
-  },
-  {
-    name: 'May',
-    sname: 'May',
-    users: 1890,
-  },
-  {
-    name: 'June',
-    sname: 'Jun.',
-    users: 2390,
-  },
-  {
-    name: 'July',
-    sname: 'Jul.',
-    users: 6700,
-  },
-  {
-    name: 'August',
-    sname: 'Aug.',
-    users: 3780,
-  },
-  {
-    name: 'September',
-    sname: 'Sep.',
-    users: 3490,
-  },
-  {
-    name: 'October',
-    sname: 'Oct.',
-    users: 3490,
-  },
-  {
-    name: 'November',
-    sname: 'Nov.',
-    users: 9000,
-  },
-  {
-    name: 'December',
-    sname: 'Dec.',
-    users: 500,
-  },
-];
-
 function AdminBarChart(props) {
   return (
     <>
@@ -89,7 +26,7 @@ function AdminBarChart(props) {
         <BarChart
           width={500}
           height={1000}
-          data={data}
+          data={props.data}
           margin={{
             top: 25,
             right: 30,
@@ -99,15 +36,15 @@ function AdminBarChart(props) {
         >
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='sname' tick={{ dy: 5 }} padding={{ left: 5, right: 5 }} interval={0} />
-          <YAxis domain={['auto', (dataMax) => dataMax * 1.25]} />
+          <YAxis domain={['auto', (dataMax) => dataMax * 2]} />
           <Tooltip
-            labelFormatter={(value) => data.find((item) => item.sname === value).name}
+            labelFormatter={(value) => props.data.find((item) => item.sname === value).name}
             formatter={(value, name) => [value, name]}
           />
           <Legend wrapperStyle={{ position: 'relative', marginTop: '-15px' }} />
           <Bar
-            dataKey='users'
-            fill='#82ca9d'
+            dataKey={props.dataName}
+            fill='#0891b2'
             activeBar={<Rectangle fill='gold' stroke='purple' />}
           />
         </BarChart>
