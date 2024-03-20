@@ -1,20 +1,41 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { changeSection } from '../../Redux/contentSectionSlice';
 import { useState } from 'react';
 import AdminMenuItem from './AdminMenuItem/AdminMenuItem';
 
 function AdminMenu() {
+  const dispatch = useDispatch();
+  const contentSection = useSelector((state) => state.contentSection.section);
   const [activeItem, setActiveItem] = useState(0);
 
   const menuItems = [
-    { icon: 'statistics_icon', name: 'Statystki strony' },
-    { icon: 'user_group_icon', name: 'Zarządzanie użytkownikami' },
-    { icon: 'places_icon', name: 'Zarządzanie istniejącymi miejscami' },
-    { icon: 'var_changes_icon', name: 'Zarządzanie zmiennymi miejsc' },
-    { icon: 'verification_icon', name: 'Weryfikacja miejsc' },
-    { icon: 'web_changes_icon', name: 'Historia zmian na stronie' },
+    { icon: 'statistics_icon', name: 'Statystki strony', section: 'StatisticsSection' },
+    {
+      icon: 'user_group_icon',
+      name: 'Zarządzanie użytkownikami',
+      section: 'UserManagementSection',
+    },
+    {
+      icon: 'places_icon',
+      name: 'Zarządzanie istniejącymi miejscami',
+      section: 'PlaceManagementSection',
+    },
+    {
+      icon: 'var_changes_icon',
+      name: 'Zarządzanie zmiennymi miejsc',
+      section: 'PlaceManagementSection',
+    },
+    { icon: 'verification_icon', name: 'Weryfikacja miejsc', section: 'PlaceManagementSection' },
+    {
+      icon: 'web_changes_icon',
+      name: 'Historia zmian na stronie',
+      section: 'PlaceManagementSection',
+    },
   ];
 
-  const handleItemClick = (index) => {
+  const handleSectionChange = (index, section) => {
     setActiveItem(index);
+    dispatch(changeSection(section));
   };
 
   return (
@@ -30,7 +51,7 @@ function AdminMenu() {
               icon={item.icon}
               name={item.name}
               active={index === activeItem}
-              onClick={() => handleItemClick(index)}
+              onClick={() => handleSectionChange(index, item.section)}
             />
           ))}
         </section>
