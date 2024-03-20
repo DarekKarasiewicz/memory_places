@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer
-from .models import Place, User, Question
+from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Chagnes_serializer
+from .models import Place, User, Question, Change
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -272,3 +272,16 @@ class Contact_us(viewsets.ModelViewSet):
         serializer = Questions_serializer(new_question)
         return Response(serializer.data) 
         
+class Changes(viewsets.ModelViewSet):
+    serializer_class = Chagnes_serializer
+    http_method_names = ["post"]
+
+    def create(self, request, *args, **kwargs):
+        new_chagnes = Change(
+            user=request.data['user'],
+            json=request.data['json'],
+        )
+        new_chagnes.save()
+
+        serializer = Chagnes_serializer(new_chagnes)
+        return Response(serializer.data) 

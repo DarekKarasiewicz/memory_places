@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
+
+from Backend.memo_places.serializers import Chagnes_serializer
 from .serializers import Places_serailizer, User_serializer, Questions_serializer
-from memo_places.models import Place, User, Question
+from memo_places.models import Place, User, Question,Change
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -387,3 +389,10 @@ class Questions_view(viewsets.ModelViewSet):
 
         serializer = Questions_serializer(question_object)
         return Response(serializer.data)
+
+
+class Changes_view(viewsets.ModelViewSet):
+    serializer_class = Chagnes_serializer
+
+    def get_queryset(self):
+        return Change.objects.all()  

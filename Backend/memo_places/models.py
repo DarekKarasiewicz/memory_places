@@ -119,3 +119,8 @@ class Question(models.Model):
     title       = models.CharField(max_length=64, default=None)
     description = models.CharField(max_length=360, default=None)
     done        = models.BooleanField(default=False)
+
+class Change(models.Model):
+    user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    json          = models.CharField(max_length=360, default=None)
+    creation_date = models.DateField(auto_now_add=True)
