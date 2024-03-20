@@ -291,8 +291,15 @@ class User_view(viewsets.ModelViewSet):
 
         serializer = User_serializer(user_object)
         return Response(serializer.data)
-    
-class Questions(viewsets.ModelViewSet):
+
+class None_Verified_Places_view(viewsets.ModelViewSet):
+    serializer_class = Places_serailizer
+
+    def get_queryset(self):
+        places = Place.objects.filter(verified=True)
+        serializer = Places_serailizer(places, many=True)
+        return Response(serializer.data)
+class Questions_view(viewsets.ModelViewSet):
     serializer_class = Questions_serializer
 
     def get_queryset(self):

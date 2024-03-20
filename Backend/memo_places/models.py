@@ -112,6 +112,7 @@ class Place(models.Model):
     wiki_link     = models.CharField(max_length=64, default=None,null=True)
     topic_link    = models.CharField(max_length=64, default=None, null=True)
     img           = models.CharField(max_length=256, default=None,null=True)
+    verified      = models.BooleanField(default=False)
 
 class Question(models.Model):
     user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)

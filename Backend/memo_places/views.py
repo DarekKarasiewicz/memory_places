@@ -105,6 +105,8 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.sortof = data["sortof"]
                 case "period":
                     place_object.period = data["period"]
+                case "verified":
+                    place_object.verified = data["verified"].lower() == "true" 
                 case _:
                     pass
 
