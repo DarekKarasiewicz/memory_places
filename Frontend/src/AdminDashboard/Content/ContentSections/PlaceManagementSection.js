@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PlacesTable from '../Tables/PlacesTable';
 
-function PlaceManagamentSection() {
+function PlaceManagementSection() {
   const [places, setPlaces] = useState([]);
   const [statistics, setStatistics] = useState([]);
 
@@ -107,4 +107,4 @@ function PlaceManagamentSection() {
   );
 }
 
-export default PlaceManagamentSection;
+export default PlaceManagementSection;
