@@ -2,11 +2,13 @@ import { useSelector } from 'react-redux';
 import StatisticsSection from './ContentSections/StatisticsSection';
 import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
+import PlaceVariableManagementSection from './ContentSections/PlaceVariableManagementSection';
 
 const contentSectionMap = {
   StatisticsSection,
   UserManagementSection,
   PlaceManagementSection,
+  PlaceVariableManagementSection,
 };
 
 function Content() {

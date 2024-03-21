@@ -23,7 +23,7 @@ function AdminMenu() {
     {
       icon: 'var_changes_icon',
       name: 'Zarządzanie zmiennymi miejsc',
-      section: 'PlaceManagementSection',
+      section: 'PlaceVariableManagementSection',
     },
     { icon: 'verification_icon', name: 'Weryfikacja miejsc', section: 'PlaceManagementSection' },
     {

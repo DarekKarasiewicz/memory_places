@@ -117,12 +117,12 @@ function StatisticsSection() {
 
       responseUsers.data.forEach((item) => {
         const itemMonth = getItemDate(item.data_join);
-        monthlyUsersCount[itemMonth - 1].users += 1;
+        monthlyUsersCount[itemMonth].users += 1;
       });
 
       responsePlaces.data.forEach((item) => {
         const itemMonth = getItemDate(item.creation_date);
-        monthlyPlacesCount[itemMonth - 1].places += 1;
+        monthlyPlacesCount[itemMonth].places += 1;
       });
 
       setStatistics((statistics) => ({ ...statistics, ['allUsers']: responseUsers.data.length }));
