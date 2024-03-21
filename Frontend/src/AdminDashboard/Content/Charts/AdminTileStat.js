@@ -13,7 +13,7 @@ function AdminTileStat(props) {
             ></img>
           )}
 
-          <span className=''>{props.title}</span>
+          <span>{props.title}</span>
         </span>
         <div className='flex justify-between mx-4'>
           <span className='text-3xl font-semibold'>{props.value}</span>
