@@ -5,7 +5,6 @@ import AdminMenuItem from './AdminMenuItem/AdminMenuItem';
 
 function AdminMenu() {
   const dispatch = useDispatch();
-  const contentSection = useSelector((state) => state.contentSection.section);
   const [activeItem, setActiveItem] = useState(0);
 
   const menuItems = [
@@ -25,7 +24,7 @@ function AdminMenu() {
       name: 'Zarządzanie zmiennymi miejsc',
       section: 'PlaceVariableManagementSection',
     },
-    { icon: 'verification_icon', name: 'Weryfikacja miejsc', section: 'PlaceManagementSection' },
+    { icon: 'verification_icon', name: 'Weryfikacja miejsc', section: 'PlaceVerificationSection' },
     {
       icon: 'web_changes_icon',
       name: 'Historia zmian na stronie',

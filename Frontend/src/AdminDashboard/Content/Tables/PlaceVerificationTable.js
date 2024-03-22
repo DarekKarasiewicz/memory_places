@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 
-function HistoryTable({ data, columns }) {
+function PlaceVerificationTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
 
@@ -35,7 +35,7 @@ function HistoryTable({ data, columns }) {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='text-xl font-semibold'>All history changes ({rowCount})</div>
+        <div className='text-xl font-semibold'>All places awaiting verification ({rowCount})</div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
             <img
@@ -71,6 +71,7 @@ function HistoryTable({ data, columns }) {
                   )}
                 </th>
               ))}
+              <th>Actions</th>
             </tr>
           ))}
         </thead>
@@ -83,6 +84,28 @@ function HistoryTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
+              <td className='flex my-1 gap-4'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                  <img src={`./assets/check_icon.svg`} alt={`check_icon`} className='h-5 w-5' />
+                  <span>Zatwierdz</span>
+                </span>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                  <img src={`./assets/cancel_icon.svg`} alt={`cancel_icon`} className='h-5 w-5' />
+                  <span>Odrzuć</span>
+                </span>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                  <img
+                    src={`./assets/settings_icon.svg`}
+                    alt={`settings_icon`}
+                    className='h-5 w-5'
+                  />
+                  <span>Więcej informacji</span>
+                </span>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                  <img src={`./assets/edit_icon.svg`} alt={`edit_icon`} className='h-5 w-5' />
+                  <span>Edytuj</span>
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -145,4 +168,4 @@ function HistoryTable({ data, columns }) {
   );
 }
 
-export default HistoryTable;
+export default PlaceVerificationTable;

@@ -3,18 +3,18 @@ import axios from 'axios';
 import HistoryTable from '../Tables/HistoryTable';
 
 function ChangesHistorySection() {
-  const [historyData, setHistoryData] = useState([]);
+  const [changesData, setChangesData] = useState([]);
 
   const fetchItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
-      setHistoryData(response.data)
+      setChangesData(response.data);
     } catch (error) {
       alert('Error with data fetching!');
     }
   };
 
-  const usersColumns = [
+  const changesColumns = [
     {
       header: 'ID',
       accessorKey: 'id',
@@ -48,8 +48,8 @@ function ChangesHistorySection() {
         <span className='text-md'>Udokumentowane i opisane zmiany wprowadzone w aplikacji</span>
       </div>
       <div className='w-full flex flex-col gap-3'>
-        <HistoryTable data={historyData} columns={usersColumns} />
-       </div>
+        <HistoryTable data={changesData} columns={changesColumns} />
+      </div>
     </>
   );
 }
