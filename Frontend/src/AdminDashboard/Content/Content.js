@@ -4,13 +4,15 @@ import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
 import PlaceVariableManagementSection from './ContentSections/PlaceVariableManagementSection';
 import ChangesHistorySection from './ContentSections/ChangesHistorySection';
+import PlaceVerificationSection from './ContentSections/PlaceVerificationSection';
 
 const contentSectionMap = {
   StatisticsSection,
   UserManagementSection,
   PlaceManagementSection,
   PlaceVariableManagementSection,
-  ChangesHistorySection
+  PlaceVerificationSection,
+  ChangesHistorySection,
 };
 
 function Content() {
