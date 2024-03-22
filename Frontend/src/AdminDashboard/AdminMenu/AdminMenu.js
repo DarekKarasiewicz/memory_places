@@ -29,7 +29,7 @@ function AdminMenu() {
     {
       icon: 'web_changes_icon',
       name: 'Historia zmian na stronie',
-      section: 'PlaceManagementSection',
+      section: 'ChangesHistorySection',
     },
   ];
 

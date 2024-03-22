@@ -3,12 +3,14 @@ import StatisticsSection from './ContentSections/StatisticsSection';
 import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
 import PlaceVariableManagementSection from './ContentSections/PlaceVariableManagementSection';
+import ChangesHistorySection from './ContentSections/ChangesHistorySection';
 
 const contentSectionMap = {
   StatisticsSection,
   UserManagementSection,
   PlaceManagementSection,
   PlaceVariableManagementSection,
+  ChangesHistorySection
 };
 
 function Content() {
