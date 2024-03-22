@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
-import BaseButton from './BaseButton';
+import BaseButton from '../BaseButton';
 import { useTranslation } from 'react-i18next';
+import UploadedImagesDisplay from './UploadedImagesDisplay';
 
 const BaseImageUpload = ({ fileSize }) => {
   const [errorMsg, setErrorMsg] = useState(null);
@@ -9,7 +10,7 @@ const BaseImageUpload = ({ fileSize }) => {
   const fileInputRef = useRef(null);
   const { t } = useTranslation();
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
-  const MAX_FILES = 5;
+  const MAX_FILES = 3;
 
   const handleClick = () => {
     fileInputRef.current.click();
@@ -25,29 +26,36 @@ const BaseImageUpload = ({ fileSize }) => {
       return;
     }
     uploadedImages.forEach((uploadedImage) => {
-      if (uploadedImage && uploadedImage.type.startsWith('image/')) {
-        if (uploadedImage.size <= MAX_FILE_SIZE) {
-          setImages([...images, uploadedImage]);
-          if (isImageValid === false) {
-            setErrorMsg(null);
-            setIsImageValid(true);
+      const duplicateFile = images.find((image) => image.name === uploadedImage.name);
+      if (!duplicateFile) {
+        if (uploadedImage && uploadedImage.type.startsWith('image/')) {
+          if (uploadedImage.size <= MAX_FILE_SIZE) {
+            console.log(uploadedImage);
+            setImages((prev) => [...prev, uploadedImage]);
+            if (isImageValid === false) {
+              setErrorMsg(null);
+              setIsImageValid(true);
+            }
+          } else {
+            setErrorMsg(t('common.file_too_large'));
+            setIsImageValid(false);
+            return;
           }
         } else {
-          setErrorMsg(t('common.file_too_large'));
+          setErrorMsg(t('common.only_images'));
           setIsImageValid(false);
           return;
         }
       } else {
-        setErrorMsg(t('common.only_images'));
+        setErrorMsg(`File already uploaded: ${uploadedImage.name}`);
         setIsImageValid(false);
         return;
       }
     });
   };
-  console.log(images);
-
   return (
     <div className='flex flex-col justify-center items-center m-2'>
+      {images.length > 0 && <UploadedImagesDisplay images={images} setImages={setImages} />}
       <BaseButton
         className={'mt-1'}
         type='submit'
@@ -56,6 +64,7 @@ const BaseImageUpload = ({ fileSize }) => {
         onClick={handleClick}
       />
       <input
+        multiple
         className='hidden'
         type='file'
         name='imageUpload'
