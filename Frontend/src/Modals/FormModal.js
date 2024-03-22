@@ -14,7 +14,7 @@ import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { formValidationActions, selectFormValidation } from '../Redux/formValidationSlice';
 import { addPlace, deletePlace } from '../Redux/allMapPlacesSlice';
-import BaseImageUpload from '../Base/BaseImageUpload';
+import BaseImageUpload from '../Base/BaseImageUpload/BaseImageUpload';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
