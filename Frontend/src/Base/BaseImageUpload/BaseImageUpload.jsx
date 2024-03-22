@@ -13,6 +13,7 @@ const BaseImageUpload = ({ fileSize }) => {
   const fileInputRef = useRef(null);
   const { t } = useTranslation();
   const MAX_FILE_SIZE = fileSize * 1024 * 1024;
+
   const MAX_FILES = 3;
 
   const handleClick = () => {
@@ -35,12 +36,14 @@ const BaseImageUpload = ({ fileSize }) => {
           if (uploadedImage.size <= MAX_FILE_SIZE) {
             console.log(uploadedImage);
             dispatch(addPlaceActions.addImage(uploadedImage));
+
             if (isImageValid === false) {
               setErrorMsg(null);
               setIsImageValid(true);
             }
           } else {
             setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
+
             setIsImageValid(false);
             return;
           }
