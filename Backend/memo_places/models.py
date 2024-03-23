@@ -99,11 +99,11 @@ class User(AbstractBaseUser):
 
 
 class Type(models.Model):
-    name = models.CharField(max_length=64)
+    value = models.CharField(max_length=64)
 class Sortof(models.Model):
-    name = models.CharField(max_length=64)
+    value = models.CharField(max_length=64)
 class Period(models.Model):
-    name = models.CharField(max_length=64)
+    value = models.CharField(max_length=64)
 class Place(models.Model):
     user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     place_name    = models.CharField(max_length=32, default=None)
@@ -119,6 +119,7 @@ class Place(models.Model):
     topic_link    = models.CharField(max_length=64, default=None, null=True)
     img           = models.CharField(max_length=256, default=None,null=True)
     verified      = models.BooleanField(default=False)
+    creation_date = models.DateField(default=None, null=True)
 
 class Question(models.Model):
     user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
