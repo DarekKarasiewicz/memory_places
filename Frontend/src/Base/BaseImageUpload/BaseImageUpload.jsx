@@ -9,7 +9,7 @@ const BaseImageUpload = ({ fileSize }) => {
   const dispatch = useDispatch();
   const images = useSelector(selectAddPlace).images;
   const [errorMsg, setErrorMsg] = useState(null);
-  const [isImageValid, setIsImageValid] = useState(null);
+  const [showError, setShowError] = useState(null);
   const fileInputRef = useRef(null);
   const { t } = useTranslation();
   const MAX_FILE_SIZE = fileSize * 1024 * 1024;
@@ -19,39 +19,59 @@ const BaseImageUpload = ({ fileSize }) => {
     fileInputRef.current.click();
   };
 
+  const validateImagesQuantity = (uploadedImagesLength) => {
+    const allFilesLenght = uploadedImagesLength + images.length;
+
+    if (uploadedImagesLength > MAX_FILES || allFilesLenght > MAX_FILES) {
+      setErrorMsg(`${t('common.max_files_number')} ${MAX_FILES}`);
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const validateDuplicates = (uploadedImage) => {
+    const duplicateFile = images.find((image) => image.name === uploadedImage.name);
+    if (duplicateFile) {
+      setErrorMsg(`${t('common.already_uploaded')} ${uploadedImage.name}`);
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const validateImageType = (uploadedImage) => {
+    if (!uploadedImage.type.startsWith('image/')) {
+      setErrorMsg(t('common.only_images'));
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const validateImageSize = (uploadedImage) => {
+    if (uploadedImage.size >= MAX_FILE_SIZE) {
+      setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const handleImageUpload = (event) => {
     const uploadedImages = Array.from(event.target.files);
-    const allFilesLenght = uploadedImages.length + images.length;
 
-    if (uploadedImages.length > MAX_FILES || allFilesLenght > MAX_FILES) {
-      setErrorMsg(`${t('common.max_files_number')} ${MAX_FILES}`);
-      setIsImageValid(false);
-      return;
-    }
+    const isImagesQuantityValid = validateImagesQuantity(uploadedImages.length);
+
     uploadedImages.forEach((uploadedImage) => {
-      const duplicateFile = images.find((image) => image.name === uploadedImage.name);
-      if (!duplicateFile) {
-        if (uploadedImage && uploadedImage.type.startsWith('image/')) {
-          if (uploadedImage.size <= MAX_FILE_SIZE) {
-            console.log(uploadedImage);
-            dispatch(addPlaceActions.addImage(uploadedImage));
-            if (isImageValid === false) {
-              setErrorMsg(null);
-              setIsImageValid(true);
-            }
-          } else {
-            setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
-            setIsImageValid(false);
-            return;
-          }
-        } else {
-          setErrorMsg(t('common.only_images'));
-          setIsImageValid(false);
-          return;
-        }
+      const isNoDuplicates = validateDuplicates(uploadedImage);
+      const isImageTypeValid = validateImageType(uploadedImage);
+      const isImageSizeValid = validateImageSize(uploadedImage);
+      if (isImagesQuantityValid && isNoDuplicates && isImageTypeValid && isImageSizeValid) {
+        dispatch(addPlaceActions.addImage(uploadedImage));
+        setShowError(false);
       } else {
-        setErrorMsg(`${t('common.already_uploaded')} ${uploadedImage.name}`);
-        setIsImageValid(false);
+        setShowError(true);
         return;
       }
     });
@@ -74,7 +94,7 @@ const BaseImageUpload = ({ fileSize }) => {
         ref={fileInputRef}
         onChange={handleImageUpload}
       />
-      {isImageValid === false && <p className='text-red-500 text-sm mt-2'>{errorMsg}</p>}
+      {showError === true && <p className='text-red-500 text-sm mt-2'>{errorMsg}</p>}
     </div>
   );
 };
