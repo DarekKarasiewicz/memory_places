@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import locationReducer from './locationSlice';
 import addPlaceLocationReducer from './addPlaceLocationSlice';
 import modalsReducer from './modalsSlice';
@@ -8,6 +8,10 @@ import updatePlaceReducer from './updatePlaceSlice';
 import allMapPlacesReducer from './allMapPlacesSlice';
 import authReducer from './authSlice';
 import formValidationReducer from './formValidationSlice';
+
+const customizedMiddleware = getDefaultMiddleware({
+  serializableCheck: false,
+});
 
 export const store = configureStore({
   reducer: {
@@ -21,4 +25,5 @@ export const store = configureStore({
     auth: authReducer,
     formValidation: formValidationReducer,
   },
+  middleware: customizedMiddleware,
 });
