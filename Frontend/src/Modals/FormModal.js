@@ -246,7 +246,7 @@ function FormModal(props) {
             }}
             isValid={formValidation.isValidDate}
           />
-          <BaseImageUpload />
+          <BaseImageUpload fileSize={5} />
           <div className='flex gap-8'>
             <BaseInput
               type='number'

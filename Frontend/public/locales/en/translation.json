@@ -46,9 +46,10 @@
         "useful_links": "Useful links (optional):",
         "illegal_characters": "This field contains illegal characters or is empty!",
         "upload_file": "Upload file",
-        "file_too_large": "File is too large.",
+        "file_too_large": "File is too large: ",
         "only_images": "You can only upload images.",
-        "max_files_number": "The maximum number of files is "
+        "max_files_number": "The maximum number of files is ",
+        "already_uploaded": "File already uploaded: "
     },
     "forum": {
         "comment_content": "Comment-Content",

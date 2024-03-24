@@ -9,6 +9,7 @@ const initialState = {
   period: '',
   wiki_link: '',
   topic_link: '',
+  images: [],
 };
 
 export const addPlaceSlice = createSlice({
@@ -38,6 +39,12 @@ export const addPlaceSlice = createSlice({
     },
     changeTopicLink: (state, action) => {
       state.topic_link = action.payload;
+    },
+    addImage: (state, action) => {
+      state.images.push(action.payload);
+    },
+    setImages: (state, action) => {
+      state.images = action.payload;
     },
     reset: () => initialState,
   },

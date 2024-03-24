@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAddPlace, addPlaceActions } from '../../Redux/addPlaceSlice';
 
-const UploadedImagesDisplay = ({ images, setImages }) => {
+const UploadedImagesDisplay = () => {
+  const dispatch = useDispatch();
+  const images = useSelector(selectAddPlace).images;
   const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
@@ -21,7 +25,7 @@ const UploadedImagesDisplay = ({ images, setImages }) => {
 
   const deleteImage = (name) => {
     const updatedImages = images.filter((image) => image.name !== name);
-    setImages(updatedImages);
+    dispatch(addPlaceActions.setImages(updatedImages));
   };
 
   return (

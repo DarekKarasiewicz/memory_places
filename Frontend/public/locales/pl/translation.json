@@ -46,9 +46,10 @@
         "useful_links": "Przydatne linki (opcjonalne):",
         "illegal_characters": "Pole zawiera niedozwolone znaki lub jest puste!",
         "upload_file": "Prześlij plik",
-        "file_too_large": "File is too large.",
+        "file_too_large": "Plik jest za duży: ",
         "only_images":"Możesz przesłać wyłącznie obrazy.",
-        "max_files_number": "Maksymalna liczba plików to "
+        "max_files_number": "Maksymalna liczba plików to ",
+        "already_uploaded": "Plik już przesłany: "
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
