@@ -22,52 +22,61 @@ const BaseImageUpload = ({ fileSize }) => {
   const validateImagesQuantity = (uploadedImagesLength) => {
     const allFilesLenght = uploadedImagesLength + images.length;
 
-    if (uploadedImagesLength > MAX_FILES || allFilesLenght > MAX_FILES) {
+    if (uploadedImagesLength < MAX_FILES || allFilesLenght < MAX_FILES) {
+      return true;
+    } else {
       setErrorMsg(`${t('common.max_files_number')} ${MAX_FILES}`);
       return false;
-    } else {
-      return true;
     }
   };
 
   const validateDuplicates = (uploadedImage) => {
     const duplicateFile = images.find((image) => image.name === uploadedImage.name);
-    if (duplicateFile) {
+    if (!duplicateFile) {
+      return true;
+    } else {
       setErrorMsg(`${t('common.already_uploaded')} ${uploadedImage.name}`);
       return false;
-    } else {
-      return true;
     }
   };
 
   const validateImageType = (uploadedImage) => {
-    if (!uploadedImage.type.startsWith('image/')) {
+    if (uploadedImage.type.startsWith('image/')) {
+      return true;
+    } else {
       setErrorMsg(t('common.only_images'));
       return false;
-    } else {
-      return true;
     }
   };
 
   const validateImageSize = (uploadedImage) => {
-    if (uploadedImage.size >= MAX_FILE_SIZE) {
+    if (uploadedImage.size <= MAX_FILE_SIZE) {
+      return true;
+    } else {
       setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
       return false;
-    } else {
-      return true;
     }
+  };
+
+  const validateImage = (uploadedImage, uploadedImagesLength) => {
+    const validators = [validateDuplicates, validateImageType, validateImageSize];
+
+    const imageValidationResults = validators.map((validator) => validator(uploadedImage));
+
+    const allValidationResults = imageValidationResults.concat(
+      validateImagesQuantity(uploadedImagesLength),
+    );
+
+    const isValid = allValidationResults.every((result) => result);
+
+    return isValid;
   };
 
   const handleImageUpload = (event) => {
     const uploadedImages = Array.from(event.target.files);
 
-    const isImagesQuantityValid = validateImagesQuantity(uploadedImages.length);
-
     uploadedImages.forEach((uploadedImage) => {
-      const isNoDuplicates = validateDuplicates(uploadedImage);
-      const isImageTypeValid = validateImageType(uploadedImage);
-      const isImageSizeValid = validateImageSize(uploadedImage);
-      if (isImagesQuantityValid && isNoDuplicates && isImageTypeValid && isImageSizeValid) {
+      if (validateImage(uploadedImage, uploadedImages.length)) {
         dispatch(addPlaceActions.addImage(uploadedImage));
         setShowError(false);
       } else {
