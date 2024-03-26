@@ -21,41 +21,38 @@ const BaseImageUpload = ({ fileSize }) => {
 
   const validateImagesQuantity = (uploadedImagesLength) => {
     const allFilesLenght = uploadedImagesLength + images.length;
-
-    if (uploadedImagesLength < MAX_FILES || allFilesLenght < MAX_FILES) {
+    console.log(allFilesLenght);
+    if (uploadedImagesLength <= MAX_FILES && allFilesLenght <= MAX_FILES) {
       return true;
-    } else {
-      setErrorMsg(`${t('common.max_files_number')} ${MAX_FILES}`);
-      return false;
     }
+
+    setErrorMsg(`${t('common.max_files_number')} ${MAX_FILES}`);
+    return false;
   };
 
   const validateDuplicates = (uploadedImage) => {
     const duplicateFile = images.find((image) => image.name === uploadedImage.name);
     if (!duplicateFile) {
       return true;
-    } else {
-      setErrorMsg(`${t('common.already_uploaded')} ${uploadedImage.name}`);
-      return false;
     }
+    setErrorMsg(`${t('common.already_uploaded')} ${uploadedImage.name}`);
+    return false;
   };
 
   const validateImageType = (uploadedImage) => {
     if (uploadedImage.type.startsWith('image/')) {
       return true;
-    } else {
-      setErrorMsg(t('common.only_images'));
-      return false;
     }
+    setErrorMsg(t('common.only_images'));
+    return false;
   };
 
   const validateImageSize = (uploadedImage) => {
     if (uploadedImage.size <= MAX_FILE_SIZE) {
       return true;
-    } else {
-      setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
-      return false;
     }
+    setErrorMsg(`${t('common.file_too_large')} ${uploadedImage.name}`);
+    return false;
   };
 
   const validateImage = (uploadedImage, uploadedImagesLength) => {
@@ -79,10 +76,9 @@ const BaseImageUpload = ({ fileSize }) => {
       if (validateImage(uploadedImage, uploadedImages.length)) {
         dispatch(addPlaceActions.addImage(uploadedImage));
         setShowError(false);
-      } else {
-        setShowError(true);
-        return;
       }
+      setShowError(true);
+      return;
     });
   };
   return (
