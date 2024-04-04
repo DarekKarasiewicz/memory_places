@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import HistoryTable from '../Tables/HistoryTable';
 
 function ChangesHistorySection() {
+  const { t } = useTranslation();
   const [changesData, setChangesData] = useState([]);
 
   const fetchItems = async () => {
@@ -10,7 +12,7 @@ function ChangesHistorySection() {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
       setChangesData(response.data);
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -20,19 +22,19 @@ function ChangesHistorySection() {
       accessorKey: 'id',
     },
     {
-      header: 'Name',
+      header: t('admin.content.name'),
       accessorKey: 'name',
     },
     {
-      header: 'Change date',
+      header: t('admin.content.changed_date'),
       accessorKey: 'change_date',
     },
     {
-      header: 'Changed by',
+      header: t('admin.content.changed_by'),
       accessorKey: 'changed_by',
     },
     {
-      header: 'Role',
+      header: t('admin.content.role'),
       accessorKey: 'role',
     },
   ];
@@ -44,8 +46,8 @@ function ChangesHistorySection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Historia zmian na stronie</span>
-        <span className='text-md'>Udokumentowane i opisane zmiany wprowadzone w aplikacji</span>
+        <span className='text-3xl'>{t('admin.common.history_title')}</span>
+        <span className='text-md'>{t('admin.content.history_info')}</span>
       </div>
       <div className='w-full flex flex-col gap-3'>
         <HistoryTable data={changesData} columns={changesColumns} />

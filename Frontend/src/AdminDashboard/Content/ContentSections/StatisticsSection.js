@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import AdminBarChart from '../Charts/AdminBarChart';
 import AdminTileStat from '../Charts/AdminTileStat';
 
 function StatisticsSection() {
+  const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
 
   const fetchItems = async () => {
@@ -71,32 +73,32 @@ function StatisticsSection() {
       const monthlyPlacesCount = [];
 
       const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
+        t('admin.common.january'),
+        t('admin.common.february'),
+        t('admin.common.march'),
+        t('admin.common.april'),
+        t('admin.common.may'),
+        t('admin.common.june'),
+        t('admin.common.july'),
+        t('admin.common.august'),
+        t('admin.common.september'),
+        t('admin.common.october'),
+        t('admin.common.november'),
+        t('admin.common.december'),
       ];
       const smonths = [
-        'Jan.',
-        'Feb.',
-        'Mar.',
-        'Apr.',
-        'May',
-        'Jun.',
-        'Jul.',
-        'Aug.',
-        'Sep.',
-        'Oct.',
-        'Nov.',
-        'Dec.',
+        t('admin.common.sjanuary'),
+        t('admin.common.sfebruary'),
+        t('admin.common.smarch'),
+        t('admin.common.sapril'),
+        t('admin.common.smay'),
+        t('admin.common.sjune'),
+        t('admin.common.sjuly'),
+        t('admin.common.saugust'),
+        t('admin.common.sseptember'),
+        t('admin.common.soctober'),
+        t('admin.common.snovember'),
+        t('admin.common.sdecember'),
       ];
 
       months.forEach((monthName, index) => {
@@ -141,7 +143,7 @@ function StatisticsSection() {
         ['monthlyPlacesCount']: monthlyPlacesCount,
       }));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -151,13 +153,17 @@ function StatisticsSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Statystki strony</span>
-        <span className='text-md'>Zebrane statystki strony w jednym miejscu!</span>
+        <span className='text-3xl'>{t('admin.common.statistics_title')}</span>
+        <span className='text-md'>{t('admin.content.statistics_info')}</span>
       </div>
       <div className='grid grid-cols-4 grid-rows-4 gap-6'>
-        <AdminTileStat title='Total users' value={statistics.allUsers} icon='user_group' />
         <AdminTileStat
-          title='Current month users'
+          title={t('admin.content.all_users_count')}
+          value={statistics.allUsers}
+          icon='user_group'
+        />
+        <AdminTileStat
+          title={t('admin.content.new_month_users')}
           value={statistics.currentMonthUsers}
           trend={statistics.usersTrend ? statistics.usersTrend : undefined}
           percentage={
@@ -165,9 +171,13 @@ function StatisticsSection() {
           }
           icon='user_group'
         />
-        <AdminTileStat title='Total memory places' value={statistics.allPlaces} icon='places' />
         <AdminTileStat
-          title='Current month memory places'
+          title={t('admin.content.all_places_count')}
+          value={statistics.allPlaces}
+          icon='places'
+        />
+        <AdminTileStat
+          title={t('admin.content.new_month_places')}
           value={statistics.currentMonthPlaces}
           trend={statistics.placesTrend ? statistics.placesTrend : undefined}
           percentage={
@@ -177,7 +187,7 @@ function StatisticsSection() {
         />
         <div className='col-span-2 row-span-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-white'>
           <AdminBarChart
-            title='New users per month'
+            title={t('admin.content.month_all_users')}
             icon='user_group'
             data={statistics.monthlyUsersCount}
             dataName='users'
@@ -185,7 +195,7 @@ function StatisticsSection() {
         </div>
         <div className='col-span-2 row-span-3 col-start-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-white'>
           <AdminBarChart
-            title='New places per month'
+            title={t('admin.content.month_all_places')}
             icon='places'
             data={statistics.monthlyPlacesCount}
             dataName='places'

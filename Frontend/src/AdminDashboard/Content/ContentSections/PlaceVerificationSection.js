@@ -1,9 +1,11 @@
 import AdminTileStat from '../Charts/AdminTileStat';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import PlaceVerificationTable from '../Tables/PlaceVerificationTable';
 
 function PlaceVerificationSection() {
+  const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
   const [statistics, setStatistics] = useState([]);
 
@@ -40,7 +42,7 @@ function PlaceVerificationSection() {
         ['sumOfPreviousMonthPlaces']: sumOfPreviousMonthPlaces.length,
       }));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -54,27 +56,27 @@ function PlaceVerificationSection() {
       accessorKey: 'id',
     },
     {
-      header: 'Title',
+      header: t('admin.content.name'),
       accessorKey: 'place_name',
     },
     {
-      header: 'Sort of',
+      header: t('admin.content.sortof'),
       accessorKey: 'sortof',
     },
     {
-      header: 'Type',
+      header: t('admin.content.type'),
       accessorKey: 'type',
     },
     {
-      header: 'Period',
+      header: t('admin.content.period'),
       accessorKey: 'period',
     },
     {
-      header: 'Created by',
+      header: t('admin.content.created_by'),
       accessorKey: 'username',
     },
     {
-      header: 'Created',
+      header: t('admin.content.created'),
       accessorKey: 'creation_date',
     },
   ];
@@ -82,25 +84,23 @@ function PlaceVerificationSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Weryfikacja miejsc pamięci</span>
-        <span className='text-md'>
-          Sprawdzanie poprawności informacji zawartych w utworzonych przez użytkowników miejsc
-        </span>
+        <span className='text-3xl'>{t('admin.common.verification_title')}</span>
+        <span className='text-md'>{t('admin.content.verification_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-slate-200'>
           <AdminTileStat
-            title='All places awaiting verification'
+            title={t('admin.content.all_verification')}
             value={statistics.allPlaces}
             icon='clipboard_check'
           />
           <AdminTileStat
-            title='Verificated in previous month'
+            title={t('admin.content.previous_verified')}
             value={statistics.sumOfCurrentMonthPlaces}
             icon='flag_check'
           />
           <AdminTileStat
-            title='Verificated in current month'
+            title={t('admin.content.current_verified')}
             value={statistics.sumOfPreviousMonthPlaces}
             icon='flag_check'
           />

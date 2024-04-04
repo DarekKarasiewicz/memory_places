@@ -7,8 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function HistoryTable({ data, columns }) {
+  const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
 
@@ -35,7 +37,9 @@ function HistoryTable({ data, columns }) {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='text-xl font-semibold'>All history changes ({rowCount})</div>
+        <div className='text-xl font-semibold'>
+          {t('admin.content.all_history')} ({rowCount})
+        </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
             <img
@@ -46,7 +50,7 @@ function HistoryTable({ data, columns }) {
             <input
               className='rounded-lg p-2 pl-8'
               type='text'
-              placeholder='Search...'
+              placeholder={t('admin.content.search')}
               value={filtering}
               onChange={(e) => setFiltering(e.target.value)}
             ></input>
@@ -89,7 +93,10 @@ function HistoryTable({ data, columns }) {
       </table>
       <div className='flex justify-end items-center gap-1 mr-6'>
         <div className='mr-4'>
-          Page {pageIndex + 1} of {numPages === 0 ? 1 : numPages}
+          {t('admin.content.table_items_info', {
+            from: pageIndex + 1,
+            to: numPages === 0 ? 1 : numPages,
+          })}
         </div>
         <button
           className={`p-2 bg-white shadow rounded-lg ${

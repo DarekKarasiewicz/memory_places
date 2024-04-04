@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 function PlaceVariableManagementSection() {
+  const { t } = useTranslation();
   const [sortOf, setSortOf] = useState([]);
   const [type, setType] = useState([]);
   const [period, setPeriod] = useState([]);
@@ -18,7 +20,7 @@ function PlaceVariableManagementSection() {
       // Check if code works cause no data
       setSortOf(responseSort.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -29,7 +31,7 @@ function PlaceVariableManagementSection() {
       const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
       setType(responseType.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -40,7 +42,7 @@ function PlaceVariableManagementSection() {
       const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
       setPeriod(responsePeriod.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -175,7 +177,7 @@ function PlaceVariableManagementSection() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(() => {
-        alert('Data saved succesfully');
+        alert(t('admin.common.info1'));
       });
   };
 
@@ -185,7 +187,7 @@ function PlaceVariableManagementSection() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(() => {
-        alert('Data saved succesfully');
+        alert(t('admin.common.info1'));
       });
   };
 
@@ -195,7 +197,7 @@ function PlaceVariableManagementSection() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(() => {
-        alert('Data saved succesfully');
+        alert(t('admin.common.info1'));
       });
   };
 
@@ -214,21 +216,21 @@ function PlaceVariableManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Zarządzanie zmiennymi miejsc</span>
-        <span className='text-md'>
-          Wylistowane informacje każdej obieralnej opcji przy tworzeniu miejsca pamięci
-        </span>
+        <span className='text-3xl'>{t('admin.common.var_manage_title')}</span>
+        <span className='text-md'>{t('admin.content.variable_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full'>
           <div className='bg-white p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
-              Sort of <strong>({sortOf.length})</strong>
+              {t('admin.content.sortof')} <strong>({sortOf.length})</strong>
             </span>
             <hr />
             <div className='flex justify-center items-center mb-2'>
               <div className='w-1/2'>
-                <label className='block pl-1 pb-1 text-base'>Select preview</label>
+                <label className='block pl-1 pb-1 text-base'>
+                  {t('admin.content.select_preview')}
+                </label>
                 <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black'>
                   {sortOf.length > 0 ? (
                     <>
@@ -239,7 +241,7 @@ function PlaceVariableManagementSection() {
                       ))}
                     </>
                   ) : (
-                    <option disabled>There is no options yet</option>
+                    <option disabled>{t('admin.content.no_options')}</option>
                   )}
                 </select>
               </div>
@@ -321,19 +323,21 @@ function PlaceVariableManagementSection() {
                   onClick={() => handleAddingElement('sortof')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>Dodaj element</span>
+                  <span>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>
           </div>
           <div className='bg-white p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
-              Type <strong>({type.length})</strong>
+              {t('admin.content.type')} <strong>({type.length})</strong>
             </span>
             <hr />
             <div className='flex justify-center items-center mb-2'>
               <div className='w-1/2'>
-                <label className='block pl-1 pb-1 text-base'>Select preview</label>
+                <label className='block pl-1 pb-1 text-base'>
+                  {t('admin.content.select_preview')}
+                </label>
                 <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black'>
                   {type.length > 0 ? (
                     <>
@@ -344,7 +348,7 @@ function PlaceVariableManagementSection() {
                       ))}
                     </>
                   ) : (
-                    <option disabled>There is no options yet</option>
+                    <option disabled>{t('admin.content.no_options')}</option>
                   )}
                 </select>
               </div>
@@ -422,19 +426,21 @@ function PlaceVariableManagementSection() {
                   onClick={() => handleAddingElement('type')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>Dodaj element</span>
+                  <span>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>
           </div>
           <div className='bg-white p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
-              Period <strong>({period.length})</strong>
+              {t('admin.content.period')} <strong>({period.length})</strong>
             </span>
             <hr />
             <div className='flex justify-center items-center mb-2'>
               <div className='w-1/2'>
-                <label className='block pl-1 pb-1 text-base'>Select preview</label>
+                <label className='block pl-1 pb-1 text-base'>
+                  {t('admin.content.select_preview')}
+                </label>
                 <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black'>
                   {period.length > 0 ? (
                     <>
@@ -445,7 +451,7 @@ function PlaceVariableManagementSection() {
                       ))}
                     </>
                   ) : (
-                    <option disabled>There is no options yet</option>
+                    <option disabled>{t('admin.content.no_options')}</option>
                   )}
                 </select>
               </div>
@@ -527,7 +533,7 @@ function PlaceVariableManagementSection() {
                   onClick={() => handleAddingElement('period')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>Dodaj element</span>
+                  <span>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>
@@ -539,7 +545,7 @@ function PlaceVariableManagementSection() {
           className='w-32 capitalize bg-blue-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
           onClick={() => saveAllChanges()}
         >
-          Save changes
+          {t('admin.content.save_changes')}
         </button>
       </div>
     </>

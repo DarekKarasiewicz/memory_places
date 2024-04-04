@@ -2,10 +2,12 @@ import AdminTileStat from '../Charts/AdminTileStat';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UsersTable from '../Tables/UsersTable';
+import { useTranslation } from 'react-i18next';
 //import users from '../Tables/exampleUsers.json';
 
 function UserManagementSection() {
   const [users, setUsers] = useState([]);
+  const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
 
   const fetchUserItems = async () => {
@@ -13,7 +15,11 @@ function UserManagementSection() {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
 
       const modifyUserData = response.data.map((item) => {
-        const role = item.admin ? 'Admin' : item.master ? 'Master user' : 'User';
+        const role = item.admin
+          ? t('admin.content.admin')
+          : item.master
+            ? t('admin.content.master_user')
+            : t('admin.content.users');
 
         return {
           ...item,
@@ -46,7 +52,7 @@ function UserManagementSection() {
         ['sumOfMonthUsers']: sumOfCurrentMonthUsers.length,
       }));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -60,11 +66,11 @@ function UserManagementSection() {
       accessorKey: 'id',
     },
     {
-      header: 'Name',
+      header: t('admin.content.name'),
       accessorKey: 'username',
     },
     {
-      header: 'Role',
+      header: t('admin.content.role'),
       accessorKey: 'role',
       cell: (props) => {
         if (props.role === 'Admin') {
@@ -77,29 +83,29 @@ function UserManagementSection() {
       },
     },
     {
-      header: 'Active',
+      header: t('admin.content.active'),
       accessorKey: 'active',
       cell: (props) => {
         if (props.getValue()) {
-          return <span>YES</span>;
+          return <span>{t('admin.common.yes')}</span>;
         } else {
-          return <span>NO</span>;
+          return <span>{t('admin.common.no')}</span>;
         }
       },
     },
     {
-      header: 'Third-Party User',
+      header: t('admin.content.third_party_users'),
       accessorKey: 'outside',
       cell: (props) => {
         if (props.getValue()) {
-          return <span>YES</span>;
+          return <span>{t('admin.common.yes')}</span>;
         } else {
-          return <span>NO</span>;
+          return <span>{t('admin.common.no')}</span>;
         }
       },
     },
     {
-      header: 'Created',
+      header: t('admin.content.created'),
       accessorKey: 'data_join',
     },
   ];
@@ -107,16 +113,28 @@ function UserManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Zarządzanie użytkownikami</span>
-        <span className='text-md'>Wszystkie informacje dotyczące użytkowników</span>
+        <span className='text-3xl'>{t('admin.common.user_manage_title')}</span>
+        <span className='text-md'>{t('admin.content.all_users_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-4 gap-6 w-full p-6 bg-slate-200'>
-          <AdminTileStat title='General users' value={statistics.allUsers} icon='users' />
-          <AdminTileStat title='Master users' value={statistics.sumOfMasters} icon='mod_user' />
-          <AdminTileStat title='Admins' value={statistics.sumOfAdmins} icon='admin_user' />
           <AdminTileStat
-            title='New users this month'
+            title={t('admin.content.users')}
+            value={statistics.allUsers}
+            icon='users'
+          />
+          <AdminTileStat
+            title={t('admin.content.master_user')}
+            value={statistics.sumOfMasters}
+            icon='mod_user'
+          />
+          <AdminTileStat
+            title={t('admin.content.admin')}
+            value={statistics.sumOfAdmins}
+            icon='admin_user'
+          />
+          <AdminTileStat
+            title={t('admin.content.new_month_users')}
             value={statistics.sumOfMonthUsers}
             icon='new_users'
           />

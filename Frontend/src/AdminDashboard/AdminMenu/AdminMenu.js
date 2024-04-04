@@ -1,33 +1,43 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { changeSection } from '../../Redux/contentSectionSlice';
 import { useState } from 'react';
 import AdminMenuItem from './AdminMenuItem/AdminMenuItem';
+import { useTranslation } from 'react-i18next';
 
 function AdminMenu() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [activeItem, setActiveItem] = useState(0);
 
   const menuItems = [
-    { icon: 'statistics_icon', name: 'Statystki strony', section: 'StatisticsSection' },
+    {
+      icon: 'statistics_icon',
+      name: t('admin.common.statistics_title'),
+      section: 'StatisticsSection',
+    },
     {
       icon: 'user_group_icon',
-      name: 'Zarządzanie użytkownikami',
+      name: t('admin.common.user_manage_title'),
       section: 'UserManagementSection',
     },
     {
       icon: 'places_icon',
-      name: 'Zarządzanie istniejącymi miejscami',
+      name: t('admin.common.place_manage_title'),
       section: 'PlaceManagementSection',
     },
     {
       icon: 'var_changes_icon',
-      name: 'Zarządzanie zmiennymi miejsc',
+      name: t('admin.common.var_manage_title'),
       section: 'PlaceVariableManagementSection',
     },
-    { icon: 'verification_icon', name: 'Weryfikacja miejsc', section: 'PlaceVerificationSection' },
+    {
+      icon: 'verification_icon',
+      name: t('admin.common.verification_title'),
+      section: 'PlaceVerificationSection',
+    },
     {
       icon: 'web_changes_icon',
-      name: 'Historia zmian na stronie',
+      name: t('admin.common.history_title'),
       section: 'ChangesHistorySection',
     },
   ];

@@ -7,8 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function PlacesTable({ data, columns }) {
+  const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
 
@@ -35,7 +37,9 @@ function PlacesTable({ data, columns }) {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='text-xl font-semibold'>All places ({rowCount})</div>
+        <div className='text-xl font-semibold'>
+          {t('admin.content.all_places')} ({rowCount})
+        </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
             <img
@@ -46,7 +50,7 @@ function PlacesTable({ data, columns }) {
             <input
               className='rounded-lg p-2 pl-8'
               type='text'
-              placeholder='Search...'
+              placeholder={t('admin.content.search')}
               value={filtering}
               onChange={(e) => setFiltering(e.target.value)}
             ></input>
@@ -71,7 +75,7 @@ function PlacesTable({ data, columns }) {
                   )}
                 </th>
               ))}
-              <th>Actions</th>
+              <th>{t('admin.content.actions')}</th>
             </tr>
           ))}
         </thead>
@@ -91,15 +95,15 @@ function PlacesTable({ data, columns }) {
                     alt={`settings_icon`}
                     className='h-5 w-5'
                   />
-                  <span>Więcej informacji</span>
+                  <span>{t('admin.content.more_info')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img src={`./assets/cancel_icon.svg`} alt={`cancel_icon`} className='h-5 w-5' />
-                  <span>Usuń</span>
+                  <span>{t('admin.content.delete')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img src={`./assets/edit_icon.svg`} alt={`edit_icon`} className='h-5 w-5' />
-                  <span>Edytuj</span>
+                  <span>{t('admin.content.edit')}</span>
                 </span>
               </td>
             </tr>
@@ -108,7 +112,10 @@ function PlacesTable({ data, columns }) {
       </table>
       <div className='flex justify-end items-center gap-1 mr-6'>
         <div className='mr-4'>
-          Page {pageIndex + 1} of {numPages === 0 ? 1 : numPages}
+          {t('admin.content.table_items_info', {
+            from: pageIndex + 1,
+            to: numPages === 0 ? 1 : numPages,
+          })}
         </div>
         <button
           className={`p-2 bg-white shadow rounded-lg ${

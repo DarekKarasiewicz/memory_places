@@ -1,9 +1,11 @@
 import AdminTileStat from '../Charts/AdminTileStat';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import PlacesTable from '../Tables/PlacesTable';
 
 function PlaceManagementSection() {
+  const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
   const [statistics, setStatistics] = useState([]);
 
@@ -39,7 +41,7 @@ function PlaceManagementSection() {
         ['currentMonthPlaces']: sumOfCurrentMonthPlaces.length,
       }));
     } catch (error) {
-      alert('Error with data fetching!');
+      alert(error);
     }
   };
 
@@ -53,27 +55,27 @@ function PlaceManagementSection() {
       accessorKey: 'id',
     },
     {
-      header: 'Title',
+      header: t('admin.content.name'),
       accessorKey: 'place_name',
     },
     {
-      header: 'Sort of',
+      header: t('admin.content.sortof'),
       accessorKey: 'sortof',
     },
     {
-      header: 'Type',
+      header: t('admin.content.type'),
       accessorKey: 'type',
     },
     {
-      header: 'Period',
+      header: t('admin.content.period'),
       accessorKey: 'period',
     },
     {
-      header: 'Created by',
+      header: t('admin.content.created_by'),
       accessorKey: 'username',
     },
     {
-      header: 'Created',
+      header: t('admin.content.created'),
       accessorKey: 'creation_date',
     },
   ];
@@ -81,19 +83,23 @@ function PlaceManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>Zarządzanie miejscami pamięci</span>
-        <span className='text-md'>Wszystkie informacje dotyczące utworzonych miejsc</span>
+        <span className='text-3xl'>{t('admin.common.place_manage_title')}</span>
+        <span className='text-md'>{t('admin.content.all_places_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-slate-200'>
-          <AdminTileStat title='All places' value={statistics.allPlaces} icon='places' />
           <AdminTileStat
-            title='Previous month places'
+            title={t('admin.content.all_places')}
+            value={statistics.allPlaces}
+            icon='places'
+          />
+          <AdminTileStat
+            title={t('admin.content.previous_places')}
             value={statistics.previousMonthPlaces}
             icon='map_pin'
           />
           <AdminTileStat
-            title='Current month places'
+            title={t('admin.content.current_places')}
             value={statistics.currentMonthPlaces}
             icon='map_pin'
           />

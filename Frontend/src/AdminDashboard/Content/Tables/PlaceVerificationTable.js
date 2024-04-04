@@ -7,8 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function PlaceVerificationTable({ data, columns }) {
+  const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
 
@@ -35,7 +37,9 @@ function PlaceVerificationTable({ data, columns }) {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='text-xl font-semibold'>All places awaiting verification ({rowCount})</div>
+        <div className='text-xl font-semibold'>
+          {t('admin.content.all_verification')} ({rowCount})
+        </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
             <img
@@ -46,7 +50,7 @@ function PlaceVerificationTable({ data, columns }) {
             <input
               className='rounded-lg p-2 pl-8'
               type='text'
-              placeholder='Search...'
+              placeholder={t('admin.content.search')}
               value={filtering}
               onChange={(e) => setFiltering(e.target.value)}
             ></input>
@@ -71,7 +75,7 @@ function PlaceVerificationTable({ data, columns }) {
                   )}
                 </th>
               ))}
-              <th>Actions</th>
+              <th>{t('admin.content.actions')}</th>
             </tr>
           ))}
         </thead>
@@ -87,11 +91,11 @@ function PlaceVerificationTable({ data, columns }) {
               <td className='flex my-1 gap-4'>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img src={`./assets/check_icon.svg`} alt={`check_icon`} className='h-5 w-5' />
-                  <span>Zatwierdz</span>
+                  <span>{t('admin.common.confirm')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img src={`./assets/cancel_icon.svg`} alt={`cancel_icon`} className='h-5 w-5' />
-                  <span>Odrzuć</span>
+                  <span>{t('admin.common.dismiss')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img
@@ -99,11 +103,11 @@ function PlaceVerificationTable({ data, columns }) {
                     alt={`settings_icon`}
                     className='h-5 w-5'
                   />
-                  <span>Więcej informacji</span>
+                  <span>{t('admin.content.more_info')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
                   <img src={`./assets/edit_icon.svg`} alt={`edit_icon`} className='h-5 w-5' />
-                  <span>Edytuj</span>
+                  <span>{t('admin.content.edit')}</span>
                 </span>
               </td>
             </tr>
@@ -112,7 +116,10 @@ function PlaceVerificationTable({ data, columns }) {
       </table>
       <div className='flex justify-end items-center gap-1 mr-6'>
         <div className='mr-4'>
-          Page {pageIndex + 1} of {numPages === 0 ? 1 : numPages}
+          {t('admin.content.table_items_info', {
+            from: pageIndex + 1,
+            to: numPages === 0 ? 1 : numPages,
+          })}
         </div>
         <button
           className={`p-2 bg-white shadow rounded-lg ${
