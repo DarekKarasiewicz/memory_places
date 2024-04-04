@@ -14,7 +14,9 @@ function PlaceVariableManagementSection() {
   const fetchSortOfItems = async () => {
     try {
       const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      setSortOf(responseSort.data);
+      // TO DO
+      // Check if code works cause no data
+      setSortOf(responseSort.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
       alert('Error with data fetching!');
     }
@@ -22,8 +24,10 @@ function PlaceVariableManagementSection() {
 
   const fetchTypeItems = async () => {
     try {
+      // TO DO
+      // Check if code works cause no data
       const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
-      setType(responseType.data);
+      setType(responseType.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
       alert('Error with data fetching!');
     }
@@ -31,8 +35,10 @@ function PlaceVariableManagementSection() {
 
   const fetchPeriodItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
-      setPeriod(response.data);
+      // TO DO
+      // Check if code works cause no data
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
+      setPeriod(responsePeriod.data.map((obj, index) => ({ ...obj, order: index, id: index })));
     } catch (error) {
       alert('Error with data fetching!');
     }
@@ -111,19 +117,19 @@ function PlaceVariableManagementSection() {
       case 'period':
         setPeriod((prevItems) => [
           ...prevItems,
-          { id: prevItems.length + 1, name: 'New element', order: prevItems.length + 1 },
+          { id: prevItems.length + 1, name: 'New period element', order: prevItems.length + 1 },
         ]);
         break;
       case 'type':
         setType((prevItems) => [
           ...prevItems,
-          { id: prevItems.length + 1, name: 'New element', order: prevItems.length + 1 },
+          { id: prevItems.length + 1, name: 'New type element', order: prevItems.length + 1 },
         ]);
         break;
       case 'sortof':
         setSortOf((prevItems) => [
           ...prevItems,
-          { id: prevItems.length + 1, name: 'New element', order: prevItems.length + 1 },
+          { id: prevItems.length + 1, name: 'New sortof element', order: prevItems.length + 1 },
         ]);
         break;
       default:
@@ -163,47 +169,41 @@ function PlaceVariableManagementSection() {
     }
   };
 
-  // const postPeriodItems = async () => {
-  //   axios
-  //     .post(`http://127.0.0.1:8000/admin_dashboard/periods/`, period, {
-  //       headers: { 'Content-Type': 'application/json' },
-  //     })
-  //     .then(() => {
-  //       alert('Data saved succesfully');
-  //     });
-  // };
+  const postPeriodItems = async () => {
+    axios
+      .post(`http://127.0.0.1:8000/admin_dashboard/periods/`, period, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(() => {
+        alert('Data saved succesfully');
+      });
+  };
 
-  // const postTypeItems = async () => {
-  //   axios
-  //     .post(`http://127.0.0.1:8000/admin_dashboard/types/`, type, {
-  //       headers: { 'Content-Type': 'application/json' },
-  //     })
-  //     .then(() => {
-  //       alert('Data saved succesfully');
-  //     });
-  // };
+  const postTypeItems = async () => {
+    axios
+      .post(`http://127.0.0.1:8000/admin_dashboard/types/`, type, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(() => {
+        alert('Data saved succesfully');
+      });
+  };
 
-  // const postSortOfItems = async () => {
-  //   axios
-  //     .post(`http://127.0.0.1:8000/admin_dashboard/sortofs/`, sortOf, {
-  //       headers: { 'Content-Type': 'application/json' },
-  //     })
-  //     .then(() => {
-  //       alert('Data saved succesfully');
-  //     });
-  // };
+  const postSortOfItems = async () => {
+    axios
+      .post(`http://127.0.0.1:8000/admin_dashboard/sortofs/`, sortOf, {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .then(() => {
+        alert('Data saved succesfully');
+      });
+  };
 
-  // const saveAllChanges = () => {
-  //   postPeriodItems();
-  //   postTypeItems();
-  //   postSortOfItems();
-  // };
-
-  useEffect(() => {
-    console.log(period);
-    console.log(type);
-    console.log(sortOf);
-  }, [period, type, sortOf]);
+  const saveAllChanges = () => {
+    postPeriodItems();
+    postTypeItems();
+    postSortOfItems();
+  };
 
   useEffect(() => {
     fetchSortOfItems();
@@ -537,7 +537,7 @@ function PlaceVariableManagementSection() {
       <div className='flex justify-center items-center'>
         <button
           className='w-32 capitalize bg-blue-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
-          // onClick={() => saveAllChanges()}
+          onClick={() => saveAllChanges()}
         >
           Save changes
         </button>
