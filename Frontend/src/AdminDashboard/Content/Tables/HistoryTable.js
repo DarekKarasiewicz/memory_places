@@ -63,10 +63,14 @@ function HistoryTable({ data, columns }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
               key={headerGroup.id}
-              className='font-semibold text-left text-normal bg-slate-200 border-2'
+              className='font-semibold text-left text-normal bg-thirdBgColor'
             >
               {headerGroup.headers.map((header) => (
-                <th key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className='p-2'
+                >
                   {header.isPlaceholder ? null : (
                     <div>
                       {flexRender(header.column.columnDef.header, header.getContext())}
@@ -81,9 +85,12 @@ function HistoryTable({ data, columns }) {
 
         <tbody>
           {table.getRowModel().rows.map((row, index) => (
-            <tr key={row.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} bg-white`}>
+            <tr
+              key={row.id}
+              className={`${index % 2 === 0 ? 'bg-mainBgColor' : 'bg-thirdBgColor'}`}
+            >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className='py-2'>
+                <td key={cell.id} className='p-2'>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -99,7 +106,7 @@ function HistoryTable({ data, columns }) {
           })}
         </div>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanPreviousPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.firstPage()}
@@ -108,7 +115,7 @@ function HistoryTable({ data, columns }) {
           {'<<'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanPreviousPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.previousPage()}
@@ -117,7 +124,7 @@ function HistoryTable({ data, columns }) {
           {'<'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanNextPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.nextPage()}
@@ -126,7 +133,7 @@ function HistoryTable({ data, columns }) {
           {'>'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanNextPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.lastPage()}
@@ -135,7 +142,7 @@ function HistoryTable({ data, columns }) {
           {'>>'}
         </button>
         <select
-          className='p-2 bg-white shadow rounded-lg'
+          className='p-2 bg-thirdBgColor shadow rounded-lg'
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

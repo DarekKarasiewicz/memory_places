@@ -76,7 +76,7 @@ function LanguageSwitcher(props) {
               className={`${
                 props.variant !== 'admin_dashboard'
                   ? 'right-0 rounded-l-lg bg-slate-600'
-                  : 'left-1/2 -translate-x-1/2 bg-white flex justify-center items-center'
+                  : 'left-1/2 -translate-x-1/2 bg-thirdBgColor flex justify-center items-center'
               } absolute mt-2 w-24 shadow-lg`}
             >
               <div
@@ -92,7 +92,7 @@ function LanguageSwitcher(props) {
                     className={`${
                       props.variant !== 'admin_dashboard'
                         ? 'text-white hover:bg-slate-400 hover:text-red-500'
-                        : 'hover:bg-slate-200 hover:text-cyan-600'
+                        : 'hover:bg-secondaryBgColor hover:text-cyan-600'
                     } block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer`}
                     role='menuitem'
                   >

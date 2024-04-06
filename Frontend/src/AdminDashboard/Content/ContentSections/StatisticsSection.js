@@ -185,7 +185,7 @@ function StatisticsSection() {
           }
           icon='places'
         />
-        <div className='col-span-2 row-span-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-white'>
+        <div className='col-span-2 row-span-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminBarChart
             title={t('admin.content.month_all_users')}
             icon='user_group'
@@ -193,7 +193,7 @@ function StatisticsSection() {
             dataName='users'
           />
         </div>
-        <div className='col-span-2 row-span-3 col-start-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-white'>
+        <div className='col-span-2 row-span-3 col-start-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminBarChart
             title={t('admin.content.month_all_places')}
             icon='places'

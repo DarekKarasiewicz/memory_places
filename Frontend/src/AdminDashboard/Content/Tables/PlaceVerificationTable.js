@@ -63,10 +63,14 @@ function PlaceVerificationTable({ data, columns }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
               key={headerGroup.id}
-              className='font-semibold text-left text-normal bg-slate-200 border-2'
+              className='font-semibold text-left text-normal bg-thirdBgColor'
             >
               {headerGroup.headers.map((header) => (
-                <th key={header.id} onClick={header.column.getToggleSortingHandler()}>
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className='p-2'
+                >
                   {header.isPlaceholder ? null : (
                     <div>
                       {flexRender(header.column.columnDef.header, header.getContext())}
@@ -75,29 +79,32 @@ function PlaceVerificationTable({ data, columns }) {
                   )}
                 </th>
               ))}
-              <th>{t('admin.content.actions')}</th>
+              <th className='p-2'>{t('admin.content.actions')}</th>
             </tr>
           ))}
         </thead>
 
         <tbody>
           {table.getRowModel().rows.map((row, index) => (
-            <tr key={row.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'} bg-white`}>
+            <tr
+              key={row.id}
+              className={`${index % 2 === 0 ? 'bg-mainBgColor' : 'bg-thirdBgColor'}`}
+            >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className='py-2'>
+                <td key={cell.id} className='p-2'>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
                   <img src={`./assets/check_icon.svg`} alt={`check_icon`} className='h-5 w-5' />
                   <span>{t('admin.common.confirm')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
                   <img src={`./assets/cancel_icon.svg`} alt={`cancel_icon`} className='h-5 w-5' />
                   <span>{t('admin.common.dismiss')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
                   <img
                     src={`./assets/settings_icon.svg`}
                     alt={`settings_icon`}
@@ -105,7 +112,7 @@ function PlaceVerificationTable({ data, columns }) {
                   />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-cyan-200 transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
                   <img src={`./assets/edit_icon.svg`} alt={`edit_icon`} className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>
@@ -122,7 +129,7 @@ function PlaceVerificationTable({ data, columns }) {
           })}
         </div>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanPreviousPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.firstPage()}
@@ -131,7 +138,7 @@ function PlaceVerificationTable({ data, columns }) {
           {'<<'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanPreviousPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.previousPage()}
@@ -140,7 +147,7 @@ function PlaceVerificationTable({ data, columns }) {
           {'<'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanNextPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.nextPage()}
@@ -149,7 +156,7 @@ function PlaceVerificationTable({ data, columns }) {
           {'>'}
         </button>
         <button
-          className={`p-2 bg-white shadow rounded-lg ${
+          className={`p-2 bg-thirdBgColor shadow rounded-lg ${
             !table.getCanNextPage() ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           onClick={() => table.lastPage()}
@@ -158,7 +165,7 @@ function PlaceVerificationTable({ data, columns }) {
           {'>>'}
         </button>
         <select
-          className='p-2 bg-white shadow rounded-lg'
+          className='p-2 bg-thirdBgColor shadow rounded-lg'
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

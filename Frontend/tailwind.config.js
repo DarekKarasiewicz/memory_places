@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         mainBgColor: 'var(--mainBgColor)',
         secondaryBgColor: 'var(--secondaryBgColor)',
+        thirdBgColor: 'var(--thirdBgColor)',
         textColor: 'var(--textColor)',
         contrastColor: 'var(--contrastColor)',
         itemShadow: 'var(--shadow)',

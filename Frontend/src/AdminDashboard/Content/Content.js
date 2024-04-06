@@ -21,7 +21,7 @@ function Content() {
 
   return (
     <>
-      <div className='px-10 py-8 bg-slate-100 flex flex-col gap-6 h-full'>
+      <div className='px-10 py-8 bg-secondaryBgColor text-textColor flex flex-col gap-6 h-full'>
         <ActiveComponent />
       </div>
     </>

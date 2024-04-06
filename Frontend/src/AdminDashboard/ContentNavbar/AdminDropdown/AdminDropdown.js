@@ -72,7 +72,7 @@ function AdminDropdown() {
         </div>
         {isActive && (
           <motion.ul
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
+            className='bg-mainBgColor flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'

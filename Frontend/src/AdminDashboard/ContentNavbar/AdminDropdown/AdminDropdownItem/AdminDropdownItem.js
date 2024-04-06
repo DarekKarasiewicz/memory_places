@@ -5,7 +5,7 @@ const AdminDropdownItem = (props) => {
     <>
       <motion.div
         whileHover={{ scale: 1.05 }}
-        className={`w-full h-12 cursor-pointer flex gap-2 items-center pl-2 rounded-md hover:bg-slate-400 ${
+        className={`w-full h-12 cursor-pointer flex gap-2 items-center pl-2 rounded-md hover:text-contrastColor ${
           props.isActive === true ? 'bg-slate-400' : ''
         }`}
         onClick={props.onClick ? props.onClick : undefined}

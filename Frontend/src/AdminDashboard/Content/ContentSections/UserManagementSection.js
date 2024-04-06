@@ -74,11 +74,11 @@ function UserManagementSection() {
       accessorKey: 'role',
       cell: (props) => {
         if (props.role === 'Admin') {
-          return <span className='px-2 bg-red-300'>{props.getValue()}</span>;
+          return <span className='px-2 py-1 bg-red-300 text-black'>{props.getValue()}</span>;
         } else if (props.role === 'Master user') {
-          return <span className='px-2 bg-green-300'>{props.getValue()}</span>;
+          return <span className='px-2 py-1 bg-green-300 text-black'>{props.getValue()}</span>;
         } else {
-          return <span className='px-2 bg-yellow-300'>{props.getValue()}</span>;
+          return <span className='px-2 py-1 bg-yellow-300 text-black'>{props.getValue()}</span>;
         }
       },
     },
@@ -117,7 +117,7 @@ function UserManagementSection() {
         <span className='text-md'>{t('admin.content.all_users_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
-        <div className='grid grid-cols-4 gap-6 w-full p-6 bg-slate-200'>
+        <div className='grid grid-cols-4 gap-6 w-full p-6 bg-thirdBgColor'>
           <AdminTileStat
             title={t('admin.content.users')}
             value={statistics.allUsers}

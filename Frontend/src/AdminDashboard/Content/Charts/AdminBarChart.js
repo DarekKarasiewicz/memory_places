@@ -22,7 +22,7 @@ function AdminBarChart(props) {
         ></img>
         <span className='text-2xl'>{props.title}</span>
       </div>
-      <ResponsiveContainer width='100%' height='100%'>
+      <ResponsiveContainer width='100%' height='100%' className={'text-black'}>
         <BarChart
           width={500}
           height={1000}

@@ -221,7 +221,7 @@ function PlaceVariableManagementSection() {
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full'>
-          <div className='bg-white p-4 flex flex-col gap-4'>
+          <div className='bg-mainBgColor p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
               {t('admin.content.sortof')} <strong>({sortOf.length})</strong>
             </span>
@@ -248,7 +248,7 @@ function PlaceVariableManagementSection() {
             </div>
             <hr />
             <div className='flex justify-center items-center p-4'>
-              <div className='flex flex-col gap-1 w-3/4'>
+              <div className='flex flex-col justify-center items-center gap-1 w-3/4'>
                 {sortOf.length > 0 && (
                   <>
                     {sortOf.map((item, index) => (
@@ -319,16 +319,16 @@ function PlaceVariableManagementSection() {
                   </>
                 )}
                 <div
-                  className='flex justify-center items-center shadow rounded-lg border-2 w-full p-2 cursor-pointer'
+                  className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('sortof')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>{t('admin.content.add_element')}</span>
+                  <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className='bg-white p-4 flex flex-col gap-4'>
+          <div className='bg-mainBgColor p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
               {t('admin.content.type')} <strong>({type.length})</strong>
             </span>
@@ -355,7 +355,7 @@ function PlaceVariableManagementSection() {
             </div>
             <hr />
             <div className='flex justify-center items-center p-4'>
-              <div className='flex flex-col gap-1 w-3/4'>
+              <div className='flex flex-col justify-center items-center gap-3 w-3/4'>
                 {type.length > 0 && (
                   <>
                     {type.map((item, index) => (
@@ -422,16 +422,16 @@ function PlaceVariableManagementSection() {
                   </>
                 )}
                 <div
-                  className='flex justify-center items-center shadow rounded-lg border-2 w-full p-2 cursor-pointer'
+                  className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('type')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>{t('admin.content.add_element')}</span>
+                  <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className='bg-white p-4 flex flex-col gap-4'>
+          <div className='bg-mainBgColor p-4 flex flex-col gap-4'>
             <span className='text-2xl'>
               {t('admin.content.period')} <strong>({period.length})</strong>
             </span>
@@ -441,7 +441,7 @@ function PlaceVariableManagementSection() {
                 <label className='block pl-1 pb-1 text-base'>
                   {t('admin.content.select_preview')}
                 </label>
-                <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black'>
+                <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 gap-1 text-black'>
                   {period.length > 0 ? (
                     <>
                       {period.map((item, index) => (
@@ -458,7 +458,7 @@ function PlaceVariableManagementSection() {
             </div>
             <hr />
             <div className='flex justify-center items-center p-4'>
-              <div className='flex flex-col gap-1 w-3/4'>
+              <div className='flex flex-col justify-center items-center gap-1 w-3/4'>
                 {period.length > 0 && (
                   <>
                     {period.map((item, index) => (
@@ -529,11 +529,11 @@ function PlaceVariableManagementSection() {
                   </>
                 )}
                 <div
-                  className='flex justify-center items-center shadow rounded-lg border-2 w-full p-2 cursor-pointer'
+                  className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('period')}
                 >
                   <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
-                  <span>{t('admin.content.add_element')}</span>
+                  <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>
             </div>

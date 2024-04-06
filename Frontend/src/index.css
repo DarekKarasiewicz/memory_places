@@ -5,6 +5,7 @@
 .light {
   --mainBgColor: rgb(255 255 255);
   --secondaryBgColor: rgb(241 245 249);
+  --thirdBgColor: rgb(226 232 240);
   --textColor: rgb(0 0 0);
   --contrastColor: rgb(8 145 178);
   --itemShadow: @apply shadow-gray-300;
@@ -13,6 +14,7 @@
 .dark {
   --mainBgColor: rgb(23 23 23);
   --secondaryBgColor: rgb(38 38 38);
+  --thirdBgColor: rgb(64 64 64);
   --textColor: rgb(255 255 255);
   --contrastColor: rgb(8 145 178);
   --itemShadow: @apply shadow-gray-300;

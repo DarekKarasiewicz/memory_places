@@ -57,7 +57,7 @@ function ThemeSwitcher() {
           </button>
 
           {isOpen && (
-            <div className='left-1/2 -translate-x-1/2 bg-white flex justify-center items-center absolute mt-2 w-auto shadow-lg'>
+            <div className='left-1/2 -translate-x-1/2 bg-mainBgColor flex justify-center items-center absolute mt-2 w-auto shadow-lg'>
               <div
                 className='py-1 origin-top'
                 role='menu'
@@ -69,8 +69,8 @@ function ThemeSwitcher() {
                     key={option.value}
                     onClick={() => handleThemeChange(option.value)}
                     className={`${
-                      option.value === theme ? 'bg-slate-200 text-cyan-600 font-bold ' : ''
-                    }hover:bg-slate-200 hover:text-cyan-600 hover:font-bold px-4 py-2 flex justify-center items-center gap-2 text-sm text-center cursor-pointer`}
+                      option.value === theme ? 'bg-secondaryBgColor text-cyan-600 font-bold ' : ''
+                    }hover:bg-secondaryBgColor hover:text-cyan-600 hover:font-bold px-4 py-2 flex justify-center items-center gap-2 text-sm text-center cursor-pointer`}
                     role='menuitem'
                   >
                     <div className={`h-4 w-6 shadow border ${option.indicator} rounded-lg`}></div>
