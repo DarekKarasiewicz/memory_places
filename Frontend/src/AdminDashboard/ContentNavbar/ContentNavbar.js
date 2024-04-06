@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import LanguageSwitcher from '../../LanguageSwitcher/LanguageSwitcher';
+import ThemeSwitcher from '../../ThemeSwitcher/ThemeSwitcher';
 import AdminDropdown from './AdminDropdown/AdminDropdown';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
@@ -38,6 +39,7 @@ function ContentNavbar() {
             <div className='flex justify-end items-center gap-8'>
               <span className='capitalize font-semibold'>{date}</span>
               <LanguageSwitcher variant='admin_dashboard' />
+              <ThemeSwitcher />
             </div>
           </div>
           <AdminDropdown />

@@ -4,7 +4,15 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        mainBgColor: 'var(--mainBgColor)',
+        secondaryBgColor: 'var(--secondaryBgColor)',
+        textColor: 'var(--textColor)',
+        contrastColor: 'var(--contrastColor)',
+        itemShadow: 'var(--shadow)',
+      }
+    },
   },
   plugins: [
     require('tailwind-scrollbar'),

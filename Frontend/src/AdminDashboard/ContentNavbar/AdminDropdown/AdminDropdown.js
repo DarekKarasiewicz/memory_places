@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import AdminDropdownItem from './AdminDropdownItem/AdminDropdownItem';
@@ -7,6 +7,7 @@ function AdminDropdown() {
   const [isActive, setIsActive] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const wrapperRef = useRef(null);
 
   const menuItems = [
     { icon: 'notification', name: t('user.notifications') },
@@ -42,9 +43,23 @@ function AdminDropdown() {
     setIsOpen((current) => !current);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsActive(false);
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <>
-      <div className='pl-4'>
+      <div className='pl-4' ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick}>
           <div className='rounded-full h-10 w-10 flex justify-center items-center bg-slate-300 shadow-lg'>
             <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>

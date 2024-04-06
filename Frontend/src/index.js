@@ -13,6 +13,7 @@ import { CookiesProvider } from 'react-cookie';
 import PageNotFound from './ErrorPage/PageNotFound.jsx';
 import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
 import AdminDashboard from './AdminDashboard/AdminDashboard.js';
+import { ThemeProvider } from './ThemeSwitcher/ThemeContext.js';
 
 export default function AppUrls() {
   return (
@@ -31,13 +32,16 @@ export default function AppUrls() {
 const googleApiKey = process.env.REACT_APP_API_KEY;
 const googleOauthKey = process.env.REACT_APP_GOOGLE_OAUTH_KEY;
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={googleOauthKey}>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
         <Provider store={store}>
           <APIProvider apiKey={googleApiKey} libraries={['places']}>
-            <AppUrls />
+            <ThemeProvider>
+              <AppUrls />
+            </ThemeProvider>
           </APIProvider>
         </Provider>
       </CookiesProvider>

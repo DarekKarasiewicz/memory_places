@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import i18n from '../i18n';
@@ -7,6 +7,7 @@ function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const wrapperRef = useRef(null);
 
   const handleLanguageChange = (value) => {
     setLanguage(value);
@@ -21,12 +22,26 @@ function LanguageSwitcher(props) {
     { label: t('user.ru'), value: 'ru', image: '../../assets/flags/ru.png', alt: t('user.ru') },
   ];
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <>
       <div
         className={`${
           props.variant !== 'admin_dashboard' ? 'absolute right-0 top-20 my-auto' : 'relative z-10'
         }`}
+        ref={wrapperRef}
       >
         <div className='relative inline-block'>
           <button
