@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import ArrowUpIcon from '../../../icons/admin/ArrowUpIcon';
+import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
+import CheckIcon from '../../../icons/CheckIcon';
+import CancelIcon from '../../../icons/CancelIcon';
+import EditIcon from '../../../icons/EditIcon';
+import Trash2Icon from '../../../icons/Trash2Icon';
+import PlusIcon from '../../../icons/PlusIcon';
 
 function PlaceVariableManagementSection() {
   const { t } = useTranslation();
@@ -257,15 +264,11 @@ function PlaceVariableManagementSection() {
                         className='flex justify-between shadow rounded-lg border-2 w-full h-16'
                       >
                         <div className='flex flex-col justify-center items-center shadow'>
-                          <img
-                            src='./assets/arrow_up_icon.svg'
-                            alt='arrow_up_icon'
+                          <ArrowUpIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index - 1, 'sortof')}
                           />
-                          <img
-                            src='./assets/arrow_down_icon.svg'
-                            alt='arrow_down_icon'
+                          <ArrowDownIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index + 1, 'sortof')}
                           />
@@ -274,6 +277,7 @@ function PlaceVariableManagementSection() {
                           {editIndex === index && editIndexName === 'sortof' ? (
                             <input
                               type='text'
+                              className='text-black'
                               defaultValue={item.name}
                               ref={inputSortOfRef}
                             ></input>
@@ -284,30 +288,22 @@ function PlaceVariableManagementSection() {
                         <div className='flex justify-center items-center gap-1 mr-2'>
                           {editIndex === index && editIndexName === 'sortof' ? (
                             <>
-                              <img
-                                src='./assets/check_icon.svg'
-                                alt='check_icon'
+                              <CheckIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleSaveItem(index, 'sortof')}
                               />
-                              <img
-                                src='./assets/cancel_icon.svg'
-                                alt='cancel_icon'
+                              <CancelIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleCancelEdit('sortof')}
                               />
                             </>
                           ) : (
                             <>
-                              <img
-                                src='./assets/edit_icon.svg'
-                                alt='edit_icon'
+                              <EditIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleEditItem(index, 'sortof')}
                               />
-                              <img
-                                src='./assets/trash2_icon.svg'
-                                alt='trash_icon'
+                              <Trash2Icon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleDeleteTypeItem(item.id, 'sortof')}
                               />
@@ -322,7 +318,7 @@ function PlaceVariableManagementSection() {
                   className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('sortof')}
                 >
-                  <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
+                  <PlusIcon className='h-8 w-8' />
                   <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>
@@ -364,22 +360,23 @@ function PlaceVariableManagementSection() {
                         className='flex justify-between shadow rounded-lg border-2 w-full h-16'
                       >
                         <div className='flex flex-col justify-center items-center shadow'>
-                          <img
-                            src='./assets/arrow_up_icon.svg'
-                            alt='arrow_up_icon'
+                          <ArrowUpIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index - 1, 'type')}
                           />
-                          <img
-                            src='./assets/arrow_down_icon.svg'
-                            alt='arrow_down_icon'
+                          <ArrowDownIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index + 1, 'type')}
                           />
                         </div>
                         <div className='flex justify-center items-center'>
                           {editIndex === index && editIndexName === 'type' ? (
-                            <input type='text' defaultValue={item.name} ref={inputTypeRef}></input>
+                            <input
+                              type='text'
+                              className='text-black'
+                              defaultValue={item.name}
+                              ref={inputTypeRef}
+                            ></input>
                           ) : (
                             <span className='text-lg'>{item.name}</span>
                           )}
@@ -387,30 +384,22 @@ function PlaceVariableManagementSection() {
                         <div className='flex justify-center items-center gap-1 mr-2'>
                           {editIndex === index && editIndexName === 'type' ? (
                             <>
-                              <img
-                                src='./assets/check_icon.svg'
-                                alt='check_icon'
+                              <CheckIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleSaveItem(index, 'type')}
                               />
-                              <img
-                                src='./assets/cancel_icon.svg'
-                                alt='cancel_icon'
+                              <CancelIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleCancelEdit('type')}
                               />
                             </>
                           ) : (
                             <>
-                              <img
-                                src='./assets/edit_icon.svg'
-                                alt='edit_icon'
+                              <EditIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleEditItem(index, 'type')}
                               />
-                              <img
-                                src='./assets/trash2_icon.svg'
-                                alt='trash_icon'
+                              <Trash2Icon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleDeleteTypeItem(item.id, 'type')}
                               />
@@ -425,7 +414,7 @@ function PlaceVariableManagementSection() {
                   className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('type')}
                 >
-                  <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
+                  <PlusIcon className='h-8 w-8' />
                   <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>
@@ -467,15 +456,11 @@ function PlaceVariableManagementSection() {
                         className='flex justify-between shadow rounded-lg border-2 w-full h-16'
                       >
                         <div className='flex flex-col justify-center items-center shadow'>
-                          <img
-                            src='./assets/arrow_up_icon.svg'
-                            alt='arrow_up_icon'
+                          <ArrowUpIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index - 1, 'period')}
                           />
-                          <img
-                            src='./assets/arrow_down_icon.svg'
-                            alt='arrow_down_icon'
+                          <ArrowDownIcon
                             className='h-8 w-8 cursor-pointer hover:scale-125'
                             onClick={() => changeOrder(index, index + 1, 'period')}
                           />
@@ -484,6 +469,7 @@ function PlaceVariableManagementSection() {
                           {editIndex === index && editIndexName === 'period' ? (
                             <input
                               type='text'
+                              className='text-black'
                               defaultValue={item.name}
                               ref={inputPeriodRef}
                             ></input>
@@ -494,30 +480,22 @@ function PlaceVariableManagementSection() {
                         <div className='flex justify-center items-center gap-1 mr-2'>
                           {editIndex === index && editIndexName === 'period' ? (
                             <>
-                              <img
-                                src='./assets/check_icon.svg'
-                                alt='check_icon'
+                              <CheckIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleSaveItem(index, 'period')}
                               />
-                              <img
-                                src='./assets/cancel_icon.svg'
-                                alt='cancel_icon'
+                              <CancelIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleCancelEdit('period')}
                               />
                             </>
                           ) : (
                             <>
-                              <img
-                                src='./assets/edit_icon.svg'
-                                alt='edit_icon'
+                              <EditIcon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleEditItem(index, 'period')}
                               />
-                              <img
-                                src='./assets/trash2_icon.svg'
-                                alt='trash_icon'
+                              <Trash2Icon
                                 className='h-6 w-6 cursor-pointer hover:scale-125'
                                 onClick={() => handleDeleteTypeItem(item.id, 'period')}
                               />
@@ -532,7 +510,7 @@ function PlaceVariableManagementSection() {
                   className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
                   onClick={() => handleAddingElement('period')}
                 >
-                  <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-8 w-8 ' />
+                  <PlusIcon className='h-8 w-8' />
                   <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
                 </div>
               </div>

@@ -10,16 +10,21 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import UserGroupIcon from '../../../icons/admin/UserGroupIcon';
+import PlacesIcon from '../../../icons/admin/PlacesIcon';
 
 function AdminBarChart(props) {
+  const iconComponents = {
+    userGroup: <UserGroupIcon />,
+    places: <PlacesIcon />,
+  };
+
+  const IconComponent = iconComponents[props.icon] || null;
+
   return (
     <>
       <div className='flex justify-start items-center gap-2 absolute top-4 left-6'>
-        <img
-          src={`./assets/admin/${props.icon}_icon.svg`}
-          alt={`${props.icon}_icon`}
-          className='h-7 w-7'
-        ></img>
+        {IconComponent ? IconComponent : null}
         <span className='text-2xl'>{props.title}</span>
       </div>
       <ResponsiveContainer width='100%' height='100%' className={'text-black'}>

@@ -1,6 +1,23 @@
 import { motion } from 'framer-motion';
+import NotificationIcon from '../../../../icons/NotificationIcon';
+import PinIcon from '../../../../icons/PinIcon';
+import SettingsIcon from '../../../../icons/SettingsIcon';
+import HelpIcon from '../../../../icons/HelpIcon';
+import ContactIcon from '../../../../icons/ContactIcon';
+import LogoutIcon from '../../../../icons/LogoutIcon';
 
 const AdminDropdownItem = (props) => {
+  const iconComponents = {
+    notification: <NotificationIcon />,
+    pin: <PinIcon />,
+    settings: <SettingsIcon />,
+    help: <HelpIcon />,
+    contact: <ContactIcon />,
+    logout: <LogoutIcon />,
+  };
+
+  const IconComponent = iconComponents[props.icon] || null;
+
   return (
     <>
       <motion.div
@@ -10,11 +27,7 @@ const AdminDropdownItem = (props) => {
         }`}
         onClick={props.onClick ? props.onClick : undefined}
       >
-        <img
-          src={`./assets/${props.icon}_icon.svg`}
-          alt={`${props.icon}`}
-          className='h-8 w-8'
-        ></img>
+        {IconComponent}
         <div className='capitalize leading-5'>{props.name}</div>
       </motion.div>
     </>

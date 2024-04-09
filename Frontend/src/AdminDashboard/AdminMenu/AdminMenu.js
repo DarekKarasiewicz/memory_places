@@ -11,32 +11,32 @@ function AdminMenu() {
 
   const menuItems = [
     {
-      icon: 'statistics_icon',
+      icon: 'statistics',
       name: t('admin.common.statistics_title'),
       section: 'StatisticsSection',
     },
     {
-      icon: 'user_group_icon',
+      icon: 'userGroup',
       name: t('admin.common.user_manage_title'),
       section: 'UserManagementSection',
     },
     {
-      icon: 'places_icon',
+      icon: 'places',
       name: t('admin.common.place_manage_title'),
       section: 'PlaceManagementSection',
     },
     {
-      icon: 'var_changes_icon',
+      icon: 'varChanges',
       name: t('admin.common.var_manage_title'),
       section: 'PlaceVariableManagementSection',
     },
     {
-      icon: 'verification_icon',
+      icon: 'verification',
       name: t('admin.common.verification_title'),
       section: 'PlaceVerificationSection',
     },
     {
-      icon: 'web_changes_icon',
+      icon: 'webChanges',
       name: t('admin.common.history_title'),
       section: 'ChangesHistorySection',
     },

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import AdminDropdownItem from './AdminDropdownItem/AdminDropdownItem';
+import ArrowUpIcon from '../../../icons/admin/ArrowUpIcon';
+import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
 
 function AdminDropdown() {
   const [isActive, setIsActive] = useState(false);
@@ -59,16 +61,12 @@ function AdminDropdown() {
 
   return (
     <>
-      <div className='pl-4' ref={wrapperRef}>
+      <div className='flex items-center pl-4' ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick}>
           <div className='rounded-full h-10 w-10 flex justify-center items-center bg-slate-300 shadow-lg'>
             <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>
           </div>
-          {isOpen ? (
-            <img className='h-6 w-6' src='./assets/arrow_up_icon.svg' alt='up arrow icon'></img>
-          ) : (
-            <img className='h-6 w-6' src='./assets/arrow_down_icon.svg' alt='down arrow icon'></img>
-          )}
+          {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}
         </div>
         {isActive && (
           <motion.ul

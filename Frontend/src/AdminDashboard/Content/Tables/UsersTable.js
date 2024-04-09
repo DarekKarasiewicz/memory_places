@@ -8,6 +8,9 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import SettingsIcon from '../../../icons/SettingsIcon';
+import CancelIcon from '../../../icons/CancelIcon';
+import EditIcon from '../../../icons/EditIcon';
 
 function UsersTable({ data, columns }) {
   const { t } = useTranslation();
@@ -97,19 +100,15 @@ function UsersTable({ data, columns }) {
               ))}
               <td className='flex my-1 gap-4'>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
-                  <img
-                    src={`./assets/settings_icon.svg`}
-                    alt={`settings_icon`}
-                    className='h-5 w-5'
-                  />
+                  <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.change_role')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
-                  <img src={`./assets/cancel_icon.svg`} alt={`cancel_icon`} className='h-5 w-5' />
+                  <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
                 <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
-                  <img src={`./assets/edit_icon.svg`} alt={`edit_icon`} className='h-5 w-5' />
+                  <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>
               </td>

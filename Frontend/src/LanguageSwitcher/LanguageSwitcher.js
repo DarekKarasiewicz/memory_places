@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import i18n from '../i18n';
+import ArrowUpIcon from '../icons/admin/ArrowUpIcon';
+import ArrowDownIcon from '../icons/admin/ArrowDownIcon';
 
 function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);
@@ -61,13 +63,9 @@ function LanguageSwitcher(props) {
               className='h-4 w-5 drop-shadow-md border-1 border-black'
             />
             {isOpen ? (
-              <img className='h-6 w-6' src='./assets/arrow_up_icon.svg' alt='up arrow icon'></img>
+              <ArrowUpIcon className={'h-7 w-7'} />
             ) : (
-              <img
-                className='h-6 w-6'
-                src='./assets/arrow_down_icon.svg'
-                alt='down arrow icon'
-              ></img>
+              <ArrowDownIcon className={'h-7 w-7'} />
             )}
           </button>
 

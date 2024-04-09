@@ -126,17 +126,17 @@ function UserManagementSection() {
           <AdminTileStat
             title={t('admin.content.master_user')}
             value={statistics.sumOfMasters}
-            icon='mod_user'
+            icon='modUser'
           />
           <AdminTileStat
             title={t('admin.content.admin')}
             value={statistics.sumOfAdmins}
-            icon='admin_user'
+            icon='adminUser'
           />
           <AdminTileStat
             title={t('admin.content.new_month_users')}
             value={statistics.sumOfMonthUsers}
-            icon='new_users'
+            icon='newUsers'
           />
         </div>
         <hr />

@@ -92,17 +92,17 @@ function PlaceVerificationSection() {
           <AdminTileStat
             title={t('admin.content.all_verification')}
             value={statistics.allPlaces}
-            icon='clipboard_check'
+            icon='clipboardCheck'
           />
           <AdminTileStat
             title={t('admin.content.previous_verified')}
             value={statistics.sumOfCurrentMonthPlaces}
-            icon='flag_check'
+            icon='flagCheck'
           />
           <AdminTileStat
             title={t('admin.content.current_verified')}
             value={statistics.sumOfPreviousMonthPlaces}
-            icon='flag_check'
+            icon='flagCheck'
           />
         </div>
         <hr />

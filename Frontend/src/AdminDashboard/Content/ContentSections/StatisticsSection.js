@@ -160,7 +160,7 @@ function StatisticsSection() {
         <AdminTileStat
           title={t('admin.content.all_users_count')}
           value={statistics.allUsers}
-          icon='user_group'
+          icon='userGroup'
         />
         <AdminTileStat
           title={t('admin.content.new_month_users')}
@@ -169,7 +169,7 @@ function StatisticsSection() {
           percentage={
             statistics.percentageUsersChange ? statistics.percentageUsersChange : undefined
           }
-          icon='user_group'
+          icon='userGroup'
         />
         <AdminTileStat
           title={t('admin.content.all_places_count')}
@@ -188,7 +188,7 @@ function StatisticsSection() {
         <div className='col-span-2 row-span-3 row-start-2 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminBarChart
             title={t('admin.content.month_all_users')}
-            icon='user_group'
+            icon='userGroup'
             data={statistics.monthlyUsersCount}
             dataName='users'
           />

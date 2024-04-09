@@ -96,12 +96,12 @@ function PlaceManagementSection() {
           <AdminTileStat
             title={t('admin.content.previous_places')}
             value={statistics.previousMonthPlaces}
-            icon='map_pin'
+            icon='mapPin'
           />
           <AdminTileStat
             title={t('admin.content.current_places')}
             value={statistics.currentMonthPlaces}
-            icon='map_pin'
+            icon='mapPin'
           />
         </div>
         <hr />
