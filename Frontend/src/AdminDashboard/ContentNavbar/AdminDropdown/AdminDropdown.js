@@ -63,7 +63,7 @@ function AdminDropdown() {
     <>
       <div className='flex items-center pl-4' ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick}>
-          <div className='rounded-full h-10 w-10 flex justify-center items-center bg-slate-300 shadow-lg'>
+          <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
             <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>
           </div>
           {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}

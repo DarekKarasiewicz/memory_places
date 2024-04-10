@@ -32,7 +32,7 @@ function ContentNavbar() {
 
   return (
     <>
-      <div className='flex justify-between w-full p-4 shadow-lg bg-mainBgColor text-textColor'>
+      <div className='flex justify-between items-center w-full p-4 shadow-lg bg-mainBgColor text-textColor h-20'>
         <div className='text-3xl ml-4'>{t('admin.common.welcome', { user: 'user' })}</div>
         <div className='flex'>
           <div className='p-2 pr-4 border-r-2'>
