@@ -211,7 +211,8 @@
             "confirm": "Confirm",
             "dismiss": "Dismiss",
             "users": "Users",
-            "places": "Places"
+            "places": "Places",
+            "new_element": "New element"
         },
         "content": {
             "statistics_info": "Collected statistics of the site in one place!",

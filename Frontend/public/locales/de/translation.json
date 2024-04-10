@@ -211,7 +211,8 @@
             "confirm": "Bestätigen",
             "dismiss": "Abbrechen",
             "users": "Benutzer",
-            "places": "Orte"
+            "places": "Orte",
+            "new_element": "Neues Element"
         },
         "content": {
             "statistics_info": "Gesammelte Statistiken der Website an einem Ort!",

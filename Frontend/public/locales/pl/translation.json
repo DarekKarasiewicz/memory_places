@@ -211,7 +211,8 @@
             "confirm": "Zatwierdź",
             "dismiss": "Odrzuć",
             "users": "Użytkownicy",
-            "places": "Miejsca"
+            "places": "Miejsca",
+            "new_element": "Nowy element"
         },
         "content": {
             "statistics_info": "Zebrane statystki strony w jednym miejscu!",
