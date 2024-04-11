@@ -99,11 +99,18 @@ class User(AbstractBaseUser):
 
 
 class Type(models.Model):
+    name  = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
+    order = models.IntegerField()
+
 class Sortof(models.Model):
+    name  = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
+    order = models.IntegerField()
 class Period(models.Model):
+    name  = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
+    order = models.IntegerField()
 class Place(models.Model):
     user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     place_name    = models.CharField(max_length=32, default=None)

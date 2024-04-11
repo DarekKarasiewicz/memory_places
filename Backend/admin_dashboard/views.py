@@ -13,6 +13,7 @@ from rest_framework.renderers import JSONRenderer
 import re
 import secrets
 import string
+import unicodedata
 
 
 def json_bool(str):
@@ -398,98 +399,66 @@ class Changes_view(viewsets.ModelViewSet):
         return Change.objects.all()  
 
 
-class Types_view(viewsets.ModelViewSet):
-    serializer_class = Types_serializer 
+def clean_string(string):
+    string = re.sub(r'[_\-!@#$%^&*()+=\[\]{};:\'",.<>?/\\|`~]', '', string)
+    string = string.replace(" ", "_") 
+    string = unicodedata.normalize('NFD', string).encode('ascii', 'ignore').decode("utf-8") 
+    string = string.strip("_") 
+    return string
+
+class CategoryBaseView(viewsets.ModelViewSet):
+    serializer_class = None 
+    model = None
 
     def get_queryset(self):
-        return Type.objects.all()  
+        return self.model.objects.all()  
 
     def create(self, request, *args, **kwargs):
-        new_type = Type(
-            name=request.data['name'],
+
+        new_type = self.model(
+            name  = request.data['name'],
+            value = clean_string(request.data['value']),
+            order = request.data['order'],
         )
         new_type.save()
 
-        serializer = Types_serializer(new_type)
+        serializer = self.serializer_class(new_type)
         return Response(serializer.data) 
 
     def update(self, request, *args, **kwargs):
-        type_object = Type.objects.get(id=kwargs['pk'])
+        type_object = self.model.objects.get(id=kwargs['pk'])
 
-        type_object.name = request.data['name']
+        for i in request.data.keys():
+            match i:
+                case "name":
+                    type_object.name = request.data['name']
+                case "value":
+                    type_object.name = request.data['value']
+                case "order":
+                    type_object.name = request.data['order']
+                case _:
+                    pass
 
         type_object.save()
 
-        serializer = Types_serializer(type_object) 
+        serializer = self.serializer_class(type_object) 
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        type_object = Type.objects.get(id=kwargs["pk"])
+        type_object = self.model.objects.get(id=kwargs["pk"])
         type_object.delete()
 
-        serializer = Types_serializer(type_object)
+        serializer = self.serializer_class(type_object)
         return Response(serializer.data)
+
+class Types_view(CategoryBaseView):
+    serializer_class = Types_serializer 
+    model = Type 
 
 class Sortofs_view(viewsets.ModelViewSet):
     serializer_class = Sortof_serializer 
-
-    def get_queryset(self):
-        return Sortof.objects.all()  
-
-    def create(self, request, *args, **kwargs):
-        new_sortof = Sortof(
-            name=request.data['name'],
-        )
-        new_sortof.save()
-
-        serializer = Sortof_serializer(new_sortof)
-        return Response(serializer.data) 
-
-    def update(self, request, *args, **kwargs):
-        sortof_object = Sortof.objects.get(id=kwargs['pk'])
-
-        sortof_object.name = request.data['name']
-
-        sortof_object.save()
-
-        serializer = Sortof_serializer(sortof_object) 
-        return Response(serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        sortof_object = Sortof.objects.get(id=kwargs["pk"])
-        sortof_object.delete()
-
-        serializer = Sortof_serializer(sortof_object)
-        return Response(serializer.data)
+    model = Sortof
 
 class Periods_view(viewsets.ModelViewSet):
     serializer_class = Period_serializer 
-
-    def get_queryset(self):
-        return Period.objects.all()  
-
-    def create(self, request, *args, **kwargs):
-        new_period = Period(
-            name=request.data['name'],
-        )
-        new_period.save()
-
-        serializer = Period_serializer(new_period)
-        return Response(serializer.data) 
-
-    def update(self, request, *args, **kwargs):
-        period_object = Period.objects.get(id=kwargs['pk'])
-
-        period_object.name = request.data['name']
-
-        period_object.save()
-
-        serializer = Period_serializer(period_object) 
-        return Response(serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        period_object = Period.objects.get(id=kwargs["pk"])
-        period_object.delete()
-
-        serializer = Period_serializer(period_object)
-        return Response(serializer.data)
+    model = Period 
