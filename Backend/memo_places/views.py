@@ -17,7 +17,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
+        
+        token["pk"] = user.id
         token["username"] = user.username
         token["admin"] = user.admin
         token["master"] = user.master
@@ -61,6 +62,12 @@ class Place_view(viewsets.ModelViewSet):
             case "pk":
                 place = get_object_or_404(Place, id=value)
                 serializer = Places_serailizer(place, many=False)
+                return Response(serializer.data)
+            case "email":
+                value = str(value).replace("&", ".")
+                user = get_object_or_404(User, email=value)
+                places = Place.objects.filter(user=user.id)
+                serializer = Places_serailizer(places, many=True)
                 return Response(serializer.data)
             case "user":
                 places = Place.objects.filter(user=value)
