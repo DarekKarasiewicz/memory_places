@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 
-from memo_places.serializers import Changes_serializer 
-from .serializers import Places_serailizer, User_serializer, Questions_serializer,Types_serializer,Period_serializer,Sortof_serializer
+from memo_places.serializers import Changes_serializer, Places_serailizer, Questions_serializer
+from .serializers import User_serializer, Types_serializer,Period_serializer,Sortof_serializer
 from memo_places.models import Place, User, Question, Change, Sortof, Type, Period
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
