@@ -18,21 +18,6 @@ import unicodedata
 
 def json_bool(str):
     return str.lower()=="true"
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        token["username"] = user.username
-        token["admin"] = user.admin
-        token["master"] = user.master
-        token["email"] = user.email
-
-        return token
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 class Place_view(viewsets.ModelViewSet):
     serializer_class = Places_serailizer

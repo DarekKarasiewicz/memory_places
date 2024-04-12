@@ -17,11 +17,6 @@ router.register(r"changes", views.Changes_view, "changes")
 router.register(r"types", views.Types_view, "types")
 router.register(r"periods", views.Periods_view, "periods")
 router.register(r"sortofs", views.Sortofs_view, "sortofs")
-# router.register(r'token/', views.MyTokenObtainPairView,'token_obtain_pair'),
 
-urlpatterns = [
-    path("token/", views.MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-]
-
+urlpatterns = []
 urlpatterns += router.urls
