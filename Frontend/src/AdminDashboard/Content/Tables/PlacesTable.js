@@ -6,6 +6,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useDispatch } from 'react-redux';
+import { adminDeleteActions } from '../../../Redux/adminDeleteSlice';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +16,7 @@ import CancelIcon from '../../../icons/CancelIcon';
 import EditIcon from '../../../icons/EditIcon';
 
 function PlacesTable({ data, columns }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
@@ -38,6 +41,12 @@ function PlacesTable({ data, columns }) {
   const { pageIndex, pageSize } = table.getState().pagination;
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
+
+  const handleDeleteAdminModal = (id, name) => {
+    dispatch(adminDeleteActions.changeIsDeleteAdminModalOpen());
+    dispatch(adminDeleteActions.changePlaceId(id));
+    dispatch(adminDeleteActions.changePlaceName(name));
+  };
 
   return (
     <>
@@ -107,15 +116,18 @@ function PlacesTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handleDeleteAdminModal(row.original.id, row.original.place_name)}
+                >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>

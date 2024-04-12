@@ -99,15 +99,15 @@ function UsersTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.change_role')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:text-contrastColor transition cursor-pointer'>
+                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>

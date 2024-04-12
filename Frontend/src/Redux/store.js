@@ -9,6 +9,7 @@ import allMapPlacesReducer from './allMapPlacesSlice';
 import authReducer from './authSlice';
 import formValidationReducer from './formValidationSlice';
 import contentSectionReducer from './contentSectionSlice';
+import adminDeleteReducer from './adminDeleteSlice';
 import addTrailReducer from './addTrailSlice';
 import drawingToolsReducer from './drawingToolsSlice';
 import drawingEventsReducer from './drawingEventsSlice';
@@ -31,6 +32,7 @@ export const store = configureStore({
     auth: authReducer,
     formValidation: formValidationReducer,
     contentSection: contentSectionReducer,
+    adminDelete: adminDeleteReducer,
     addTrail: addTrailReducer,
     drawingTools: drawingToolsReducer,
     drawingEvents: drawingEventsReducer,
