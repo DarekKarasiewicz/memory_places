@@ -8,11 +8,13 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import SettingsIcon from '../../../icons/SettingsIcon';
 import CancelIcon from '../../../icons/CancelIcon';
 import EditIcon from '../../../icons/EditIcon';
 
 function PlacesTable({ data, columns }) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
@@ -44,6 +46,12 @@ function PlacesTable({ data, columns }) {
           {t('admin.content.all_places')} ({rowCount})
         </div>
         <div className='flex gap-4'>
+          <button
+            className='w-32 normal-case bg-blue-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
+            onClick={() => navigate('/adminDashboard/placeAdd')}
+          >
+            {t('admin.common.memo_add')}
+          </button>
           <div className='relative flex items-center shadow-sm'>
             <img
               src={`./assets/search_icon.svg`}
@@ -51,7 +59,7 @@ function PlacesTable({ data, columns }) {
               className='h-5 w-5 absolute left-2'
             />
             <input
-              className='rounded-lg p-2 pl-8'
+              className='rounded-lg p-2 pl-8 text-black'
               type='text'
               placeholder={t('admin.content.search')}
               value={filtering}

@@ -30,7 +30,9 @@ import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
 import { selectUpdateTrail } from '../Redux/updateTrailSlice.jsx';
 
-const GoogleMap = () => {
+// TO DO
+// When frontend will be rewrited this prop will be deleted with functionality to it
+const GoogleMap = ({ adminVersion }) => {
   const dispatch = useDispatch();
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -157,9 +159,13 @@ const GoogleMap = () => {
   };
   return isLoaded && isPositionLoaded ? (
     <div
-      className={`absolute bottom-0 h-screen transition-transform delay-150 ${
-        userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
-      }`}
+      className={
+        !adminVersion
+          ? `absolute bottom-0 h-screen transition-transform delay-150 ${
+              userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
+            }`
+          : `h-1/2`
+      }
     >
       <Map
         center={position}

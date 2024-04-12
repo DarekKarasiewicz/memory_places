@@ -212,7 +212,17 @@
             "dismiss": "Abbrechen",
             "users": "Benutzer",
             "places": "Orte",
-            "new_element": "Neues Element"
+            "new_element": "Neues Element",
+            "memo_place_add": "Hinzufügen eines Erinnerungsortes",
+            "field_required": "Feld erforderlich",
+            "lat_lng_info": "Geben Sie Breiten- und Längeninformationen ein",
+            "correct_info_data": "Geben Sie korrekte Daten ein",
+            "lat_lng_info2": "oder wählen Sie einen bestimmten Ort durch Klicken auf die Karte aus",
+            "desc_info": "Beschreiben Sie genau, was Sie über diesen Ort wissen",
+            "verification_info": "Soll der Erinnerungsort einer zusätzlichen Überprüfung unterzogen werden?",
+            "back": "Zurück",
+            "add": "Hinzufügen",
+            "memo_add": "Ort hinzufügen"
         },
         "content": {
             "statistics_info": "Gesammelte Statistiken der Website an einem Ort!",

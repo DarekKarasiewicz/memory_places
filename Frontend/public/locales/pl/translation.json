@@ -212,7 +212,17 @@
             "dismiss": "Odrzuć",
             "users": "Użytkownicy",
             "places": "Miejsca",
-            "new_element": "Nowy element"
+            "new_element": "Nowy element",
+            "memo_place_add": "Dodawanie miejsca pamięci",
+            "field_required": "Wymagane pole",
+            "lat_lng_info": "Wprowadź informację o długości i szerokości geograficznej",
+            "correct_info_data": "Wprowadź poprawne dane",
+            "lat_lng_info2": "lub wybierz konkretne miejsce poprzez kliknięcie na mapie",
+            "desc_info": "Opisz w szczegółach co wiesz o tym miejscu",
+            "verification_info": "Czy miejsce pamięci ma przejść dodatkowo weryfikację?",
+            "back": "Cofnij",
+            "add": "Dodaj",
+            "memo_add": "Dodaj miejsce"
         },
         "content": {
             "statistics_info": "Zebrane statystki strony w jednym miejscu!",

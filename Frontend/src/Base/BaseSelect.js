@@ -8,7 +8,9 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
         <select
           className={`block w-${
             props.width ? props.width : 'full'
-          } rounded-l-lg rounded-r-lg p-2  ${props.isValid === false ? 'bg-red-500' : ''}`}
+          } rounded-l-lg rounded-r-lg p-2 text-black ${
+            props.isValid === false ? 'bg-red-500' : ''
+          }`}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
           ref={ref}
@@ -16,8 +18,8 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           onBlur={props.onBlur}
           onChange={props.onChange}
         >
-          {props.options.map((option) => (
-            <option key={option.value} value={option.value}>
+          {props.options.map((option, index) => (
+            <option key={index} value={option.value}>
               {option.label}
             </option>
           ))}

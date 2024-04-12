@@ -212,7 +212,17 @@
             "dismiss": "Dismiss",
             "users": "Users",
             "places": "Places",
-            "new_element": "New element"
+            "new_element": "New element",
+            "memo_place_add": "Adding a memory place",
+            "field_required": "Field required",
+            "lat_lng_info": "Enter latitude and longitude information",
+            "correct_info_data": "Enter correct data",
+            "lat_lng_info2": "or select a specific place by clicking on the map",
+            "desc_info": "Describe in detail what you know about this place",
+            "verification_info": "Should the memory place undergo additional verification?",
+            "back": "Back",
+            "add": "Add",
+            "memo_add": "Add place"
         },
         "content": {
             "statistics_info": "Collected statistics of the site in one place!",

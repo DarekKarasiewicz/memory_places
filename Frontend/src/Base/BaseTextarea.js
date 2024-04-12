@@ -8,8 +8,10 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
         <label className='block pr-1 text-sm'>{props.secondLabel}</label>
       </div>
       <textarea
-        className={`block w-${props.width ? props.width : 'full'} rounded-l-lg rounded-r-lg p-2 ${
-          props.isValid === false ? 'bg-red-500' : ''
+        className={`block w-${
+          props.width ? props.width : 'full'
+        } rounded-l-lg rounded-r-lg p-2 text-black focus:outline-contrastColor ${
+          props.isValid === false ? 'bg-red-400' : ''
         }`}
         placeholder={props.placeholder ? props.placeholder : ''}
         name={props.name}

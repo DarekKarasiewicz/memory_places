@@ -48,7 +48,7 @@ function HistoryTable({ data, columns }) {
               className='h-5 w-5 absolute left-2'
             />
             <input
-              className='rounded-lg p-2 pl-8'
+              className='rounded-lg p-2 pl-8 text-black'
               type='text'
               placeholder={t('admin.content.search')}
               value={filtering}
