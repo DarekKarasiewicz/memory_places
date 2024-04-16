@@ -130,7 +130,7 @@ class Place(models.Model):
 
 class Path(models.Model):
     user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    place_name    = models.CharField(max_length=32, default=None)
+    path_name    = models.CharField(max_length=32, default=None)
     description   = models.TextField(default=None)
     creation_date = models.DateField(auto_now_add=True)
     coordinates   = models.JSONField()

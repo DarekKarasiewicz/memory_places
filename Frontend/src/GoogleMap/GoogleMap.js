@@ -4,14 +4,17 @@ import {
   useAdvancedMarkerRef,
   InfoWindow,
   AdvancedMarker,
+  MapControl,
+  ControlPosition,
 } from '@vis.gl/react-google-maps';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions, selectModals } from '../Redux/modalsSlice';
 import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
+import { filterTrails, fetchMapTrails } from '../Redux/allMapTrailsSlice';
 import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
 import AddPlaceButton from '../AddPlace/AddPlaceButton';
@@ -21,6 +24,10 @@ import BaseButton from '../Base/BaseButton';
 import axios from 'axios';
 import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
 import GoogleMapPin from './GoogleMapPin.jsx';
+import { selectAddTrail } from '../Redux/addTrailSlice.jsx';
+import DrawingControl from './TrailDrawing/DrawingControl.jsx';
+import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
+import { Polyline } from './MapOverlay/Polyline.jsx';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -28,6 +35,7 @@ const GoogleMap = () => {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
   const updatePlaceData = useSelector(selectUpdatePlace);
+  const addTrailData = useSelector(selectAddTrail);
   const modalsData = useSelector(selectModals);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -40,9 +48,11 @@ const GoogleMap = () => {
   const [currentPlace, setCurrentPlace] = useState([]);
   const [currentPlaceData, setCurrentPlaceData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
+  const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
   const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
+  const drawingManager = useDrawingManager();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -73,7 +83,12 @@ const GoogleMap = () => {
       await dispatch(fetchMapPlaces());
       dispatch(filterPlaces({ sortof: 'all', type: 'all', period: 'all' }));
     };
+    const fetchTrailsAndFilter = async () => {
+      await dispatch(fetchMapTrails());
+      dispatch(filterTrails({ type: 'all', period: 'all' }));
+    };
 
+    fetchTrailsAndFilter();
     fetchDataAndFilter();
   }, [dispatch]);
 
@@ -153,7 +168,14 @@ const GoogleMap = () => {
         onClick={handleLocationMarker}
         mapId={mapId}
       >
-        {!addPlaceLocation.isSelecting && <AddPlaceButton openModal={handleFormModalVisability} />}
+        {!addPlaceLocation.isSelecting && !addTrailData.isSelecting ? (
+          <AddPlaceButton openModal={handleFormModalVisability} />
+        ) : null}
+        {addTrailData.isSelecting && (
+          <MapControl position={ControlPosition.TOP_CENTER}>
+            <DrawingControl drawingManager={drawingManager} />
+          </MapControl>
+        )}
         {addPlaceLocation.isSelecting && addPlaceLocation.lat && (
           <AdvancedMarker
             onClick={toggleInfoWindow}
@@ -185,6 +207,19 @@ const GoogleMap = () => {
             >
               <GoogleMapPin iconPath={`../../assets/places_icons/${place.type}_icon.svg`} />
             </AdvancedMarker>
+          ))
+        ) : (
+          <p>{t('google_maps.no_items')}</p>
+        )}
+        {filteredTrails && filteredTrails.length > 0 ? (
+          filteredTrails.map((trail) => (
+            <Polyline
+              key={trail.id}
+              strokeColor={'#00FF00'}
+              strokeOpacity={0.3}
+              strokeWeight={10}
+              path={JSON.parse(trail.coordinates)}
+            />
           ))
         ) : (
           <p>{t('google_maps.no_items')}</p>

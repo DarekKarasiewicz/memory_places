@@ -49,7 +49,10 @@
         "file_too_large": "File is too large: ",
         "only_images": "You can only upload images.",
         "max_files_number": "The maximum number of files is ",
-        "already_uploaded": "File already uploaded: "
+        "already_uploaded": "File already uploaded: ",
+        "edit_trail": "Edit Trail",
+        "add_trail": "Add Trail",
+        "select_trail": "Select Trail"
     },
     "forum": {
         "comment_content": "Comment-Content",

@@ -49,7 +49,10 @@
         "file_too_large": "Plik jest za duży: ",
         "only_images":"Możesz przesłać wyłącznie obrazy.",
         "max_files_number": "Maksymalna liczba plików to ",
-        "already_uploaded": "Plik już przesłany: "
+        "already_uploaded": "Plik już przesłany: ",
+        "edit_trail": "Zmień Szlak",
+        "add_trail": "Dodaj Szlak",
+        "select_trail": "Zaznacz Szlak"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",

@@ -4,11 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import BaseButton from '../Base/BaseButton';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
+import AddingOption from './AddingOpction';
 
 const AddPlaceButton = (props) => {
   const dispatch = useDispatch();
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isSelecting, setIsSelecting] = useState(false);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const popupRef = useRef(null);
@@ -36,7 +38,8 @@ const AddPlaceButton = (props) => {
 
   const handleAddClick = (event) => {
     if (isLogged) {
-      props.openModal();
+      // props.openModal();
+      setIsSelecting(!isSelecting);
     } else {
       setIsActive(!isActive);
       popupRef.current = event.target;
@@ -61,7 +64,7 @@ const AddPlaceButton = (props) => {
 
   const parentItem = {
     hover: {
-      scale: isActive ? 1 : 1.05,
+      scale: isActive || isSelecting ? 1 : 1.05,
     },
   };
 
@@ -87,7 +90,17 @@ const AddPlaceButton = (props) => {
           <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-r border-b border-black'></div>
         </motion.div>
       )}
-      <img src='./assets/plus_icon.svg' alt='plus_icon' className='h-14 w-14'></img>
+      {isSelecting && (
+        <div className='absolute bottom-16 w-32 flex flex-row justify-between items-center'>
+          <AddingOption type={'place'} />
+          <AddingOption type={'trail'} />
+        </div>
+      )}
+      <img
+        src='./assets/plus_icon.svg'
+        alt='plus_icon'
+        className={`h-14 w-14 ${isSelecting ? 'rotate-45' : ''}`}
+      ></img>
     </motion.div>
   );
 };

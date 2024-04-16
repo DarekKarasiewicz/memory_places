@@ -23,16 +23,23 @@ import Footer from './Footer/Footer.js';
 import ContactForm from './Modals/ContactForm.js';
 import Infobar from './Navbar/Infobar.jsx';
 import { formValidationActions } from './Redux/formValidationSlice.jsx';
+import TrailFormModal from './Modals/TrailFormModal.jsx';
+import { selectAddTrail, addTrailActions } from './Redux/addTrailSlice.jsx';
+import { drawingEventsActions, selectDrawingEvents } from './Redux/drawingEventsSlice.jsx';
+import { drawingToolsActions, selectDrawingTools } from './Redux/drawingToolsSlice.jsx';
 
 function App() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectModals);
   const addPlaceData = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
+  const addTrailData = useSelector(selectAddTrail);
   const [showCookiesInfo, setShowCookiesInfo] = useState(false);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { t } = useTranslation();
+  const drawingTools = useSelector(selectDrawingTools);
+  const drawingEvents = useSelector(selectDrawingEvents);
 
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
@@ -77,6 +84,18 @@ function App() {
     dispatch(modalsActions.changeIsContactFormOpen());
   };
 
+  const handleTrailFormModalVisability = () => {
+    if (modalData.isTrailFormOpen === true) {
+      drawingTools.now[0].geometry.setMap(null);
+      drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
+      dispatch(drawingEventsActions.reset());
+      dispatch(drawingToolsActions.reset());
+      dispatch(addTrailActions.reset());
+      dispatch(formValidationActions.reset());
+    }
+    dispatch(modalsActions.changeIsTrailFormOpen());
+  };
+
   useEffect(() => {
     if (user) {
       if (user.cookies === false) {
@@ -92,7 +111,7 @@ function App() {
       <div className='w-screen h-screen relative'>
         {userPlacesData.isOpen && <UserPlacesMenu />}
         <GoogleMap />
-        {!addPlaceData.isSelecting && <Navbar />}
+        {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <Navbar /> : null}
         {addPlaceData.isSelecting && <Infobar />}
         {modalData.isFormModalOpen && (
           <FormModal
@@ -106,6 +125,12 @@ function App() {
             title={t('common.edit_place')}
             type='update'
             closeModal={handleEditFormModalVisability}
+          />
+        )}
+        {modalData.isTrailFormOpen && (
+          <TrailFormModal
+            title={t('common.add_trail')}
+            closeModal={handleTrailFormModalVisability}
           />
         )}
         {modalData.isLoginAndRegisterOpen && (
@@ -132,9 +157,9 @@ function App() {
 
         {modalData.isContactFormOpen && <ContactForm closeModal={handleContactFormVisability} />}
 
-        {!addPlaceData.isSelecting && <Footer />}
+        {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <Footer /> : null}
 
-        {!addPlaceData.isSelecting && <LanguageSwitcher />}
+        {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <LanguageSwitcher /> : null}
       </div>
     </Suspense>
   );

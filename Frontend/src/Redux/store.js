@@ -8,6 +8,10 @@ import updatePlaceReducer from './updatePlaceSlice';
 import allMapPlacesReducer from './allMapPlacesSlice';
 import authReducer from './authSlice';
 import formValidationReducer from './formValidationSlice';
+import addTrailReducer from './addTrailSlice';
+import drawingToolsReducer from './drawingToolsSlice';
+import drawingEventsReducer from './drawingEventsSlice';
+import allMapTrailsReducer from './allMapTrailsSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -24,6 +28,10 @@ export const store = configureStore({
     allMapPlaces: allMapPlacesReducer,
     auth: authReducer,
     formValidation: formValidationReducer,
+    addTrail: addTrailReducer,
+    drawingTools: drawingToolsReducer,
+    drawingEvents: drawingEventsReducer,
+    allMapTrails: allMapTrailsReducer,
   },
   middleware: customizedMiddleware,
 });

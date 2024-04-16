@@ -49,7 +49,10 @@
         "file_too_large": "Datei ist zu groß: ",
         "only_images": "Sie können nur Bilder hochladen.",
         "max_files_number": "Die maximale Anzahl an Dateien beträgt ",
-        "already_uploaded": "Datei bereits hochgeladen: "
+        "already_uploaded": "Datei bereits hochgeladen: ",
+        "edit_trail": "Trail bearbeiten",
+        "add_trail": "Trail hinzufügen",
+        "select_trail": "Wählen Sie Trail"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
