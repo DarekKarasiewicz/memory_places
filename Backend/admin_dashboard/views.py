@@ -20,16 +20,17 @@ def json_bool(str):
     return str.lower()=="true"
 
 class Place_view(viewsets.ModelViewSet):
+    model =Place
     serializer_class = Places_serailizer
 
     def get_queryset(self):
-        return Place.objects.all()
+        return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
 
         data = request.data
-        new_place = Place(
+        new_place = self.model(
             user        = creator,
             place_name  = data["place_name"],
             description = data["description"],
@@ -50,7 +51,7 @@ class Place_view(viewsets.ModelViewSet):
                     new_place.img = data["img"]
         new_place.save()
 
-        serializer = Places_serailizer(new_place)
+        serializer = self.serializer_class(new_place)
 
         return Response(serializer.data)
 
@@ -58,41 +59,39 @@ class Place_view(viewsets.ModelViewSet):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
             case "pk":
-                place = get_object_or_404(Place, id=value)
-                serializer = Places_serailizer(place, many=False)
+                place = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(place, many=False)
                 return Response(serializer.data)
             case "user":
-                places = Place.objects.filter(user=value)
-                serializer = Places_serailizer(places, many=True)
+                places = self.model.objects.filter(user=value)
+                serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
             case "type":
-                places = Place.objects.filter(type=value)
-                serializer = Places_serailizer(places, many=True)
+                places = self.model.objects.filter(type=value)
+                serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
             case "sortof":
-                places = Place.objects.filter(sortof=value)
-                serializer = Places_serailizer(places, many=True)
+                places = self.model.objects.filter(sortof=value)
+                serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
             case "period":
-                places = Place.objects.filter(period=value)
-                serializer = Places_serailizer(places, many=True)
+                places = self.model.objects.filter(period=value)
+                serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
             case "place_name":
-                places = Place.objects.filter(place_name=value)
-                serializer = Places_serailizer(places, many=True)
+                places = self.model.objects.filter(place_name=value)
+                serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
             #TODO
             # case "found_date":
             #     return Response(serializer.data)
             # case "creation_date":
             #     return Response(serializer.data)
-            case _:
-                place = None
-                return Response({"detail": "Invalid key"})
-        return Response(serializer.data)
+
+        return Response({"detail": "Invalid key"})
 
     def update(self, request, *args, **kwargs):
-        place_object = Place.objects.get(id=kwargs["pk"])
+        place_object = self.model.objects.get(id=kwargs["pk"])
 
         data = request.data
         for i in data.keys():
@@ -128,17 +127,18 @@ class Place_view(viewsets.ModelViewSet):
 
         place_object.save()
 
-        serializer = Places_serailizer(place_object)
+        serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        place_object = Place.objects.get(id=kwargs["pk"])
+        place_object = self.model.objects.get(id=kwargs["pk"])
 
         place_object.delete()
-        serializer = Places_serailizer(place_object)
+        serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
 class Outside_user_view(viewsets.ModelViewSet):
+    model = User
     serializer_class = User_serializer
     http_method_names = ["post"]
 
@@ -148,26 +148,27 @@ class Outside_user_view(viewsets.ModelViewSet):
         alphabet = string.ascii_letters + string.digits + string.punctuation
         password = "".join(secrets.choice(alphabet) for _ in range(42))
 
-        new_user = User.objects.create_user(
+        new_user = self.model.objects.create_user(
             email=user_data["email"], username=user_data["username"], password=password
         )
 
         new_user.outside = True
         new_user.save()
 
-        serializer = User_serializer(new_user)
+        serializer = self.serializer_class(new_user)
 
         return Response(serializer.data)
 
 class User_view(viewsets.ModelViewSet):
+    model = User
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return User.objects.all()  
+        return self.model.objects.all()  
 
     def create(self, request, *args, **kwargs):
         data= request.data
-        new_user = User.objects.create_user(
+        new_user = self.model.objects.create_user(
             email=data["email"],
             username=data["username"],
             password=data["password"],
@@ -187,7 +188,7 @@ class User_view(viewsets.ModelViewSet):
                 case "confirmed":
                     new_user.confirmed=json_bool(data["confirmed"]) 
         new_user.save()
-        serializer = User_serializer(new_user)
+        serializer = self.serializer_class(new_user)
         send_mail("Verifictation mail"
                 , f'http://localhost:3000/userVerification/{serializer["id"].value}'
                 #Env not in views
@@ -202,46 +203,42 @@ class User_view(viewsets.ModelViewSet):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
             case "pk":
-                user = get_object_or_404(User, id=value)
-                serializer = User_serializer(user, many=False)
+                user = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(user, many=False)
             case "email":
                 value = str(value).replace("&", ".")
-                user = get_object_or_404(User, email=value)
-                serializer = User_serializer(user)
+                user = get_object_or_404(self.model, email=value)
+                serializer = self.serializer_class(user)
             case "username":
-                user = get_object_or_404(User, username=value)
-                serializer = User_serializer(user)
+                user = get_object_or_404(self.model, username=value)
+                serializer = self.serializer_class(user)
             case "admin":
-                user = User.objects.filter(admin=True)
-                serializer = User_serializer(user, many=True)
+                user = self.model.objects.filter(admin=True)
+                serializer = self.serializer_class(user, many=True)
             case "active":
-                user = User.objects.filter(active=True)
-                serializer = User_serializer(user, many=True)
+                user = self.model.objects.filter(active=True)
+                serializer = self.serializer_class(user, many=True)
             case "confirmed":
-                user = User.objects.filter(confirmed=True)
-                serializer = User_serializer(user, many=True)
+                user = self.model.objects.filter(confirmed=True)
+                serializer = self.serializer_class(user, many=True)
             case "outside":
-                user = User.objects.filter(outside=True)
-                serializer = User_serializer(user, many=True)
+                user = self.model.objects.filter(outside=True)
+                serializer = self.serializer_class(user, many=True)
             case "master":
-                user = User.objects.filter(master=True)
-                serializer = User_serializer(user, many=True)
+                user = self.model.objects.filter(master=True)
+                serializer = self.serializer_class(user, many=True)
             # case "data_join":
             #     #TODO 
-            #     return Response({"detail": "Invalid request"})
-            case _:
-                user = None
-                return Response({"detail": "Invalid request"})
-        return Response(serializer.data)
+        return Response({"detail": "Invalid request"})
 
     def update(self, request, *args, **kwargs):
         # user_object = User.objects.get(id=kwargs['pk'])
         try:
             isinstance(int(kwargs["pk"]), int)
-            user_object = User.objects.get(id=kwargs["pk"])
+            user_object = self.model.objects.get(id=kwargs["pk"])
         except:
             key, value = re.match("(\w+)=(\d+)", kwargs["pk"]).groups()
-            user_object = User.objects.get(id=value)
+            user_object = self.model.objects.get(id=value)
 
         data = request.data
 
@@ -270,37 +267,39 @@ class User_view(viewsets.ModelViewSet):
 
         user_object.save()
 
-        serializer = User_serializer(user_object)
+        serializer = self.serializer_class(user_object)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        user_object = User.objects.get(id=kwargs["pk"])
+        user_object = self.model.objects.get(id=kwargs["pk"])
         user_object.delete()
 
-        serializer = User_serializer(user_object)
+        serializer = self.serializer_class(user_object)
         return Response(serializer.data)
 
 class None_Verified_Places_view(viewsets.ModelViewSet):
+    model =Place
     serializer_class = Places_serailizer
 
     def get_queryset(self):
-        places = Place.objects.filter(verified=True)
-        serializer = Places_serailizer(places, many=True)
+        places = self.model.objects.filter(verified=True)
+        serializer = self.serializer_class(places, many=True)
         return Response(serializer.data)
 class Questions_view(viewsets.ModelViewSet):
+    model = Question
     serializer_class = Questions_serializer
 
     def get_queryset(self):
-        return Question.objects.all() 
+        return self.model.objects.all() 
 
     def create(self, request, *args, **kwargs):
         try:
-            user_object = User.objects.get(email=request.data['email'])
+            user_object = self.model.objects.get(email=request.data['email'])
         except:
             user_object=None
         print(request.data)
         
-        new_question = Question(
+        new_question = self.model(
             user=user_object,
             title=request.data['title'],
             description=request.data['description'],
@@ -317,37 +316,35 @@ class Questions_view(viewsets.ModelViewSet):
                 , fail_silently=False)
                 # , html_message=) 
 
-        serializer = Questions_serializer(new_question)
+        serializer = self.serializer_class(new_question)
         return Response(serializer.data) 
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
             case "pk":
-                question_object = get_object_or_404(User, id=value)
-                serializer = Questions_serializer(question_object, many=False)
+                question_object = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(question_object, many=False)
             case "user":
                 # user_object = get_object_or_404(User, pk=value)
-                question_object = Question.objects.filter(user=value)
-                serializer = Questions_serializer(question_object,many=True)
+                question_object = self.model.objects.filter(user=value)
+                serializer = self.serializer_class(question_object,many=True)
             case "title":
-                question_object = Question.objects.filter(username=value)
-                serializer = Questions_serializer(question_object,many=True)
+                question_object = self.model.objects.filter(username=value)
+                serializer = self.serializer_class(question_object,many=True)
             case "email":
                 value = str(value).replace("&", ".")
                 user_object = get_object_or_404(User, email=value)
-                question_object = Question.objects.filter(user=user_object.pk)
-                serializer = Questions_serializer(question_object, many=True)
+                question_object = self.model.objects.filter(user=user_object.pk)
+                serializer = self.serializer_class(question_object, many=True)
             case "done":
-                question_object = Question.objects.filter(done=json_bool(value))
-                serializer = Questions_serializer(question_object, many=True)
-            case _:
-                question = None
-                return Response({"detail": "Invalid request"})
-        return Response(serializer.data)
+                question_object = self.model.objects.filter(done=json_bool(value))
+                serializer = self.serializer_class(question_object, many=True)
+
+        return Response({"detail": "Invalid request"})
 
     def update(self, request, *args, **kwargs):
-        question_object = Question.objects.get(id=kwargs['pk'])
+        question_object = self.model.objects.get(id=kwargs['pk'])
 
         data = request.data
 
@@ -366,22 +363,23 @@ class Questions_view(viewsets.ModelViewSet):
 
         question_object.save()
 
-        serializer =Questions_serializer(question_object) 
+        serializer =self.model(question_object) 
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        question_object = Question.objects.get(id=kwargs["pk"])
+        question_object = self.model.objects.get(id=kwargs["pk"])
         question_object.delete()
 
-        serializer = Questions_serializer(question_object)
+        serializer = self.serializer_class(question_object)
         return Response(serializer.data)
 
 
 class Changes_view(viewsets.ModelViewSet):
+    model = Change
     serializer_class = Changes_serializer
 
     def get_queryset(self):
-        return Change.objects.all()  
+        return self.model.objects.all()  
 
 
 def clean_string(string):
