@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Changes_serializer 
-from .models import Place, User, Question, Change
+from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Changes_serializer, Path_serailizer 
+from .models import Place, User, Question, Change, Path,Type,Sortof,Period
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -39,6 +39,9 @@ class Place_view(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
+        type = get_object_or_404(Type, id=request.data["user"])
+        sortof = get_object_or_404(Sortof, id=request.data["user"])
+        period = get_object_or_404(Period, id=request.data["user"])
 
         new_place = self.model(
             user=creator,
@@ -47,9 +50,9 @@ class Place_view(viewsets.ModelViewSet):
             found_date=request.data["found_date"],
             lng=request.data["lng"],
             lat=request.data["lat"],
-            type=request.data["type"],
-            sortof=request.data["sortof"],
-            period=request.data["period"],
+            type=type,
+            sortof=sortof,
+            period=period,
         )
         new_place.save()
 
@@ -126,6 +129,95 @@ class Place_view(viewsets.ModelViewSet):
 
         place_object.delete()
         serializer = self.serializer_class(place_object)
+        return Response(serializer.data)
+class Path_view(viewsets.ModelViewSet):
+    model = Path  
+    serializer_class = Path_serailizer 
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        creator = get_object_or_404(User, id=request.data["user"])
+        type = get_object_or_404(Type, id=request.data["user"])
+        period = get_object_or_404(Period, id=request.data["user"])
+
+        new_place = self.model(
+            user=creator,
+            path_name=request.data["path_name"],
+            description=request.data["description"],
+            found_date=request.data["found_date"],
+            coordinates =request.data["coordinates"],
+            type=type,
+            period=period,
+        )
+        new_place.save()
+
+        serializer = self.serializer_class(new_place)
+
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                path = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(path, many=False)
+                return Response(serializer.data)
+            case "email":
+                value = str(value).replace("&", ".")
+                user = get_object_or_404(User, email=value)
+                paths = self.model.objects.filter(user=user.id)
+                serializer = self.serializer_class(paths, many=True)
+                return Response(serializer.data)
+            case "user":
+                paths = self.model.objects.filter(user=value)
+                serializer = self.serializer_class(paths, many=True)
+                return Response(serializer.data)
+            case "type":
+                paths = Place.objects.filter(type=value)
+                serializer = self.serializer_class(paths, many=True)
+                return Response(serializer.data)
+            case "period":
+                paths = self.model.objects.filter(period=value)
+                serializer = self.serializer_class(paths, many=True)
+                return Response(serializer.data)
+
+        return Response({"detail": "Invalid key"})
+
+    def update(self, request, *args, **kwargs):
+        path_object = self.model.objects.get(id=kwargs["pk"])
+
+        data = request.data
+        for i in data.keys():
+            match i:
+                case "path_name":
+                    path_object.path_name = data["path_name"]
+                case "description":
+                    path_object.description = data["description"]
+                case "found_date":
+                    path_object.found_date = data["found_date"]
+                case "coordinates":
+                    path_object.coordinates =data["coordinates"],
+                case "type":
+                    path_object.type = data["type"]
+                case "period":
+                    path_object.period = data["period"]
+                case "verified":
+                    path_object.verified = data["verified"].lower() == "true" 
+                case _:
+                    pass
+
+        path_object.save()
+
+        serializer = self.serializer_class(path_object)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        path_object = self.model.objects.get(id=kwargs["pk"])
+
+        path_object.delete()
+        serializer = self.serializer_class(path_object)
         return Response(serializer.data)
 
 class Short_place_view(viewsets.ModelViewSet):
