@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Place, User, Question
+from .models import Place, User, Question, Path
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -23,6 +23,26 @@ class Places_serailizer(serializers.ModelSerializer):
             "user",
             "username",
             "sortof",
+            "type",
+            "period",
+            "topic_link",
+            "wiki_link",
+            "img",
+        )
+
+class Path_serailizer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    class Meta:
+        model = Path 
+        fields = (
+            "id",
+            "path_name",
+            "description",
+            "creation_date",
+            "found_date",
+            "coordinates",
+            "user",
+            "username",
             "type",
             "period",
             "topic_link",
