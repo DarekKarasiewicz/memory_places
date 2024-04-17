@@ -28,9 +28,9 @@ class Place_view(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
-        type = get_object_or_404(Type, id=request.data["user"])
-        sortof = get_object_or_404(Sortof, id=request.data["user"])
-        period = get_object_or_404(Period, id=request.data["user"])
+        type = get_object_or_404(Type, id=request.data["type"])
+        sortof = get_object_or_404(Sortof, id=request.data["sortof"])
+        period = get_object_or_404(Period, id=request.data["period"])
 
         data = request.data
         new_place = self.model(
@@ -149,8 +149,8 @@ class Path_view(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
-        type = get_object_or_404(Type, id=request.data["user"])
-        period = get_object_or_404(Period, id=request.data["user"])
+        type = get_object_or_404(Type, id=request.data["type"])
+        period = get_object_or_404(Period, id=request.data["period"])
 
         data = request.data
         new_path = self.model(
