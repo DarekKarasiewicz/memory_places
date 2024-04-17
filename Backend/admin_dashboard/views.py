@@ -551,10 +551,10 @@ class Types_view(CategoryBaseView):
     serializer_class = Types_serializer 
     model = Type 
 
-class Sortofs_view(viewsets.ModelViewSet):
+class Sortofs_view(CategoryBaseView):
     serializer_class = Sortof_serializer 
     model = Sortof
 
-class Periods_view(viewsets.ModelViewSet):
+class Periods_view(CategoryBaseView):
     serializer_class = Period_serializer 
     model = Period 
