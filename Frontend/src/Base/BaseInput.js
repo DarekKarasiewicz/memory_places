@@ -19,6 +19,7 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
           ref={ref}
           onBlur={props.onBlur}
           onChange={props.onChange}
+          readOnly={props.readOnly}
           max={props.blockFuture ? moment().format('YYYY-MM-DD') : null}
         ></input>
       </div>

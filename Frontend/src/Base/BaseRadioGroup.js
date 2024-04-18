@@ -1,4 +1,4 @@
-function BaseRadioGroup({ options, selectedValue, onChange }) {
+function BaseRadioGroup({ readOnly, options, selectedValue, onChange }) {
   return (
     <>
       <div className='flex gap-4'>
@@ -11,6 +11,7 @@ function BaseRadioGroup({ options, selectedValue, onChange }) {
               value={option.value}
               checked={selectedValue === option.value}
               onChange={onChange}
+              disabled={readOnly}
             />
             {option.label}
           </label>

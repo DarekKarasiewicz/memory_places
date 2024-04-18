@@ -19,12 +19,11 @@ function AdminModal({ closeModal }) {
         >
           <div className='flex flex-col gap-2 justify-center items-center text-textColor'>
             <TrashIcon className='h-20 w-20' />
-            <span className='text-2xl font-bold'>Usuwanie miejsca pamięci</span>
+            <span className='text-2xl font-bold'>{t('admin.common.delete_title')}</span>
           </div>
           <div className='flex justify-center items-center my-4'>
-            <span className='text-2xl text-textColor'>
-              Czy napewno chcesz usunąć miejsce o <br /> ID: <strong>{place_id}</strong> i nazwie:{' '}
-              <strong>{place_name}</strong>
+            <span className='text-2xl text-center text-textColor'>
+              {t('admin.common.delete_info', { id: place_id, name: place_name })}
             </span>
           </div>
           <div className='flex justify-center gap-8'>

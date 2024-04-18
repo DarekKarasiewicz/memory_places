@@ -116,7 +116,10 @@ function PlacesTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
+                >
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
@@ -127,7 +130,10 @@ function PlacesTable({ data, columns }) {
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
+                >
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>

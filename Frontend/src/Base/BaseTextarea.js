@@ -21,6 +21,7 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
         defaultValue={props.value}
         onBlur={props.onBlur}
         onChange={props.onChange}
+        readOnly={props.readOnly}
       />
     </>
   );

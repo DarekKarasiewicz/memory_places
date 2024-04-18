@@ -17,6 +17,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           defaultValue={props.value}
           onBlur={props.onBlur}
           onChange={props.onChange}
+          readOnly={props.readOnly}
         >
           {props.options.map((option, index) => (
             <option key={index} value={option.value}>

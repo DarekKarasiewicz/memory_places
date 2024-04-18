@@ -214,6 +214,8 @@
             "places": "Miejsca",
             "new_element": "Nowy element",
             "memo_place_add": "Dodawanie miejsca pamięci",
+            "memo_place_edit": "Edytowanie miejsca pamięci",
+            "memo_place_view": "Informacje o miejscu pamięci",
             "field_required": "Wymagane pole",
             "lat_lng_info": "Wprowadź informację o długości i szerokości geograficznej",
             "correct_info_data": "Wprowadź poprawne dane",
@@ -222,7 +224,9 @@
             "verification_info": "Czy miejsce pamięci ma przejść dodatkowo weryfikację?",
             "back": "Cofnij",
             "add": "Dodaj",
-            "memo_add": "Dodaj miejsce"
+            "memo_add": "Dodaj miejsce",
+            "delete_title": "Usuwanie miejsca pamięci",
+            "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}"
         },
         "content": {
             "statistics_info": "Zebrane statystki strony w jednym miejscu!",

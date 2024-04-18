@@ -13,7 +13,7 @@ import { CookiesProvider } from 'react-cookie';
 import PageNotFound from './ErrorPage/PageNotFound.jsx';
 import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
 import AdminDashboard from './AdminDashboard/AdminDashboard.js';
-import AdminPlaceAdd from './AdminDashboard/AdminPlaceAdd.js';
+import AdminPlaceAction from './AdminDashboard/AdminPlaceAction.js';
 import { ThemeProvider } from './ThemeSwitcher/ThemeContext.js';
 
 export default function AppUrls() {
@@ -25,7 +25,9 @@ export default function AppUrls() {
         <Route path='/forum/:id' element={<SubForum />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
         <Route path='/adminDashboard' element={<AdminDashboard />} />
-        <Route path='/adminDashboard/placeAdd' element={<AdminPlaceAdd />} />
+        <Route path='/adminDashboard/placeAdd' element={<AdminPlaceAction />} />
+        <Route path='/adminDashboard/placeEdit/:id' element={<AdminPlaceAction action='edit' />} />
+        <Route path='/adminDashboard/placeView/:id' element={<AdminPlaceAction action='view' />} />
         <Route path='/*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

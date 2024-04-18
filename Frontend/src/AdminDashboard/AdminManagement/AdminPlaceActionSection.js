@@ -14,7 +14,7 @@ import WebIcon from '../../icons/WebIcon';
 import WikiIcon from '../../icons/WikiIcon';
 import GoogleMap from '../../GoogleMap/GoogleMap';
 
-function AdminPlaceAddSection() {
+function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +42,8 @@ function AdminPlaceAddSection() {
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const [toVerification, setToVerification] = useState('false');
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
 
   const fetchSortOfItems = async () => {
     try {
@@ -93,6 +95,55 @@ function AdminPlaceAddSection() {
     setLat(addPlaceLocation.lat);
     setLng(addPlaceLocation.lng);
   }, [addPlaceLocation]);
+
+  useEffect(() => {
+    if (action === 'edit' || action === 'view') {
+      const getPlaceItems = async (placeId) => {
+        try {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`,
+          );
+
+          nameRef.current.value = response.data.place_name;
+          descRef.current.value = response.data.description;
+          latRef.current.value = response.data.lat;
+          lngRef.current.value = response.data.lng;
+          dateRef.current.value = response.data.creation_date;
+
+          // TO DO
+          // When proper value will be retrieved from backend then it needs to be fixed
+          sortOfRef.current.value = response.data.sortof;
+          typeRef.current.value = response.data.type;
+          periodRef.current.value = response.data.period;
+
+          wikiLinkRef.current.value = response.data.wiki_link;
+          webLinkRef.current.value = response.data.topic_link;
+
+          validateName(nameRef.current.value);
+          validateLat(latRef.current.value);
+          validateLng(lngRef.current.value);
+          validateDescription(descRef.current.value);
+          validateDate(dateRef.current.value);
+
+          // TO DO
+          // Add radio setter when value will be delivered from backend
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      if (action === 'edit') {
+        setActionTitle(t('admin.common.memo_place_edit'));
+      }
+
+      if (action === 'view') {
+        setActionTitle(t('admin.common.memo_place_view'));
+        setIsReadOnly(true);
+      }
+
+      getPlaceItems(placeId);
+    }
+  }, []);
 
   const handleNameChange = () => {
     if (nameRef.current) {
@@ -162,36 +213,64 @@ function AdminPlaceAddSection() {
   };
 
   const handleConfirm = () => {
-    //const isFormValid = validateForm();
-    // if (isFormValid) {
-    //   axios
-    //     .post(`http://localhost:8000/memo_places/places/`, {
-    //       // user: user.user_id,
-    //       place_name: nameRef.current.value,
-    //       description: descRef.current.value,
-    //       found_date: dateRef.current.value,
-    //       lat: latRef.current.value,
-    //       lng: lngRef.current.value,
-    //       sortof: sortOfRef.current.value,
-    //       type: typeRef.current.value,
-    //       period: periodRef.current.value,
-    //       wiki_link: wikiLinkRef.current.value,
-    //       topic_link: webLinkRef.current.value,
-    //     })
-    //     .then((response) => {
-    //       console.log(response);
-    //       // dispatch(addPlace(response.data));
-    //       // dispatch(addPlaceActions.reset());
-    //       // dispatch(addPlacelocationActions.clearLocation());
-    //       // dispatch(modalsActions.changeIsFormModalOpen());
-    //       // dispatch(formValidationActions.reset());
-    //     })
-    //     .error((error) => {
-    //       console.log(error);
-    //     });
-    // } else {
-    //   alert(t('modal.filled_box_error'));
-    // }
+    const isFormValid = validateForm();
+    if (isFormValid) {
+      if (action === 'edit') {
+        axios
+          .put(`http://localhost:8000/memo_places/places/pk=${placeId}`, {
+            user: 1,
+            place_name: nameRef.current.value,
+            description: descRef.current.value,
+            found_date: dateRef.current.value,
+            lat: latRef.current.value,
+            lng: lngRef.current.value,
+            sortof: sortOfRef.current.value,
+            type: typeRef.current.value,
+            period: periodRef.current.value,
+            wiki_link: wikiLinkRef.current.value,
+            topic_link: webLinkRef.current.value,
+          })
+          .then((response) => {
+            console.log(response);
+            // dispatch(addPlace(response.data));
+            // dispatch(addPlaceActions.reset());
+            // dispatch(addPlacelocationActions.clearLocation());
+            // dispatch(modalsActions.changeIsFormModalOpen());
+            // dispatch(formValidationActions.reset());
+          })
+          .error((error) => {
+            console.log(error);
+          });
+      } else {
+        axios
+          .post(`http://localhost:8000/memo_places/places/`, {
+            user: 1,
+            place_name: nameRef.current.value,
+            description: descRef.current.value,
+            found_date: dateRef.current.value,
+            lat: latRef.current.value,
+            lng: lngRef.current.value,
+            sortof: sortOfRef.current.value,
+            type: typeRef.current.value,
+            period: periodRef.current.value,
+            wiki_link: wikiLinkRef.current.value,
+            topic_link: webLinkRef.current.value,
+          })
+          .then((response) => {
+            console.log(response);
+            // dispatch(addPlace(response.data));
+            // dispatch(addPlaceActions.reset());
+            // dispatch(addPlacelocationActions.clearLocation());
+            // dispatch(modalsActions.changeIsFormModalOpen());
+            // dispatch(formValidationActions.reset());
+          })
+          .error((error) => {
+            console.log(error);
+          });
+      }
+    } else {
+      alert(t('modal.filled_box_error'));
+    }
   };
 
   useEffect(() => {
@@ -205,7 +284,7 @@ function AdminPlaceAddSection() {
       <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full'>
         <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
           <PinIcon />
-          <span>{t('admin.common.memo_place_add')}</span>
+          <span>{actionTitle}</span>
         </div>
         <hr />
         <div className='flex gap-6'>
@@ -224,6 +303,7 @@ function AdminPlaceAddSection() {
                       handleNameChange();
                     }}
                     onBlur={() => validateName(nameRef.current.value)}
+                    readOnly={isReadOnly}
                   />
                   <div className='flex justify-between px-2'>
                     {!isValidName ? (
@@ -248,6 +328,7 @@ function AdminPlaceAddSection() {
                     options={sortOf}
                     ref={sortOfRef}
                     onChange={() => sortOfRef.current.value}
+                    readOnly={isReadOnly}
                   />
                   <BaseSelect
                     label={t('common.type')}
@@ -255,6 +336,7 @@ function AdminPlaceAddSection() {
                     options={type}
                     ref={typeRef}
                     onChange={() => typeRef.current.value}
+                    readOnly={isReadOnly}
                   />
                   <BaseSelect
                     label={t('common.period')}
@@ -262,6 +344,7 @@ function AdminPlaceAddSection() {
                     options={period}
                     ref={periodRef}
                     onChange={() => periodRef.current.value}
+                    readOnly={isReadOnly}
                   />
                 </div>
               </div>
@@ -280,6 +363,7 @@ function AdminPlaceAddSection() {
                     isValid={isValidLat}
                     onChange={() => validateLat(latRef.current.value)}
                     onBlur={() => validateLat(latRef.current.value)}
+                    readOnly={isReadOnly}
                   />
                   <div className='flex px-2'>
                     {!isValidLat ? (
@@ -307,6 +391,7 @@ function AdminPlaceAddSection() {
                     isValid={isValidLng}
                     onChange={() => validateLng(lngRef.current.value)}
                     onBlur={() => validateLng(lngRef.current.value)}
+                    readOnly={isReadOnly}
                   />
                   <div className='flex px-2'>
                     {!isValidLng ? (
@@ -329,6 +414,7 @@ function AdminPlaceAddSection() {
                 name={t('common.location_select')}
                 btnBg='blue'
                 onClick={handleSelectLocationBtn}
+                disabled={isReadOnly}
               />
             </div>
             <div className='bg-thirdBgColor p-10'>
@@ -342,6 +428,7 @@ function AdminPlaceAddSection() {
                   isValid={isValidDate}
                   onChange={() => validateDate(nameRef.current.value)}
                   onBlur={() => validateDate(nameRef.current.value)}
+                  readOnly={isReadOnly}
                 />
                 <div className='flex px-2'>
                   {!isValidDate ? (
@@ -369,6 +456,7 @@ function AdminPlaceAddSection() {
                     validateDescription(descRef.current.value);
                     handleDescChange();
                   }}
+                  readOnly={isReadOnly}
                 />
                 <div className='flex justify-between px-2'>
                   {!isValidDesc ? (
@@ -388,11 +476,21 @@ function AdminPlaceAddSection() {
               <div className='flex flex-col gap-2'>
                 <div className='flex justify-center items-center gap-2'>
                   <WikiIcon />
-                  <BaseInput type='text' name='wikiLinkInput' ref={wikiLinkRef} />
+                  <BaseInput
+                    type='text'
+                    name='wikiLinkInput'
+                    ref={wikiLinkRef}
+                    readOnly={isReadOnly}
+                  />
                 </div>
                 <div className='flex justify-center items-center gap-2'>
                   <WebIcon />
-                  <BaseInput type='text' name='topicLinkInput' ref={webLinkRef} />
+                  <BaseInput
+                    type='text'
+                    name='topicLinkInput'
+                    ref={webLinkRef}
+                    readOnly={isReadOnly}
+                  />
                 </div>
               </div>
             </div>
@@ -402,6 +500,7 @@ function AdminPlaceAddSection() {
                 options={verificationOptions}
                 selectedValue={toVerification}
                 onChange={handleVerificationChange}
+                readOnly={isReadOnly}
               />
             </div>
           </div>
@@ -411,22 +510,19 @@ function AdminPlaceAddSection() {
         </div>
         <hr />
         <div className='flex justify-end gap-4'>
-          <button
-            className='w-32 normal-case bg-red-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
-            onClick={() => navigate(-1)}
-          >
-            {t('admin.common.back')}
-          </button>
-          <button
-            className='w-32 normal-case bg-blue-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
-            onClick={() => handleConfirm()}
-          >
-            {t('admin.common.add')}
-          </button>
+          <BaseButton name={t('admin.common.back')} btnBg='red' onClick={() => navigate(-1)} />
+          {action !== 'view' && (
+            <BaseButton
+              name={action === 'edit' ? t('admin.content.edit') : t('admin.common.add')}
+              btnBg='blue'
+              onClick={() => handleConfirm()}
+              disabled={isReadOnly}
+            />
+          )}
         </div>
       </div>
     </>
   );
 }
 
-export default AdminPlaceAddSection;
+export default AdminPlaceActionSection;

@@ -214,6 +214,8 @@
             "places": "Places",
             "new_element": "New element",
             "memo_place_add": "Adding a memory place",
+            "memo_place_edit": "Editing memory place",
+            "memo_place_view": "Memory place information",
             "field_required": "Field required",
             "lat_lng_info": "Enter latitude and longitude information",
             "correct_info_data": "Enter correct data",
@@ -222,7 +224,9 @@
             "verification_info": "Should the memory place undergo additional verification?",
             "back": "Back",
             "add": "Add",
-            "memo_add": "Add place"
+            "memo_add": "Add place",
+            "delete_title": "Deleting Memory Place",
+            "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}"
         },
         "content": {
             "statistics_info": "Collected statistics of the site in one place!",
