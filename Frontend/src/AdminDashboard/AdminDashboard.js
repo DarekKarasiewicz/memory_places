@@ -1,15 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { adminActions, selectAdminAction } from '../Redux/adminActionSlice';
+import { selectConfirmationModal } from '../Redux/confirmationModalSlice';
 import { Suspense } from 'react';
 import AdminMenu from './AdminMenu/AdminMenu.js';
 import ContentNavbar from './ContentNavbar/ContentNavbar.js';
 import Content from './Content/Content.js';
 import Loader from '../Loader/Loader.js';
 import AdminModal from '../Modals/AdminModal.js';
+import ConfirmationModal from '../Modals/ConfirmationModal.js';
 
 function AdminDashboard() {
   const dispatch = useDispatch();
-  const modalData = useSelector(selectAdminAction);
+  const modalAdminAction = useSelector(selectAdminAction);
+  const modalConfirmationModal = useSelector(selectConfirmationModal);
 
   const handleAdminActionModal = () => {
     dispatch(adminActions.changeIsAdminActionsModalOpen());
@@ -25,7 +28,10 @@ function AdminDashboard() {
           <ContentNavbar />
           <Content />
         </div>
-        {modalData.isAdminActionsModalOpen && <AdminModal closeModal={handleAdminActionModal} />}
+        {modalAdminAction.isAdminActionsModalOpen && (
+          <AdminModal closeModal={handleAdminActionModal} />
+        )}
+        {modalConfirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
       </div>
     </Suspense>
   );

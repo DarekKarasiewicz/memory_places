@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { confirmationModalActions } from './confirmationModalSlice';
 import axios from 'axios';
 
 const initialState = {
@@ -51,6 +52,12 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
 
 export const changeUserRole = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+
+  // FOR TESTING PURPOUSES IT SHOULD CHANGE TYPE BASED ON THE AXIOS CALLBACK
+  // dispatch(confirmationModalActions.changeType('error'));
+  dispatch(confirmationModalActions.changeType('success'));
+
+  dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
 
   // try {
   //   await axios

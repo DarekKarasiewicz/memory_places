@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from '../ThemeSwitcher/ThemeContext';
 
-const CancelIcon = ({ className, onClick }) => {
+const CancelIcon = ({ className, onClick, color }) => {
   const theme = useTheme();
   const [strokeColor, setStrokeColor] = useState(null);
 
   useEffect(() => {
-    const newStrokeColor = theme.theme === 'dark' ? '#ffffff' : '#000000';
-    setStrokeColor(newStrokeColor);
-  }, [theme]);
+    if (!color) {
+      const newStrokeColor = theme.theme === 'dark' ? '#ffffff' : '#000000';
+      setStrokeColor(newStrokeColor);
+    } else {
+      setStrokeColor(color);
+    }
+  }, [theme, color]);
 
   return (
     <svg

@@ -1,5 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
-import { selectAdminAction, deletePlaceItem } from '../Redux/adminActionSlice';
+import {
+  selectAdminAction,
+  deletePlaceItem,
+  changeUserRole,
+  blockUser,
+  resetUserPassword,
+} from '../Redux/adminActionSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -92,21 +98,21 @@ function AdminModal({ closeModal }) {
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
-                onClick={() => console.log('blocked')}
+                onClick={() => dispatch(blockUser(user_id))}
               ></BaseButton>
             )}
             {current_action === 'user_role' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
-                onClick={() => console.log('roleChanged')}
+                onClick={() => dispatch(changeUserRole(user_id))}
               ></BaseButton>
             )}
             {current_action === 'user_pass_reset' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
-                onClick={() => console.log('passRes')}
+                onClick={() => dispatch(resetUserPassword(user_id))}
               ></BaseButton>
             )}
           </div>

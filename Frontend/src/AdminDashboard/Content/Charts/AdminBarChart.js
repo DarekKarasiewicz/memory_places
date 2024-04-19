@@ -23,7 +23,7 @@ function AdminBarChart(props) {
 
   return (
     <>
-      <div className='flex justify-start items-center gap-2 absolute top-4 left-6'>
+      <div className='flex justify-start items-center gap-2 absolute top-6 left-6'>
         {IconComponent ? IconComponent : null}
         <span className='text-2xl'>{props.title}</span>
       </div>

@@ -281,7 +281,9 @@
             "history_info": "Dokumentierte und beschriebene Änderungen, die an der Anwendung vorgenommen wurden",
             "all_history": "Alle Änderungen in der Anwendung",
             "changed_date": "Änderungsdatum",
-            "changed_by": "Geändert von"
+            "changed_by": "Geändert von",
+            "alert_success": "Aktion erfolgreich ausgeführt!",
+            "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!"
         }
     }
 }

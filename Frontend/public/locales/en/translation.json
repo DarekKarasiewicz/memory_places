@@ -281,7 +281,9 @@
             "history_info": "Documented and described changes made to the application",
             "all_history": "All changes in the application",
             "changed_date": "Change date",
-            "changed_by": "Changed by"
+            "changed_by": "Changed by",
+            "alert_success": "Action executed successfully!",
+            "alert_error": "Something went wrong. Please try again!"
         }
     }
 }
