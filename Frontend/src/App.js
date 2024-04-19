@@ -27,6 +27,7 @@ import TrailFormModal from './Modals/TrailFormModal.jsx';
 import { selectAddTrail, addTrailActions } from './Redux/addTrailSlice.jsx';
 import { drawingEventsActions, selectDrawingEvents } from './Redux/drawingEventsSlice.jsx';
 import { drawingToolsActions, selectDrawingTools } from './Redux/drawingToolsSlice.jsx';
+import { updateTrailActions } from './Redux/updateTrailSlice.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -95,6 +96,18 @@ function App() {
     }
     dispatch(modalsActions.changeIsTrailFormOpen());
   };
+  const handleTrailUpdateFormModalVisability = () => {
+    if (modalData.isUpdateTrailFormOpen === true) {
+      drawingTools.now[0].geometry.setMap(null);
+      drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
+      dispatch(drawingEventsActions.reset());
+      dispatch(drawingToolsActions.reset());
+      dispatch(addTrailActions.reset());
+      dispatch(updateTrailActions.reset());
+      dispatch(formValidationActions.reset());
+    }
+    dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+  };
 
   useEffect(() => {
     if (user) {
@@ -130,7 +143,15 @@ function App() {
         {modalData.isTrailFormOpen && (
           <TrailFormModal
             title={t('common.add_trail')}
+            type='create'
             closeModal={handleTrailFormModalVisability}
+          />
+        )}
+        {modalData.isTrailUpdateFormOpen && (
+          <TrailFormModal
+            title={t('common.edit_trail')}
+            type='update'
+            closeModal={handleTrailUpdateFormModalVisability}
           />
         )}
         {modalData.isLoginAndRegisterOpen && (

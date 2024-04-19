@@ -5,12 +5,13 @@ import { drawingToolsActions, selectDrawingTools } from '../../Redux/drawingTool
 import { addTrailActions } from '../../Redux/addTrailSlice.jsx';
 import { useDrawingManagerEvents, useOverlaySnapshots } from './undoRedo.js';
 import { modalsActions } from '../../Redux/modalsSlice.jsx';
+import { selectUpdateTrail } from '../../Redux/updateTrailSlice.jsx';
 
 const DrawingControl = ({ drawingManager }) => {
   const map = useMap();
   const drawingTools = useSelector(selectDrawingTools);
   const dispatch = useDispatch();
-
+  const updateTrailData = useSelector(selectUpdateTrail);
   const overlaysShouldUpdateRef = useRef(false);
 
   useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef);
@@ -29,7 +30,10 @@ const DrawingControl = ({ drawingManager }) => {
         });
       dispatch(addTrailActions.setTrailCoords(coords));
     }
-
+    if (updateTrailData.isDataLoaded === true) {
+      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+      return;
+    }
     dispatch(addTrailActions.changeIsSelecting(false));
     dispatch(modalsActions.changeIsTrailFormOpen());
   };

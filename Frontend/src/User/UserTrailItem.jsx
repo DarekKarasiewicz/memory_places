@@ -2,36 +2,38 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
 import { modalsActions } from '../Redux/modalsSlice';
-import { updatePlaceActions } from '../Redux/updatePlaceSlice';
+import { updateTrailActions } from '../Redux/updateTrailSlice';
 import { useDispatch } from 'react-redux';
 import { locationActions } from '../Redux/locationSlice';
-import { deletePlace } from '../Redux/allMapPlacesSlice';
+import { deleteTrail } from '../Redux/allMapTrailsSlice';
 import { userPlacesActions } from '../Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
 
-const UserPlaceItem = (props) => {
+const UserTrailItem = (props) => {
   const [visability, setVisability] = useState('flex');
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const handleUpdateModalVisability = (e) => {
     e.stopPropagation();
-    dispatch(updatePlaceActions.changeUpdatePlace(props.place));
-    dispatch(modalsActions.changeIsUpdateModalOpen());
+    dispatch(updateTrailActions.changeUpdateTrail(props.trail));
+    dispatch(modalsActions.changeIsTrailUpdateFormOpen());
     dispatch(userPlacesActions.changeIsOpen());
   };
 
-  const directToPlaceOnMap = () => {
-    dispatch(locationActions.changeLocation({ lat: props.place.lat, lng: props.place.lng }));
-    props.setClicked(props.place.id);
+  const directToTrailOnMap = () => {
+    const coordinates = JSON.parse(props.trail.coordinates);
+    const middleIndex = Math.floor(coordinates.length / 2);
+    dispatch(locationActions.changeLocation(coordinates[middleIndex]));
+    props.setClicked(props.trail.id);
   };
 
-  const handlePlaceDelete = (e) => {
+  const handleTrailDelete = (e) => {
     e.stopPropagation();
-    if (confirm(t('common.place_delete_warning'))) {
-      axios.delete(`http://localhost:8000/memo_places/places/${props.place.id}`).then(() => {
+    if (confirm(t('common.trail_delete_warning'))) {
+      axios.delete(`http://localhost:8000/memo_places/path/${props.trail.id}`).then(() => {
         setVisability('hidden');
-        dispatch(deletePlace(props.place.id));
+        dispatch(deleteTrail(props.trail.id));
       });
     }
   };
@@ -39,29 +41,25 @@ const UserPlaceItem = (props) => {
   return (
     <li
       className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row ${
-        props.clickedItem === props.place.id ? 'bg-slate-400' : 'bg-slate-300'
+        props.clickedItem === props.trail.id ? 'bg-slate-400' : 'bg-slate-300'
       }`}
-      key={props.place.id}
-      onClick={directToPlaceOnMap}
+      key={props.trail.id}
+      onClick={directToTrailOnMap}
     >
       <div className='w-2/12 flex justify-center items-center'>
-        <img
-          src={`../../assets/places_icons/${props.place.type}_icon.svg`}
-          alt='place_icon'
-          className='min-w-max min-h-max '
-        />
+        <img src={`../../assets/trail_icon.svg`} alt='trail_icon' className='min-w-max min-h-max' />
       </div>
       <div className='w-7/12 flex flex-col ml-1 mr-1'>
-        <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
-        <p className='text-sm'>{props.place.found_date}</p>
+        <h2 className='truncate font-semibold h-full'>{props.trail.path_name}</h2>
+        <p className='text-sm'>{props.trail.found_date}</p>
       </div>
       <div className='w-3/12 flex justify-end items-center gap-2'>
         <motion.div
           className='rounded-full bg-green-700 h-10 w-10 flex justify-center items-center hover:bg-green-900 cursor-pointer'
-          onClick={handleUpdateModalVisability}
           whileHover={{
             scale: 1.05,
           }}
+          onClick={handleUpdateModalVisability}
         >
           <img src='../../assets/edit_white_icon.svg' className='w-6 h-6' />
         </motion.div>
@@ -70,7 +68,7 @@ const UserPlaceItem = (props) => {
           whileHover={{
             scale: 1.05,
           }}
-          onClick={handlePlaceDelete}
+          onClick={handleTrailDelete}
         >
           <img src='../../assets/trash_icon.svg' className='w-6 h-6' />
         </motion.div>
@@ -79,4 +77,4 @@ const UserPlaceItem = (props) => {
   );
 };
 
-export default UserPlaceItem;
+export default UserTrailItem;

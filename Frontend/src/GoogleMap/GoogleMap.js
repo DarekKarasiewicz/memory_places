@@ -28,6 +28,7 @@ import { selectAddTrail } from '../Redux/addTrailSlice.jsx';
 import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
+import { selectUpdateTrail } from '../Redux/updateTrailSlice.jsx';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const GoogleMap = () => {
   const userPlacesData = useSelector(selectUserPlaces);
   const updatePlaceData = useSelector(selectUpdatePlace);
   const addTrailData = useSelector(selectAddTrail);
+  const updateTrailData = useSelector(selectUpdateTrail);
   const modalsData = useSelector(selectModals);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -172,9 +174,19 @@ const GoogleMap = () => {
           <AddPlaceButton openModal={handleFormModalVisability} />
         ) : null}
         {addTrailData.isSelecting && (
-          <MapControl position={ControlPosition.TOP_CENTER}>
-            <DrawingControl drawingManager={drawingManager} />
-          </MapControl>
+          <>
+            <MapControl position={ControlPosition.TOP_CENTER}>
+              <DrawingControl drawingManager={drawingManager} />
+            </MapControl>
+            {updateTrailData.isDataLoaded === true && (
+              <Polyline
+                strokeColor={'#000000'}
+                strokeOpacity={0.3}
+                strokeWeight={10}
+                path={JSON.parse(updateTrailData.trail.coordinates)}
+              />
+            )}
+          </>
         )}
         {addPlaceLocation.isSelecting && addPlaceLocation.lat && (
           <AdvancedMarker

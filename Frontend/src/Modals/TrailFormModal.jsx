@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import BaseModal from '../Base/BaseModal';
 import BaseInput from '../Base/BaseInput';
 import BaseTextarea from '../Base/BaseTextarea';
@@ -14,11 +14,14 @@ import { drawingEventsActions, selectDrawingEvents } from '../Redux/drawingEvent
 import { selectFormValidation, formValidationActions } from '../Redux/formValidationSlice';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import { selectUpdateTrail, updateTrailActions } from '../Redux/updateTrailSlice';
+import { addTrail, deleteTrail } from '../Redux/allMapTrailsSlice';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const addTrailData = useSelector(selectAddTrail);
+  const updateTrailData = useSelector(selectUpdateTrail);
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
   const formValidation = useSelector(selectFormValidation);
@@ -48,9 +51,33 @@ const TrailFormModal = (props) => {
     { label: t('modal.stalinist_period'), value: 'stalinist_period' },
   ];
 
+  useEffect(() => {
+    if (props.type === 'update' && updateTrailData.isDataLoaded === false) {
+      dispatch(addTrailActions.changeName(updateTrailData.trail.path_name));
+      dispatch(addTrailActions.changeDescription(updateTrailData.trail.description));
+      dispatch(addTrailActions.changeFoundDate(updateTrailData.trail.found_date));
+      dispatch(addTrailActions.changeType(updateTrailData.trail.type));
+      dispatch(addTrailActions.changePeriod(updateTrailData.trail.period));
+      dispatch(addTrailActions.changeWikiLink(updateTrailData.trail.wiki_link));
+      dispatch(addTrailActions.changeTopicLink(updateTrailData.trail.topic_link));
+      dispatch(addTrailActions.setTrailCoords(JSON.parse(updateTrailData.trail.coordinates)));
+      validateName(updateTrailData.trail.path_name);
+      validateDescription(updateTrailData.trail.description);
+      dispatch(formValidationActions.changeIsValidDate(isNaN(updateTrailData.trail.found_date)));
+      dispatch(formValidationActions.changeIsValidType(updateTrailData.trail.type !== 'all'));
+      dispatch(formValidationActions.changeIsValidPeriod(updateTrailData.trail.period !== 'all'));
+      dispatch(updateTrailActions.dataIsLoaded());
+    }
+  }, []);
+
   const handleSelectTrail = () => {
-    dispatch(addTrailActions.changeIsSelecting(true));
+    if (props.type === 'update' && confirm(t('common.trail_change_warning'))) {
+      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+      dispatch(addTrailActions.changeIsSelecting(true));
+      return;
+    }
     dispatch(modalsActions.changeIsTrailFormOpen());
+    dispatch(addTrailActions.changeIsSelecting(true));
   };
 
   const validateName = (name) => {
@@ -76,6 +103,34 @@ const TrailFormModal = (props) => {
 
   const handleSubmit = () => {
     if (validateForm()) {
+      if (props.type === 'update') {
+        axios
+          .put(`http://localhost:8000/memo_places/path/${updateTrailData.trail.id}/`, {
+            user: user.user_id,
+            path_name: addTrailData.path_name,
+            description: addTrailData.description,
+            found_date: addTrailData.found_date,
+            type: 1,
+            period: 1,
+            wiki_link: addTrailData.wiki_link,
+            topic_link: addTrailData.topic_link,
+            coordinates: JSON.stringify(addTrailData.coordinates),
+          })
+          .then((response) => {
+            dispatch(deleteTrail(response.data.id));
+            dispatch(addTrail(response.data));
+            drawingTools.now[0].geometry.setMap(null);
+            drawingEvents.events.forEach((listener) =>
+              window.google.maps.event.removeListener(listener),
+            );
+            dispatch(drawingEventsActions.reset());
+            dispatch(drawingToolsActions.reset());
+            dispatch(addTrailActions.reset());
+            dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+            dispatch(formValidationActions.reset());
+          });
+        return;
+      }
       axios
         .post(`http://localhost:8000/memo_places/path/`, {
           user: user.user_id,
@@ -88,7 +143,8 @@ const TrailFormModal = (props) => {
           topic_link: addTrailData.topic_link,
           coordinates: JSON.stringify(addTrailData.coordinates),
         })
-        .then(() => {
+        .then((response) => {
+          dispatch(addTrail(response.data));
           drawingTools.now[0].geometry.setMap(null);
           drawingEvents.events.forEach((listener) =>
             window.google.maps.event.removeListener(listener),
@@ -96,7 +152,7 @@ const TrailFormModal = (props) => {
           dispatch(drawingEventsActions.reset());
           dispatch(drawingToolsActions.reset());
           dispatch(addTrailActions.reset());
-          dispatch(modalsActions.changeIsTrailFormOpen(false));
+          dispatch(modalsActions.changeIsTrailFormOpen());
           dispatch(formValidationActions.reset());
         });
       return;

@@ -12,6 +12,7 @@ import addTrailReducer from './addTrailSlice';
 import drawingToolsReducer from './drawingToolsSlice';
 import drawingEventsReducer from './drawingEventsSlice';
 import allMapTrailsReducer from './allMapTrailsSlice';
+import updateTrailReducer from './updateTrailSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -32,6 +33,7 @@ export const store = configureStore({
     drawingTools: drawingToolsReducer,
     drawingEvents: drawingEventsReducer,
     allMapTrails: allMapTrailsReducer,
+    updateTrail: updateTrailReducer,
   },
   middleware: customizedMiddleware,
 });

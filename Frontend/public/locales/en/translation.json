@@ -38,7 +38,8 @@
         "filter2": "Filter",
         "search": "Search...",
         "axios_warning": "Something went wrong, try again later",
-        "place_warning": "No added place yet",
+        "place_warning": "No places added",
+        "trail_warning": "No trails added",
         "more_info": "More info",
         "no_response": "No Server Response",
         "close": "Close",
@@ -52,7 +53,10 @@
         "already_uploaded": "File already uploaded: ",
         "edit_trail": "Edit Trail",
         "add_trail": "Add Trail",
-        "select_trail": "Select Trail"
+        "select_trail": "Select Trail",
+        "trail_delete_warning": "Are you sure you want to delete this trail?",
+        "place_delete_warning": "Are you sure you want to delete this place?",
+        "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -149,6 +153,7 @@
         "current_role": "Your current role:",
         "promo_role_info": "If you want to become moderator, send your application via form in user help section.",
         "your_memory_places": "your memory places",
+        "your_trails": "Your trails",
         "settings": "settings",
         "help": "help",
         "logout": "logout",

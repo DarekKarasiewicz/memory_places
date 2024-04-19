@@ -39,6 +39,7 @@
         "search": "Suchen...",
         "axios_warning": "Etwas ist schiefgelaufen, versuchen Sie es später erneut",
         "place_warning": "Noch kein Ort hinzugefügt",
+        "trail_warning": "Keine Routen hinzugefügt",
         "more_info": "Mehr Informationen",
         "no_response": "Keine Serverantwort",
         "close": "Schließen",
@@ -52,7 +53,10 @@
         "already_uploaded": "Datei bereits hochgeladen: ",
         "edit_trail": "Trail bearbeiten",
         "add_trail": "Trail hinzufügen",
-        "select_trail": "Wählen Sie Trail"
+        "select_trail": "Wählen Sie Trail",
+        "trail_delete_warning": "Sind Sie sicher, dass Sie diesen Weg löschen möchten?",
+        "place_delete_warning": "Sind Sie sicher, dass Sie diesen Ort löschen möchten?",
+        "trail_change_warning": "Ihr aktueller Pfad wird durch einen neuen überschrieben. Sind Sie sicher, dass Sie das tun möchten?"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -149,6 +153,7 @@
         "current_role": "Aktuelle Rolle:",
         "promo_role_info": "Wenn Sie Moderator der Website werden möchten, senden Sie Ihre Anfrage über den Hilfebereich.",
         "your_memory_places": "Ihre Erinnerungsorte",
+        "your_trails": "Deine Wege",
         "settings": "Einstellungen",
         "help": "Hilfe",
         "logout": "Ausloggen",

@@ -39,6 +39,7 @@
         "search": "Szukaj...",
         "axios_warning": "Coś poszło nie tak, spróbuj ponownie później",
         "place_warning": "Brak dodanych miejsc pamięci",
+        "trail_warning": "Brak dodanych szlaków",
         "more_info": "Więcej informacji",
         "no_response": "Brak odpowiedzi serwera",
         "close": "Zamknij",
@@ -52,7 +53,10 @@
         "already_uploaded": "Plik już przesłany: ",
         "edit_trail": "Zmień Szlak",
         "add_trail": "Dodaj Szlak",
-        "select_trail": "Zaznacz Szlak"
+        "select_trail": "Zaznacz Szlak",
+        "trail_delete_warning": "Czy na pewno chcesz usunąć ten szlak?",
+        "place_delete_warning": "Czy na pewno chcesz usunąć to miejsce?",
+        "trail_change_warning": "Twój obecny szlak zostanie zastąpiony nowym. Czy na pewno chcesz to zrobić?"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -149,6 +153,7 @@
         "current_role": "Aktualna rola:",
         "promo_role_info": "Jeśli chcesz zostać moderatorem strony, wyślij swoje zgłoszenie przez sekcję pomocy.",
         "your_memory_places": "Twoje miejsca pamięci",
+        "your_trails": "Twoje szlaki",
         "settings": "Ustawienia",
         "help": "Pomoc",
         "logout": "Wyloguj",
