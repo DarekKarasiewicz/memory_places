@@ -8,11 +8,14 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { adminActions } from '../../../Redux/adminActionSlice';
 import SettingsIcon from '../../../icons/SettingsIcon';
-import CancelIcon from '../../../icons/CancelIcon';
-import EditIcon from '../../../icons/EditIcon';
+import BlockIcon from '../../../icons/BlockIcon';
+import PassIcon from '../../../icons/PassIcon';
 
 function UsersTable({ data, columns }) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
@@ -36,6 +39,27 @@ function UsersTable({ data, columns }) {
   const { pageIndex, pageSize } = table.getState().pagination;
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
+
+  const handleUserBlock = (id, name) => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
+    dispatch(adminActions.changeAction('user_block'));
+    dispatch(adminActions.changeUserId(id));
+    dispatch(adminActions.changeUserName(name));
+  };
+
+  const handlePasswordReset = (id, name) => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
+    dispatch(adminActions.changeAction('user_pass_reset'));
+    dispatch(adminActions.changeUserId(id));
+    dispatch(adminActions.changeUserName(name));
+  };
+
+  const handleUserRole = (id, name) => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
+    dispatch(adminActions.changeAction('user_role'));
+    dispatch(adminActions.changeUserId(id));
+    dispatch(adminActions.changeUserName(name));
+  };
 
   return (
     <>
@@ -99,17 +123,28 @@ function UsersTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handleUserRole(row.original.id, row.original.place_name)}
+                >
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.change_role')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
-                  <CancelIcon className='h-5 w-5' />
-                  <span>{t('admin.content.delete')}</span>
+
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handlePasswordReset(row.original.id, row.original.place_name)}
+                >
+                  <PassIcon className='h-5 w-5' />
+                  <span>{t('admin.content.pass_reset')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
-                  <EditIcon className='h-5 w-5' />
-                  <span>{t('admin.content.edit')}</span>
+
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
+                >
+                  <BlockIcon className='h-5 w-5' />
+                  <span>{t('admin.content.block')}</span>
                 </span>
               </td>
             </tr>

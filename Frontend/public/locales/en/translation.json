@@ -226,7 +226,13 @@
             "add": "Add",
             "memo_add": "Add place",
             "delete_title": "Deleting Memory Place",
-            "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}"
+            "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}",
+            "block_title": "User Blocking",
+            "block_info": "Are you sure you want to block the user with ID: {{id}} and name: {{name}}",
+            "role_title": "Change User Role",
+            "role_info": "Select the role for the user with ID: {{id}} and name: {{name}} and then confirm your decision",
+            "pass_res_title": "Reset User Password",
+            "pass_res_info": "Are you sure you want to reset the password of the user with ID: {{id}} and name: {{name}}"
         },
         "content": {
             "statistics_info": "Collected statistics of the site in one place!",
@@ -251,6 +257,8 @@
             "more_info": "More informations",
             "change_role": "Change role",
             "delete": "Delete",
+            "block": "Block",
+            "pass_reset": "Reset Password",
             "edit": "Edit",
             "search": "Search...",
             "table_items_info": "Page {{from}} from {{to}}",

@@ -226,7 +226,13 @@
             "add": "Dodaj",
             "memo_add": "Dodaj miejsce",
             "delete_title": "Usuwanie miejsca pamięci",
-            "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}"
+            "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}",
+            "block_title": "Blokowanie użytkownika",
+            "block_info": "Czy napewno chcesz zablokować użytkownika o ID: {{id}} i nazwie: {{name}}",
+            "role_title": "Zmiana rolę użytkownika",
+            "role_info": "Wybierz rolę użytkownika o ID: {{id}} i nazwie: {{name}} a następnie zatwierdź swoją decyzję",
+            "pass_res_title": "Zresetowanie hasła użytkownika",
+            "pass_res_info": "Czy napewno chcesz zresetować hasło użytkownika o ID: {{id}} i nazwie: {{name}}"
         },
         "content": {
             "statistics_info": "Zebrane statystki strony w jednym miejscu!",
@@ -251,6 +257,8 @@
             "more_info": "Więcej informacji",
             "change_role": "Zmień role",
             "delete": "Usuń",
+            "block": "Zablokuj",
+            "pass_reset": "Zresetuj hasło",
             "edit": "Edytuj",
             "search": "Szukaj...",
             "table_items_info": "Strona {{from}} z {{to}}",

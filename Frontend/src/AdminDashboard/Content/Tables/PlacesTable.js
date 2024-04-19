@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useDispatch } from 'react-redux';
-import { adminDeleteActions } from '../../../Redux/adminDeleteSlice';
+import { adminActions } from '../../../Redux/adminActionSlice';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -42,10 +42,11 @@ function PlacesTable({ data, columns }) {
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
 
-  const handleDeleteAdminModal = (id, name) => {
-    dispatch(adminDeleteActions.changeIsDeleteAdminModalOpen());
-    dispatch(adminDeleteActions.changePlaceId(id));
-    dispatch(adminDeleteActions.changePlaceName(name));
+  const handleAdminActionModal = (id, name) => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
+    dispatch(adminActions.changeAction('place_delete'));
+    dispatch(adminActions.changePlaceId(id));
+    dispatch(adminActions.changePlaceName(name));
   };
 
   return (
@@ -125,7 +126,7 @@ function PlacesTable({ data, columns }) {
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handleDeleteAdminModal(row.original.id, row.original.place_name)}
+                  onClick={() => handleAdminActionModal(row.original.id, row.original.place_name)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>

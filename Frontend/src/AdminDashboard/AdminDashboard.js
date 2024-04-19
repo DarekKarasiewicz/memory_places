@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { adminDeleteActions, selectAdminDelete } from '../Redux/adminDeleteSlice';
+import { adminActions, selectAdminAction } from '../Redux/adminActionSlice';
 import { Suspense } from 'react';
 import AdminMenu from './AdminMenu/AdminMenu.js';
 import ContentNavbar from './ContentNavbar/ContentNavbar.js';
@@ -9,10 +9,10 @@ import AdminModal from '../Modals/AdminModal.js';
 
 function AdminDashboard() {
   const dispatch = useDispatch();
-  const modalData = useSelector(selectAdminDelete);
+  const modalData = useSelector(selectAdminAction);
 
-  const handleDeleteAdminModal = () => {
-    dispatch(adminDeleteActions.changeIsDeleteAdminModalOpen());
+  const handleAdminActionModal = () => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
   };
 
   return (
@@ -25,9 +25,7 @@ function AdminDashboard() {
           <ContentNavbar />
           <Content />
         </div>
-        {modalData.isAdminDeleteModalOpen && (
-          <AdminModal type='delete' closeModal={handleDeleteAdminModal} />
-        )}
+        {modalData.isAdminActionsModalOpen && <AdminModal closeModal={handleAdminActionModal} />}
       </div>
     </Suspense>
   );

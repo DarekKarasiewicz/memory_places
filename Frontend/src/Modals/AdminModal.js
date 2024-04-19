@@ -1,15 +1,56 @@
-import { selectAdminDelete, deletePlaceItem } from '../Redux/adminDeleteSlice';
+import { useEffect, useState, useRef } from 'react';
+import { selectAdminAction, deletePlaceItem } from '../Redux/adminActionSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import BaseButton from '../Base/BaseButton';
 import { useTranslation } from 'react-i18next';
+import BaseButton from '../Base/BaseButton';
+import BaseSelect from '../Base/BaseSelect';
 import TrashIcon from '../icons/TrashIcon';
+import SettingsIcon from '../icons/SettingsIcon';
+import PassIcon from '../icons/PassIcon';
+import BlockIcon from '../icons/BlockIcon';
 
 function AdminModal({ closeModal }) {
   const dispatch = useDispatch();
-  const modalData = useSelector(selectAdminDelete);
-  const { place_id, place_name } = modalData;
+  const modalData = useSelector(selectAdminAction);
+  const { place_id, place_name, user_id, user_name, current_action } = modalData;
   const { t } = useTranslation();
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [iconComponent, setIconComponent] = useState(null);
+  const roleRef = useRef(null);
+
+  const role_options = [
+    { label: t('admin.content.admin'), value: 'admin' },
+    { label: t('admin.content.master_user'), value: 'master_user' },
+    { label: t('admin.content.users'), value: 'user' },
+  ];
+
+  useEffect(() => {
+    if (current_action === 'place_delete') {
+      setTitle(t('admin.common.delete_title'));
+      setDesc(t('admin.common.delete_info', { id: place_id, name: place_name }));
+      setIconComponent(<TrashIcon className='h-20 w-20' />);
+    }
+
+    if (current_action === 'user_block') {
+      setTitle(t('admin.common.block_title'));
+      setDesc(t('admin.common.block_info', { id: user_id, name: user_name }));
+      setIconComponent(<BlockIcon className='h-20 w-20' />);
+    }
+
+    if (current_action === 'user_role') {
+      setTitle(t('admin.common.role_title'));
+      setDesc(t('admin.common.role_info', { id: user_id, name: user_name }));
+      setIconComponent(<SettingsIcon className='h-20 w-20' />);
+    }
+
+    if (current_action === 'user_pass_reset') {
+      setTitle(t('admin.common.pass_res_title'));
+      setDesc(t('admin.common.pass_res_info', { id: user_id, name: user_name }));
+      setIconComponent(<PassIcon className='h-20 w-20' />);
+    }
+  }, []);
 
   return (
     <>
@@ -18,21 +59,56 @@ function AdminModal({ closeModal }) {
           className={`m-auto w-[calc(35%)] h-[calc(40%)] rounded-[24px] shadow-itemShadow p-6 bg-secondaryBgColor relative flex flex-col justify-around`}
         >
           <div className='flex flex-col gap-2 justify-center items-center text-textColor'>
-            <TrashIcon className='h-20 w-20' />
-            <span className='text-2xl font-bold'>{t('admin.common.delete_title')}</span>
+            {iconComponent}
+            <span className='text-2xl font-bold'>{title}</span>
           </div>
           <div className='flex justify-center items-center my-4'>
-            <span className='text-2xl text-center text-textColor'>
-              {t('admin.common.delete_info', { id: place_id, name: place_name })}
-            </span>
+            <span className='text-2xl text-center text-textColor'>{desc}</span>
           </div>
+          {current_action === 'user_role' && (
+            <div className='flex justify-center items-center mb-8'>
+              <div className='w-1/2'>
+                <BaseSelect
+                  disabledLabel={true}
+                  label={t('admin.content.role')}
+                  name={t('admin.content.role')}
+                  options={role_options}
+                  ref={roleRef}
+                  onChange={() => roleRef.current.value}
+                />
+              </div>
+            </div>
+          )}
           <div className='flex justify-center gap-8'>
             <BaseButton name={t('common.cancel')} btnBg='red' onClick={closeModal}></BaseButton>
-            <BaseButton
-              name={t('common.confirm')}
-              btnBg='blue'
-              onClick={() => dispatch(deletePlaceItem(place_id))}
-            ></BaseButton>
+            {current_action === 'place_delete' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => dispatch(deletePlaceItem(place_id))}
+              ></BaseButton>
+            )}
+            {current_action === 'user_block' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => console.log('blocked')}
+              ></BaseButton>
+            )}
+            {current_action === 'user_role' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => console.log('roleChanged')}
+              ></BaseButton>
+            )}
+            {current_action === 'user_pass_reset' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => console.log('passRes')}
+              ></BaseButton>
+            )}
           </div>
         </div>
       </div>

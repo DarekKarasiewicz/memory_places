@@ -4,7 +4,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
   return (
     <>
       <div className='w-full'>
-        <label className='block pl-1 pb-1 text-base'>{props.label}</label>
+        {!props.disabledLabel && <label className='block pl-1 pb-1 text-base'>{props.label}</label>}
         <select
           className={`block w-${
             props.width ? props.width : 'full'
@@ -17,7 +17,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           defaultValue={props.value}
           onBlur={props.onBlur}
           onChange={props.onChange}
-          readOnly={props.readOnly}
+          disabled={props.readOnly}
         >
           {props.options.map((option, index) => (
             <option key={index} value={option.value}>

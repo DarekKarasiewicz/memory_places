@@ -226,7 +226,13 @@
             "add": "Hinzufügen",
             "memo_add": "Ort hinzufügen",
             "delete_title": "Löschen des Speicherorts",
-            "delete_info": "Möchten Sie den Ort mit der ID: {{id}} und dem Namen: {{name}} wirklich löschen?"
+            "delete_info": "Möchten Sie den Ort mit der ID: {{id}} und dem Namen: {{name}} wirklich löschen?",
+            "block_title": "Benutzer blockieren",
+            "block_info": "Sind Sie sicher, dass Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} blockieren möchten",
+            "role_title": "Benutzerrolle ändern",
+            "role_info": "Wählen Sie die Rolle für den Benutzer mit der ID: {{id}} und dem Namen: {{name}} aus und bestätigen Sie dann Ihre Entscheidung",
+            "pass_res_title": "Benutzerpasswort zurücksetzen",
+            "pass_res_info": "Sind Sie sicher, dass Sie das Passwort des Benutzers mit der ID: {{id}} und dem Namen: {{name}} zurücksetzen möchten"
         },
         "content": {
             "statistics_info": "Gesammelte Statistiken der Website an einem Ort!",
@@ -251,6 +257,8 @@
             "more_info": "Mehr Informationen",
             "change_role": "Rolle ändern",
             "delete": "Löschen",
+            "block": "Blockieren",
+            "pass_reset": "Passwort zurücksetzen",
             "edit": "Bearbeiten",
             "search": "Suche...",
             "table_items_info": "Seite {{from}} von {{to}}",
