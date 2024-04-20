@@ -87,7 +87,7 @@ function App() {
 
   const handleTrailFormModalVisability = () => {
     if (modalData.isTrailFormOpen === true) {
-      drawingTools.now[0].geometry.setMap(null);
+      drawingTools.now[0] && drawingTools.now[0].geometry.setMap(null);
       drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
       dispatch(drawingEventsActions.reset());
       dispatch(drawingToolsActions.reset());
@@ -98,7 +98,7 @@ function App() {
   };
   const handleTrailUpdateFormModalVisability = () => {
     if (modalData.isUpdateTrailFormOpen === true) {
-      drawingTools.now[0].geometry.setMap(null);
+      drawingTools.now[0] && drawingTools.now[0].geometry.setMap(null);
       drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
       dispatch(drawingEventsActions.reset());
       dispatch(drawingToolsActions.reset());
