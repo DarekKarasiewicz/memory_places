@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from . import views
+from memo_places import views as memo_views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -18,6 +19,7 @@ router.register(r"changes", views.Changes_view, "changes")
 router.register(r"types", views.Types_view, "types")
 router.register(r"periods", views.Periods_view, "periods")
 router.register(r"sortofs", views.Sortofs_view, "sortofs")
+router.register(r"reset_password", memo_views.Reset_password, "reset_password")
 
 urlpatterns = []
 urlpatterns += router.urls
