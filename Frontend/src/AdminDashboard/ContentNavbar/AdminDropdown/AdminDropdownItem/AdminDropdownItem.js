@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import NotificationIcon from '../../../../icons/NotificationIcon';
 import PinIcon from '../../../../icons/PinIcon';
+import MapIcon from '../../../../icons/MapIcon';
 import SettingsIcon from '../../../../icons/SettingsIcon';
 import HelpIcon from '../../../../icons/HelpIcon';
 import ContactIcon from '../../../../icons/ContactIcon';
@@ -10,6 +11,7 @@ const AdminDropdownItem = (props) => {
   const iconComponents = {
     notification: <NotificationIcon />,
     pin: <PinIcon />,
+    map: <MapIcon />,
     settings: <SettingsIcon />,
     help: <HelpIcon />,
     contact: <ContactIcon />,

@@ -10,7 +10,7 @@ import Trash2Icon from '../../../../icons/Trash2Icon';
 import PlusIcon from '../../../../icons/PlusIcon';
 
 const PlaceVariableItem = forwardRef(function PlaceVariableItem(
-  { itemsName, items, itemsBase },
+  { itemsName, items, itemsBase, error },
   ref,
 ) {
   const { t } = useTranslation();
@@ -23,6 +23,10 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
   useEffect(() => {
     setData(items);
   }, [items]);
+
+  const handleIfAnyErrorAppeared = () => {
+    error(true);
+  };
 
   const handleDeleteTypeItem = (id) => {
     let updatedItems;
@@ -96,11 +100,6 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
     let createItems = [];
     let updateItems = [];
 
-    console.log('data');
-    console.log(data);
-    console.log('baseData');
-    console.log(baseData);
-
     if (baseData.length === 0) {
       createItems = data;
     } else {
@@ -127,16 +126,31 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
       updateItems = dataDifference.updateItems;
     }
 
+    const valuePreparation = (str) => {
+      if (typeof str !== 'undefined') {
+        return str
+          .toString()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/\s+/g, '_')
+          .toLowerCase();
+      }
+      return '';
+    };
+
     if (createItems.length !== 0) {
       createItems.forEach((item) => {
         axios
           .post(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/`, {
             name: item.name,
+            value: valuePreparation(item.value),
+            order: item.order,
           })
           .then((response) => {
             console.log(response);
           })
           .catch((error) => {
+            handleIfAnyErrorAppeared();
             console.log(error);
           });
       });
@@ -144,15 +158,18 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
 
     if (updateItems.length !== 0) {
       updateItems.forEach((item) => {
-        console.log(item);
         axios
           .put(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}/`, {
             name: item.name,
+            //I THINK THAT VALUE SHOULD BE SET ONCE AND NEVER CHANGED AGAIN
+            // value: item.value,
+            order: item.order,
           })
           .then((response) => {
             console.log(response);
           })
           .catch((error) => {
+            handleIfAnyErrorAppeared();
             console.log(error);
           });
       });
@@ -160,13 +177,13 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
 
     if (dataDeleted.length !== 0) {
       dataDeleted.forEach((item) => {
-        console.log(item);
         axios
           .delete(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}`)
           .then((response) => {
             console.log(response);
           })
           .catch((error) => {
+            handleIfAnyErrorAppeared();
             console.log(error);
           });
       });
@@ -176,10 +193,6 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
   useImperativeHandle(ref, () => ({
     postItems,
   }));
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>

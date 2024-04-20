@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import AdminDropdownItem from './AdminDropdownItem/AdminDropdownItem';
 import ArrowUpIcon from '../../../icons/admin/ArrowUpIcon';
 import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
@@ -8,16 +10,29 @@ import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
 function AdminDropdown() {
   const [isActive, setIsActive] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleMainPageRedirect = () => {
+    navigate('/');
+  };
+
+  const handleLogout = () => {
+    removeCookie('user', { path: '/' });
+    navigate('/');
+  };
 
   const menuItems = [
-    { icon: 'notification', name: t('user.notifications') },
-    { icon: 'pin', name: t('user.your_memory_places') },
-    { icon: 'settings', name: t('user.settings') },
-    { icon: 'help', name: t('user.help') },
-    { icon: 'contact', name: t('user.contact') },
-    { icon: 'logout', name: t('user.logout') },
+    // { icon: 'notification', name: t('user.notifications') },
+    // { icon: 'pin', name: t('user.your_memory_places') },
+    { icon: 'map', name: t('user.back_to_main_page'), func: handleMainPageRedirect },
+    // { icon: 'settings', name: t('user.settings') },
+    // { icon: 'help', name: t('user.help') },
+    // { icon: 'contact', name: t('user.contact') },
+    { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
 
   const parentItem = {
@@ -75,8 +90,10 @@ function AdminDropdown() {
             initial='hidden'
             animate='visible'
           >
-            <li className='capitalize text-xl'>Username</li>
-            <li className='uppercase text-sm'>Administrator</li>
+            <li className='capitalize text-xl'>{user.username}</li>
+            <li className='uppercase text-sm'>
+              {user.admin ? t('user.admin') : user.master ? t('user.master_user') : t('user.user')}
+            </li>
 
             {menuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>

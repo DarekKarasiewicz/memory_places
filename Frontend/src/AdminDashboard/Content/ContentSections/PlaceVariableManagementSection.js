@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import PlaceVariableItem from './PlaceVariableManagementSectionItems/PlaceVariableItem';
+import { confirmationModalActions } from '../../../Redux/confirmationModalSlice';
 
 function PlaceVariableManagementSection() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [sortOf, setSortOf] = useState([]);
   const [type, setType] = useState([]);
@@ -14,12 +17,13 @@ function PlaceVariableManagementSection() {
   const sortofRef = useRef(null);
   const typeRef = useRef(null);
   const periodRef = useRef(null);
+  const [error, setError] = useState(false);
 
   const fetchSortOfItems = async () => {
     try {
       const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      setSortOf(responseSort.data.map((obj, index) => ({ ...obj, order: index })));
-      setSortOfBase(responseSort.data.map((obj, index) => ({ ...obj, order: index })));
+      setSortOf(responseSort.data);
+      setSortOfBase(responseSort.data);
     } catch (error) {
       console.log(error);
     }
@@ -28,8 +32,8 @@ function PlaceVariableManagementSection() {
   const fetchTypeItems = async () => {
     try {
       const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
-      setType(responseType.data.map((obj, index) => ({ ...obj, order: index })));
-      setTypeBase(responseType.data.map((obj, index) => ({ ...obj, order: index })));
+      setType(responseType.data);
+      setTypeBase(responseType.data);
     } catch (error) {
       console.log(error);
     }
@@ -38,11 +42,15 @@ function PlaceVariableManagementSection() {
   const fetchPeriodItems = async () => {
     try {
       const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
-      setPeriod(responsePeriod.data.map((obj, index) => ({ ...obj, order: index })));
-      setPeriodBase(responsePeriod.data.map((obj, index) => ({ ...obj, order: index })));
+      setPeriod(responsePeriod.data);
+      setPeriodBase(responsePeriod.data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDataError = (data) => {
+    setError(data);
   };
 
   const saveAllChanges = () => {
@@ -50,7 +58,13 @@ function PlaceVariableManagementSection() {
     typeRef.current.postItems();
     periodRef.current.postItems();
 
-    alert('Data changed successfully');
+    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+
+    if (error) {
+      dispatch(confirmationModalActions.changeType('error'));
+    } else {
+      dispatch(confirmationModalActions.changeType('success'));
+    }
   };
 
   useEffect(() => {
@@ -72,13 +86,21 @@ function PlaceVariableManagementSection() {
             items={sortOf}
             itemsBase={sortOfBase}
             ref={sortofRef}
+            error={handleDataError}
           />
-          <PlaceVariableItem itemsName='type' items={type} itemsBase={typeBase} ref={typeRef} />
+          <PlaceVariableItem
+            itemsName='type'
+            items={type}
+            itemsBase={typeBase}
+            ref={typeRef}
+            error={handleDataError}
+          />
           <PlaceVariableItem
             itemsName='period'
             items={period}
             itemsBase={periodBase}
             ref={periodRef}
+            error={handleDataError}
           />
         </div>
       </div>

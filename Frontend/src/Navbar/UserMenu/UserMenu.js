@@ -7,6 +7,7 @@ import { userPlacesActions } from '../../Redux/userPlacesSlice';
 import BaseButton from '../../Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
@@ -17,6 +18,7 @@ function UserMenu() {
   const user = cookies.user;
   const popupRef = useRef(null);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLogged) {
@@ -52,6 +54,10 @@ function UserMenu() {
     removeCookie('user', { path: '/' });
   };
 
+  const handleAdminDashboardRedirect = () => {
+    navigate('/adminDashboard');
+  };
+
   const handleFAQVisability = () => {
     dispatch(modalsActions.changeIsFAQOpen());
   };
@@ -72,11 +78,26 @@ function UserMenu() {
   const menuItems = [
     { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
+    {
+      icon: 'user',
+      name: t('user.admin_panel'),
+      func: handleAdminDashboardRedirect,
+      isAdministration: true,
+    },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
     { icon: 'help', name: t('user.help'), func: handleFAQVisability },
     { icon: 'contact', name: t('user.contact'), func: handleContactFormVisability },
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
+
+  const isAdminOrMaster = user.admin || user.master;
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (item.isAdministration) {
+      return isAdminOrMaster;
+    }
+    return true;
+  });
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -126,11 +147,13 @@ function UserMenu() {
             animate='visible'
           >
             <li className='capitalize text-xl'>{user.username}</li>
-            <li className='uppercase text-sm'>{user.admin ? t('user.admin') : t('user.user')}</li>
+            <li className='uppercase text-sm'>
+              {user.admin ? t('user.admin') : user.master ? t('user.master_user') : t('user.user')}
+            </li>
 
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
-                {index === menuItems.length - 1 && <hr className='mb-2' />}
+                {index === filteredMenuItems.length - 1 && <hr className='mb-2' />}
                 <UserMenuOption
                   index={index}
                   icon={item.icon}

@@ -5,6 +5,7 @@ import {
   changeUserRole,
   blockUser,
   resetUserPassword,
+  unlockUser,
 } from '../Redux/adminActionSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -15,6 +16,7 @@ import TrashIcon from '../icons/TrashIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import PassIcon from '../icons/PassIcon';
 import BlockIcon from '../icons/BlockIcon';
+import UnlockIcon from '../icons/UnlockIcon';
 
 function AdminModal({ closeModal }) {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ function AdminModal({ closeModal }) {
 
   const role_options = [
     { label: t('admin.content.admin'), value: 'admin' },
-    { label: t('admin.content.master_user'), value: 'master_user' },
+    { label: t('admin.content.master_user'), value: 'master' },
     { label: t('admin.content.users'), value: 'user' },
   ];
 
@@ -55,6 +57,12 @@ function AdminModal({ closeModal }) {
       setTitle(t('admin.common.pass_res_title'));
       setDesc(t('admin.common.pass_res_info', { id: user_id, name: user_name }));
       setIconComponent(<PassIcon className='h-20 w-20' />);
+    }
+
+    if (current_action === 'user_unlock') {
+      setTitle(t('admin.common.unlock_title'));
+      setDesc(t('admin.common.unlock_info', { id: user_id, name: user_name }));
+      setIconComponent(<UnlockIcon className='h-20 w-20' />);
     }
   }, []);
 
@@ -105,7 +113,7 @@ function AdminModal({ closeModal }) {
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
-                onClick={() => dispatch(changeUserRole(user_id))}
+                onClick={() => dispatch(changeUserRole(user_id, roleRef.current.value))}
               ></BaseButton>
             )}
             {current_action === 'user_pass_reset' && (
@@ -113,6 +121,13 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => dispatch(resetUserPassword(user_id))}
+              ></BaseButton>
+            )}
+            {current_action === 'user_unlock' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => dispatch(unlockUser(user_id))}
               ></BaseButton>
             )}
           </div>

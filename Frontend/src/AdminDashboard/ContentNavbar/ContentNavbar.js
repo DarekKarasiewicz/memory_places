@@ -4,12 +4,15 @@ import LanguageSwitcher from '../../LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from '../../ThemeSwitcher/ThemeSwitcher';
 import AdminDropdown from './AdminDropdown/AdminDropdown';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import i18n from '../../i18n';
 import 'moment/locale/pl';
 import 'moment/locale/ru';
 import 'moment/locale/de';
 
 function ContentNavbar({ showLogo }) {
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
   const { t } = useTranslation();
   const [lang, setLang] = useState(i18n.language);
   const [date, setDate] = useState(false);
@@ -38,10 +41,12 @@ function ContentNavbar({ showLogo }) {
             <section className='w-16 h-16 flex justify-center items-center'>
               <img src='../../assets/memorial_places_logo.png' alt='memorial place logo'></img>
             </section>
-            <div className='text-3xl ml-4'>{t('admin.common.welcome', { user: 'user' })}</div>
+            <div className='text-3xl ml-4'>
+              {t('admin.common.welcome', { user: user.username })}
+            </div>
           </div>
         ) : (
-          <div className='text-3xl ml-4'>{t('admin.common.welcome', { user: 'user' })}</div>
+          <div className='text-3xl ml-4'>{t('admin.common.welcome', { user: user.username })}</div>
         )}
 
         <div className='flex'>

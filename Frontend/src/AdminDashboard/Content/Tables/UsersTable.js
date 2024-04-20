@@ -13,12 +13,16 @@ import { adminActions } from '../../../Redux/adminActionSlice';
 import SettingsIcon from '../../../icons/SettingsIcon';
 import BlockIcon from '../../../icons/BlockIcon';
 import PassIcon from '../../../icons/PassIcon';
+import UnlockIcon from '../../../icons/UnlockIcon';
+import { useCookies } from 'react-cookie';
 
 function UsersTable({ data, columns }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
 
   const table = useReactTable({
     data,
@@ -43,6 +47,13 @@ function UsersTable({ data, columns }) {
   const handleUserBlock = (id, name) => {
     dispatch(adminActions.changeIsAdminActionsModalOpen());
     dispatch(adminActions.changeAction('user_block'));
+    dispatch(adminActions.changeUserId(id));
+    dispatch(adminActions.changeUserName(name));
+  };
+
+  const handleUserUnlock = (id, name) => {
+    dispatch(adminActions.changeIsAdminActionsModalOpen());
+    dispatch(adminActions.changeAction('user_unlock'));
     dispatch(adminActions.changeUserId(id));
     dispatch(adminActions.changeUserName(name));
   };
@@ -123,13 +134,15 @@ function UsersTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handleUserRole(row.original.id, row.original.place_name)}
-                >
-                  <SettingsIcon className='h-5 w-5' />
-                  <span>{t('admin.content.change_role')}</span>
-                </span>
+                {user.admin && (
+                  <span
+                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                    onClick={() => handleUserRole(row.original.id, row.original.place_name)}
+                  >
+                    <SettingsIcon className='h-5 w-5' />
+                    <span>{t('admin.content.change_role')}</span>
+                  </span>
+                )}
 
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
@@ -139,13 +152,23 @@ function UsersTable({ data, columns }) {
                   <span>{t('admin.content.pass_reset')}</span>
                 </span>
 
-                <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
-                >
-                  <BlockIcon className='h-5 w-5' />
-                  <span>{t('admin.content.block')}</span>
-                </span>
+                {row.original.active ? (
+                  <span
+                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                    onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
+                  >
+                    <BlockIcon className='h-5 w-5' />
+                    <span>{t('admin.content.block')}</span>
+                  </span>
+                ) : (
+                  <span
+                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                    onClick={() => handleUserUnlock(row.original.id, row.original.place_name)}
+                  >
+                    <UnlockIcon className='h-5 w-5' />
+                    <span>{t('admin.content.unlock')}</span>
+                  </span>
+                )}
               </td>
             </tr>
           ))}

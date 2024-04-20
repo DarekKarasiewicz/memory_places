@@ -44,7 +44,11 @@ function ConfirmationModal() {
           exit={{ x: '50%', opacity: 0, transition: { duration: 0.1 } }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
         >
-          <div className={`rounded-xl shadow-itemShadow bg-mainBgColor relative flex flex-col`}>
+          <div
+            className={`rounded-xl shadow-itemShadow bg-mainBgColor relative flex flex-col border-2 ${
+              type === 'success' ? 'border-green-500' : 'border-red-500'
+            } `}
+          >
             <div className='flex justify-center items-center px-4 py-3 rounded-xl'>
               <div className='flex gap-2 justify-center items-center text-textColor min-w-64'>
                 {type === 'success' ? (
@@ -65,7 +69,7 @@ function ConfirmationModal() {
               </div>
             </div>
             <div
-              className={`h-1 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}
+              className={`h-1 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded-xl`}
               style={{ width: `${progress}%`, transition: 'width 0.25s' }}
             ></div>
           </div>

@@ -3,45 +3,45 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UsersTable from '../Tables/UsersTable';
 import { useTranslation } from 'react-i18next';
-//import users from '../Tables/exampleUsers.json';
+import { useCookies } from 'react-cookie';
 
 function UserManagementSection() {
   const [users, setUsers] = useState([]);
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
 
   const fetchUserItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
+      
+      const modifyUserData = response.data
+        .filter((item) => !user.master || (user.master && !item.admin))
+        .map((item) => {
+          const role = item.admin ? 'admin' : item.master ? 'master_user' : 'user';
 
-      const modifyUserData = response.data.map((item) => {
-        const role = item.admin
-          ? t('admin.content.admin')
-          : item.master
-            ? t('admin.content.master_user')
-            : t('admin.content.users');
+          return {
+            ...item,
+            role,
+          };
+        });
 
-        return {
-          ...item,
-          role,
-        };
-      });
-
-      const sumOfAdminValues = modifyUserData.filter((item) => item.admin);
-      const sumOfMasterValues = modifyUserData.filter((item) => item.master);
+      const sumOfAdminValues = response.data.filter((item) => item.admin);
+      const sumOfMasterValues = response.data.filter((item) => item.master);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
       };
 
-      const sumOfCurrentMonthUsers = modifyUserData.filter(
+      const sumOfCurrentMonthUsers = response.data.filter(
         (item) => getItemDate(item.data_join) === new Date().getMonth(),
       );
 
-      modifyUserData.forEach((element) => getItemDate(element.data_join));
+      response.data.forEach((element) => getItemDate(element.data_join));
 
       setUsers(modifyUserData);
-      setStatistics((statistics) => ({ ...statistics, ['allUsers']: modifyUserData.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allUsers']: response.data.length }));
       setStatistics((statistics) => ({ ...statistics, ['sumOfAdmins']: sumOfAdminValues.length }));
       setStatistics((statistics) => ({
         ...statistics,
@@ -73,12 +73,24 @@ function UserManagementSection() {
       header: t('admin.content.role'),
       accessorKey: 'role',
       cell: (props) => {
-        if (props.role === 'Admin') {
-          return <span className='px-2 py-1 bg-red-300 text-black'>{props.getValue()}</span>;
-        } else if (props.role === 'Master user') {
-          return <span className='px-2 py-1 bg-green-300 text-black'>{props.getValue()}</span>;
+        if (props.getValue() === 'admin') {
+          return (
+            <span className='px-2 py-1 rounded-lg bg-red-300 text-black'>
+              {t('admin.content.admin')}
+            </span>
+          );
+        } else if (props.getValue() === 'master_user') {
+          return (
+            <span className='px-2 py-1 rounded-lg bg-green-300 text-black'>
+              {t('admin.content.master_user')}
+            </span>
+          );
         } else {
-          return <span className='px-2 py-1 bg-yellow-300 text-black'>{props.getValue()}</span>;
+          return (
+            <span className='px-2 py-1 rounded-lg bg-yellow-300 text-black'>
+              {t('admin.content.users')}
+            </span>
+          );
         }
       },
     },
