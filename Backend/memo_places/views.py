@@ -388,3 +388,31 @@ class Changes(viewsets.ModelViewSet):
 
         serializer = self.serializer_class(new_changes)
         return Response(serializer.data) 
+
+class Reset_password(viewsets.ModelViewSet):
+    model = User
+    serializer_class = User_serializer
+    http_method_names = ["put"]
+
+    def update(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                user = get_object_or_404(self.model, id=value)
+            case "email":
+                value = str(value).replace("&", ".")
+                user = get_object_or_404(self.model, email=value)
+            case _:
+                user = None
+                return Response({"detail": "Invalid request"})
+
+        send_mail("Thanks for contact"
+                #Rethink about it 
+                , "SEBA HERE Link"
+                #Env not in views
+                ,'info@miejscapamieci.org.pl'
+                , [user.email]
+                , fail_silently=False)
+                # , html_message=) 
+
+        return Response({"detail": "Succes"})
