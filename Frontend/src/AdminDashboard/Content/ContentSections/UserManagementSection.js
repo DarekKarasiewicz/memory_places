@@ -15,7 +15,7 @@ function UserManagementSection() {
   const fetchUserItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
-      
+
       const modifyUserData = response.data
         .filter((item) => !user.master || (user.master && !item.admin))
         .map((item) => {

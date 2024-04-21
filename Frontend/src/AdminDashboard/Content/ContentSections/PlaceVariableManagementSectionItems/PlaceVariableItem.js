@@ -66,6 +66,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         {
           id: prevItems[prevItems.length - 1].id + 1,
           name: t('admin.common.new_element'),
+          value: '',
           order: prevItems.length + 1,
         },
       ]);
@@ -75,6 +76,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         {
           id: prevItems.length + 1,
           name: t('admin.common.new_element'),
+          value: '',
           order: prevItems.length + 1,
         },
       ]);
@@ -143,7 +145,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         axios
           .post(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/`, {
             name: item.name,
-            value: valuePreparation(item.value),
+            value: valuePreparation(item.name),
             order: item.order,
           })
           .then((response) => {
@@ -161,8 +163,6 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         axios
           .put(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}/`, {
             name: item.name,
-            //I THINK THAT VALUE SHOULD BE SET ONCE AND NEVER CHANGED AGAIN
-            // value: item.value,
             order: item.order,
           })
           .then((response) => {

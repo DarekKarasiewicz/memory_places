@@ -76,7 +76,7 @@ function PlaceManagementSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'creation_date',
+      accessorKey: 'found_date',
     },
   ];
 

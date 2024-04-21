@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../../Redux/addPlaceLocationSlice';
+import { addPlaceActions } from '../../Redux/addPlaceSlice';
+import { confirmationModalActions } from '../../Redux/confirmationModalSlice';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import PinIcon from '../../icons/PinIcon';
 import BaseInput from '../../Base/BaseInput';
@@ -44,16 +47,23 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [toVerification, setToVerification] = useState('false');
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
 
   const fetchSortOfItems = async () => {
     try {
       const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      //   TO DO
-      //   WHEN changes from master will be pulled this line is unnecessary
       setSortOf(
-        responseSort.data.map((obj, index) => ({ id: obj.id, label: obj.name, value: obj.name })),
+        responseSort.data
+          .map((obj) => ({
+            id: obj.id,
+            label: obj.name,
+            value: obj.id,
+            text: obj.value,
+            order: obj.order,
+          }))
+          .sort((a, b) => (a.order > b.order ? 1 : -1)),
       );
-      //   setSortOf(responseSort.data);
     } catch (error) {
       console.log(error);
     }
@@ -62,12 +72,17 @@ function AdminPlaceActionSection({ action, placeId }) {
   const fetchTypeItems = async () => {
     try {
       const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
-      //   TO DO
-      //   WHEN changes from master will be pulled this line is unnecessary
       setType(
-        responseType.data.map((obj, index) => ({ id: obj.id, label: obj.name, value: obj.name })),
+        responseType.data
+          .map((obj) => ({
+            id: obj.id,
+            label: obj.name,
+            value: obj.id,
+            text: obj.value,
+            order: obj.order,
+          }))
+          .sort((a, b) => (a.order > b.order ? 1 : -1)),
       );
-      //   setType(responseType.data);
     } catch (error) {
       console.log(error);
     }
@@ -76,12 +91,17 @@ function AdminPlaceActionSection({ action, placeId }) {
   const fetchPeriodItems = async () => {
     try {
       const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
-      //   TO DO
-      //   WHEN changes from master will be pulled this line is unnecessary
       setPeriod(
-        responsePeriod.data.map((obj, index) => ({ id: obj.id, label: obj.name, value: obj.name })),
+        responsePeriod.data
+          .map((obj) => ({
+            id: obj.id,
+            label: obj.name,
+            value: obj.id,
+            text: obj.value,
+            order: obj.order,
+          }))
+          .sort((a, b) => (a.order > b.order ? 1 : -1)),
       );
-      //   setPeriod(responsePeriod.data);
     } catch (error) {
       console.log(error);
     }
@@ -103,36 +123,32 @@ function AdminPlaceActionSection({ action, placeId }) {
           const response = await axios.get(
             `http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`,
           );
+          console.log(response.data);
 
           nameRef.current.value = response.data.place_name;
           descRef.current.value = response.data.description;
           latRef.current.value = response.data.lat;
           lngRef.current.value = response.data.lng;
-          dateRef.current.value = response.data.creation_date;
-
-          // TO DO
-          // When proper value will be retrieved from backend then it needs to be fixed
+          dateRef.current.value = response.data.found_date;
           sortOfRef.current.value = response.data.sortof;
           typeRef.current.value = response.data.type;
           periodRef.current.value = response.data.period;
-
           wikiLinkRef.current.value = response.data.wiki_link;
           webLinkRef.current.value = response.data.topic_link;
+          // setToVerification(response.data.verified)
 
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
           validateLng(lngRef.current.value);
           validateDescription(descRef.current.value);
           validateDate(dateRef.current.value);
-
-          // TO DO
-          // Add radio setter when value will be delivered from backend
         } catch (error) {
           console.log(error);
         }
       };
 
       if (action === 'edit') {
+        ``;
         setActionTitle(t('admin.common.memo_place_edit'));
       }
 
@@ -217,8 +233,7 @@ function AdminPlaceActionSection({ action, placeId }) {
     if (isFormValid) {
       if (action === 'edit') {
         axios
-          .put(`http://localhost:8000/memo_places/places/pk=${placeId}`, {
-            user: 1,
+          .put(`http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`, {
             place_name: nameRef.current.value,
             description: descRef.current.value,
             found_date: dateRef.current.value,
@@ -229,24 +244,30 @@ function AdminPlaceActionSection({ action, placeId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
+            verified: toVerification,
           })
           .then((response) => {
-            console.log(response);
-            // dispatch(addPlace(response.data));
-            // dispatch(addPlaceActions.reset());
-            // dispatch(addPlacelocationActions.clearLocation());
-            // dispatch(modalsActions.changeIsFormModalOpen());
-            // dispatch(formValidationActions.reset());
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
+            navigate(-1);
+            // console.log(response);
           })
-          .error((error) => {
-            console.log(error);
+          .catch((error) => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
+            navigate(-1);
+            // console.log(error);
           });
       } else {
+        // console.log(wikiLinkRef.current.value);
+        // console.log(webLinkRef.current.value);
+        console.log(new Date().toJSON().slice(0, 10));
         axios
-          .post(`http://localhost:8000/memo_places/places/`, {
-            user: 1,
+          .post(`http://127.0.0.1:8000/admin_dashboard/places/`, {
+            user: user.user_id,
             place_name: nameRef.current.value,
             description: descRef.current.value,
+            // creation_date: new Date().toJSON().slice(0, 10),
             found_date: dateRef.current.value,
             lat: latRef.current.value,
             lng: lngRef.current.value,
@@ -255,17 +276,19 @@ function AdminPlaceActionSection({ action, placeId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
+            verified: toVerification,
           })
           .then((response) => {
-            console.log(response);
-            // dispatch(addPlace(response.data));
-            // dispatch(addPlaceActions.reset());
-            // dispatch(addPlacelocationActions.clearLocation());
-            // dispatch(modalsActions.changeIsFormModalOpen());
-            // dispatch(formValidationActions.reset());
+            dispatch(addPlaceActions.reset());
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
+            // console.log(response);
           })
-          .error((error) => {
-            console.log(error);
+          .catch((error) => {
+            dispatch(addPlaceActions.reset());
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
+            // console.log(error);
           });
       }
     } else {
@@ -480,6 +503,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     type='text'
                     name='wikiLinkInput'
                     ref={wikiLinkRef}
+                    onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
                   />
                 </div>
@@ -489,6 +513,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     type='text'
                     name='topicLinkInput'
                     ref={webLinkRef}
+                    onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
                   />
                 </div>

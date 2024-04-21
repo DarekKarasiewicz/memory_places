@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store.js';
 import { APIProvider } from '@vis.gl/react-google-maps';
@@ -15,8 +15,18 @@ import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
 import AdminDashboard from './AdminDashboard/AdminDashboard.js';
 import AdminPlaceAction from './AdminDashboard/AdminPlaceAction.js';
 import { ThemeProvider } from './ThemeSwitcher/ThemeContext.js';
+import { useCookies } from 'react-cookie';
+
+function ProtectedRoute({ role, roles, element }) {
+  return !roles.length || roles.includes(role) ? element : <Navigate to='/*' replace />;
+}
 
 export default function AppUrls() {
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
+
+  const role = user.admin ? 'admin' : user.master ? 'master' : 'user';
+
   return (
     <BrowserRouter>
       <Routes>
@@ -24,10 +34,50 @@ export default function AppUrls() {
         <Route path='/forum' element={<ForumMain />} />
         <Route path='/forum/:id' element={<SubForum />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
-        <Route path='/adminDashboard' element={<AdminDashboard />} />
-        <Route path='/adminDashboard/placeAdd' element={<AdminPlaceAction />} />
-        <Route path='/adminDashboard/placeEdit/:id' element={<AdminPlaceAction action='edit' />} />
-        <Route path='/adminDashboard/placeView/:id' element={<AdminPlaceAction action='view' />} />
+        <Route
+          path='/adminDashboard'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminDashboard />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/placeAdd'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/placeAdd'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminPlaceAction />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/placeEdit/:id'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/placeEdit/:id'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminPlaceAction action='edit' />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/placeView/:id'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/placeView/:id'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminPlaceAction action='view' />}
+            />
+          }
+        />
         <Route path='/*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
