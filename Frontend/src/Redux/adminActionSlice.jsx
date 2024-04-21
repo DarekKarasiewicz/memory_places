@@ -49,7 +49,7 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    console.log('Error deleting place:', error);
+    // console.log('Error deleting place:', error);
   }
 };
 
@@ -75,26 +75,26 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    console.log(error);
+    // console.log(error);
   }
 };
 
 export const resetUserPassword = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
-
-  // WHEN WILL BE FUNCION ON BACKEND - THAN FIX THAT
-
-  // try {
-  //   await axios
-  //     .put(`http://localhost:8000/memo_places/users/pk=${user_id}`, {
-  //       TO DO
-  //       how to call endpoint to reset pass
-  //     }, {
-  //       headers: { 'Content-Type': 'application/json' },
-  //     })
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  try {
+    await axios.post(
+      `http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`,
+      {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    );
+    dispatch(confirmationModalActions.changeType('success'));
+  } catch (error) {
+    dispatch(confirmationModalActions.changeType('error'));
+    // console.log(error);
+  }
 };
 
 export const blockUser = (user_id) => async (dispatch) => {
@@ -114,7 +114,7 @@ export const blockUser = (user_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -136,7 +136,7 @@ export const unlockUser = (user_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    console.log(error);
+    // console.log(error);
   }
 };
 

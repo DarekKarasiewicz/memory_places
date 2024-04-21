@@ -12,6 +12,9 @@ function PlaceManagementSection() {
   const fetchPlaceItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
+
+      const modifiedPlaceData = response.data.filter((item) => item.verified === true);
+
       const getItemDate = (date) => {
         return new Date(date).getMonth();
       };
@@ -22,16 +25,16 @@ function PlaceManagementSection() {
         return currentDate.getMonth();
       };
 
-      const sumOfCurrentMonthPlaces = response.data.filter(
-        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
+      const sumOfCurrentMonthPlaces = modifiedPlaceData.filter(
+        (item) => getItemDate(item.found_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthPlaces = response.data.filter(
-        (item) => getItemDate(item.creation_date) === previousMonthDate,
+      const sumOfPreviousMonthPlaces = modifiedPlaceData.filter(
+        (item) => getItemDate(item.found_date) === previousMonthDate,
       );
 
-      setPlaces(response.data);
-      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: response.data.length }));
+      setPlaces(modifiedPlaceData);
+      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: modifiedPlaceData.length }));
       setStatistics((statistics) => ({
         ...statistics,
         ['previousMonthPlaces']: sumOfPreviousMonthPlaces.length,

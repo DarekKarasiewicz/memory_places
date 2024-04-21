@@ -28,11 +28,11 @@ function StatisticsSection() {
       );
 
       const sumOfCurrentMonthPlaces = responsePlaces.data.filter(
-        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
+        (item) => getItemDate(item.found_date) === new Date().getMonth(),
       );
 
       const sumOfPreviousMonthPlaces = responsePlaces.data.filter(
-        (item) => getItemDate(item.creation_date) === previousMonthDate,
+        (item) => getItemDate(item.found_date) === previousMonthDate,
       );
 
       const sumOfPreviousMonthUsers = responsePlaces.data.filter(
@@ -123,7 +123,7 @@ function StatisticsSection() {
       });
 
       responsePlaces.data.forEach((item) => {
-        const itemMonth = getItemDate(item.creation_date);
+        const itemMonth = getItemDate(item.found_date);
         monthlyPlacesCount[itemMonth].places += 1;
       });
 

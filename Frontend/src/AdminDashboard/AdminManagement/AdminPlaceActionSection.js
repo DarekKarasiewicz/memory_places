@@ -44,7 +44,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [isValidDate, setIsValidDate] = useState(null);
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
-  const [toVerification, setToVerification] = useState('false');
+  const [toVerification, setToVerification] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
   const [cookies] = useCookies(['user']);
@@ -123,7 +123,6 @@ function AdminPlaceActionSection({ action, placeId }) {
           const response = await axios.get(
             `http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`,
           );
-          console.log(response.data);
 
           nameRef.current.value = response.data.place_name;
           descRef.current.value = response.data.description;
@@ -135,7 +134,7 @@ function AdminPlaceActionSection({ action, placeId }) {
           periodRef.current.value = response.data.period;
           wikiLinkRef.current.value = response.data.wiki_link;
           webLinkRef.current.value = response.data.topic_link;
-          // setToVerification(response.data.verified)
+          setToVerification(response.data.verified === true ? 'true' : 'false');
 
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
@@ -148,7 +147,6 @@ function AdminPlaceActionSection({ action, placeId }) {
       };
 
       if (action === 'edit') {
-        ``;
         setActionTitle(t('admin.common.memo_place_edit'));
       }
 
@@ -231,9 +229,13 @@ function AdminPlaceActionSection({ action, placeId }) {
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
+      var isValidated = toVerification === 'true' ? true : false;
+
+      console.log(isValidated);
+
       if (action === 'edit') {
         axios
-          .put(`http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`, {
+          .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
             place_name: nameRef.current.value,
             description: descRef.current.value,
             found_date: dateRef.current.value,
@@ -244,24 +246,19 @@ function AdminPlaceActionSection({ action, placeId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
-            verified: toVerification,
+            verified: isValidated,
           })
           .then((response) => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
-            navigate(-1);
-            // console.log(response);
+            navigate('/adminDashboard');
           })
           .catch((error) => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
-            navigate(-1);
-            // console.log(error);
+            navigate('/adminDashboard');
           });
       } else {
-        // console.log(wikiLinkRef.current.value);
-        // console.log(webLinkRef.current.value);
-        console.log(new Date().toJSON().slice(0, 10));
         axios
           .post(`http://127.0.0.1:8000/admin_dashboard/places/`, {
             user: user.user_id,
@@ -276,19 +273,19 @@ function AdminPlaceActionSection({ action, placeId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
-            verified: toVerification,
+            verified: isValidated,
           })
           .then((response) => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
-            // console.log(response);
+            navigate('/adminDashboard');
           })
           .catch((error) => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
-            // console.log(error);
+            navigate('/adminDashboard');
           });
       }
     } else {

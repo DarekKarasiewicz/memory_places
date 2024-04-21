@@ -16,7 +16,7 @@ function UserManagementSection() {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
 
-      const modifyUserData = response.data
+      const modifiedUserData = response.data
         .filter((item) => !user.master || (user.master && !item.admin))
         .map((item) => {
           const role = item.admin ? 'admin' : item.master ? 'master_user' : 'user';
@@ -40,7 +40,7 @@ function UserManagementSection() {
 
       response.data.forEach((element) => getItemDate(element.data_join));
 
-      setUsers(modifyUserData);
+      setUsers(modifiedUserData);
       setStatistics((statistics) => ({ ...statistics, ['allUsers']: response.data.length }));
       setStatistics((statistics) => ({ ...statistics, ['sumOfAdmins']: sumOfAdminValues.length }));
       setStatistics((statistics) => ({
