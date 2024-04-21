@@ -111,11 +111,14 @@ class Place_view(viewsets.ModelViewSet):
                 case "lng":
                     place_object.lng = data["lng"]
                 case "type":
-                    place_object.type = data["type"]
+                    type_obj = Type.objects.filter(pk=data["type"])
+                    place_object.type = type_obj 
                 case "sortof":
-                    place_object.sortof = data["sortof"]
+                    sortof_obj = Sortof.objects.filter(pk=data["sortof"])
+                    place_object.sortof = sortof_obj 
                 case "period":
-                    place_object.period = data["period"]
+                    period_obj = Period.objects.filter(pk=data["period"])
+                    place_object.period = period_obj 
                 case "wiki_link":
                     place_object.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -394,9 +397,8 @@ class None_Verified_Places_view(viewsets.ModelViewSet):
     serializer_class = Places_serailizer
 
     def get_queryset(self):
-        places = self.model.objects.filter(verified=True)
-        serializer = self.serializer_class(places, many=True)
-        return Response(serializer.data)
+        return self.model.objects.filter(verified=False)
+
 class Questions_view(viewsets.ModelViewSet):
     model = Question
     serializer_class = Questions_serializer

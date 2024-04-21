@@ -9,7 +9,10 @@ class User_serializer(serializers.ModelSerializer):
 
 
 class Places_serailizer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
+    username    = serializers.CharField(source='user.username')
+    type_name   = serializers.CharField(source='type.name')
+    period_name = serializers.CharField(source='period.name')
+    sortof_name = serializers.CharField(source='sortof.name')
     class Meta:
         model = Place
         fields = (
@@ -23,8 +26,11 @@ class Places_serailizer(serializers.ModelSerializer):
             "user",
             "username",
             "sortof",
+            "sortof_name",
             "type",
+            "type_name",
             "period",
+            "period_name",
             "topic_link",
             "wiki_link",
             "img",
