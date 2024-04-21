@@ -46,6 +46,8 @@ class Place_view(viewsets.ModelViewSet):
         )
         for key in data.keys():
             match key:
+                case "verified":
+                    new_place.verified = data["verified"]
                 case "wiki_link":
                     new_place.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -85,11 +87,6 @@ class Place_view(viewsets.ModelViewSet):
                 places = self.model.objects.filter(place_name=value)
                 serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
-            #TODO
-            # case "found_date":
-            #     return Response(serializer.data)
-            # case "creation_date":
-            #     return Response(serializer.data)
 
         return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -125,6 +122,8 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.topic_link = data["topic_link"]
                 case "img":
                     place_object.img = data["img"]
+                case "verified":
+                    place_object.verified = data["verified"]
                 case _:
                     pass
 
