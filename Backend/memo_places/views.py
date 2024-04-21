@@ -109,11 +109,14 @@ class Place_view(viewsets.ModelViewSet):
                 case "lng":
                     place_object.lng = data["lng"]
                 case "type":
-                    place_object.type = data["type"]
+                    type_obj = Type.objects.filter(pk=data["type"])
+                    place_object.type = type_obj 
                 case "sortof":
-                    place_object.sortof = data["sortof"]
+                    sortof_obj = Sortof.objects.filter(pk=data["sortof"])
+                    place_object.sortof = sortof_obj 
                 case "period":
-                    place_object.period = data["period"]
+                    period_obj = Period.objects.filter(pk=data["period"])
+                    place_object.period = period_obj 
                 case "verified":
                     place_object.verified = data["verified"].lower() == "true" 
                 case _:
