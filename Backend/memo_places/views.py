@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Changes_serializer, Path_serailizer 
 from .models import Place, User, Question, Change, Path,Type,Sortof,Period
 from rest_framework.response import Response
@@ -90,7 +90,7 @@ class Place_view(viewsets.ModelViewSet):
                 serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
 
-        return Response({"detail": "Invalid key"})
+        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
@@ -183,7 +183,7 @@ class Path_view(viewsets.ModelViewSet):
                 serializer = self.serializer_class(paths, many=True)
                 return Response(serializer.data)
 
-        return Response({"detail": "Invalid key"})
+        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         path_object = self.model.objects.get(id=kwargs["pk"])
@@ -268,8 +268,11 @@ class User_view(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()  # change to .none() on production
 
-    # TODO Secure it
     def create(self, request, *args, **kwargs):
+
+        if self.model.user_exists(request.data['email']):
+            return Response({"Error": "User exist"}, status=status.HTTP_400_BAD_REQUEST)
+
         new_user = self.model.objects.create_user(
             email=request.data["email"],
             username=request.data["username"],
@@ -282,7 +285,7 @@ class User_view(viewsets.ModelViewSet):
                 , f'http://localhost:3000/userVerification/{serializer["id"].value}'
                 #Env not in views
                 ,'info@miejscapamieci.org.pl'
-                , [serializer['email'].value]
+                , [new_user.email]
                 , fail_silently=False)
                 # , html_message=)
 
@@ -300,7 +303,7 @@ class User_view(viewsets.ModelViewSet):
                 serializer = self.serializer_class(user)
             case _:
                 user = None
-                return Response({"detail": "Invalid request"})
+                return Response({"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
@@ -404,7 +407,7 @@ class Reset_password(viewsets.ModelViewSet):
                 user = get_object_or_404(self.model, email=value)
             case _:
                 user = None
-                return Response({"detail": "Invalid request"})
+                return Response({"Error": "Invalid request"},status=status.HTTP_400_BAD_REQUEST)
 
         send_mail("Thanks for contact"
                 #Rethink about it 
