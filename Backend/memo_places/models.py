@@ -81,6 +81,10 @@ class User(AbstractBaseUser):
     def is_outsider(self):
         return self.outside
 
+    @classmethod
+    def user_exists(model, email):
+        return model.objects.filter(email=email).exists()
+
     @property
     def is_master(self):
         return self.master

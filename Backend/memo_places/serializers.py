@@ -28,6 +28,7 @@ class Places_serailizer(serializers.ModelSerializer):
             "topic_link",
             "wiki_link",
             "img",
+            "verified",
         )
 
 class Path_serailizer(serializers.ModelSerializer):

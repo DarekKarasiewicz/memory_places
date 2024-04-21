@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 
 from memo_places.serializers import Changes_serializer, Places_serailizer, Questions_serializer, Path_serailizer
 from .serializers import User_serializer, Types_serializer, Period_serializer, Sortof_serializer
@@ -46,6 +46,8 @@ class Place_view(viewsets.ModelViewSet):
         )
         for key in data.keys():
             match key:
+                case "verified":
+                    new_place.verified = data["verified"]
                 case "wiki_link":
                     new_place.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -85,13 +87,8 @@ class Place_view(viewsets.ModelViewSet):
                 places = self.model.objects.filter(place_name=value)
                 serializer = self.serializer_class(places, many=True)
                 return Response(serializer.data)
-            #TODO
-            # case "found_date":
-            #     return Response(serializer.data)
-            # case "creation_date":
-            #     return Response(serializer.data)
 
-        return Response({"detail": "Invalid key"})
+        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
@@ -125,6 +122,8 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.topic_link = data["topic_link"]
                 case "img":
                     place_object.img = data["img"]
+                case "verified":
+                    place_object.verified = data["verified"]
                 case _:
                     pass
 
@@ -205,7 +204,7 @@ class Path_view(viewsets.ModelViewSet):
             # case "creation_date":
             #     return Response(serializer.data)
 
-        return Response({"detail": "Invalid key"})
+        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         path_object = self.model.objects.get(id=kwargs["pk"])
@@ -342,7 +341,7 @@ class User_view(viewsets.ModelViewSet):
                 serializer = self.serializer_class(user, many=True)
             # case "data_join":
             #     #TODO 
-        return Response({"detail": "Invalid request"})
+        return Response({"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         # user_object = User.objects.get(id=kwargs['pk'])
@@ -454,7 +453,7 @@ class Questions_view(viewsets.ModelViewSet):
                 question_object = self.model.objects.filter(done=json_bool(value))
                 serializer = self.serializer_class(question_object, many=True)
 
-        return Response({"detail": "Invalid request"})
+        return Response({"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         question_object = self.model.objects.get(id=kwargs['pk'])
