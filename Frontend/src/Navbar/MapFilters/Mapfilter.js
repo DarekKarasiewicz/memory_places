@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { filterPlaces } from '../../Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import FilterIcon from '../../icons/FilterIcon';
+import CancelIcon from '../../icons/CancelIcon';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
@@ -87,30 +89,26 @@ function MapFilter() {
         whileHover={{ scale: 1.05 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300 ${
+        className={`h-12 w-12 flex justify-center items-center cursor-pointer ${
           isActive ? 'right-72 absolute mr-3 top-2' : ''
         }`}
         onClick={handleClick}
       >
-        <img
-          src={`./assets/${!isActive ? 'filter_icon' : 'cancel_icon'}.svg`}
-          alt={`${!isActive ? 'filter_icon' : 'cancel_icon'}`}
-          className='h-8 w-8'
-        ></img>
+        {!isActive ? <FilterIcon /> : <CancelIcon />}
       </motion.div>
       {isActive && (
         <motion.div
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-600 rounded-s-lg z-10 shadow-xl'
+          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-mainBgColor text-textColor rounded-s-lg z-10 shadow-xl'
         >
-          <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>
+          <div className='flex flex-col gap-y-4 justify-start items-center'>
+            <div className='text-2xl border-b-2 border-textColor p-2 w-1/2 text-center'>
               <span>{t('common.filter1')}</span>
               <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>
             </div>
-            <div className='flex flex-col gap-2 mb-2'>
+            <div className='flex flex-col gap-4 mb-2'>
               <BaseInput
                 type='text'
                 label={t('common.name')}

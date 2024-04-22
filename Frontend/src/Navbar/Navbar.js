@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import DropdownItem from './DropdownItem/DropdownItem';
@@ -8,10 +8,14 @@ import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
 import { selectUserPlaces } from '../Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
+import MenuIcon from '../icons/MenuIcon';
+import CancelIcon from '../icons/CancelIcon';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
   const userPlacesData = useSelector(selectUserPlaces);
+  const wrapperRef = useRef(null);
   const { t } = useTranslation();
 
   const handleClick = () => {
@@ -19,8 +23,8 @@ function Navbar() {
   };
 
   const dropdownItems = [
-    { link: '/', icon: 'map_icon', name: t('navbar.main_page') },
-    { link: '/forum', icon: 'forum_icon', name: t('navbar.forum') },
+    { link: '/', icon: 'map', name: t('navbar.main_page') },
+    { link: '/forum', icon: 'forum', name: t('navbar.forum') },
   ];
 
   const parentItem = {
@@ -43,29 +47,38 @@ function Navbar() {
     },
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsActive(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <>
       <nav
-        className={`relative flex justify-between p-2 bg-slate-600 shadow-xl ${
-          userPlacesData.isOpen && 'w-2/3 float-right'
+        className={`relative flex justify-between p-2 bg-mainBgColor shadow-xl ${
+          userPlacesData.isOpen ? 'w-2/3 float-right' : ''
         }`}
       >
         <div className='flex gap-2 items-center'>
-          <div>
+          <div ref={wrapperRef}>
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
+              whileHover={{ scale: 1.1 }}
+              className='flex justify-center items-center cursor-pointer h-12 w-12'
               onClick={handleClick}
             >
-              <img
-                src={`./assets/${!isActive ? 'menu_icon' : 'cancel_icon'}.svg`}
-                alt='menu_icon'
-                className='h-8 w-8'
-              ></img>
+              {isActive ? <CancelIcon className='h-8 w-8' /> : <MenuIcon className='h-8 w-8' />}
             </motion.div>
             {isActive && (
               <motion.ul
-                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-slate-600 rounded-b-lg'
+                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-mainBgColor rounded-b-lg'
                 variants={parentItem}
                 initial='hidden'
                 animate='visible'
@@ -86,10 +99,11 @@ function Navbar() {
           <img
             src='assets/memorial_places_logo.png'
             alt='memory_place_logo'
-            className='w-24 h-24 bg-slate-600 rounded-full m-2 shadow-lg'
+            className='w-28 h-28 bg-mainBgColor rounded-full shadow-lg'
           ></img>
         </div>
         <div className='flex gap-3 items-center'>
+          <ThemeSwitcher />
           <UserMenu />
           <MapFilter />
         </div>

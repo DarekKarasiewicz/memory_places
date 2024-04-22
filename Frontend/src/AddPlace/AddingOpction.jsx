@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
+import PlaceIcon from '../icons/PlaceIcon';
+import TrailIcon from '../icons/TrailIcon';
 
 const AddingOption = ({ type }) => {
   const dispatch = useDispatch();
@@ -10,13 +12,21 @@ const AddingOption = ({ type }) => {
   const handlePlaceClick = () => {
     dispatch(modalsActions.changeIsFormModalOpen());
   };
+
+  const iconComponents = {
+    place: <PlaceIcon />,
+    trail: <TrailIcon />,
+  };
+
+  const IconComponent = iconComponents[type] || null;
+
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className={`border-2 border-black bg-slate-300 h-12 w-12 rounded-full cursor-pointer flex justify-center items-center m-auto`}
+      className={`bg-mainBgColor h-12 w-12 rounded-full cursor-pointer flex justify-center items-center m-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)]`}
       onClick={type === 'trail' ? handleTrailClick : handlePlaceClick}
     >
-      <img src={`./assets/${type}_icon.svg`} alt='' className='h-8 w-8'></img>
+      {IconComponent}
     </motion.div>
   );
 };

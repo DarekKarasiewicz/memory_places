@@ -63,15 +63,15 @@ function PlaceManagementSection() {
     },
     {
       header: t('admin.content.sortof'),
-      accessorKey: 'sortof',
+      accessorKey: 'sortof_name',
     },
     {
       header: t('admin.content.type'),
-      accessorKey: 'type',
+      accessorKey: 'type_name',
     },
     {
       header: t('admin.content.period'),
-      accessorKey: 'period',
+      accessorKey: 'period_name',
     },
     {
       header: t('admin.content.created_by'),

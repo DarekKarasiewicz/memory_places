@@ -8,15 +8,19 @@ import BaseButton from '../../Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import ArrowUpIcon from '../../icons/admin/ArrowUpIcon';
+import ArrowDownIcon from '../../icons/admin/ArrowDownIcon';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [cookies, removeCookie] = useCookies(['user']);
   const dispatch = useDispatch();
   const user = cookies.user;
   const popupRef = useRef(null);
+  const wrapperRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -69,6 +73,7 @@ function UserMenu() {
   const handleClick = (event) => {
     if (isLogged) {
       setIsActive((current) => !current);
+      setIsOpen((current) => !current);
     } else {
       setIsPopupOpen((current) => !current);
       popupRef.current = event.target;
@@ -76,7 +81,7 @@ function UserMenu() {
   };
 
   const menuItems = [
-    { icon: 'notification', name: t('user.notifications') },
+    // { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     {
       icon: 'user',
@@ -123,25 +128,32 @@ function UserMenu() {
     },
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsActive(false);
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <>
-      <div className='relative'>
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
-          onClick={handleClick}
-          ref={popupRef}
-        >
-          {/*TODO when avatars will be implemented rewrite this code */}
-          <img
-            src={`./assets/${isLogged ? 'user_icon' : 'user_icon'}.svg`}
-            alt={`${isLogged ? 'user_icon' : 'user_icon'}`}
-            className='h-8 w-8'
-          ></img>
-        </motion.div>
+      <div className='relative' ref={wrapperRef}>
+        <div className='flex items-center cursor-pointer' onClick={handleClick} ref={popupRef}>
+          <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
+            <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>
+          </div>
+          {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}
+        </div>
         {isActive && (
           <motion.ul
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4 z-10'
+            className='bg-mainBgColor text-textColor flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'

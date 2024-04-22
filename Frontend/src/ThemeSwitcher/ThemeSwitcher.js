@@ -38,11 +38,11 @@ function ThemeSwitcher() {
 
   return (
     <>
-      <div className='relative z-10'>
-        <div className='relative inline-block' ref={wrapperRef}>
+      <div className='relative z-10 text-textColor'>
+        <div className='relative flex items-center' ref={wrapperRef}>
           <button
             type='button'
-            className=' inline-flex gap-1 justify-center items-center w-full'
+            className='inline-flex gap-1 justify-center items-center w-full'
             aria-haspopup='true'
             aria-expanded='true'
             onClick={() => setIsOpen(!isOpen)}
@@ -56,23 +56,21 @@ function ThemeSwitcher() {
           </button>
 
           {isOpen && (
-            <div className='left-1/2 -translate-x-1/2 bg-mainBgColor flex justify-center items-center absolute mt-2 w-auto shadow-lg'>
-              <div
-                className='py-1 origin-top'
-                role='menu'
-                aria-orientation='vertical'
-                aria-labelledby='options-menu'
-              >
+            <div className='left-1/2 -translate-x-1/2 top-9 bg-mainBgColor flex justify-center items-center absolute mt-2 w-auto shadow-lg'>
+              <div>
                 {theme_options.map((option) => (
                   <motion.div
+                    whileHover={{ scale: 1.05 }}
                     key={option.value}
                     onClick={() => handleThemeChange(option.value)}
                     className={`${
-                      option.value === theme ? 'bg-secondaryBgColor text-cyan-600 font-bold ' : ''
-                    }hover:bg-secondaryBgColor hover:text-cyan-600 hover:font-bold px-4 py-2 flex justify-center items-center gap-2 text-sm text-center cursor-pointer`}
+                      option.value === theme ? 'text-contrastColor font-bold ' : ''
+                    }hover:text-contrastColor px-4 py-2 flex justify-center items-center gap-2 text-sm text-center cursor-pointer`}
                     role='menuitem'
                   >
-                    <div className={`h-4 w-6 shadow border ${option.indicator} rounded-lg`}></div>
+                    <div
+                      className={`h-5 w-5 shadow border shrink-0 ${option.indicator} rounded-full`}
+                    ></div>
                     <span>{option.label}</span>
                   </motion.div>
                 ))}
