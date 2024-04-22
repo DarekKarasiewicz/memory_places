@@ -8,12 +8,18 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { confirmationModalActions } from '../../../Redux/confirmationModalSlice';
+import axios from 'axios';
 import SettingsIcon from '../../../icons/SettingsIcon';
 import CancelIcon from '../../../icons/CancelIcon';
 import EditIcon from '../../../icons/EditIcon';
 import CheckIcon from '../../../icons/CheckIcon';
 
 function PlaceVerificationTable({ data, columns }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
@@ -37,6 +43,29 @@ function PlaceVerificationTable({ data, columns }) {
   const { pageIndex, pageSize } = table.getState().pagination;
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
+
+  const handlePlaceConfirmation = (placeId) => {
+    axios
+      .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
+        verified: true,
+      })
+      .then((response) => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('success'));
+      })
+      .catch((error) => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('error'));
+      });
+  };
+
+  const handlePlaceDismiss = (place_id) => {
+    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+    dispatch(confirmationModalActions.changeType('error'));
+
+    //TO DO
+    //On dismiss should element will be wiped out or what?
+  };
 
   return (
     <>
@@ -100,19 +129,31 @@ function PlaceVerificationTable({ data, columns }) {
                 </td>
               ))}
               <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handlePlaceConfirmation(row.original.id)}
+                >
                   <CheckIcon className='h-5 w-5' />
                   <span>{t('admin.common.confirm')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handlePlaceDismiss(row.original.id)}
+                >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.common.dismiss')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
+                >
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
+                >
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>

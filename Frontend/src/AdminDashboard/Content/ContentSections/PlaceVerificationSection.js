@@ -11,7 +11,7 @@ function PlaceVerificationSection() {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
+      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/not_verified_places`);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -61,15 +61,15 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.sortof'),
-      accessorKey: 'sortof',
+      accessorKey: 'sortof_name',
     },
     {
       header: t('admin.content.type'),
-      accessorKey: 'type',
+      accessorKey: 'type_name',
     },
     {
       header: t('admin.content.period'),
-      accessorKey: 'period',
+      accessorKey: 'period_name',
     },
     {
       header: t('admin.content.created_by'),
@@ -77,7 +77,7 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'creation_date',
+      accessorKey: 'found_date',
     },
   ];
 

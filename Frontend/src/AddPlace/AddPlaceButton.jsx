@@ -5,6 +5,8 @@ import BaseButton from '../Base/BaseButton';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
 import AddingOption from './AddingOpction';
+import PlusIcon from '../icons/PlusIcon';
+import CancelIcon from '../icons/CancelIcon';
 
 const AddPlaceButton = (props) => {
   const dispatch = useDispatch();
@@ -73,7 +75,7 @@ const AddPlaceButton = (props) => {
       whileHover={'hover'}
       variants={parentItem}
       onClick={handleAddClick}
-      className={`absolute bottom-7 border-2 border-black bg-slate-300 h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto`}
+      className={`absolute bottom-11 bg-mainBgColor h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)]`}
       ref={popupRef}
     >
       {isActive && (
@@ -92,15 +94,11 @@ const AddPlaceButton = (props) => {
       )}
       {isSelecting && (
         <div className='absolute bottom-16 w-32 flex flex-row justify-between items-center'>
-          <AddingOption type={'place'} />
-          <AddingOption type={'trail'} />
+          <AddingOption type='place' />
+          <AddingOption type='trail' />
         </div>
       )}
-      <img
-        src='./assets/plus_icon.svg'
-        alt='plus_icon'
-        className={`h-14 w-14 ${isSelecting ? 'rotate-45' : ''}`}
-      ></img>
+      {!isSelecting ? <PlusIcon className='h-10 w-10' /> : <CancelIcon className='h-10 w-10' />}
     </motion.div>
   );
 };

@@ -6,6 +6,8 @@ import { locationActions } from '../../Redux/locationSlice';
 import { useDispatch } from 'react-redux';
 import './AutocompleteStyles.css';
 import { useTranslation } from 'react-i18next';
+import SearchIcon from '../../icons/SearchIcon';
+import SearchClosedIcon from '../../icons/SearchClosedIcon';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -76,7 +78,7 @@ function SearchBar() {
             <input
               type='text'
               placeholder={t('common.search')}
-              className='rounded-l-lg h-10 w-80 border-black border-t-2 border-l-2 border-b-2 pl-3 pt-3 pb-3 pr-6'
+              className='h-10 w-80 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg pl-3 py-3 pr-6 focus:outline-contrastColor'
               onChange={handleSearchChange}
               ref={inputRef}
               value={searchedText}
@@ -90,22 +92,16 @@ function SearchBar() {
           </motion.div>
         )}
         <motion.div
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className={`${
-            isActive ? 'rounded-r-lg' : 'rounded-full'
-          } border-2 h-10 w-10 border-black flex justify-center items-center bg-slate-300 cursor-pointer z-5 relative`}
+          className='h-10 w-10 flex justify-center items-center cursor-pointer z-5 relative'
           onClick={handleClick}
         >
-          <img
-            src={`./assets/${
-              searchedText.trim().length === 0 && isActive ? 'search_closed_icon' : 'search_icon'
-            }.svg`}
-            alt={
-              searchedText.trim().length === 0 && isActive ? 'search_closed_icon' : 'search_icon'
-            }
-            className='h-6 w-6'
-          ></img>
+          {searchedText.trim().length === 0 && isActive ? (
+            <SearchClosedIcon className='h-6 w-6' />
+          ) : (
+            <SearchIcon className='h-6 w-6' />
+          )}
         </motion.div>
       </div>
     </>
