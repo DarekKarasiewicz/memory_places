@@ -10,9 +10,9 @@ class User_serializer(serializers.ModelSerializer):
 
 class Places_serailizer(serializers.ModelSerializer):
     username    = serializers.CharField(source='user.username')
-    type_name   = serializers.CharField(source='type.name')
-    period_name = serializers.CharField(source='period.name')
-    sortof_name = serializers.CharField(source='sortof.name')
+    type_value   = serializers.CharField(source='type.value')
+    period_value = serializers.CharField(source='period.value')
+    sortof_value = serializers.CharField(source='sortof.value')
     class Meta:
         model = Place
         fields = (
@@ -26,11 +26,11 @@ class Places_serailizer(serializers.ModelSerializer):
             "user",
             "username",
             "sortof",
-            "sortof_name",
+            "sortof_value",
             "type",
-            "type_name",
+            "type_value",
             "period",
-            "period_name",
+            "period_value",
             "topic_link",
             "wiki_link",
             "img",
@@ -39,6 +39,8 @@ class Places_serailizer(serializers.ModelSerializer):
 
 class Path_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
+    type_value   = serializers.CharField(source='type.value')
+    period_value = serializers.CharField(source='period.value')
     class Meta:
         model = Path 
         fields = (
@@ -51,7 +53,9 @@ class Path_serailizer(serializers.ModelSerializer):
             "user",
             "username",
             "type",
+            "type_value",
             "period",
+            "period_value",
             "topic_link",
             "wiki_link",
             "img",
