@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, status
 from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Changes_serializer, Path_serailizer 
-from .models import Place, User, Question, Change, Path,Type,Sortof,Period
+from .models import Place, User, Question, Change, Path, Type,Sortof, Period
+from admin_dashboard.serializers import Types_serializer, Sortof_serializer, Period_serializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -424,3 +425,21 @@ class Reset_password(viewsets.ModelViewSet):
                 # , html_message=) 
 
         return Response({"detail": "Succes"})
+class CategoryBaseView(viewsets.ModelViewSet):
+    serializer_class = None 
+    model = None
+
+    def get_queryset(self):
+        return self.model.objects.all()  
+
+class Types_view(CategoryBaseView):
+    serializer_class = Types_serializer 
+    model = Type 
+
+class Sortofs_view(CategoryBaseView):
+    serializer_class = Sortof_serializer 
+    model = Sortof
+
+class Periods_view(CategoryBaseView):
+    serializer_class = Period_serializer 
+    model = Period 
