@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, status
 from .serializers import Places_serailizer, User_serializer, Short_Places_serailizer, Questions_serializer, Changes_serializer, Path_serailizer 
-from .models import Place, User, Question, Change, Path, Type,Sortof, Period
+from .models import Place, User, Question, Change, Path, Type, Sortof, Period
 from admin_dashboard.serializers import Types_serializer, Sortof_serializer, Period_serializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
