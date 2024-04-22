@@ -111,13 +111,13 @@ class Place_view(viewsets.ModelViewSet):
                 case "lng":
                     place_object.lng = data["lng"]
                 case "type":
-                    type_obj = Type.objects.filter(pk=data["type"])
+                    type_obj = Type.objects.get(pk=data["type"])
                     place_object.type = type_obj 
                 case "sortof":
-                    sortof_obj = Sortof.objects.filter(pk=data["sortof"])
+                    sortof_obj = Sortof.objects.get(pk=data["sortof"])
                     place_object.sortof = sortof_obj 
                 case "period":
-                    period_obj = Period.objects.filter(pk=data["period"])
+                    period_obj = Period.objects.get(pk=data["period"])
                     place_object.period = period_obj 
                 case "wiki_link":
                     place_object.wiki_link = data["wiki_link"]
@@ -228,9 +228,11 @@ class Path_view(viewsets.ModelViewSet):
                 case "coordinates":
                     path_object.coordinates = data["coordinates"]
                 case "type":
-                    path_object.type = data["type"]
+                    type_obj = Type.objects.get(pk=data["type"])
+                    path_object.type = type_obj
                 case "period":
-                    path_object.period = data["period"]
+                    period_obj = Period.objects.get(pk=data["period"])
+                    path_object.period = period_obj 
                 case "wiki_link":
                     path_object.wiki_link = data["wiki_link"]
                 case "topic_link":
