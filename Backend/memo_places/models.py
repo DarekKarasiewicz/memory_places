@@ -75,7 +75,7 @@ class User(AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         return True
 
-    def has_module_perms(slef, app_label):
+    def has_module_perms(self, app_label):
         return True
 
     def is_outsider(self):
