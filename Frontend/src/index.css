@@ -8,7 +8,7 @@
   --thirdBgColor: rgb(226 232 240);
   --textColor: rgb(0 0 0);
   --contrastColor: rgb(8 145 178);
-  --itemShadow: @apply shadow-gray-300;
+  --itemShadow: 0 3px 15px rgb(0, 0, 0, 0.12);
 }
 
 .dark {
@@ -17,5 +17,5 @@
   --thirdBgColor: rgb(64 64 64);
   --textColor: rgb(255 255 255);
   --contrastColor: rgb(8 145 178);
-  --itemShadow: @apply shadow-gray-300;
+  --itemShadow: 0 3px 15px rgba(255, 255, 255, 0.12);
 }

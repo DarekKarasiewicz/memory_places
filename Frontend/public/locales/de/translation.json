@@ -106,7 +106,15 @@
         "interwar_period": "Zwischenkriegszeit (1918 – 1939)",
         "world_war_II": "Zweiter Weltkrieg (1939 – 1945)",
         "stalinist_period": "Stalinistische Ära (1945 – 1953)",
-        "filled_box_error": "Alle Felder müssen ausgefüllt sein"
+        "filled_box_error": "Alle Felder müssen ausgefüllt sein",
+
+        "okresstalinowski": "Stalinistische Ära (1945 – 1953)",
+        "istniejace": "Bestehende",
+        "nieistniejace": "Nicht existierende",
+        "zabytek": "Historisches Denkmal",
+        "miejsce": "Schlachtfeld",
+        "iiwojnaswiatowa": "Zweiter Weltkrieg (1939 – 1945)",
+        "no_translation_given": "Fehlende Übersetzungen"
     },
     "user": {
         "general": "Allgemein",
@@ -289,7 +297,9 @@
             "changed_date": "Änderungsdatum",
             "changed_by": "Geändert von",
             "alert_success": "Aktion erfolgreich ausgeführt!",
-            "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!"
+            "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!",
+            "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
+            "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:"
         }
     }
 }

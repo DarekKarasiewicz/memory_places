@@ -49,11 +49,11 @@ function PlaceVerificationTable({ data, columns }) {
       .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
         verified: true,
       })
-      .then((response) => {
+      .then(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('success'));
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('error'));
       });
@@ -128,7 +128,7 @@ function PlaceVerificationTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-4'>
+              <td className='flex my-1 gap-2'>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() => handlePlaceConfirmation(row.original.id)}

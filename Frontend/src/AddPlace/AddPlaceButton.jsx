@@ -52,6 +52,18 @@ const AddPlaceButton = (props) => {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
   };
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   const childItem = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -64,18 +76,12 @@ const AddPlaceButton = (props) => {
     },
   };
 
-  const parentItem = {
-    hover: {
-      scale: isActive || isSelecting ? 1 : 1.05,
-    },
-  };
-
   return (
     <motion.div
-      whileHover={'hover'}
+      whileHover={{ scale: isActive || isSelecting ? 1 : 1.05 }}
       variants={parentItem}
       onClick={handleAddClick}
-      className={`absolute bottom-11 bg-mainBgColor h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)]`}
+      className={`absolute bottom-11 bg-mainBgColor h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto shadow-itemShadow`}
       ref={popupRef}
     >
       {isActive && (
@@ -93,10 +99,15 @@ const AddPlaceButton = (props) => {
         </motion.div>
       )}
       {isSelecting && (
-        <div className='absolute bottom-16 w-32 flex flex-row justify-between items-center'>
+        <motion.div
+          className='absolute bottom-16 w-32 flex flex-row justify-between items-center'
+          variants={parentItem}
+          initial='hidden'
+          animate='visible'
+        >
           <AddingOption type='place' />
           <AddingOption type='trail' />
-        </div>
+        </motion.div>
       )}
       {!isSelecting ? <PlusIcon className='h-10 w-10' /> : <CancelIcon className='h-10 w-10' />}
     </motion.div>

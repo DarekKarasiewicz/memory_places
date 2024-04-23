@@ -70,7 +70,7 @@ function AdminModal({ closeModal }) {
     <>
       <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
         <div
-          className={`m-auto w-[calc(35%)] h-[calc(40%)] rounded-[24px] shadow-itemShadow p-6 bg-secondaryBgColor relative flex flex-col justify-around`}
+          className={`m-auto w-[calc(35%)] h-[calc(40%)] rounded-[24px] p-6 bg-secondaryBgColor relative flex flex-col justify-around`}
         >
           <div className='flex flex-col gap-2 justify-center items-center text-textColor'>
             {iconComponent}

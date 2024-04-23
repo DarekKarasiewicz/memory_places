@@ -106,7 +106,15 @@
         "interwar_period": "Interwar period (1918-1939)",
         "world_war_II": "World War II (1939-1945)",
         "stalinist_period": "Stalinist period (1945-1953)",
-        "filled_box_error": "All boxes need to be filled"
+        "filled_box_error": "All boxes need to be filled",
+
+        "okresstalinowski": "Stalinist period (1945-1953)",
+        "istniejace": "Existing",
+        "nieistniejace": "Non-existing",
+        "zabytek": "Historical monument",
+        "miejsce": "Battlefield",
+        "iiwojnaswiatowa": "World War II (1939-1945)",
+        "no_translation_given": "No translations"
     },
     "user":{
         "general": "General",
@@ -289,7 +297,9 @@
             "changed_date": "Change date",
             "changed_by": "Changed by",
             "alert_success": "Action executed successfully!",
-            "alert_error": "Something went wrong. Please try again!"
+            "alert_error": "Something went wrong. Please try again!",
+            "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
+            "place_var_info2": "Current values to assign translations to:"
         }
     }
 }

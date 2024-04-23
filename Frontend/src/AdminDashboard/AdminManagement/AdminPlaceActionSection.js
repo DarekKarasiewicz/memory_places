@@ -57,7 +57,7 @@ function AdminPlaceActionSection({ action, placeId }) {
         responseSort.data
           .map((obj) => ({
             id: obj.id,
-            label: obj.name,
+            label: t(`modal.${obj.value}`),
             value: obj.id,
             text: obj.value,
             order: obj.order,
@@ -76,7 +76,7 @@ function AdminPlaceActionSection({ action, placeId }) {
         responseType.data
           .map((obj) => ({
             id: obj.id,
-            label: obj.name,
+            label: t(`modal.${obj.value}`),
             value: obj.id,
             text: obj.value,
             order: obj.order,
@@ -95,7 +95,7 @@ function AdminPlaceActionSection({ action, placeId }) {
         responsePeriod.data
           .map((obj) => ({
             id: obj.id,
-            label: obj.name,
+            label: t(`modal.${obj.value}`),
             value: obj.id,
             text: obj.value,
             order: obj.order,
@@ -134,7 +134,7 @@ function AdminPlaceActionSection({ action, placeId }) {
           periodRef.current.value = response.data.period;
           wikiLinkRef.current.value = response.data.wiki_link;
           webLinkRef.current.value = response.data.topic_link;
-          setToVerification(response.data.verified === true ? 'true' : 'false');
+          setToVerification(response.data.verified === true ? 'false' : 'true');
 
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
@@ -229,7 +229,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
-      var isValidated = toVerification === 'true' ? true : false;
+      var isValidated = toVerification === 'true' ? false : true;
 
       console.log(isValidated);
 
@@ -248,12 +248,12 @@ function AdminPlaceActionSection({ action, placeId }) {
             topic_link: webLinkRef.current.value,
             verified: isValidated,
           })
-          .then((response) => {
+          .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             navigate('/adminDashboard');
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
             navigate('/adminDashboard');
@@ -275,13 +275,13 @@ function AdminPlaceActionSection({ action, placeId }) {
             topic_link: webLinkRef.current.value,
             verified: isValidated,
           })
-          .then((response) => {
+          .then(() => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             navigate('/adminDashboard');
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));

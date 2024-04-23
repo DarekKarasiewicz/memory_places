@@ -24,6 +24,18 @@ function LanguageSwitcher(props) {
     { label: t('user.ru'), value: 'ru', image: '../../assets/flags/ru.png', alt: t('user.ru') },
   ];
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -42,7 +54,7 @@ function LanguageSwitcher(props) {
       <div
         className={`${
           props.variant !== 'admin_dashboard'
-            ? 'absolute right-0 top-20 my-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+            ? 'absolute right-0 top-20 my-auto shadow-itemShadow'
             : 'relative z-10'
         }`}
         ref={wrapperRef}
@@ -62,7 +74,7 @@ function LanguageSwitcher(props) {
             <img
               src={lang_options.find((option) => option.value === language).image}
               alt={lang_options.find((option) => option.value === language).alt}
-              className='h-4 w-5 drop-shadow-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+              className='h-4 w-5 shadow-itemShadow'
             />
             {isOpen ? (
               <ArrowUpIcon className={'h-7 w-7'} />
@@ -72,15 +84,18 @@ function LanguageSwitcher(props) {
           </button>
 
           {isOpen && (
-            <div
+            <motion.div
               className={`${
                 props.variant !== 'admin_dashboard'
                   ? 'right-2 rounded-lg bg-mainBgColor'
-                  : 'left-1/2 -translate-x-1/2 bg-thirdBgColor flex justify-center items-center'
-              } absolute mt-2 w-24 shadow-lg`}
+                  : '-left-1/2 bg-mainBgColor flex justify-center items-center rounded-lg'
+              } absolute mt-2 w-24 shadow-itemShadow`}
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
             >
               <div
-                className='py-2 origin-top'
+                className='py-2'
                 role='menu'
                 aria-orientation='vertical'
                 aria-labelledby='options-menu'
@@ -90,23 +105,15 @@ function LanguageSwitcher(props) {
                     whileHover={{ scale: 1.05 }}
                     key={option.value}
                     onClick={() => handleLanguageChange(option.value)}
-                    className={`${
-                      props.variant !== 'admin_dashboard'
-                        ? 'text-textColor hover:text-contrastColor'
-                        : 'hover:bg-secondaryBgColor hover:text-contrastColor'
-                    } block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer `}
+                    className={`block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer text-textColor hover:text-contrastColor`}
                     role='menuitem'
                   >
-                    <img
-                      src={option.image}
-                      alt={option.alt}
-                      className='drop-shadow-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
-                    />
+                    <img src={option.image} alt={option.alt} className='shadow-itemShadow' />
                     {option.label}
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

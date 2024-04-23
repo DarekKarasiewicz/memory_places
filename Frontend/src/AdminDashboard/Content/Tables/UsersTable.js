@@ -133,7 +133,7 @@ function UsersTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-4'>
+              <td className='flex my-1 gap-2'>
                 {user.admin && (
                   <span
                     className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'

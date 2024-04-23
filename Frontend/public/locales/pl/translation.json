@@ -106,7 +106,15 @@
         "interwar_period": "Okres Międzywojenny (1918 – 1939)",
         "world_war_II": "II Wojna Światowa (1939 – 1945)",
         "stalinist_period": "Okres Stalinowski (1945 – 1953)",
-        "filled_box_error": "Wszystkie pole muszą być uzupełnione"
+        "filled_box_error": "Wszystkie pole muszą być uzupełnione",
+
+        "okresstalinowski": "Okres Stalinowski (1945 – 1953)",
+        "istniejace": "Istniejące",
+        "nieistniejace": "Nieistniejące",
+        "zabytek": "Zabytek",
+        "miejsce": "Miejsce bitwy, potyczki",
+        "iiwojnaswiatowa": "II Wojna Światowa (1939 – 1945)",
+        "no_translation_given": "Brak tłumaczeń"
     },
     "user":{
         "general": "Ogólne",
@@ -289,7 +297,9 @@
             "changed_date": "Data zmiany",
             "changed_by": "Zmienione przez",
             "alert_success": "Akcja została wykonana pomyślnie!",
-            "alert_error": "Coś poszło nie tak. Spróbuj jeszcze raz!"
+            "alert_error": "Coś poszło nie tak. Spróbuj jeszcze raz!",
+            "place_var_info": "Po jakiejkolwiek zmianie w tej sekcji należy skontaktować się z developerem w celu zmiany tłumaczeń w aplikacji",
+            "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:"
         }
     }
 }

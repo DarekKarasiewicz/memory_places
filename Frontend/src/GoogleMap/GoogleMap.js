@@ -85,7 +85,7 @@ const GoogleMap = ({ adminVersion }) => {
   useEffect(() => {
     const fetchDataAndFilter = async () => {
       await dispatch(fetchMapPlaces());
-      dispatch(filterPlaces({ sortof: 'all', type: 'all', period: 'all' }));
+      dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
     const fetchTrailsAndFilter = async () => {
       await dispatch(fetchMapTrails());
