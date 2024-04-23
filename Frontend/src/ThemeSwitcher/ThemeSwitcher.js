@@ -23,6 +23,18 @@ function ThemeSwitcher() {
     // { label: t('user.color3'), value: 'contrast', indicator: 'bg-yellow-500'}
   ];
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -56,7 +68,12 @@ function ThemeSwitcher() {
           </button>
 
           {isOpen && (
-            <div className='left-1/2 -translate-x-1/2 top-9 bg-mainBgColor flex justify-center items-center absolute mt-2 w-auto shadow-lg'>
+            <motion.div
+              className='-left-1/2 top-9 bg-mainBgColor flex justify-center items-center absolute mt-2 w-auto shadow-itemShadow rounded-lg'
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
+            >
               <div>
                 {theme_options.map((option) => (
                   <motion.div
@@ -75,7 +92,7 @@ function ThemeSwitcher() {
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

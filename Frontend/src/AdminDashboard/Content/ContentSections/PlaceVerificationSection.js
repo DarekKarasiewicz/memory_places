@@ -61,15 +61,36 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.sortof'),
-      accessorKey: 'sortof_name',
+      accessorKey: 'sortof_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.type'),
-      accessorKey: 'type_name',
+      accessorKey: 'type_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.period'),
-      accessorKey: 'period_name',
+      accessorKey: 'period_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.created_by'),

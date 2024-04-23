@@ -23,7 +23,7 @@ const AddingOption = ({ type }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className={`bg-mainBgColor h-12 w-12 rounded-full cursor-pointer flex justify-center items-center m-auto shadow-[0_3px_10px_rgb(0,0,0,0.2)]`}
+      className={`bg-mainBgColor h-12 w-12 rounded-full cursor-pointer flex justify-center items-center m-auto shadow-itemShadow`}
       onClick={type === 'trail' ? handleTrailClick : handlePlaceClick}
     >
       {IconComponent}

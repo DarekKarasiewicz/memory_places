@@ -5,7 +5,7 @@ function BaseRadioGroup({ readOnly, options, selectedValue, onChange }) {
         {options.map((option) => (
           <label key={option.value} className='flex items-center gap-2 text-base cursor-pointer'>
             <input
-              className='w-4 h-4 cursor-pointer shadow-[0_3px_10px_rgb(0,0,0,0.2)]'
+              className='w-4 h-4 cursor-pointer drop-shadow-sm shadow-itemShadow'
               type='radio'
               name={option.name}
               value={option.value}

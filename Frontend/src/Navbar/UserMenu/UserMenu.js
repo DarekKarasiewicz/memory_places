@@ -153,7 +153,7 @@ function UserMenu() {
         </div>
         {isActive && (
           <motion.ul
-            className='bg-mainBgColor text-textColor flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
+            className='bg-mainBgColor text-textColor rounded-lg flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'
@@ -178,14 +178,14 @@ function UserMenu() {
         )}
         {isPopupOpen && (
           <motion.div
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-16 right-0 w-52 p-4 justify-center items-center border border-black '
+            className='bg-mainBgColor text-textColor flex flex-col gap-2 mt-2 absolute top-16 right-5 w-52 p-4 justify-center items-center z-1'
             variants={parentItem}
             initial='hidden'
             animate='visible'
           >
             <span className='text-center'>{t('user.login_info')}</span>
             <BaseButton name={t('user.login')} btnBg='blue' onClick={handleLoginModalOpen} />
-            <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-l border-t border-black'></div>
+            <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>
           </motion.div>
         )}
       </div>

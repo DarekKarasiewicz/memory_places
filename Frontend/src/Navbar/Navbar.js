@@ -78,7 +78,7 @@ function Navbar() {
             </motion.div>
             {isActive && (
               <motion.ul
-                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-mainBgColor rounded-b-lg'
+                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-mainBgColor rounded-b-lg shadow-itemShadow'
                 variants={parentItem}
                 initial='hidden'
                 animate='visible'

@@ -55,7 +55,7 @@ function AdminDropdown() {
     },
   };
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setIsActive((current) => !current);
     setIsOpen((current) => !current);
   };
@@ -85,7 +85,7 @@ function AdminDropdown() {
         </div>
         {isActive && (
           <motion.ul
-            className='bg-mainBgColor flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
+            className='bg-mainBgColor shadow-itemShadow rounded-lg flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'

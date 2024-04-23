@@ -45,7 +45,7 @@ function ConfirmationModal() {
           transition={{ duration: 0.25, ease: 'easeOut' }}
         >
           <div
-            className={`rounded-xl shadow-itemShadow bg-mainBgColor relative flex flex-col border-2 ${
+            className={`rounded-xl bg-mainBgColor relative flex flex-col border-2 ${
               type === 'success' ? 'border-green-500' : 'border-red-500'
             } `}
           >
