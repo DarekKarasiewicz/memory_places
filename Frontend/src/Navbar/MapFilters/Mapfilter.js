@@ -26,7 +26,7 @@ function MapFilter() {
 
   const fetchSortOfItems = async () => {
     try {
-      const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
+      const responseSort = await axios.get(`http://127.0.0.1:8000/memo_places/sortofs`);
       const sortOfItems = responseSort.data
         .map((obj) => ({
           id: obj.id,
@@ -50,7 +50,7 @@ function MapFilter() {
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
+      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -74,7 +74,7 @@ function MapFilter() {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -153,7 +153,7 @@ function MapFilter() {
           animate={{ opacity: 1 }}
           className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-mainBgColor text-textColor rounded-s-lg z-10 shadow-xl'
         >
-          <div className='flex flex-col gap-y-4 justify-start items-center'>
+          <div className='flex flex-col gap-y-4 justify-start items-center w-full'>
             <div className='text-2xl border-b-2 border-textColor p-2 w-1/2 text-center'>
               <span>{t('common.filter1')}</span>
               <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>

@@ -89,7 +89,7 @@ const GoogleMap = ({ adminVersion }) => {
     };
     const fetchTrailsAndFilter = async () => {
       await dispatch(fetchMapTrails());
-      dispatch(filterTrails({ type: 'all', period: 'all' }));
+      dispatch(filterTrails({ type: 0, period: 0 }));
     };
 
     fetchTrailsAndFilter();

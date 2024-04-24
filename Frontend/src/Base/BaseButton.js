@@ -24,7 +24,9 @@ function BaseButton(props) {
   return (
     <>
       <motion.button
-        className={`rounded w-32 normal-case ${currentBg} leading-6 p-2 shadow-lg text-white ${currentBgHover} font-medium rounded-lg ${
+        className={`rounded ${
+          !props.breakWidth ? 'w-32' : ''
+        } normal-case ${currentBg} leading-6 p-2 shadow-lg text-white ${currentBgHover} font-medium rounded-lg ${
           props.className ? props.className : ''
         } ${props.disabled ? 'opacity-50' : ''}`}
         whileHover={!props.disabled ? { scale: 1.05 } : {}}
