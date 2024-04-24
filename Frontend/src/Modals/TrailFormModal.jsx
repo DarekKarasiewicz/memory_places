@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import BaseModal from '../Base/BaseModal';
 import BaseInput from '../Base/BaseInput';
 import BaseTextarea from '../Base/BaseTextarea';
@@ -16,6 +16,8 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { selectUpdateTrail, updateTrailActions } from '../Redux/updateTrailSlice';
 import { addTrail, deleteTrail } from '../Redux/allMapTrailsSlice';
+import WebIcon from '../icons/WebIcon';
+import WikiIcon from '../icons/WikiIcon';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -34,22 +36,56 @@ const TrailFormModal = (props) => {
   const topicLinkRef = useRef();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [type, setType] = useState([]);
+  const [period, setPeriod] = useState([]);
 
-  const type_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.battlefield'), value: 'battlefield' },
-  ];
+  const fetchTypeItems = async () => {
+    try {
+      const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
+      const typeItems = responseType.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
 
-  const period_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.poland_before_third_partition'), value: 'poland_before_third_partition' },
-    { label: t('modal.napoleonic_wars'), value: 'napoleonic_wars' },
-    { label: t('modal.poland_after_partitions'), value: 'poland_after_partitions' },
-    { label: t('modal.world_war_I'), value: 'world_war_I' },
-    { label: t('modal.interwar_period'), value: 'interwar_period' },
-    { label: t('modal.world_war_II'), value: 'world_war_II' },
-    { label: t('modal.stalinist_period'), value: 'stalinist_period' },
-  ];
+      const idSet = new Set(typeItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setType([{ id: 0, label: t('modal.all'), value: 0 }, ...typeItems]);
+      } else {
+        setType(typeItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPeriodItems = async () => {
+    try {
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
+      const periodItems = responsePeriod.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(periodItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setPeriod([{ id: 0, label: t('modal.all'), value: 0 }, ...periodItems]);
+      } else {
+        setPeriod(periodItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (props.type === 'update' && updateTrailData.isDataLoaded === false) {
@@ -64,8 +100,8 @@ const TrailFormModal = (props) => {
       validateName(updateTrailData.trail.path_name);
       validateDescription(updateTrailData.trail.description);
       dispatch(formValidationActions.changeIsValidDate(isNaN(updateTrailData.trail.found_date)));
-      dispatch(formValidationActions.changeIsValidType(updateTrailData.trail.type !== 'all'));
-      dispatch(formValidationActions.changeIsValidPeriod(updateTrailData.trail.period !== 'all'));
+      dispatch(formValidationActions.changeIsValidType(updateTrailData.trail.type !== 0));
+      dispatch(formValidationActions.changeIsValidPeriod(updateTrailData.trail.period !== 0));
       dispatch(updateTrailActions.dataIsLoaded());
     }
   }, []);
@@ -160,140 +196,145 @@ const TrailFormModal = (props) => {
     alert(t('modal.filled_box_error'));
   };
 
+  useEffect(() => {
+    fetchTypeItems();
+    fetchPeriodItems();
+  }, []);
+
   return (
     <BaseModal title={props.title} closeModal={props.closeModal}>
-      <div className='p-2 max-h-[75vh] overflow-y-auto'>
-        <BaseInput
-          type='text'
-          name='nameInput'
-          label={t('common.name')}
-          value={addTrailData.path_name}
-          onBlur={() => {
-            dispatch(addTrailActions.changeName(nameRef.current.value));
-            validateName(nameRef.current.value);
-          }}
-          onChange={() => {
-            validateName(nameRef.current.value);
-          }}
-          ref={nameRef}
-          isValid={formValidation.isValidName}
-        />
-        {formValidation.isValidName === false && (
-          <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
-        )}
-        <BaseInput
-          type='date'
-          name='dateInput'
-          label={t('common.date')}
-          blockFuture={true}
-          ref={dateRef}
-          value={addTrailData.found_date}
-          onBlur={() => {
-            dispatch(addTrailActions.changeFoundDate(dateRef.current.value));
-            dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-          }}
-          onChange={() => {
-            dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-          }}
-          isValid={formValidation.isValidDate}
-        />
-        <BaseImageUpload fileSize={2} />
-        <div className='p-2 flex justify-center mt-2'>
-          <BaseButton
-            name={
-              addTrailData.coordinates.length > 0
-                ? t('common.edit_trail')
-                : t('common.select_trail')
-            }
-            btnBg='blue'
-            onClick={handleSelectTrail}
+      <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4'>
+        <div className='flex flex-col gap-2 w-2/5'>
+          <BaseInput
+            type='date'
+            name='dateInput'
+            label={t('common.date')}
+            blockFuture={true}
+            ref={dateRef}
+            value={addTrailData.found_date}
+            onBlur={() => {
+              dispatch(addTrailActions.changeFoundDate(dateRef.current.value));
+              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+            }}
+            onChange={() => {
+              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+            }}
+            isValid={formValidation.isValidDate}
           />
+          <BaseSelect
+            label={t('common.type')}
+            name={t('common.type')}
+            value={addTrailData.type}
+            options={type}
+            ref={typeRef}
+            onBlur={() => {
+              dispatch(addTrailActions.changeType(typeRef.current.value));
+              dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
+            }}
+            onChange={() => {
+              dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
+            }}
+            isValid={formValidation.isValidType}
+          />
+          <BaseSelect
+            label={t('common.period')}
+            name={t('common.period')}
+            value={addTrailData.period}
+            options={period}
+            ref={periodRef}
+            onBlur={() => {
+              dispatch(addTrailActions.changePeriod(periodRef.current.value));
+              dispatch(
+                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
+              );
+            }}
+            onChange={() => {
+              dispatch(
+                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
+              );
+            }}
+            isValid={formValidation.isValidPeriod}
+          />
+          <div className='p-2 flex justify-center mt-2'>
+            <BaseButton
+              name={
+                addTrailData.coordinates.length > 0
+                  ? t('common.edit_trail')
+                  : t('common.select_trail')
+              }
+              btnBg='blue'
+              onClick={handleSelectTrail}
+            />
+          </div>
+          <div className='mt-1 flex flex-col gap-1'>
+            <p>{t('common.useful_links')}</p>
+            <div className='flex justify-center items-center gap-2'>
+              <WikiIcon />
+              <BaseInput
+                type='text'
+                name='wikiLinkInput'
+                value={addTrailData.wiki_link}
+                onBlur={() => {
+                  dispatch(addTrailActions.changeWikiLink(wikiLinkRef.current.value));
+                }}
+                ref={wikiLinkRef}
+              />
+            </div>
+            <div className='flex justify-center items-center gap-2'>
+              <WebIcon />
+              <BaseInput
+                type='text'
+                name='topicLinkInput'
+                value={addTrailData.topic_link}
+                onBlur={() => {
+                  dispatch(addTrailActions.changeTopicLink(topicLinkRef.current.value));
+                }}
+                ref={topicLinkRef}
+              />
+            </div>
+          </div>
         </div>
-        <BaseSelect
-          label={t('common.type')}
-          name={t('common.type')}
-          value={addTrailData.type}
-          options={type_options}
-          ref={typeRef}
-          onBlur={() => {
-            dispatch(addTrailActions.changeType(typeRef.current.value));
-            dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
-          }}
-          onChange={() => {
-            dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
-          }}
-          isValid={formValidation.isValidType}
-        />
-        <BaseSelect
-          label={t('common.period')}
-          name={t('common.period')}
-          value={addTrailData.period}
-          options={period_options}
-          ref={periodRef}
-          onBlur={() => {
-            dispatch(addTrailActions.changePeriod(periodRef.current.value));
-            dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'));
-          }}
-          onChange={() => {
-            dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'));
-          }}
-          isValid={formValidation.isValidPeriod}
-        />
-        <BaseTextarea
-          rows='6'
-          label={t('common.description')}
-          secondLabel={t('common.description-max')}
-          maxLength={1000}
-          ref={descriptionRef}
-          value={addTrailData.description}
-          onBlur={() => {
-            dispatch(addTrailActions.changeDescription(descriptionRef.current.value));
-            validateDescription(descriptionRef.current.value);
-          }}
-          onChange={() => {
-            validateDescription(descriptionRef.current.value);
-          }}
-          isValid={formValidation.isValidDescription}
-        />
-        <div className='mt-1'>
-          <p>{t('common.useful_links')}</p>
-          <div className='flex'>
-            <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
-              <img src='./assets/wiki_icon.svg' alt='wiki_icon' />
-            </div>
-            <BaseInput
-              type='text'
-              name='wikiLinkInput'
-              value={addTrailData.wiki_link}
-              onBlur={() => {
-                dispatch(addTrailActions.changeWikiLink(wikiLinkRef.current.value));
-              }}
-              ref={wikiLinkRef}
-            />
-          </div>
-          <div className='flex'>
-            <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
-              <img src='./assets/web_icon.svg' alt='web_icon' />
-            </div>
-            <BaseInput
-              type='text'
-              name='topicLinkInput'
-              value={addTrailData.topic_link}
-              onBlur={() => {
-                dispatch(addTrailActions.changeTopicLink(topicLinkRef.current.value));
-              }}
-              ref={topicLinkRef}
-            />
-          </div>
+        <div className='flex flex-col gap-2 w-3/5'>
+          <BaseInput
+            type='text'
+            name='nameInput'
+            label={t('common.name')}
+            value={addTrailData.path_name}
+            onBlur={() => {
+              dispatch(addTrailActions.changeName(nameRef.current.value));
+              validateName(nameRef.current.value);
+            }}
+            onChange={() => {
+              validateName(nameRef.current.value);
+            }}
+            ref={nameRef}
+            isValid={formValidation.isValidName}
+          />
+          {formValidation.isValidName === false && (
+            <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
+          )}
+          <BaseImageUpload fileSize={2} />
+          <BaseTextarea
+            rows='12'
+            label={t('common.description')}
+            secondLabel={t('common.description-max')}
+            maxLength={1000}
+            ref={descriptionRef}
+            value={addTrailData.description}
+            onBlur={() => {
+              dispatch(addTrailActions.changeDescription(descriptionRef.current.value));
+              validateDescription(descriptionRef.current.value);
+            }}
+            onChange={() => {
+              validateDescription(descriptionRef.current.value);
+            }}
+            isValid={formValidation.isValidDescription}
+          />
         </div>
       </div>
       <div className='p-2 flex gap-4 justify-center'>
-        <BaseButton
-          type='submit'
-          name={t('common.confirm')}
-          btnBg='blue'
-          onClick={handleSubmit}
-        ></BaseButton>
+        <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal} />
+        <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleSubmit} />
       </div>
     </BaseModal>
   );

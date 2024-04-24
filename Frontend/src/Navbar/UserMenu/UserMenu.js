@@ -153,7 +153,7 @@ function UserMenu() {
         </div>
         {isActive && (
           <motion.ul
-            className='bg-mainBgColor text-textColor rounded-lg flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
+            className='bg-mainBgColor text-textColor shadow-itemShadow rounded-lg flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'

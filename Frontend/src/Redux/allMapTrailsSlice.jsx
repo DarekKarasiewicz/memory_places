@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const initialState = {
   name: '',
-  type: 'all',
-  period: 'all',
+  type: 0,
+  period: 0,
   filterItems: [],
   allItems: [],
   loading: false,
@@ -22,7 +22,7 @@ export const allMapTrailsSlice = createSlice({
       state.type = type;
       state.period = period;
 
-      if (name === '' && type === 'all' && period === 'all') {
+      if (name === '' && type === 0 && period === 0) {
         state.filterItems = state.allItems;
       } else {
         state.filterItems = state.allItems.filter((item) => {
@@ -31,8 +31,8 @@ export const allMapTrailsSlice = createSlice({
 
           return (
             (name === '' || itemName.includes(filterName)) &&
-            (type === 'all' || item.type === type) &&
-            (period === 'all' || item.period === period)
+            (type === 0 || item.type === type) &&
+            (period === 0 || item.period === period)
           );
         });
       }

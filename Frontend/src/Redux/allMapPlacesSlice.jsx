@@ -19,10 +19,6 @@ export const allMapPlacesSlice = createSlice({
     filterPlaces: (state, action) => {
       const { name, sortof, type, period } = action.payload;
 
-      console.log(sortof);
-      console.log(type);
-      console.log(period);
-
       state.name = name;
       state.sortof = sortof;
       state.type = type;
