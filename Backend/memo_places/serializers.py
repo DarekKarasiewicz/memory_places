@@ -9,10 +9,11 @@ class User_serializer(serializers.ModelSerializer):
 
 
 class Places_serailizer(serializers.ModelSerializer):
-    username    = serializers.CharField(source='user.username')
-    type_value   = serializers.CharField(source='type.value')
-    period_value = serializers.CharField(source='period.value')
-    sortof_value = serializers.CharField(source='sortof.value')
+    username = serializers.CharField(source="user.username")
+    type_value = serializers.CharField(source="type.value")
+    period_value = serializers.CharField(source="period.value")
+    sortof_value = serializers.CharField(source="sortof.value")
+
     class Meta:
         model = Place
         fields = (
@@ -37,12 +38,14 @@ class Places_serailizer(serializers.ModelSerializer):
             "verified",
         )
 
+
 class Path_serailizer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
-    type_value   = serializers.CharField(source='type.value')
-    period_value = serializers.CharField(source='period.value')
+    username = serializers.CharField(source="user.username")
+    type_value = serializers.CharField(source="type.value")
+    period_value = serializers.CharField(source="period.value")
+
     class Meta:
-        model = Path 
+        model = Path
         fields = (
             "id",
             "path_name",
@@ -60,8 +63,11 @@ class Path_serailizer(serializers.ModelSerializer):
             "wiki_link",
             "img",
         )
+
+
 class Short_Places_serailizer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
+    username = serializers.CharField(source="user.username")
+
     class Meta:
         model = Place
         fields = (
@@ -78,8 +84,9 @@ class Short_Places_serailizer(serializers.ModelSerializer):
             "img",
         )
 
+
 class Questions_serializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
+    username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Question
@@ -87,25 +94,27 @@ class Questions_serializer(serializers.ModelSerializer):
             "id",
             "title",
             "user",
-            "username", 
-            "description", 
+            "username",
+            "description",
             "done",
         )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if data.get('user') is None:
-            data.pop('username', None)
+        if data.get("user") is None:
+            data.pop("username", None)
         return data
 
+
 class Changes_serializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
+    username = serializers.CharField(source="user.username", read_only=True)
+
     class Meta:
         model = Question
         fields = (
             "id",
             "user",
-            "username", 
-            "json", 
+            "username",
+            "json",
             "creation_date",
         )
