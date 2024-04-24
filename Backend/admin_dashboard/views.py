@@ -1,8 +1,18 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, status
 
-from memo_places.serializers import Changes_serializer, Places_serailizer, Questions_serializer, Path_serailizer
-from .serializers import User_serializer, Types_serializer, Period_serializer, Sortof_serializer
+from memo_places.serializers import (
+    Changes_serializer,
+    Places_serailizer,
+    Questions_serializer,
+    Path_serailizer,
+)
+from .serializers import (
+    User_serializer,
+    Types_serializer,
+    Period_serializer,
+    Sortof_serializer,
+)
 from memo_places.models import Place, User, Question, Change, Sortof, Type, Period, Path
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -17,10 +27,11 @@ import unicodedata
 
 
 def json_bool(str):
-    return str.lower()=="true"
+    return str.lower() == "true"
+
 
 class Place_view(viewsets.ModelViewSet):
-    model =Place
+    model = Place
     serializer_class = Places_serailizer
 
     def get_queryset(self):
@@ -34,15 +45,15 @@ class Place_view(viewsets.ModelViewSet):
 
         data = request.data
         new_place = self.model(
-            user        = creator,
-            place_name  = data["place_name"],
-            description = data["description"],
-            found_date  = data["found_date"],
-            lng         = data["lng"],
-            lat         = data["lat"],
-            type        = type,
-            sortof      = sortof,
-            period      = period,
+            user=creator,
+            place_name=data["place_name"],
+            description=data["description"],
+            found_date=data["found_date"],
+            lng=data["lng"],
+            lat=data["lat"],
+            type=type,
+            sortof=sortof,
+            period=period,
         )
         for key in data.keys():
             match key:
@@ -112,13 +123,13 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.lng = data["lng"]
                 case "type":
                     type_obj = Type.objects.get(pk=data["type"])
-                    place_object.type = type_obj 
+                    place_object.type = type_obj
                 case "sortof":
                     sortof_obj = Sortof.objects.get(pk=data["sortof"])
-                    place_object.sortof = sortof_obj 
+                    place_object.sortof = sortof_obj
                 case "period":
                     period_obj = Period.objects.get(pk=data["period"])
-                    place_object.period = period_obj 
+                    place_object.period = period_obj
                 case "wiki_link":
                     place_object.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -142,6 +153,7 @@ class Place_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
+
 class Path_view(viewsets.ModelViewSet):
     model = Path
     serializer_class = Path_serailizer
@@ -156,13 +168,13 @@ class Path_view(viewsets.ModelViewSet):
 
         data = request.data
         new_path = self.model(
-            user        = creator,
-            path_name  = data["path_name"],
-            description = data["description"],
-            found_date  = data["found_date"],
-            coordinates = data["coordinates"],
-            type        = type,
-            period      = period,
+            user=creator,
+            path_name=data["path_name"],
+            description=data["description"],
+            found_date=data["found_date"],
+            coordinates=data["coordinates"],
+            type=type,
+            period=period,
         )
         for key in data.keys():
             match key:
@@ -201,7 +213,7 @@ class Path_view(viewsets.ModelViewSet):
                 paths = self.model.objects.filter(path_name=value)
                 serializer = self.serializer_class(paths, many=True)
                 return Response(serializer.data)
-            #TODO
+            # TODO
             # case "found_date":
             #     return Response(serializer.data)
             # case "creation_date":
@@ -232,7 +244,7 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.type = type_obj
                 case "period":
                     period_obj = Period.objects.get(pk=data["period"])
-                    path_object.period = period_obj 
+                    path_object.period = period_obj
                 case "wiki_link":
                     path_object.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -253,6 +265,7 @@ class Path_view(viewsets.ModelViewSet):
         path_object.delete()
         serializer = self.serializer_class(path_object)
         return Response(serializer.data)
+
 
 class Outside_user_view(viewsets.ModelViewSet):
     model = User
@@ -276,43 +289,47 @@ class Outside_user_view(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+
 class User_view(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return self.model.objects.all()  
+        return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
-        data= request.data
+        data = request.data
         new_user = self.model.objects.create_user(
             email=data["email"],
             username=data["username"],
             password=data["password"],
         )
-        
+
         for key in data.keys():
             match key:
                 case "admin":
                     print(json_bool(data["admin"]))
-                    new_user.admin=json_bool(data["admin"])
+                    new_user.admin = json_bool(data["admin"])
                 case "master":
-                    new_user.master=json_bool(data["master"])
+                    new_user.master = json_bool(data["master"])
                 case "outside":
-                    new_user.outside=json_bool(data["outside"]) 
+                    new_user.outside = json_bool(data["outside"])
                 case "active":
-                    new_user.active=json_bool(data["active"])
+                    new_user.active = json_bool(data["active"])
                 case "confirmed":
-                    new_user.confirmed=json_bool(data["confirmed"]) 
+                    new_user.confirmed = json_bool(data["confirmed"])
         new_user.save()
         serializer = self.serializer_class(new_user)
-        send_mail("Verifictation mail"
-                , f'http://localhost:3000/userVerification/{serializer["id"].value}'
-                #Env not in views
-                ,'info@miejscapamieci.org.pl'
-                , [serializer['email'].value]
-                , fail_silently=False)
-                # , html_message=)
+        send_mail(
+            "Verifictation mail",
+            f'http://localhost:3000/userVerification/{serializer["id"].value}'
+            # Env not in views
+            ,
+            "info@miejscapamieci.org.pl",
+            [serializer["email"].value],
+            fail_silently=False,
+        )
+        # , html_message=)
 
         return Response(serializer.data)
 
@@ -345,8 +362,10 @@ class User_view(viewsets.ModelViewSet):
                 user = self.model.objects.filter(master=True)
                 serializer = self.serializer_class(user, many=True)
             # case "data_join":
-            #     #TODO 
-        return Response({"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+            #     #TODO
+        return Response(
+            {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
     def update(self, request, *args, **kwargs):
         # user_object = User.objects.get(id=kwargs['pk'])
@@ -394,46 +413,52 @@ class User_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(user_object)
         return Response(serializer.data)
 
+
 class None_Verified_Places_view(viewsets.ModelViewSet):
-    model =Place
+    model = Place
     serializer_class = Places_serailizer
 
     def get_queryset(self):
         return self.model.objects.filter(verified=False)
+
 
 class Questions_view(viewsets.ModelViewSet):
     model = Question
     serializer_class = Questions_serializer
 
     def get_queryset(self):
-        return self.model.objects.all() 
+        return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
         try:
-            user_object = self.model.objects.get(email=request.data['email'])
+            user_object = self.model.objects.get(email=request.data["email"])
         except:
-            user_object=None
+            user_object = None
         print(request.data)
-        
+
         new_question = self.model(
             user=user_object,
-            title=request.data['title'],
-            description=request.data['description'],
-            done=False
+            title=request.data["title"],
+            description=request.data["description"],
+            done=False,
         )
         new_question.save()
 
-        send_mail("Thanks for contact"
-                #Rethink about it 
-                , "Thanks for your ....."
-                #Env not in views
-                ,'info@miejscapamieci.org.pl'
-                , [request.data['email']]
-                , fail_silently=False)
-                # , html_message=) 
+        send_mail(
+            "Thanks for contact"
+            # Rethink about it
+            ,
+            "Thanks for your ....."
+            # Env not in views
+            ,
+            "info@miejscapamieci.org.pl",
+            [request.data["email"]],
+            fail_silently=False,
+        )
+        # , html_message=)
 
         serializer = self.serializer_class(new_question)
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
@@ -444,10 +469,10 @@ class Questions_view(viewsets.ModelViewSet):
             case "user":
                 # user_object = get_object_or_404(User, pk=value)
                 question_object = self.model.objects.filter(user=value)
-                serializer = self.serializer_class(question_object,many=True)
+                serializer = self.serializer_class(question_object, many=True)
             case "title":
                 question_object = self.model.objects.filter(username=value)
-                serializer = self.serializer_class(question_object,many=True)
+                serializer = self.serializer_class(question_object, many=True)
             case "email":
                 value = str(value).replace("&", ".")
                 user_object = get_object_or_404(User, email=value)
@@ -457,10 +482,12 @@ class Questions_view(viewsets.ModelViewSet):
                 question_object = self.model.objects.filter(done=json_bool(value))
                 serializer = self.serializer_class(question_object, many=True)
 
-        return Response({"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
     def update(self, request, *args, **kwargs):
-        question_object = self.model.objects.get(id=kwargs['pk'])
+        question_object = self.model.objects.get(id=kwargs["pk"])
 
         data = request.data
 
@@ -473,13 +500,13 @@ class Questions_view(viewsets.ModelViewSet):
                 case "description":
                     question_object.description = data["description"]
                 case "done":
-                    question_object.done =json_bool(data["done"])
+                    question_object.done = json_bool(data["done"])
                 case _:
                     pass
 
         question_object.save()
 
-        serializer =self.model(question_object) 
+        serializer = self.model(question_object)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
@@ -495,52 +522,54 @@ class Changes_view(viewsets.ModelViewSet):
     serializer_class = Changes_serializer
 
     def get_queryset(self):
-        return self.model.objects.all()  
+        return self.model.objects.all()
 
 
 def clean_string(string):
-    string = re.sub(r'[_\-!@#$%^&*()+=\[\]{};:\'",.<>?/\\|`~]', '', string)
-    string = string.replace(" ", "_") 
-    string = unicodedata.normalize('NFD', string).encode('ascii', 'ignore').decode("utf-8") 
-    string = string.strip("_") 
+    string = re.sub(r'[_\-!@#$%^&*()+=\[\]{};:\'",.<>?/\\|`~]', "", string)
+    string = string.replace(" ", "_")
+    string = (
+        unicodedata.normalize("NFD", string).encode("ascii", "ignore").decode("utf-8")
+    )
+    string = string.strip("_")
     return string
 
+
 class CategoryBaseView(viewsets.ModelViewSet):
-    serializer_class = None 
+    serializer_class = None
     model = None
 
     def get_queryset(self):
-        return self.model.objects.all()  
+        return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
-
         new_type = self.model(
-            name  = request.data['name'],
-            value = clean_string(request.data['value']),
-            order = request.data['order'],
+            name=request.data["name"],
+            value=clean_string(request.data["value"]),
+            order=request.data["order"],
         )
         new_type.save()
 
         serializer = self.serializer_class(new_type)
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        type_object = self.model.objects.get(id=kwargs['pk'])
+        type_object = self.model.objects.get(id=kwargs["pk"])
 
         for i in request.data.keys():
             match i:
                 case "name":
-                    type_object.name = request.data['name']
+                    type_object.name = request.data["name"]
                 case "value":
-                    type_object.name = request.data['value']
+                    type_object.name = request.data["value"]
                 case "order":
-                    type_object.name = request.data['order']
+                    type_object.name = request.data["order"]
                 case _:
                     pass
 
         type_object.save()
 
-        serializer = self.serializer_class(type_object) 
+        serializer = self.serializer_class(type_object)
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
@@ -550,14 +579,17 @@ class CategoryBaseView(viewsets.ModelViewSet):
         serializer = self.serializer_class(type_object)
         return Response(serializer.data)
 
+
 class Types_view(CategoryBaseView):
-    serializer_class = Types_serializer 
-    model = Type 
+    serializer_class = Types_serializer
+    model = Type
+
 
 class Sortofs_view(CategoryBaseView):
-    serializer_class = Sortof_serializer 
+    serializer_class = Sortof_serializer
     model = Sortof
 
+
 class Periods_view(CategoryBaseView):
-    serializer_class = Period_serializer 
-    model = Period 
+    serializer_class = Period_serializer
+    model = Period

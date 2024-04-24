@@ -1,34 +1,35 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from .serializers import Comments_Serailizer, Posts_Serailizer, Subforums_Serailizer 
-from .models import Comment, Subforum, Post 
-from memo_places.models import User 
+from .serializers import Comments_Serailizer, Posts_Serailizer, Subforums_Serailizer
+from .models import Comment, Subforum, Post
+from memo_places.models import User
 from rest_framework.response import Response
 
 import re
 
+
 class CommentView(viewsets.ModelViewSet):
     model = Comment
-    serializer_class = Comments_Serailizer 
-    
+    serializer_class = Comments_Serailizer
+
     def get_queryset(self):
         return self.model.objects.all()
-    
+
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
-        post    = get_object_or_404(Post, id=request.data["post"])
+        post = get_object_or_404(Post, id=request.data["post"])
 
         data = request.data
         new_comment = self.model(
-            user        = creator,
-            post        = post,
-            content     = data["content"],
+            user=creator,
+            post=post,
+            content=data["content"],
         )
         new_comment.save()
-        
+
         serializer = self.serializer_class(new_comment)
 
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
@@ -59,7 +60,7 @@ class CommentView(viewsets.ModelViewSet):
                 return Response(serializer.data)
 
         return Response(serializer.data)
-    
+
     def update(self, request, *args, **kwargs):
         comment_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -83,35 +84,34 @@ class CommentView(viewsets.ModelViewSet):
 
         serializer = self.serializer_class(comment_object)
         return Response(serializer.data)
-    
+
     def destroy(self, request, *args, **kwargs):
-        comment_object =  self.model.objects.get(id=kwargs["pk"])
+        comment_object = self.model.objects.get(id=kwargs["pk"])
 
         comment_object.delete()
         serializer = self.serializer_class(comment_object)
         return Response(serializer.data)
 
+
 class SubforumView(viewsets.ModelViewSet):
     model = Subforum
-    serializer_class = Subforums_Serailizer 
-    
+    serializer_class = Subforums_Serailizer
+
     def get_queryset(self):
         return self.model.objects.all()
-    
+
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
 
         data = request.data
         new_subforum = self.model(
-            name        = data["name"],
-            description = data["description"], 
-            user        = creator
+            name=data["name"], description=data["description"], user=creator
         )
         new_subforum.save()
-        
+
         serializer = self.serializer_class(new_subforum)
 
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
@@ -135,7 +135,7 @@ class SubforumView(viewsets.ModelViewSet):
             case _:
                 subforum = None
                 return Response({"detail": "Invalid key"})
-    
+
     def update(self, request, *args, **kwargs):
         subforum_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -155,37 +155,38 @@ class SubforumView(viewsets.ModelViewSet):
 
         serializer = self.serializer_class(subforum_object)
         return Response(serializer.data)
-    
+
     def destroy(self, request, *args, **kwargs):
-        subforum_object =  self.model.objects.get(id=kwargs["pk"])
+        subforum_object = self.model.objects.get(id=kwargs["pk"])
 
         subforum_object.delete()
         serializer = self.serializer_class(subforum_object)
         return Response(serializer.data)
 
+
 class PostView(viewsets.ModelViewSet):
-    model = Post 
-    serializer_class = Posts_Serailizer 
-    
+    model = Post
+    serializer_class = Posts_Serailizer
+
     def get_queryset(self):
         return Post.objects.all()
-    
+
     def create(self, request, *args, **kwargs):
-        creator  = get_object_or_404(User, id=request.data["user"])
+        creator = get_object_or_404(User, id=request.data["user"])
         subforum = get_object_or_404(Subforum, id=request.data["subforum"])
 
         data = request.data
         new_post = self.model(
-            user        = creator,
-            subforum    = subforum,
-            title       = data["title"],
-            content     = data["content"],
+            user=creator,
+            subforum=subforum,
+            title=data["title"],
+            content=data["content"],
         )
         new_post.save()
-        
+
         serializer = self.serializer_class(new_post)
 
-        return Response(serializer.data) 
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
@@ -216,7 +217,7 @@ class PostView(viewsets.ModelViewSet):
                 return Response(serializer.data)
 
         return Response(serializer.data)
-    
+
     def update(self, request, *args, **kwargs):
         post_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -242,9 +243,9 @@ class PostView(viewsets.ModelViewSet):
 
         serializer = self.serializer_class(post_object)
         return Response(serializer.data)
-    
+
     def destroy(self, request, *args, **kwargs):
-        post_object =  self.model.objects.get(id=kwargs["pk"])
+        post_object = self.model.objects.get(id=kwargs["pk"])
 
         post_object.delete()
         serializer = self.serializer_class(post_object)

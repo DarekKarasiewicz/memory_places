@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Place, User,Period,Sortof,Type
+from .models import Place, User, Period, Sortof, Type
 
 
 # Register your models here.
