@@ -95,7 +95,7 @@ class User(AbstractBaseUser):
 
     @property
     def is_staff(self):
-        return (self.admin,)
+        return self.admin
 
     @property
     def is_active(self):
@@ -103,57 +103,65 @@ class User(AbstractBaseUser):
 
 
 class Type(models.Model):
-    name  = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     order = models.IntegerField()
+
 
 class Sortof(models.Model):
-    name  = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     order = models.IntegerField()
+
+
 class Period(models.Model):
-    name  = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     order = models.IntegerField()
+
+
 class Place(models.Model):
-    user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    place_name    = models.CharField(max_length=32, default=None)
-    description   = models.TextField(default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    place_name = models.CharField(max_length=32, default=None)
+    description = models.TextField(default=None)
     creation_date = models.DateField(auto_now_add=True)
-    found_date    = models.DateField()
-    lng           = models.FloatField()
-    lat           = models.FloatField()
-    type          = models.ForeignKey(Type, on_delete=models.CASCADE)
-    sortof        = models.ForeignKey(Sortof, on_delete=models.CASCADE)
-    period        = models.ForeignKey(Period, on_delete=models.CASCADE)
-    wiki_link     = models.CharField(max_length=64, default=None,null=True)
-    topic_link    = models.CharField(max_length=64, default=None, null=True)
-    img           = models.CharField(max_length=256, default=None,null=True)
-    verified      = models.BooleanField(default=False)
+    found_date = models.DateField()
+    lng = models.FloatField()
+    lat = models.FloatField()
+    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    sortof = models.ForeignKey(Sortof, on_delete=models.CASCADE)
+    period = models.ForeignKey(Period, on_delete=models.CASCADE)
+    wiki_link = models.CharField(max_length=64, default=None, null=True)
+    topic_link = models.CharField(max_length=64, default=None, null=True)
+    img = models.CharField(max_length=256, default=None, null=True)
+    verified = models.BooleanField(default=False)
     creation_date = models.DateField(default=None, null=True)
+
 
 class Path(models.Model):
-    user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    path_name    = models.CharField(max_length=32, default=None)
-    description   = models.TextField(default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    path_name = models.CharField(max_length=32, default=None)
+    description = models.TextField(default=None)
     creation_date = models.DateField(auto_now_add=True)
-    coordinates   = models.JSONField()
-    found_date    = models.DateField()
-    type          = models.ForeignKey(Type, on_delete=models.CASCADE)
-    period        = models.ForeignKey(Period, on_delete=models.CASCADE)
-    wiki_link     = models.CharField(max_length=64, default=None,null=True)
-    topic_link    = models.CharField(max_length=64, default=None, null=True)
-    img           = models.CharField(max_length=256, default=None,null=True)
-    verified      = models.BooleanField(default=False)
+    coordinates = models.JSONField()
+    found_date = models.DateField()
+    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    period = models.ForeignKey(Period, on_delete=models.CASCADE)
+    wiki_link = models.CharField(max_length=64, default=None, null=True)
+    topic_link = models.CharField(max_length=64, default=None, null=True)
+    img = models.CharField(max_length=256, default=None, null=True)
+    verified = models.BooleanField(default=False)
     creation_date = models.DateField(default=None, null=True)
 
+
 class Question(models.Model):
-    user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    title       = models.CharField(max_length=64, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    title = models.CharField(max_length=64, default=None)
     description = models.CharField(max_length=360, default=None)
-    done        = models.BooleanField(default=False)
+    done = models.BooleanField(default=False)
+
 
 class Change(models.Model):
-    user          = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    json          = models.JSONField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    json = models.JSONField()
     creation_date = models.DateField(auto_now_add=True)
