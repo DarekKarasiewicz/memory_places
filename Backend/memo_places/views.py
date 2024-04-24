@@ -19,6 +19,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core.mail import send_mail
 from rest_framework.renderers import JSONRenderer
+from django.template.loader import render_to_string
 
 import re
 import secrets
@@ -304,16 +305,19 @@ class User_view(viewsets.ModelViewSet):
 
         new_user.save()
         serializer = self.serializer_class(new_user)
-        send_mail(
-            "Verifictation mail",
-            f'http://localhost:3000/userVerification/{serializer["id"].value}'
-            # Env not in views
-            ,
-            "info@miejscapamieci.org.pl",
-            [new_user.email],
-            fail_silently=False,
+
+        html_message = render_to_string(
+            'verification_mail.html',
+            {"link": f"http://localhost:3000/userVerification/{serializer['id'].value}"}
         )
-        # , html_message=)
+
+        send_mail(
+            subject="Verifictation mail",
+            message="",
+            from_email="info@miejscapamieci.org.pl",
+            recipient_list=[serializer["email"].value],
+            fail_silently=False,
+            html_message=html_message)
 
         return Response(serializer.data)
 
@@ -393,21 +397,18 @@ class Contact_us(viewsets.ModelViewSet):
             done=False,
         )
         new_question.save()
+        serializer = self.serializer_class(new_question)
+
+        html_message = render_to_string('contact.html')
 
         send_mail(
-            "Thanks for contact"
-            # Rethink about it
-            ,
-            "Thanks for your ....."
-            # Env not in views
-            ,
-            "info@miejscapamieci.org.pl",
-            [request.data["email"]],
+            subject="Thanks for contact",
+            message="",
+            from_email="info@miejscapamieci.org.pl",
+            recipient_list=[serializer["email"].value],
             fail_silently=False,
-        )
-        # , html_message=)
+            html_message=html_message)
 
-        serializer = self.serializer_class(new_question)
         return Response(serializer.data)
 
 
@@ -446,18 +447,18 @@ class Reset_password(viewsets.ModelViewSet):
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
 
-        send_mail(
-            "Thanks for contact"
-            # Rethink about it
-            ,
-            "SEBA HERE Link"
-            # Env not in views
-            ,
-            "info@miejscapamieci.org.pl",
-            [user.email],
-            fail_silently=False,
+        html_message = render_to_string(
+            'verification_mail.html',
+            {"link": f"SEBA HERE LINK"}
         )
-        # , html_message=)
+
+        send_mail(
+            subject="Reset password",
+            message="",
+            from_email="info@miejscapamieci.org.pl",
+            recipient_list=[serializer["email"].value],
+            fail_silently=False,
+            html_message=html_message)
 
         return Response({"detail": "Succes"})
 
