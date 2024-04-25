@@ -74,5 +74,11 @@ export function useOverlaySnapshots(map, overlaysShouldUpdateRef) {
 
       overlaysShouldUpdateRef.current = true;
     }
+
+    return () => {
+      for (const overlay of drawingTools.now) {
+        overlay.geometry.setMap(null);
+      }
+    };
   }, [map, overlaysShouldUpdateRef, drawingTools.now]);
 }

@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { modalsActions } from '../Redux/modalsSlice';
 
 function ContactForm(props) {
   const nameRef = useRef(null);
@@ -15,6 +17,7 @@ function ContactForm(props) {
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -40,7 +43,7 @@ function ContactForm(props) {
   return (
     <>
       <BaseModal title={t('user.contact_us')} closeModal={props.closeModal}>
-        <div className='flex flex-col p-2 gap-2'>
+        <div className='flex flex-col px-2 py-4 gap-2'>
           <div>{t('user.contact_info')}</div>
           <div className='flex gap-4'>
             <BaseInput
@@ -50,14 +53,19 @@ function ContactForm(props) {
             />
             <BaseInput type='text' label='Email' value={user.email ? user.email : ''} />
           </div>
-          <div className='max-h-48 overflow-auto'>
+          <div className='overflow-auto'>
             <BaseTextarea
-              rows='6'
+              rows='10'
               label={t('common.description')}
               secondLabel={t('common.description-max')}
             />
           </div>
-          <div className='flex justify-center mt-2'>
+          <div className='flex justify-center mt-2 gap-4'>
+            <BaseButton
+              name={t('common.cancel')}
+              btnBg='red'
+              onClick={() => dispatch(modalsActions.changeIsContactFormOpen())}
+            />
             <BaseButton name={t('common.send')} btnBg='blue' onClick={handleSubmit} />
           </div>
           <div className='text-center mt-2'>

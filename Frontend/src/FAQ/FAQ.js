@@ -1,4 +1,5 @@
 import BaseButton from '../Base/BaseButton';
+import BaseModal from '../Base/BaseModal';
 import FAQItems from './FAQItem.js/FAQItems';
 import { useTranslation } from 'react-i18next';
 
@@ -21,15 +22,9 @@ function FAQ(props) {
 
   return (
     <>
-      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
-        <div className='flex flex-col gap-4 m-auto min-w-[40rem] max-w-2xl max-h-[40rem] overflow-auto scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600 rounded-[24px] border-2 border-black h-auto p-4 bg-white relative'>
-          <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
-            <div className='flex justify-center items-center gap-2 text-xl'>
-              <img src='./assets/help_icon.svg' alt='help_icon' className='h-8 w-8' />
-              <span className='capitalize font-medium'>{t('user.FAQ_title')}</span>
-            </div>
-          </div>
-          <div className='mb-3 text-center'>
+      <BaseModal title={t('user.FAQ_title')}>
+        <div className='flex flex-col gap-4 max-h-[40rem] overflow-auto scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600 rounded-[24px]  h-auto p-4 relative'>
+          <div className='mb-3 text-left'>
             <span className='text-lg break-keep'>{t('user.FAQ_subtitle')}</span>
           </div>
           <div className='flex flex-col gap-2'>
@@ -40,12 +35,12 @@ function FAQ(props) {
           <div className='flex justify-center gap-2'>
             <BaseButton
               name={t('common.close')}
-              btnBg='blue'
+              btnBg='red'
               onClick={props.closeModal}
             ></BaseButton>
           </div>
         </div>
-      </div>
+      </BaseModal>
     </>
   );
 }

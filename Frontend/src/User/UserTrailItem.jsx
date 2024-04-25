@@ -6,8 +6,8 @@ import { updateTrailActions } from '../Redux/updateTrailSlice';
 import { useDispatch } from 'react-redux';
 import { locationActions } from '../Redux/locationSlice';
 import { deleteTrail } from '../Redux/allMapTrailsSlice';
-import { userPlacesActions } from '../Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
+import TrailIcon from '../icons/TrailIcon';
 
 const UserTrailItem = (props) => {
   const [visability, setVisability] = useState('flex');
@@ -18,7 +18,6 @@ const UserTrailItem = (props) => {
     e.stopPropagation();
     dispatch(updateTrailActions.changeUpdateTrail(props.trail));
     dispatch(modalsActions.changeIsTrailUpdateFormOpen());
-    dispatch(userPlacesActions.changeIsOpen());
   };
 
   const directToTrailOnMap = () => {
@@ -40,16 +39,16 @@ const UserTrailItem = (props) => {
 
   return (
     <li
-      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row ${
-        props.clickedItem === props.trail.id ? 'bg-slate-400' : 'bg-slate-300'
+      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
+        props.clickedItem === props.trail.id ? 'border-2 border-contrastColor' : ''
       }`}
       key={props.trail.id}
       onClick={directToTrailOnMap}
     >
-      <div className='w-2/12 flex justify-center items-center'>
-        <img src={`../../assets/trail_icon.svg`} alt='trail_icon' className='min-w-max min-h-max' />
+      <div className='w-2/12 flex justify-center items-center text-center'>
+        <TrailIcon />
       </div>
-      <div className='w-7/12 flex flex-col ml-1 mr-1'>
+      <div className='w-7/12 flex flex-col'>
         <h2 className='truncate font-semibold h-full'>{props.trail.path_name}</h2>
         <p className='text-sm'>{props.trail.found_date}</p>
       </div>
