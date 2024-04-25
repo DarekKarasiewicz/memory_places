@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Place, User, Question, Path
+from .models import Place, User, Question, Path, PlaceImage
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -13,6 +13,7 @@ class Places_serailizer(serializers.ModelSerializer):
     type_value = serializers.CharField(source="type.value")
     period_value = serializers.CharField(source="period.value")
     sortof_value = serializers.CharField(source="sortof.value")
+    # place_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Place
@@ -34,11 +35,17 @@ class Places_serailizer(serializers.ModelSerializer):
             "period_value",
             "topic_link",
             "wiki_link",
-            "img",
             "verified",
         )
 
+    # def get_place_image(self, obj):
+    #     images = PlaceImage.objects.filter(place=obj)
+    #     return [image.img.url for image in images]
 
+class PlaceImage_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlaceImage
+        fields= "__all__"
 class Path_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     type_value = serializers.CharField(source="type.value")
@@ -63,7 +70,6 @@ class Path_serailizer(serializers.ModelSerializer):
             "wiki_link",
             "img",
         )
-
 
 class Short_Places_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")

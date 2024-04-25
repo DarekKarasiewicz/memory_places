@@ -7,8 +7,9 @@ from .serializers import (
     Questions_serializer,
     Changes_serializer,
     Path_serailizer,
+    PlaceImage_serializer,
 )
-from .models import Place, User, Question, Change, Path, Type, Sortof, Period
+from .models import Place, User, Question, Change, Path, Type, Sortof, Period, PlaceImage
 from admin_dashboard.serializers import (
     Types_serializer,
     Sortof_serializer,
@@ -52,22 +53,37 @@ class Place_view(viewsets.ModelViewSet):
         return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
-        creator = get_object_or_404(User, id=request.data["user"])
-        type = get_object_or_404(Type, id=request.data["type"])
-        sortof = get_object_or_404(Sortof, id=request.data["sortof"])
-        period = get_object_or_404(Period, id=request.data["period"])
+        data =request.data
+        creator = get_object_or_404(User, id=data["user"])
+        type = get_object_or_404(Type, id=data["type"])
+        sortof = get_object_or_404(Sortof, id=data["sortof"])
+        period = get_object_or_404(Period, id=data["period"])
 
         new_place = self.model(
             user=creator,
-            place_name=request.data["place_name"],
-            description=request.data["description"],
-            found_date=request.data["found_date"],
-            lng=request.data["lng"],
-            lat=request.data["lat"],
+            place_name=data["place_name"],
+            description=data["description"],
+            found_date=data["found_date"],
+            lng=data["lng"],
+            lat=data["lat"],
             type=type,
             sortof=sortof,
             period=period,
         )
+        for key in data.keys():
+            match key:
+                case "wiki_link":
+                    new_place.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    new_place.topic_link = data["topic_link"]
+                # case "img":
+                    # for img in data[img]:
+                    #     place_img = PlaceImage(
+                    #         place=new_place,
+                    #         img=img
+                    #     )
+                    #     place_img.save()
+                        # new_place.img = data["img"]
         new_place.save()
 
         serializer = self.serializer_class(new_place)
@@ -148,6 +164,24 @@ class Place_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
+
+class Image_view(viewsets.ModelViewSet):
+    model = PlaceImage
+    serializer_class= PlaceImage_serializer
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        place_object = get_object_or_404(Place, id=request.data["place"])
+        placeimage_object = self.model(
+            place = place_object,
+            img = request.data["img"] 
+        )
+        placeimage_object.save()
+        serializer = self.serializer_class(placeimage_object)
+        return Response(serializer.data)
 
 class Path_view(viewsets.ModelViewSet):
     model = Path
