@@ -7,6 +7,9 @@ import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
 import { userPlacesActions } from '../Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import CancelIcon from '../icons/CancelIcon';
+import PlaceIcon from '../icons/PlaceIcon';
+import TrailIcon from '../icons/TrailIcon';
 
 const UserMenu = () => {
   const filterPlaces = useSelector((state) => state.allMapPlaces.filterItems);
@@ -73,42 +76,26 @@ const UserMenu = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-slate-600 pb-5 shadow-xl flex flex-col`}
+      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-mainBgColor pb-5 shadow-xl flex flex-col gap-4`}
     >
-      <div className='h-12 m-2 flex justify-between'>
-        <div className=' w-12'>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
-            onClick={handleUserPlacesClose}
-          >
-            <img src={'./assets/cancel_icon.svg'} alt='cancel_icon' className='h-8 w-8'></img>
-          </motion.div>
+      <div className='h-12 my-2 mx-4 flex justify-between items-center'>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          onClick={handleUserPlacesClose}
+          className='h-10 w-10 flex justify-center items-center cursor-pointer'
+        >
+          <CancelIcon />
+        </motion.div>
+        <div className='w-full text-xl font-bold flex justify-center items-center normal-case text-textColor'>
+          {isTrailActive ? t('user.your_trails') : t('user.your_memory_places')}
         </div>
-
-        <div className=' w-full h-12 text-2xl flex justify-center items-center '>
-          {isTrailActive ? t('user.your_memory_places') : t('user.your_trails')}
-        </div>
-
         <div className='flex flex-row'>
           <motion.div
-            whileHover={isPlaceActive ? { scale: 1 } : { scale: 1.05 }}
-            className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer ${
-              isPlaceActive ? 'bg-slate-500' : 'bg-slate-300'
-            }`}
-            onClick={() => !isPlaceActive && handleObjectChange()}
+            whileHover={{ scale: 1.05 }}
+            className='h-10 w-10 flex justify-center items-center cursor-pointer'
+            onClick={() => handleObjectChange()}
           >
-            <img src={`./assets/place_icon.svg`} alt='cancel_icon' className='h-8 w-8'></img>
-          </motion.div>
-
-          <motion.div
-            whileHover={isTrailActive ? { scale: 1 } : { scale: 1.05 }}
-            className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer ${
-              isTrailActive ? 'bg-slate-500' : 'bg-slate-300'
-            } `}
-            onClick={() => !isTrailActive && handleObjectChange()}
-          >
-            <img src={`./assets/trail_icon.svg`} alt='cancel_icon' className='h-8 w-8'></img>
+            {isTrailActive ? <TrailIcon /> : <PlaceIcon />}
           </motion.div>
         </div>
       </div>

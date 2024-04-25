@@ -6,8 +6,16 @@ import { updatePlaceActions } from '../Redux/updatePlaceSlice';
 import { useDispatch } from 'react-redux';
 import { locationActions } from '../Redux/locationSlice';
 import { deletePlace } from '../Redux/allMapPlacesSlice';
-import { userPlacesActions } from '../Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
+
+import ArchaeologicalSiteIcon from '../icons/places_icons/ArchaeologicalSiteIcon';
+import BattlefieldIcon from '../icons/places_icons/BattlefieldIcon';
+import BurialSiteIcon from '../icons/places_icons/BurialSiteIcon';
+import CivilCemeteryIcon from '../icons/places_icons/CivilCemeteryIcon';
+import ExecutionSiteIcon from '../icons/places_icons/ExecutionSiteIcon';
+import HistoricalMonumentIcon from '../icons/places_icons/HistoricalMonumentIcon';
+import WarCemeteryIcon from '../icons/places_icons/WarCemeteryIcon';
+import WaysideShrineIcon from '../icons/places_icons/WaysideShrineIcon';
 
 const UserPlaceItem = (props) => {
   const [visability, setVisability] = useState('flex');
@@ -18,7 +26,6 @@ const UserPlaceItem = (props) => {
     e.stopPropagation();
     dispatch(updatePlaceActions.changeUpdatePlace(props.place));
     dispatch(modalsActions.changeIsUpdateModalOpen());
-    dispatch(userPlacesActions.changeIsOpen());
   };
 
   const directToPlaceOnMap = () => {
@@ -36,22 +43,29 @@ const UserPlaceItem = (props) => {
     }
   };
 
+  const iconComponents = {
+    archaeological: <ArchaeologicalSiteIcon className='min-w-max min-h-max' />,
+    battlefield: <BattlefieldIcon className='min-w-max min-h-max' />,
+    burial_site: <BurialSiteIcon className='min-w-max min-h-max' />,
+    civil_cemetery: <CivilCemeteryIcon className='min-w-max min-h-max' />,
+    execution_site: <ExecutionSiteIcon className='min-w-max min-h-max' />,
+    historical_monument: <HistoricalMonumentIcon className='min-w-max min-h-max' />,
+    war_cemetery: <WarCemeteryIcon className='min-w-max min-h-max' />,
+    wayside_shrine: <WaysideShrineIcon className='min-w-max min-h-max' />,
+  };
+
+  const IconComponent = iconComponents[props.place.type] || t('common.no_image_error');
+
   return (
     <li
-      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row ${
-        props.clickedItem === props.place.id ? 'bg-slate-400' : 'bg-slate-300'
+      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
+        props.clickedItem === props.place.id ? 'border-2 border-contrastColor' : ''
       }`}
       key={props.place.id}
       onClick={directToPlaceOnMap}
     >
-      <div className='w-2/12 flex justify-center items-center'>
-        <img
-          src={`../../assets/places_icons/${props.place.type}_icon.svg`}
-          alt='place_icon'
-          className='min-w-max min-h-max '
-        />
-      </div>
-      <div className='w-7/12 flex flex-col ml-1 mr-1'>
+      <div className='w-2/12 flex justify-center items-center text-center'>{IconComponent}</div>
+      <div className='w-7/12 flex flex-col'>
         <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
         <p className='text-sm'>{props.place.found_date}</p>
       </div>

@@ -58,7 +58,9 @@
         "select_trail": "Select Trail",
         "trail_delete_warning": "Are you sure you want to delete this trail?",
         "place_delete_warning": "Are you sure you want to delete this place?",
-        "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?"
+        "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?",
+        "detailed_info": "Detailed information",
+        "no_image_error": "No image"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -163,7 +165,7 @@
         "user": "user",
         "current_role": "Your current role:",
         "promo_role_info": "If you want to become moderator, send your application via form in user help section.",
-        "your_memory_places": "your memory places",
+        "your_memory_places": "Your memory places",
         "your_trails": "Your trails",
         "settings": "settings",
         "admin_panel": "Admin Panel",

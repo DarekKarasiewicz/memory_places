@@ -258,11 +258,11 @@ const GoogleMap = ({ adminVersion }) => {
                   className='w-full h-full object-cover'
                 ></img>
               </section>
-              <section className='flex flex-col gap-1 my-1 justify-center items-center'>
+              <section className='flex flex-col gap-1 my-1 justify-center items-center text-sm'>
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
-                  {currentPlace.creation_date}
+                  {currentPlace.found_date}
                 </span>
                 <span>
                   <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
