@@ -523,6 +523,7 @@ class Questions_view(viewsets.ModelViewSet):
 class Changes_view(viewsets.ModelViewSet):
     model = Change
     serializer_class = Changes_serializer
+    http_method_names = ["get"]
 
     def get_queryset(self):
         return self.model.objects.all()

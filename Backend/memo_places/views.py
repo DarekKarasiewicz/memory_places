@@ -397,21 +397,18 @@ class Contact_us(viewsets.ModelViewSet):
             done=False,
         )
         new_question.save()
+        serializer = self.serializer_class(new_question)
+
+        html_message = render_to_string('contact.html')
 
         send_mail(
-            "Thanks for contact"
-            # Rethink about it
-            ,
-            "Thanks for your ....."
-            # Env not in views
-            ,
-            "info@miejscapamieci.org.pl",
-            [request.data["email"]],
+            subject="Thanks for contact",
+            message="",
+            from_email="info@miejscapamieci.org.pl",
+            recipient_list=[serializer["email"].value],
             fail_silently=False,
-        )
-        # , html_message=)
+            html_message=html_message)
 
-        serializer = self.serializer_class(new_question)
         return Response(serializer.data)
 
 
@@ -450,18 +447,18 @@ class Reset_password(viewsets.ModelViewSet):
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
 
-        send_mail(
-            "Thanks for contact"
-            # Rethink about it
-            ,
-            "SEBA HERE Link"
-            # Env not in views
-            ,
-            "info@miejscapamieci.org.pl",
-            [user.email],
-            fail_silently=False,
+        html_message = render_to_string(
+            'verification_mail.html',
+            {"link": f"SEBA HERE LINK"}
         )
-        # , html_message=)
+
+        send_mail(
+            subject="Reset password",
+            message="",
+            from_email="info@miejscapamieci.org.pl",
+            recipient_list=[serializer["email"].value],
+            fail_silently=False,
+            html_message=html_message)
 
         return Response({"detail": "Succes"})
 
