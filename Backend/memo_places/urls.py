@@ -19,6 +19,7 @@ router.register(r"reset_password", views.Reset_password, "reset_password")
 router.register(r"types", views.Types_view, "types")
 router.register(r"sortofs", views.Sortofs_view, "sortofs")
 router.register(r"periods", views.Periods_view, "periods")
+router.register(r"changes", views.Changes, "changes")
 # router.register(r'token/', views.MyTokenObtainPairView,'token_obtain_pair'),
 
 urlpatterns = [
