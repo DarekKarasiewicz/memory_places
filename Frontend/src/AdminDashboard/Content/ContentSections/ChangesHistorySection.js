@@ -11,13 +11,16 @@ function ChangesHistorySection() {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
       const changesItems = response.data
-        .map((obj) => ({
-          id: obj.id,
-          name: t(obj.changes_json.name, { element_id: obj.changes_json.name?.target || '' }),
-          change_date: obj.creation_date,
-          changed_by: obj.username,
-          role: t(`user.${obj.changes_json.role}`),
-        }))
+        .map((obj) => {
+          const target = obj.changes_json.target ? obj.changes_json.target : '';
+          return {
+            id: obj.id,
+            name: t(obj.changes_json.name, { element_id: target }),
+            change_date: obj.creation_date,
+            changed_by: obj.username,
+            role: t(`user.${obj.changes_json.role}`),
+          }
+        })
         .sort((a, b) => (a.order > b.order ? 1 : -1));
       setChangesData(changesItems);
     } catch (error) {
