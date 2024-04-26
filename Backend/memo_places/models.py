@@ -163,5 +163,5 @@ class Question(models.Model):
 
 class Change(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-    json = models.JSONField()
+    changes_json = models.JSONField()  # Corrected typo here
     creation_date = models.DateField(auto_now_add=True)

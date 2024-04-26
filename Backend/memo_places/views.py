@@ -452,9 +452,10 @@ class Changes(viewsets.ModelViewSet):
     http_method_names = ["post"]
 
     def create(self, request, *args, **kwargs):
+        creator = get_object_or_404(User, id=request.data["user"])
         new_changes = self.model(
-            user=request.data["user"],
-            json=request.data["json"],
+            user= creator,
+            changes_json=request.data["changes_json"],
         )
         new_changes.save()
 

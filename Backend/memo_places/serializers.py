@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Place, User, Question, Path, PlaceImage
+from .models import Place, User, Question, Path, PlaceImage, Change
 
 
 class User_serializer(serializers.ModelSerializer):
@@ -116,11 +116,11 @@ class Changes_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
-        model = Question
+        model = Change
         fields = (
             "id",
             "user",
             "username",
-            "json",
+            "changes_json",
             "creation_date",
         )
