@@ -16,6 +16,8 @@ import SettingsIcon from '../../../icons/SettingsIcon';
 import CancelIcon from '../../../icons/CancelIcon';
 import EditIcon from '../../../icons/EditIcon';
 import CheckIcon from '../../../icons/CheckIcon';
+import { useCookies } from 'react-cookie';
+import { registerAppChanges } from '../../../utils';
 
 function PlaceVerificationTable({ data, columns }) {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ function PlaceVerificationTable({ data, columns }) {
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
+  const [cookies] = useCookies(['user']);
 
   const table = useReactTable({
     data,
@@ -52,6 +55,7 @@ function PlaceVerificationTable({ data, columns }) {
       .then(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('success'));
+        registerAppChanges('admin.changes_messages.place_verified', cookies.user, placeId);
       })
       .catch(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -59,9 +63,10 @@ function PlaceVerificationTable({ data, columns }) {
       });
   };
 
-  const handlePlaceDismiss = (place_id) => {
+  const handlePlaceDismiss = (placeId) => {
     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
     dispatch(confirmationModalActions.changeType('error'));
+    registerAppChanges('admin.changes_messages.place_unverified', cookies.user, placeId);
 
     //TO DO
     //On dismiss should element will be wiped out or what?

@@ -7,6 +7,8 @@ import PlaceVariableItem from './PlaceVariableManagementSectionItems/PlaceVariab
 import { confirmationModalActions } from '../../../Redux/confirmationModalSlice';
 import BaseButton from '../../../Base/BaseButton';
 import HelpIcon from '../../../icons/HelpIcon';
+import { useCookies } from 'react-cookie';
+import { registerAppChanges } from '../../../utils';
 
 function PlaceVariableManagementSection() {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ function PlaceVariableManagementSection() {
   const [infoBox, setInfoBox] = useState(false);
   const infoRef = useRef(null);
   const [translateValue, setTranslateValue] = useState([]);
+  const [cookies] = useCookies(['user']);
 
   const pushValuesToTranslate = (...elements) => {
     setTranslateValue((prevValues) => [...new Set([...prevValues, ...elements])]);
@@ -93,6 +96,7 @@ function PlaceVariableManagementSection() {
       dispatch(confirmationModalActions.changeType('error'));
     } else {
       dispatch(confirmationModalActions.changeType('success'));
+      registerAppChanges('admin.changes_messages.variables_changed', cookies.user);
     }
   };
 

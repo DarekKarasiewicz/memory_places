@@ -4,6 +4,8 @@ import { useCookies } from 'react-cookie';
 import BaseButton from '../../../Base/BaseButton';
 import BaseInput from '../../../Base/BaseInput';
 import { useTranslation } from 'react-i18next';
+import UserIcon from '../../../icons/UserIcon';
+import AccountIcon from '../../../icons/AccountIcon';
 
 function AccountSettings() {
   const [isValidName, setIsValidName] = useState(null);
@@ -62,31 +64,40 @@ function AccountSettings() {
     }
   };
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
-    <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.account')}</div>
-      <div className='flex gap-4 h-14 items-center my-4'>
+    <motion.div variants={parentItem} initial='hidden' animate='visible'>
+      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+        <AccountIcon />
+        <span>{t('user.account')}</span>
+      </div>
+      <div className='flex gap-4 h-14 items-center my-4 mx-4'>
         <div className='relative'>
-          <img
-            className='rounded-full w-14 h-14 p-1 border-black border-2'
-            src='./assets/user_icon.svg'
-            alt='user_square_icon'
-          ></img>
           {/*TODO In future on click possibility to change user avatar */}
-          <motion.img
-            whileHover={{ backgroundColor: '#FF0000' }}
-            className='absolute -bottom-2 -right-2 h-8 p-1 bg-slate-300 border-black border rounded-full cursor-pointer'
-            src='./assets/edit_icon.svg'
-            alt='edit_icon'
-          ></motion.img>
+          <motion.div whileHover={{ scale: 1.05 }} className='rounded-full p-1 cursor-pointer'>
+            <UserIcon className='h-10 w-10' />
+          </motion.div>
         </div>
 
         <div className='flex flex-col leading-5'>
           <span className='text-lg'>{user.username}</span>
-          <span className='text-sm uppercase'>{user.admin ? t('user.admin') : t('user.user')}</span>
+          <span className='text-sm uppercase italic'>
+            {user.admin ? t('user.admin') : t('user.user')}
+          </span>
         </div>
       </div>
-      <div className='border-black border-t-2 py-2 gap-2 flex flex-col items-center'>
+      <div className='border-textColor border-t-2 py-2 pt-4 gap-4 flex flex-col items-center'>
         <BaseInput
           type='text'
           placeholder={t('user.name')}
@@ -119,20 +130,20 @@ function AccountSettings() {
         {isValidName || isValidSurname || isValidEmail ? (
           <BaseButton
             name={t('user.confirm')}
-            className='mt-2'
+            className='mt-4'
             btnBg='blue'
             onClick={handleSumbit}
           />
         ) : (
           <BaseButton
             name={t('user.confirm')}
-            className='mt-2 cursor-not-allowed'
+            className='mt-4 cursor-not-allowed'
             btnBg='blue'
             disabled={true}
           />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

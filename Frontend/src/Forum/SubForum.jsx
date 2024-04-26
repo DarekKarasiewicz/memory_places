@@ -3,12 +3,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CommentForm from './CommentForm';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
+import { registerAppChanges } from '../utils';
 
 function SubForum() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const [cookies] = useCookies(['user']);
 
   useEffect(() => {
     axios
@@ -35,6 +38,7 @@ function SubForum() {
       .put(`http://127.0.0.1:8000/memo_places_forum/posts/${post.id}/`, updatedPost)
       .then((res) => {
         // Fetch the updated data
+        registerAppChanges('admin.changes_messages.post_edit', cookies.user.user_id, post.id);
         axios
           .get(`http://127.0.0.1:8000/memo_places_forum/forum_posts/${id}`)
           .then((res) => {

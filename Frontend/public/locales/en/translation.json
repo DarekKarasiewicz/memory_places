@@ -304,6 +304,27 @@
             "alert_error": "Something went wrong. Please try again!",
             "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
             "place_var_info2": "Current values to assign translations to:"
+        },
+        "changes_messages": {
+            "blocked": "Blocked user with ID {{element_id}}",
+            "unlocked": "Unlocked user with ID {{element_id}}",
+            "reset_pass": "Password reset for user with ID {{element_id}}",
+            "user_role": "Changed user role with ID {{element_id}}",
+            "place_delete": "Place with ID {{element_id}} was deleted",
+            "place_add": "Place with ID {{element_id}} was added",
+            "place_edit": "Place with ID {{element_id}} was editted",
+            "trail_delete": "Trial with ID {{element_id}} was deleted",
+            "trail_add": "Trial with ID {{element_id}} was added",
+            "trail_edit": "Trial with ID {{element_id}} was editted",
+            "place_verified": "Place with ID {{element_id}} was verified successfully",
+            "place_unverified": "Place with ID {{element_id}} was unverified",
+            "trail_verified": "Trial with ID {{element_id}} was verified successfully",
+            "trail_unverified": "Trial with ID {{element_id}} was unverified",
+            "variables_changed": "Vairables has been changed",
+            "comment_added": "Comment has been added",
+            "post_added": "Post has been added",
+            "post_edit": "Post with ID {{element_id}} has been added",
+            "contact_send": "Contact request has been send"
         }
     }
 }

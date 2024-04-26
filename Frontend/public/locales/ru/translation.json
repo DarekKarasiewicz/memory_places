@@ -304,6 +304,27 @@
             "alert_error": "Что-то пошло не так. Пожалуйста, попробуйте снова!",
             "place_var_info": "После любого изменения в этом разделе свяжитесь с разработчиком для изменения перевода в приложении",
             "place_var_info2": "Текущие значения, которым должны быть присвоены переводы:"
-        }
+        },
+        "changes_messages": {
+            "blocked": "Заблокирован пользователь с ID {{element_id}}",
+            "unlocked": "Разблокирован пользователь с ID {{element_id}}",
+            "reset_pass": "Сброс пароля для пользователя с ID {{element_id}}",
+            "user_role": "Изменена роль пользователя с ID {{element_id}}",
+            "place_delete": "Место с ID {{element_id}} удалено",
+            "place_add": "Место с ID {{element_id}} добавлено",
+            "place_edit": "Место с ID {{element_id}} изменено",
+            "trail_delete": "Испытание с ID {{element_id}} удалено",
+            "trail_add": "Испытание с ID {{element_id}} добавлено",
+            "trail_edit": "Испытание с ID {{element_id}} изменено",
+            "place_verified": "Место с ID {{element_id}} успешно проверено",
+            "place_unverified": "Место с ID {{element_id}} не проверено",
+            "trail_verified": "Испытание с ID {{element_id}} успешно проверено",
+            "trail_unverified": "Испытание с ID {{element_id}} не проверено",
+            "variables_changed": "Изменены переменные",
+            "comment_added": "Комментарий добавлен",
+            "post_added": "Пост добавлен",
+            "post_edit": "Пост с ID {{element_id}} отредактирован",
+            "contact_send": "Запрос на контакт отправлен"
+          }
     }
 }

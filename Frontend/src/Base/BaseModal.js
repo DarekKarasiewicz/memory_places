@@ -19,7 +19,9 @@ function BaseModal(props) {
         <motion.div
           className={`m-auto w-${
             props.width ? props.width : '1/2'
-          } rounded bg-mainBgColor text-textColor shadow-itemShadow h-auto p-4 relative`}
+          } rounded bg-mainBgColor text-textColor shadow-itemShadow h-auto ${
+            props.minHeight ? props.minHeight : ''
+          } p-4 relative`}
           variants={parentItem}
           initial='hidden'
           animate='visible'
