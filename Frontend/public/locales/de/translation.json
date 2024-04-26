@@ -304,6 +304,27 @@
             "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!",
             "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
             "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:"
+        },
+        "changes_messages": {
+            "blocked": "Benutzer mit ID {{element_id}} gesperrt",
+            "unlocked": "Benutzer mit ID {{element_id}} entsperrt",
+            "reset_pass": "Passwort für Benutzer mit ID {{element_id}} zurückgesetzt",
+            "user_role": "Benutzerrolle mit ID {{element_id}} geändert",
+            "place_delete": "Ort mit ID {{element_id}} gelöscht",
+            "place_add": "Ort mit ID {{element_id}} hinzugefügt",
+            "place_edit": "Ort mit ID {{element_id}} bearbeitet",
+            "trail_delete": "Test mit ID {{element_id}} gelöscht",
+            "trail_add": "Test mit ID {{element_id}} hinzugefügt",
+            "trail_edit": "Test mit ID {{element_id}} bearbeitet",
+            "place_verified": "Ort mit ID {{element_id}} erfolgreich verifiziert",
+            "place_unverified": "Ort mit ID {{element_id}} nicht verifiziert",
+            "trail_verified": "Test mit ID {{element_id}} erfolgreich verifiziert",
+            "trail_unverified": "Test mit ID {{element_id}} nicht verifiziert",
+            "variables_changed": "Variablen geändert",
+            "comment_added": "Kommentar hinzugefügt",
+            "post_added": "Beitrag hinzugefügt",
+            "post_edit": "Beitrag mit ID {{element_id}} bearbeitet",
+            "contact_send": "Kontaktanfrage gesendet"
         }
     }
 }

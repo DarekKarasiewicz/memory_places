@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { locationActions } from '../Redux/locationSlice';
 import { deletePlace } from '../Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
+import { registerAppChanges } from '../utils';
 
 import ArchaeologicalSiteIcon from '../icons/places_icons/ArchaeologicalSiteIcon';
 import BattlefieldIcon from '../icons/places_icons/BattlefieldIcon';
@@ -21,6 +23,7 @@ const UserPlaceItem = (props) => {
   const [visability, setVisability] = useState('flex');
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [cookies] = useCookies(['user']);
 
   const handleUpdateModalVisability = (e) => {
     e.stopPropagation();
@@ -39,6 +42,7 @@ const UserPlaceItem = (props) => {
       axios.delete(`http://localhost:8000/memo_places/places/${props.place.id}`).then(() => {
         setVisability('hidden');
         dispatch(deletePlace(props.place.id));
+        registerAppChanges('admin.changes_messages.place_delete', cookies.user, props.place.id);
       });
     }
   };
@@ -64,12 +68,14 @@ const UserPlaceItem = (props) => {
       key={props.place.id}
       onClick={directToPlaceOnMap}
     >
-      <div className='w-2/12 flex justify-center items-center text-center'>{IconComponent}</div>
-      <div className='w-7/12 flex flex-col'>
+      <div className='w-2/12 flex justify-center items-center text-center ml-2'>
+        {IconComponent}
+      </div>
+      <div className='w-7/12 flex flex-col mx-2'>
         <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
         <p className='text-sm'>{props.place.found_date}</p>
       </div>
-      <div className='w-3/12 flex justify-end items-center gap-2'>
+      <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>
         <motion.div
           className='rounded-full bg-green-700 h-10 w-10 flex justify-center items-center hover:bg-green-900 cursor-pointer'
           onClick={handleUpdateModalVisability}

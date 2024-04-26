@@ -49,7 +49,6 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    // console.log('Error deleting place:', error);
   }
 };
 
@@ -75,7 +74,6 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    // console.log(error);
   }
 };
 
@@ -83,17 +81,12 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
   try {
-    await axios.post(
-      `http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`,
-      {},
-      {
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
+    await axios.post(`http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`, null, {
+      headers: { 'Content-Type': 'application/json' },
+    });
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    // console.log(error);
   }
 };
 
@@ -114,7 +107,6 @@ export const blockUser = (user_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    // console.log(error);
   }
 };
 
@@ -136,7 +128,6 @@ export const unlockUser = (user_id) => async (dispatch) => {
     dispatch(confirmationModalActions.changeType('success'));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
-    // console.log(error);
   }
 };
 

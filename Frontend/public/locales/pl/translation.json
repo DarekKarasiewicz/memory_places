@@ -304,6 +304,27 @@
             "alert_error": "Coś poszło nie tak. Spróbuj jeszcze raz!",
             "place_var_info": "Po jakiejkolwiek zmianie w tej sekcji należy skontaktować się z developerem w celu zmiany tłumaczeń w aplikacji",
             "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:"
+        },
+        "changes_messages": {
+            "blocked": "Zablokowany użytkownik o ID {{element_id}}",
+            "unlocked": "Odblokowany użytkownik o ID {{element_id}}",
+            "reset_pass": "Zresetowano hasło dla użytkownika o ID {{element_id}}",
+            "user_role": "Zmieniono rolę użytkownika o ID {{element_id}}",
+            "place_delete": "Usunięto miejsce o ID {{element_id}}",
+            "place_add": "Dodano miejsce o ID {{element_id}}",
+            "place_edit": "Edytowano miejsce o ID {{element_id}}",
+            "trail_delete": "Usunięto trasę o ID {{element_id}}",
+            "trail_add": "Dodano trasę o ID {{element_id}}",
+            "trail_edit": "Edytowano trasę o ID {{element_id}}",
+            "place_verified": "Miejsce o ID {{element_id}} zweryfikowane pomyślnie",
+            "place_unverified": "Miejsce o ID {{element_id}} niezweryfikowane",
+            "trail_verified": "Trasa o ID {{element_id}} zweryfikowana pomyślnie",
+            "trail_unverified": "Trasa o ID {{element_id}} niezweryfikowane",
+            "variables_changed": "Zmieniono zmienne",
+            "comment_added": "Dodano komentarz",
+            "post_added": "Dodano wpis",
+            "post_edit": "Edytowano wpis o ID {{element_id}}",
+            "contact_send": "Wysłano żądanie kontaktu"
         }
     }
 }

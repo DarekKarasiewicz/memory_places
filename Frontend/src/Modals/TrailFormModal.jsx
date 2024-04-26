@@ -18,6 +18,7 @@ import { selectUpdateTrail, updateTrailActions } from '../Redux/updateTrailSlice
 import { addTrail, deleteTrail } from '../Redux/allMapTrailsSlice';
 import WebIcon from '../icons/WebIcon';
 import WikiIcon from '../icons/WikiIcon';
+import { registerAppChanges } from '../utils';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -153,6 +154,11 @@ const TrailFormModal = (props) => {
             coordinates: JSON.stringify(addTrailData.coordinates),
           })
           .then((response) => {
+            registerAppChanges(
+              'admin.changes_messages.trail_edit',
+              user.user_id,
+              updateTrailData.trail.id,
+            );
             dispatch(deleteTrail(response.data.id));
             dispatch(addTrail(response.data));
             drawingTools.now[0].geometry.setMap(null);
@@ -180,6 +186,11 @@ const TrailFormModal = (props) => {
           coordinates: JSON.stringify(addTrailData.coordinates),
         })
         .then((response) => {
+          registerAppChanges(
+            'admin.changes_messages.trail_add',
+            user.user_id,
+            addTrailData.path_name,
+          );
           dispatch(addTrail(response.data));
           drawingTools.now[0].geometry.setMap(null);
           drawingEvents.events.forEach((listener) =>

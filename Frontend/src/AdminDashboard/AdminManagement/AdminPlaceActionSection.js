@@ -17,6 +17,7 @@ import WebIcon from '../../icons/WebIcon';
 import WikiIcon from '../../icons/WikiIcon';
 import GoogleMap from '../../GoogleMap/GoogleMap';
 import BaseImageUpload from '../../Base/BaseImageUpload/BaseImageUpload';
+import { registerAppChanges } from '../../utils';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -295,6 +296,7 @@ function AdminPlaceActionSection({ action, placeId }) {
           .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_edit', user, placeId);
             navigate('/adminDashboard');
           })
           .catch(() => {
@@ -322,6 +324,7 @@ function AdminPlaceActionSection({ action, placeId }) {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_add', user, nameRef.current.value);
             navigate('/adminDashboard');
           })
           .catch(() => {

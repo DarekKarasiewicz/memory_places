@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
+import { registerAppChanges } from '../utils';
 
 function ContactForm(props) {
   const nameRef = useRef(null);
@@ -34,6 +35,7 @@ function ContactForm(props) {
       })
       .then((response) => {
         alert(t('user.contact_success'));
+        registerAppChanges('admin.changes_messages.contact_send', user);
       })
       .error((error) => {
         alert(t('common.axios_warning'));

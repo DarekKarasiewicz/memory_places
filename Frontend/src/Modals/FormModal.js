@@ -17,6 +17,7 @@ import { addPlace, deletePlace } from '../Redux/allMapPlacesSlice';
 import BaseImageUpload from '../Base/BaseImageUpload/BaseImageUpload';
 import WebIcon from '../icons/WebIcon';
 import WikiIcon from '../icons/WikiIcon';
+import { registerAppChanges } from '../utils';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -210,6 +211,7 @@ function FormModal(props) {
             topic_link: addPlaceData.topic_link,
           })
           .then((response) => {
+            registerAppChanges('admin.changes_messages.place_edit', user, updatePlaceData.place.id);
             dispatch(deletePlace(response.data.id));
             dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
@@ -234,6 +236,11 @@ function FormModal(props) {
             topic_link: addPlaceData.topic_link,
           })
           .then((response) => {
+            registerAppChanges(
+              'admin.changes_messages.place_add',
+              user,
+              updatePlaceData.addPlaceData.place_name,
+            );
             dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
