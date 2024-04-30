@@ -85,7 +85,7 @@ function SearchBar() {
             ></input>
             <img
               src={`./assets/cancel_icon.svg`}
-              alt='menu_icon'
+              alt='cancel_icon'
               className='h-5 w-5 absolute right-1 cursor-pointer'
               onClick={clearSearchBar}
             ></img>

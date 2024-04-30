@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import i18n from '../i18n';
-import ArrowUpIcon from '../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../icons/admin/ArrowDownIcon';
+import ArrowUpIcon from '../icons/ArrowUpIcon';
+import ArrowDownIcon from '../icons/ArrowDownIcon';
 
 function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);
@@ -105,7 +105,9 @@ function LanguageSwitcher(props) {
                     whileHover={{ scale: 1.05 }}
                     key={option.value}
                     onClick={() => handleLanguageChange(option.value)}
-                    className={`block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer text-textColor hover:text-contrastColor`}
+                    className={`block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer hover:text-contrastColor ${
+                      language === option.value ? 'text-contrastColor font-bold' : 'text-textColor'
+                    }`}
                     role='menuitem'
                   >
                     <img src={option.image} alt={option.alt} className='shadow-itemShadow' />

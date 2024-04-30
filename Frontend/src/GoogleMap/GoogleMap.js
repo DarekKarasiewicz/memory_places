@@ -7,16 +7,16 @@ import {
   MapControl,
   ControlPosition,
 } from '@vis.gl/react-google-maps';
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { selectLocation } from '../Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
 import { modalsActions, selectModals } from '../Redux/modalsSlice';
-import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
+import { selectUserPlaces } from '../Redux/userPlacesSlice';
 import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
 import { filterTrails, fetchMapTrails } from '../Redux/allMapTrailsSlice';
 import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
-import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
+import { addPlaceActions } from '../Redux/addPlaceSlice';
 import AddPlaceButton from '../AddPlace/AddPlaceButton';
 import Loader from '../Loader/Loader';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +53,6 @@ const GoogleMap = ({ adminVersion }) => {
   const [currentPlaceData, setCurrentPlaceData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
-  const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
@@ -200,7 +199,7 @@ const GoogleMap = ({ adminVersion }) => {
             ref={markerRef}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <GoogleMapPin iconPath={'./assets/plus_icon.svg'} />
+            <GoogleMapPin />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
                 <div className='w-36 h-12 flex justify-center items-center'>

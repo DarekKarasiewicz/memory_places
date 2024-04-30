@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import AdminDropdownItem from './AdminDropdownItem/AdminDropdownItem';
-import ArrowUpIcon from '../../../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
+import ArrowUpIcon from '../../../icons/ArrowUpIcon';
+import ArrowDownIcon from '../../../icons/ArrowDownIcon';
 
 function AdminDropdown() {
   const [isActive, setIsActive] = useState(false);

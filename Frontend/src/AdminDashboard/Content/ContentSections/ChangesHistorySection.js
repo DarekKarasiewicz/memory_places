@@ -19,7 +19,7 @@ function ChangesHistorySection() {
             change_date: obj.creation_date,
             changed_by: obj.username,
             role: t(`user.${obj.changes_json.role}`),
-          }
+          };
         })
         .sort((a, b) => (a.order > b.order ? 1 : -1));
       setChangesData(changesItems);

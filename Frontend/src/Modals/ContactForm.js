@@ -37,7 +37,7 @@ function ContactForm(props) {
         alert(t('user.contact_success'));
         registerAppChanges('admin.changes_messages.contact_send', user);
       })
-      .error((error) => {
+      .catch((error) => {
         alert(t('common.axios_warning'));
       });
   };

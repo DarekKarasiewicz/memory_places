@@ -10,7 +10,7 @@ const ShowPassword = ({ isVisible, handlePasswordVisability }) => {
       {isVisible ? (
         <>
           <div
-            className='flex cursor-pointer hover:scale-110 transition'
+            className='flex gap-2 cursor-pointer hover:scale-110 transition'
             onClick={handlePasswordVisability}
           >
             <EyeCloseIcon className='h-6 w-6' />
@@ -20,7 +20,7 @@ const ShowPassword = ({ isVisible, handlePasswordVisability }) => {
       ) : (
         <>
           <div
-            className='flex cursor-pointer hover:scale-110 transition'
+            className='flex gap-2 cursor-pointer hover:scale-110 transition'
             onClick={handlePasswordVisability}
           >
             <EyeOpenIcon className='h-6 w-6' />

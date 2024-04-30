@@ -8,8 +8,8 @@ import BaseButton from '../../Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import ArrowUpIcon from '../../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../../icons/admin/ArrowDownIcon';
+import ArrowUpIcon from '../../icons/ArrowUpIcon';
+import ArrowDownIcon from '../../icons/ArrowDownIcon';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
@@ -95,7 +95,7 @@ function UserMenu() {
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
 
-  const isAdminOrMaster = user.admin || user.master;
+  const isAdminOrMaster = user && (user.admin || user.master);
 
   const filteredMenuItems = menuItems.filter((item) => {
     if (item.isAdministration) {
@@ -178,7 +178,7 @@ function UserMenu() {
         )}
         {isPopupOpen && (
           <motion.div
-            className='bg-mainBgColor text-textColor flex flex-col gap-2 mt-2 absolute top-16 right-5 w-52 p-4 justify-center items-center z-1'
+            className='bg-mainBgColor text-textColor flex flex-col gap-3 mt-2 absolute top-16 right-5 w-52 p-4 justify-center items-center z-1'
             variants={parentItem}
             initial='hidden'
             animate='visible'
