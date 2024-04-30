@@ -25,7 +25,7 @@ export default function AppUrls() {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
 
-  const role = user.admin ? 'admin' : user.master ? 'master' : 'user';
+  const role = user && (user.admin ? 'admin' : user.master ? 'master' : 'user');
 
   return (
     <BrowserRouter>

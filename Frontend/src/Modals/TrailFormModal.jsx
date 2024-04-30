@@ -19,6 +19,7 @@ import { addTrail, deleteTrail } from '../Redux/allMapTrailsSlice';
 import WebIcon from '../icons/WebIcon';
 import WikiIcon from '../icons/WikiIcon';
 import { registerAppChanges } from '../utils';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -154,6 +155,8 @@ const TrailFormModal = (props) => {
             coordinates: JSON.stringify(addTrailData.coordinates),
           })
           .then((response) => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges(
               'admin.changes_messages.trail_edit',
               user.user_id,
@@ -170,6 +173,10 @@ const TrailFormModal = (props) => {
             dispatch(addTrailActions.reset());
             dispatch(modalsActions.changeIsTrailUpdateFormOpen());
             dispatch(formValidationActions.reset());
+          })
+          .catch(() => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
           });
         return;
       }
@@ -186,6 +193,8 @@ const TrailFormModal = (props) => {
           coordinates: JSON.stringify(addTrailData.coordinates),
         })
         .then((response) => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('success'));
           registerAppChanges(
             'admin.changes_messages.trail_add',
             user.user_id,
@@ -201,6 +210,10 @@ const TrailFormModal = (props) => {
           dispatch(addTrailActions.reset());
           dispatch(modalsActions.changeIsTrailFormOpen());
           dispatch(formValidationActions.reset());
+        })
+        .catch(() => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('error'));
         });
       return;
     }

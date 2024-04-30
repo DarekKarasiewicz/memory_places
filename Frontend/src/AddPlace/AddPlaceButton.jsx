@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import BaseButton from '../Base/BaseButton';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from '../Redux/modalsSlice';
@@ -16,6 +17,7 @@ const AddPlaceButton = (props) => {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const popupRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -86,16 +88,16 @@ const AddPlaceButton = (props) => {
     >
       {isActive && (
         <motion.div
-          className='absolute bg-slate-300 w-80 p-4 border border-black rounded-lg bottom-20 '
+          className='absolute bg-mainBgColor w-96 px-4 py-6 rounded-lg bottom-20 shadow-itemShadow'
           variants={childItem}
           initial='hidden'
           animate='visible'
         >
-          <div className='flex flex-col justify-center items-center'>
-            <p className='pb-2'>To add place you need to be logged in!</p>
+          <div className='flex flex-col justify-center items-center gap-2'>
+            <p className='pb-2 text-lg'>{t('user.add_place_login_req')}</p>
             <BaseButton name='Log in' btnBg='blue' onClick={handleLoginRedirect} />
           </div>
-          <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-r border-b border-black'></div>
+          <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>
         </motion.div>
       )}
       {isSelecting && (

@@ -28,6 +28,8 @@ import { selectAddTrail, addTrailActions } from './Redux/addTrailSlice.jsx';
 import { drawingEventsActions, selectDrawingEvents } from './Redux/drawingEventsSlice.jsx';
 import { drawingToolsActions, selectDrawingTools } from './Redux/drawingToolsSlice.jsx';
 import { updateTrailActions } from './Redux/updateTrailSlice.jsx';
+import ConfirmationModal from 'Modals/ConfirmationModal.js';
+import { selectConfirmationModal } from 'Redux/confirmationModalSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ function App() {
   const { t } = useTranslation();
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
+  const modalConfirmationModal = useSelector(selectConfirmationModal);
 
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
@@ -181,6 +184,8 @@ function App() {
         {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <Footer /> : null}
 
         {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <LanguageSwitcher /> : null}
+
+        {modalConfirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
       </div>
     </Suspense>
   );

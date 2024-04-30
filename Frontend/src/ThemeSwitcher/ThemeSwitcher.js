@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
-import ArrowUpIcon from '../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../icons/admin/ArrowDownIcon';
+import ArrowUpIcon from '../icons/ArrowUpIcon';
+import ArrowDownIcon from '../icons/ArrowDownIcon';
 import ThemeIcon from '../icons/ThemeIcon';
 
 function ThemeSwitcher() {

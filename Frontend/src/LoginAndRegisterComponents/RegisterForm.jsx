@@ -25,7 +25,7 @@ const RegisterForm = ({
   };
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col gap-2'>
       <BaseInput
         type='text'
         label={t('common.username')}

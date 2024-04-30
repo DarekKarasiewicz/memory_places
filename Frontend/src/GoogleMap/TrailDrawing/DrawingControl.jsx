@@ -6,6 +6,10 @@ import { addTrailActions } from '../../Redux/addTrailSlice.jsx';
 import { useDrawingManagerEvents, useOverlaySnapshots } from './undoRedo.js';
 import { modalsActions } from '../../Redux/modalsSlice.jsx';
 import { selectUpdateTrail } from '../../Redux/updateTrailSlice.jsx';
+import UndoIcon from 'icons/UndoIcon.jsx';
+import RedoIcon from 'icons/RedoIcon.jsx';
+import AcceptIcon from 'icons/AcceptIcon.jsx';
+import CancelIcon from 'icons/CancelIcon.jsx';
 
 const DrawingControl = ({ drawingManager }) => {
   const map = useMap();
@@ -50,26 +54,26 @@ const DrawingControl = ({ drawingManager }) => {
         disabled={!drawingTools.past.length}
         className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center rounded-l-sm'
       >
-        <img src='../../../assets/undo_icon.svg' className='h-5 w-5' />
+        <UndoIcon className='h-5 w-5' color='#000000' />
       </button>
       <button
         onClick={() => dispatch(drawingToolsActions.redo())}
         disabled={!drawingTools.future.length}
         className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center'
       >
-        <img src='../../../assets/redo_icon.svg' className='h-5 w-5' />
+        <RedoIcon className='h-5 w-5' color='#000000' />
       </button>
       <button
         onClick={handleDrawingAccept}
         className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center rounded-r-sm'
       >
-        <img src='../../../assets/accept_icon.svg' className='h-5 w-5' />
+        <AcceptIcon className='h-5 w-5' color='#000000' />
       </button>
       <button
         onClick={closeDrawingManager}
         className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center rounded-r-sm'
       >
-        <img src='../../../assets/cancel_icon.svg' className='h-5 w-5' />
+        <CancelIcon className='h-5 w-5' color='#000000' />
       </button>
     </div>
   );
