@@ -10,14 +10,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { confirmationModalActions } from '../../../Redux/confirmationModalSlice';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import axios from 'axios';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import CancelIcon from '../../../icons/CancelIcon';
-import EditIcon from '../../../icons/EditIcon';
-import CheckIcon from '../../../icons/CheckIcon';
+import SettingsIcon from 'icons/SettingsIcon';
+import CancelIcon from 'icons/CancelIcon';
+import EditIcon from 'icons/EditIcon';
+import CheckIcon from 'icons/CheckIcon';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../../../utils';
+import { registerAppChanges } from 'utils';
+import SearchIcon from 'icons/SearchIcon';
 
 function PlaceVerificationTable({ data, columns }) {
   const dispatch = useDispatch();
@@ -80,11 +81,7 @@ function PlaceVerificationTable({ data, columns }) {
         </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
-            <img
-              src={`./assets/search_icon.svg`}
-              alt={`search_icon`}
-              className='h-5 w-5 absolute left-2'
-            />
+            <SearchIcon className='h-5 w-5 absolute left-2' />
             <input
               className='rounded-lg p-2 pl-8 text-black'
               type='text'

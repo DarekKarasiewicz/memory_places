@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../utils';
+import { registerAppChanges } from 'utils';
 
 function CommentForm(props) {
   const [content, setContent] = useState('');

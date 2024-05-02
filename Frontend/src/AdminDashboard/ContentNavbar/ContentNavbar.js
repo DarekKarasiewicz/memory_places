@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import LanguageSwitcher from '../../LanguageSwitcher/LanguageSwitcher';
-import ThemeSwitcher from '../../ThemeSwitcher/ThemeSwitcher';
+import LanguageSwitcher from 'LanguageSwitcher/LanguageSwitcher';
+import ThemeSwitcher from 'ThemeSwitcher/ThemeSwitcher';
 import AdminDropdown from './AdminDropdown/AdminDropdown';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
-import i18n from '../../i18n';
+import i18n from 'i18n';
 import 'moment/locale/pl';
 import 'moment/locale/ru';
 import 'moment/locale/de';

@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../Redux/modalsSlice';
-import PlaceIcon from '../icons/PlaceIcon';
-import TrailIcon from '../icons/TrailIcon';
+import { modalsActions } from 'Redux/modalsSlice';
+import PlaceIcon from 'icons/PlaceIcon';
+import TrailIcon from 'icons/TrailIcon';
 
 const AddingOption = ({ type }) => {
   const dispatch = useDispatch();

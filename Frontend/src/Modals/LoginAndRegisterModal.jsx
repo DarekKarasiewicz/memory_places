@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import BaseModal from '../Base/BaseModal';
+import BaseModal from 'Base/BaseModal';
 import { useTranslation } from 'react-i18next';
-import LoginComponent from '../LoginAndRegisterComponents/LoginComponent';
-import RegisterComponent from '../LoginAndRegisterComponents/RegisterComponent';
+import LoginComponent from 'LoginAndRegisterComponents/LoginComponent';
+import RegisterComponent from 'LoginAndRegisterComponents/RegisterComponent';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState();

@@ -1,22 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseModal from '../Base/BaseModal';
-import AccountSettings from '../Navbar/UserMenu/UserMenuSettings/AccountSettings';
-import SecuritySettings from '../Navbar/UserMenu/UserMenuSettings/SecuritySettings';
-import RoleSettings from '../Navbar/UserMenu/UserMenuSettings/RoleSettings';
-import NotificiationsSettings from '../Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
-import LanguageSettings from '../Navbar/UserMenu/UserMenuSettings/LanguageSettings';
-import PreferencesSettings from '../Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
+import BaseModal from 'Base/BaseModal';
+import AccountSettings from 'Navbar/UserMenu/UserMenuSettings/AccountSettings';
+import SecuritySettings from 'Navbar/UserMenu/UserMenuSettings/SecuritySettings';
+import RoleSettings from 'Navbar/UserMenu/UserMenuSettings/RoleSettings';
+import NotificiationsSettings from 'Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
+import LanguageSettings from 'Navbar/UserMenu/UserMenuSettings/LanguageSettings';
+import PreferencesSettings from 'Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
 import { useTranslation } from 'react-i18next';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions } from 'Redux/modalsSlice';
 import { useDispatch } from 'react-redux';
 
-import AccountIcon from '../icons/AccountIcon';
-import ShieldLockIcon from '../icons/ShieldLockIcon';
-import UserRoleIcon from '../icons/UserRoleIcon';
-import NotificationIcon from '../icons/NotificationIcon';
-import LanguageIcon from '../icons/LanguageIcon';
-import PreferencesIcon from '../icons/PreferencesIcon';
+import AccountIcon from 'icons/AccountIcon';
+import ShieldLockIcon from 'icons/ShieldLockIcon';
+import UserRoleIcon from 'icons/UserRoleIcon';
+import NotificationIcon from 'icons/NotificationIcon';
+import LanguageIcon from 'icons/LanguageIcon';
+import PreferencesIcon from 'icons/PreferencesIcon';
 
 function UserMenuSettingsModal(props) {
   const [currentOption, setCurrentOption] = useState('account');

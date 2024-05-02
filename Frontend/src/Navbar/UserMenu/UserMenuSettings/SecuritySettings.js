@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import BaseButton from '../../../Base/BaseButton';
-import BaseInput from '../../../Base/BaseInput';
+import BaseButton from 'Base/BaseButton';
+import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
-import ShieldLockIcon from '../../../icons/ShieldLockIcon';
+import ShieldLockIcon from 'icons/ShieldLockIcon';
 
 function SecuritySettings() {
   const [isValidPassword, setIsValidPassword] = useState(null);

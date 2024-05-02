@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import BaseModal from '../../Base/BaseModal';
-import BaseButton from '../../Base/BaseButton';
-import ImageSlider from '../../ImageSlider/ImageSlider';
+import BaseModal from 'Base/BaseModal';
+import BaseButton from 'Base/BaseButton';
+import ImageSlider from 'ImageSlider/ImageSlider';
 
 const AdvancedInfoBox = (props) => {
   const receivedData = props.data;

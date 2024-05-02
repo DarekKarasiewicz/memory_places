@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmationModalActions, selectConfirmationModal } from '../Redux/confirmationModalSlice';
+import { confirmationModalActions, selectConfirmationModal } from 'Redux/confirmationModalSlice';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import CheckIcon from '../icons/CheckIcon';
-import CancelIcon from '../icons/CancelIcon';
+import CheckIcon from 'icons/CheckIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function ConfirmationModal() {
   const dispatch = useDispatch();

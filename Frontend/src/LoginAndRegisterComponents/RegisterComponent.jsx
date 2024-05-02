@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import RegisterForm from './RegisterForm';
 

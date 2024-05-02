@@ -1,23 +1,25 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
-import { modalsActions } from '../Redux/modalsSlice';
-import { updatePlaceActions } from '../Redux/updatePlaceSlice';
+import { modalsActions } from 'Redux/modalsSlice';
+import { updatePlaceActions } from 'Redux/updatePlaceSlice';
 import { useDispatch } from 'react-redux';
-import { locationActions } from '../Redux/locationSlice';
-import { deletePlace } from '../Redux/allMapPlacesSlice';
+import { locationActions } from 'Redux/locationSlice';
+import { deletePlace } from 'Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../utils';
+import { registerAppChanges } from 'utils';
 
-import ArchaeologicalSiteIcon from '../icons/places_icons/ArchaeologicalSiteIcon';
-import BattlefieldIcon from '../icons/places_icons/BattlefieldIcon';
-import BurialSiteIcon from '../icons/places_icons/BurialSiteIcon';
-import CivilCemeteryIcon from '../icons/places_icons/CivilCemeteryIcon';
-import ExecutionSiteIcon from '../icons/places_icons/ExecutionSiteIcon';
-import HistoricalMonumentIcon from '../icons/places_icons/HistoricalMonumentIcon';
-import WarCemeteryIcon from '../icons/places_icons/WarCemeteryIcon';
-import WaysideShrineIcon from '../icons/places_icons/WaysideShrineIcon';
+import ArchaeologicalSiteIcon from 'icons/places_icons/ArchaeologicalSiteIcon';
+import BattlefieldIcon from 'icons/places_icons/BattlefieldIcon';
+import BurialSiteIcon from 'icons/places_icons/BurialSiteIcon';
+import CivilCemeteryIcon from 'icons/places_icons/CivilCemeteryIcon';
+import ExecutionSiteIcon from 'icons/places_icons/ExecutionSiteIcon';
+import HistoricalMonumentIcon from 'icons/places_icons/HistoricalMonumentIcon';
+import WarCemeteryIcon from 'icons/places_icons/WarCemeteryIcon';
+import WaysideShrineIcon from 'icons/places_icons/WaysideShrineIcon';
+import EditIcon from 'icons/EditIcon';
+import TrashIcon from 'icons/TrashIcon';
 
 const UserPlaceItem = (props) => {
   const [visability, setVisability] = useState('flex');
@@ -83,7 +85,7 @@ const UserPlaceItem = (props) => {
             scale: 1.05,
           }}
         >
-          <img src='../../assets/edit_white_icon.svg' className='w-6 h-6' />
+          <EditIcon className='w-6 h-6' color='#ffffff' />
         </motion.div>
         <motion.div
           className='rounded-full bg-red-700 h-10 w-10 flex justify-center items-center hover:bg-red-900 cursor-pointer'
@@ -92,7 +94,7 @@ const UserPlaceItem = (props) => {
           }}
           onClick={handlePlaceDelete}
         >
-          <img src='../../assets/trash_icon.svg' className='w-6 h-6' />
+          <TrashIcon className='w-6 h-6' color='#ffffff' />
         </motion.div>
       </div>
     </li>

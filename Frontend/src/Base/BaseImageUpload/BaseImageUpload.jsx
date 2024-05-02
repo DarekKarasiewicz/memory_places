@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UploadedImagesDisplay from './UploadedImagesDisplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAddPlace, addPlaceActions } from '../../Redux/addPlaceSlice';
-import UploadIcon from '../../icons/UploadIcon';
+import { selectAddPlace, addPlaceActions } from 'Redux/addPlaceSlice';
+import UploadIcon from 'icons/UploadIcon';
 import { motion } from 'framer-motion';
 
 const BaseImageUpload = ({ fileSize }) => {

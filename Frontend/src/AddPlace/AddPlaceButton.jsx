@@ -2,12 +2,12 @@ import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions } from 'Redux/modalsSlice';
 import AddingOption from './AddingOpction';
-import PlusIcon from '../icons/PlusIcon';
-import CancelIcon from '../icons/CancelIcon';
+import PlusIcon from 'icons/PlusIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 const AddPlaceButton = (props) => {
   const dispatch = useDispatch();

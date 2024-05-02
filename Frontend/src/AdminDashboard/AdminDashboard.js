@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { adminActions, selectAdminAction } from '../Redux/adminActionSlice';
-import { selectConfirmationModal } from '../Redux/confirmationModalSlice';
+import { adminActions, selectAdminAction } from 'Redux/adminActionSlice';
+import { selectConfirmationModal } from 'Redux/confirmationModalSlice';
 import { Suspense } from 'react';
 import AdminMenu from './AdminMenu/AdminMenu.js';
 import ContentNavbar from './ContentNavbar/ContentNavbar.js';
 import Content from './Content/Content.js';
-import Loader from '../Loader/Loader.js';
-import AdminModal from '../Modals/AdminModal.js';
-import ConfirmationModal from '../Modals/ConfirmationModal.js';
+import Loader from 'Loader/Loader.js';
+import AdminModal from 'Modals/AdminModal.js';
+import ConfirmationModal from 'Modals/ConfirmationModal.js';
 
 function AdminDashboard() {
   const dispatch = useDispatch();

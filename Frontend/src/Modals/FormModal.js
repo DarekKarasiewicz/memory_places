@@ -1,23 +1,23 @@
 import { useState, useEffect, useRef, Fragment, useMemo } from 'react';
 import axios from 'axios';
-import BaseModal from '../Base/BaseModal';
-import BaseInput from '../Base/BaseInput';
-import BaseTextarea from '../Base/BaseTextarea';
-import BaseButton from '../Base/BaseButton';
-import BaseSelect from '../Base/BaseSelect';
+import BaseModal from 'Base/BaseModal';
+import BaseInput from 'Base/BaseInput';
+import BaseTextarea from 'Base/BaseTextarea';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions } from '../Redux/modalsSlice';
-import { selectUpdatePlace, updatePlaceActions } from '../Redux/updatePlaceSlice';
-import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { modalsActions } from 'Redux/modalsSlice';
+import { selectUpdatePlace, updatePlaceActions } from 'Redux/updatePlaceSlice';
+import { addPlaceActions, selectAddPlace } from 'Redux/addPlaceSlice';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { formValidationActions, selectFormValidation } from '../Redux/formValidationSlice';
-import { addPlace, deletePlace } from '../Redux/allMapPlacesSlice';
-import BaseImageUpload from '../Base/BaseImageUpload/BaseImageUpload';
-import WebIcon from '../icons/WebIcon';
-import WikiIcon from '../icons/WikiIcon';
-import { registerAppChanges } from '../utils';
+import { formValidationActions, selectFormValidation } from 'Redux/formValidationSlice';
+import { addPlace, deletePlace } from 'Redux/allMapPlacesSlice';
+import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
+import WebIcon from 'icons/WebIcon';
+import WikiIcon from 'icons/WikiIcon';
+import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 function FormModal(props) {

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import { useTranslation } from 'react-i18next';
+import CancelIcon from 'icons/CancelIcon';
 
 function NotificationModal(props) {
   const [typeColor, setTypeColor] = useState('');
@@ -40,7 +41,7 @@ function NotificationModal(props) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
             >
-              <img src='./assets/cancel_icon.svg' alt='cancel_icon' className='h-8 w-8'></img>
+              <CancelIcon className='h-8 w-8' />
             </motion.div>
           </div>
           <div className='pt-4 pb-6 text-center'>

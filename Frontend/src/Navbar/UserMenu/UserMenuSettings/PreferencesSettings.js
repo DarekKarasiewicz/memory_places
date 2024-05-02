@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import BaseButton from '../../../Base/BaseButton';
-import BaseSelect from '../../../Base/BaseSelect';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
-import PreferencesIcon from '../../../icons/PreferencesIcon';
+import PreferencesIcon from 'icons/PreferencesIcon';
 
 function PreferencesSettings() {
   const [selectedFontOption, setSelectedFontOption] = useState('');

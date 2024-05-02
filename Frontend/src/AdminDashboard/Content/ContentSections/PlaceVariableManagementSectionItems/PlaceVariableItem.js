@@ -2,13 +2,13 @@ import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 're
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import ArrowUpIcon from '../../../../icons/ArrowUpIcon';
-import ArrowDownIcon from '../../../../icons/ArrowDownIcon';
-import CheckIcon from '../../../../icons/CheckIcon';
-import CancelIcon from '../../../../icons/CancelIcon';
-import EditIcon from '../../../../icons/EditIcon';
-import Trash2Icon from '../../../../icons/Trash2Icon';
-import PlusIcon from '../../../../icons/PlusIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import CheckIcon from 'icons/CheckIcon';
+import CancelIcon from 'icons/CancelIcon';
+import EditIcon from 'icons/EditIcon';
+import Trash2Icon from 'icons/Trash2Icon';
+import PlusIcon from 'icons/PlusIcon';
 
 const PlaceVariableItem = forwardRef(function PlaceVariableItem(
   { itemsName, items, itemsBase, error },

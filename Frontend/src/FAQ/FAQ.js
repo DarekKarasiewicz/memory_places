@@ -1,5 +1,5 @@
-import BaseButton from '../Base/BaseButton';
-import BaseModal from '../Base/BaseModal';
+import BaseButton from 'Base/BaseButton';
+import BaseModal from 'Base/BaseModal';
 import FAQItems from './FAQItem.js/FAQItems';
 import { useTranslation } from 'react-i18next';
 

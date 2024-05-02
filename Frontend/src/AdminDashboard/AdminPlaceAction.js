@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import ContentNavbar from './ContentNavbar/ContentNavbar.js';
 import AdminPlaceActionSection from './AdminManagement/AdminPlaceActionSection.js';
-import Loader from '../Loader/Loader.js';
+import Loader from 'Loader/Loader.js';
 import { useParams } from 'react-router-dom';
 
 function AdminPlaceAction({ action }) {

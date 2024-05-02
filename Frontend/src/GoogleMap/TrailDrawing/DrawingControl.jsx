@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { useMap } from '@vis.gl/react-google-maps';
 import { useSelector, useDispatch } from 'react-redux';
-import { drawingToolsActions, selectDrawingTools } from '../../Redux/drawingToolsSlice.jsx';
-import { addTrailActions } from '../../Redux/addTrailSlice.jsx';
+import { drawingToolsActions, selectDrawingTools } from 'Redux/drawingToolsSlice.jsx';
+import { addTrailActions } from 'Redux/addTrailSlice.jsx';
 import { useDrawingManagerEvents, useOverlaySnapshots } from './undoRedo.js';
-import { modalsActions } from '../../Redux/modalsSlice.jsx';
-import { selectUpdateTrail } from '../../Redux/updateTrailSlice.jsx';
+import { modalsActions } from 'Redux/modalsSlice.jsx';
+import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 import UndoIcon from 'icons/UndoIcon.jsx';
 import RedoIcon from 'icons/RedoIcon.jsx';
 import AcceptIcon from 'icons/AcceptIcon.jsx';

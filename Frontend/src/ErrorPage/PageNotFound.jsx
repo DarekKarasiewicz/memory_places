@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import { useTranslation } from 'react-i18next';
 
 const PageNotFound = () => {

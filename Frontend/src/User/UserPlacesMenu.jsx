@@ -3,13 +3,13 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
-import { userPlacesActions } from '../Redux/userPlacesSlice';
+import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import CancelIcon from '../icons/CancelIcon';
-import PlaceIcon from '../icons/PlaceIcon';
-import TrailIcon from '../icons/TrailIcon';
+import CancelIcon from 'icons/CancelIcon';
+import PlaceIcon from 'icons/PlaceIcon';
+import TrailIcon from 'icons/TrailIcon';
 
 const UserMenu = () => {
   const filterPlaces = useSelector((state) => state.allMapPlaces.filterItems);

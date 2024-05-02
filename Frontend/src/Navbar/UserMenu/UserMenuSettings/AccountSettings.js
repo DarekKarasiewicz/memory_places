@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
-import BaseButton from '../../../Base/BaseButton';
-import BaseInput from '../../../Base/BaseInput';
+import BaseButton from 'Base/BaseButton';
+import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
-import UserIcon from '../../../icons/UserIcon';
-import AccountIcon from '../../../icons/AccountIcon';
+import UserIcon from 'icons/UserIcon';
+import AccountIcon from 'icons/AccountIcon';
 
 function AccountSettings() {
   const [isValidName, setIsValidName] = useState(null);

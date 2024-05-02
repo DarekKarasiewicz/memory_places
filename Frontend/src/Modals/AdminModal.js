@@ -6,19 +6,19 @@ import {
   blockUser,
   resetUserPassword,
   unlockUser,
-} from '../Redux/adminActionSlice';
+} from 'Redux/adminActionSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import BaseButton from '../Base/BaseButton';
-import BaseSelect from '../Base/BaseSelect';
-import TrashIcon from '../icons/TrashIcon';
-import SettingsIcon from '../icons/SettingsIcon';
-import PassIcon from '../icons/PassIcon';
-import BlockIcon from '../icons/BlockIcon';
-import UnlockIcon from '../icons/UnlockIcon';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
+import TrashIcon from 'icons/TrashIcon';
+import SettingsIcon from 'icons/SettingsIcon';
+import PassIcon from 'icons/PassIcon';
+import BlockIcon from 'icons/BlockIcon';
+import UnlockIcon from 'icons/UnlockIcon';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../utils';
+import { registerAppChanges } from 'utils';
 
 function AdminModal({ closeModal }) {
   const dispatch = useDispatch();

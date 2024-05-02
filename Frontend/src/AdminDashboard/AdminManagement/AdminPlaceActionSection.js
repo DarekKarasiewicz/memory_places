@@ -2,22 +2,23 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../../Redux/addPlaceLocationSlice';
-import { addPlaceActions } from '../../Redux/addPlaceSlice';
-import { confirmationModalActions } from '../../Redux/confirmationModalSlice';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { addPlaceActions } from 'Redux/addPlaceSlice';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import PinIcon from '../../icons/PinIcon';
-import BaseInput from '../../Base/BaseInput';
-import BaseTextarea from '../../Base/BaseTextarea';
-import BaseButton from '../../Base/BaseButton';
-import BaseSelect from '../../Base/BaseSelect';
-import BaseRadioGroup from '../../Base/BaseRadioGroup';
-import WebIcon from '../../icons/WebIcon';
-import WikiIcon from '../../icons/WikiIcon';
-import GoogleMap from '../../GoogleMap/GoogleMap';
-import BaseImageUpload from '../../Base/BaseImageUpload/BaseImageUpload';
-import { registerAppChanges } from '../../utils';
+import PinIcon from 'icons/PinIcon';
+import BaseInput from 'Base/BaseInput';
+import BaseTextarea from 'Base/BaseTextarea';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
+import BaseRadioGroup from 'Base/BaseRadioGroup';
+import WebIcon from 'icons/WebIcon';
+import WikiIcon from 'icons/WikiIcon';
+import GoogleMap from 'GoogleMap/GoogleMap';
+import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
+import { registerAppChanges } from 'utils';
+import AlertIcon from 'icons/AlertIcon';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -374,11 +375,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex justify-between px-2'>
                     {!isValidName ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.field_required')}</span>
                       </span>
                     ) : (
@@ -403,11 +400,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     />
                     {!isValidSortof ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.field_required')}</span>
                       </span>
                     ) : (
@@ -429,11 +422,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     />
                     {!isValidType ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.field_required')}</span>
                       </span>
                     ) : (
@@ -455,11 +444,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     />
                     {!isValidPeriod ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.field_required')}</span>
                       </span>
                     ) : (
@@ -488,11 +473,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex px-2'>
                     {!isValidLat ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.correct_info_data')}</span>
                       </span>
                     ) : (
@@ -516,11 +497,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex px-2'>
                     {!isValidLng ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.correct_info_data')}</span>
                       </span>
                     ) : (
@@ -555,7 +532,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                 <div className='flex px-2'>
                   {!isValidDate ? (
                     <span className='text-red-500 flex items-center gap-2'>
-                      <img src='../../assets/alert_icon.svg' alt='alert icon' className='h-6 w-6' />
+                      <AlertIcon className='h-6 w-6' color='#ef4444' />
                       <span>{t('admin.common.field_required')}</span>
                     </span>
                   ) : (
@@ -583,7 +560,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                 <div className='flex justify-between px-2'>
                   {!isValidDesc ? (
                     <span className='text-red-500 flex items-center gap-2'>
-                      <img src='../../assets/alert_icon.svg' alt='alert icon' className='h-6 w-6' />
+                      <AlertIcon className='h-6 w-6' color='#ef4444' />
                       <span>{t('admin.common.field_required')}</span>
                     </span>
                   ) : (

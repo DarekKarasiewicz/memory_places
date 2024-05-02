@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import BaseButton from '../../../Base/BaseButton';
-import BaseSelect from '../../../Base/BaseSelect';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
-import LanguageIcon from '../../../icons/LanguageIcon';
+import LanguageIcon from 'icons/LanguageIcon';
 
 function LanguageSettings() {
   const [selectedLanguageOption, setSelectedLanguageOption] = useState('');
