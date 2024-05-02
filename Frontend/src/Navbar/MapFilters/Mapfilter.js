@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseInput from '../../Base/BaseInput';
-import BaseSelect from '../../Base/BaseSelect';
-import BaseButton from '../../Base/BaseButton';
+import BaseInput from 'Base/BaseInput';
+import BaseSelect from 'Base/BaseSelect';
+import BaseButton from 'Base/BaseButton';
 import { useDispatch } from 'react-redux';
-import { filterPlaces } from '../../Redux/allMapPlacesSlice';
+import { filterPlaces } from 'Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import FilterIcon from '../../icons/FilterIcon';
-import CancelIcon from '../../icons/CancelIcon';
+import FilterIcon from 'icons/FilterIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);

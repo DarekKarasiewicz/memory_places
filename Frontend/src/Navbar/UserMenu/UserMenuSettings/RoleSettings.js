@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import UserRoleIcon from '../../../icons/UserRoleIcon';
+import UserRoleIcon from 'icons/UserRoleIcon';
 
 function RoleSettings() {
   const [currentRole, setCurrentRole] = useState(null);

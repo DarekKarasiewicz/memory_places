@@ -1,7 +1,7 @@
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAddTrail } from '../../Redux/addTrailSlice';
+import { selectAddTrail } from 'Redux/addTrailSlice';
 
 export function useDrawingManager() {
   const map = useMap();

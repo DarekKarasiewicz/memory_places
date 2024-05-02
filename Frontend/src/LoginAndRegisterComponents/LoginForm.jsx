@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import BaseInput from '../Base/BaseInput';
+import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import ShowPassword from './ShowPassword';
 

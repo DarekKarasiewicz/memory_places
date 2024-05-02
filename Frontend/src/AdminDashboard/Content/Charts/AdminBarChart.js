@@ -10,8 +10,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import UserGroupIcon from '../../../icons/admin/UserGroupIcon';
-import PlacesIcon from '../../../icons/admin/PlacesIcon';
+import UserGroupIcon from 'icons/admin/UserGroupIcon';
+import PlacesIcon from 'icons/admin/PlacesIcon';
 
 function AdminBarChart(props) {
   const iconComponents = {

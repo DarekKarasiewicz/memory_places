@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import i18n from '../i18n';
-import ArrowUpIcon from '../icons/ArrowUpIcon';
-import ArrowDownIcon from '../icons/ArrowDownIcon';
+import i18n from 'i18n';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
 
 function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);

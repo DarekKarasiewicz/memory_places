@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
-import ArrowUpIcon from '../icons/ArrowUpIcon';
-import ArrowDownIcon from '../icons/ArrowDownIcon';
-import ThemeIcon from '../icons/ThemeIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import ThemeIcon from 'icons/ThemeIcon';
 
 function ThemeSwitcher() {
   const [isOpen, setIsOpen] = useState(false);

@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import SearchIcon from 'icons/SearchIcon';
 
 function HistoryTable({ data, columns }) {
   const { t } = useTranslation();
@@ -42,11 +43,7 @@ function HistoryTable({ data, columns }) {
         </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
-            <img
-              src={`./assets/search_icon.svg`}
-              alt={`search_icon`}
-              className='h-5 w-5 absolute left-2'
-            />
+            <SearchIcon className='h-5 w-5 absolute left-2' />
             <input
               className='rounded-lg p-2 pl-8 text-black'
               type='text'

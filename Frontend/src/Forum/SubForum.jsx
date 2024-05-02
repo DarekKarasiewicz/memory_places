@@ -4,7 +4,7 @@ import axios from 'axios';
 import CommentForm from './CommentForm';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../utils';
+import { registerAppChanges } from 'utils';
 
 function SubForum() {
   const { id } = useParams();

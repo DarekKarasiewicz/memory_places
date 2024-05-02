@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useAutocomplete } from '@vis.gl/react-google-maps';
 import { setKey, fromAddress } from 'react-geocode';
-import { locationActions } from '../../Redux/locationSlice';
+import { locationActions } from 'Redux/locationSlice';
 import { useDispatch } from 'react-redux';
 import './AutocompleteStyles.css';
 import { useTranslation } from 'react-i18next';
-import SearchIcon from '../../icons/SearchIcon';
-import SearchClosedIcon from '../../icons/SearchClosedIcon';
+import SearchIcon from 'icons/SearchIcon';
+import SearchClosedIcon from 'icons/SearchClosedIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -83,12 +84,10 @@ function SearchBar() {
               ref={inputRef}
               value={searchedText}
             ></input>
-            <img
-              src={`./assets/cancel_icon.svg`}
-              alt='cancel_icon'
+            <CancelIcon
               className='h-5 w-5 absolute right-1 cursor-pointer'
               onClick={clearSearchBar}
-            ></img>
+            />
           </motion.div>
         )}
         <motion.div

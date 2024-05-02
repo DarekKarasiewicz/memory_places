@@ -2,14 +2,14 @@ import { useState, useRef } from 'react';
 import LoginForm from './LoginForm';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useCookies } from 'react-cookie';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions } from 'Redux/modalsSlice';
 import { useDispatch } from 'react-redux';
-import useAuth from '../Hooks/useAuth';
-import useRefreshToken from '../Hooks/useRefreshToken';
+import useAuth from 'Hooks/useAuth';
+import useRefreshToken from 'Hooks/useRefreshToken';
 
 const LoginComponent = () => {
   const [isValidEmail, setIsValidEmail] = useState(null);

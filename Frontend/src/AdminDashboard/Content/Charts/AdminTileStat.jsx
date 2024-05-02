@@ -1,13 +1,13 @@
 import React from 'react';
-import UserGroupIcon from '../../../icons/admin/UserGroupIcon';
-import PlacesIcon from '../../../icons/admin/PlacesIcon';
-import UsersIcon from '../../../icons/admin/UsersIcon';
-import ModUserIcon from '../../../icons/admin/ModUserIcon';
-import AdminUserIcon from '../../../icons/admin/AdminUserIcon';
-import NewUsersIcon from '../../../icons/admin/NewUsersIcon';
-import MapPinIcon from '../../../icons/admin/MapPinIcon';
-import ClipboardCheckIcon from '../../../icons/admin/ClipboardCheckIcon';
-import FlagCheckIcon from '../../../icons/admin/FlagCheckIcon';
+import UserGroupIcon from 'icons/admin/UserGroupIcon';
+import PlacesIcon from 'icons/admin/PlacesIcon';
+import UsersIcon from 'icons/admin/UsersIcon';
+import ModUserIcon from 'icons/admin/ModUserIcon';
+import AdminUserIcon from 'icons/admin/AdminUserIcon';
+import NewUsersIcon from 'icons/admin/NewUsersIcon';
+import MapPinIcon from 'icons/admin/MapPinIcon';
+import ClipboardCheckIcon from 'icons/admin/ClipboardCheckIcon';
+import FlagCheckIcon from 'icons/admin/FlagCheckIcon';
 
 function AdminTileStat(props) {
   const iconComponents = {

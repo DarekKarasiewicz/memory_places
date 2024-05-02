@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import PlaceVariableItem from './PlaceVariableManagementSectionItems/PlaceVariableItem';
-import { confirmationModalActions } from '../../../Redux/confirmationModalSlice';
-import BaseButton from '../../../Base/BaseButton';
-import HelpIcon from '../../../icons/HelpIcon';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import BaseButton from 'Base/BaseButton';
+import HelpIcon from 'icons/HelpIcon';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../../../utils';
+import { registerAppChanges } from 'utils';
 
 function PlaceVariableManagementSection() {
   const dispatch = useDispatch();

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import MapIcon from '../../icons/MapIcon';
-import ForumIcon from '../../icons/ForumIcon';
+import MapIcon from 'icons/MapIcon';
+import ForumIcon from 'icons/ForumIcon';
 
 function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);

@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
-import { modalsActions } from '../Redux/modalsSlice';
-import { updateTrailActions } from '../Redux/updateTrailSlice';
+import { modalsActions } from 'Redux/modalsSlice';
+import { updateTrailActions } from 'Redux/updateTrailSlice';
 import { useDispatch } from 'react-redux';
-import { locationActions } from '../Redux/locationSlice';
-import { deleteTrail } from '../Redux/allMapTrailsSlice';
+import { locationActions } from 'Redux/locationSlice';
+import { deleteTrail } from 'Redux/allMapTrailsSlice';
 import { useTranslation } from 'react-i18next';
-import TrailIcon from '../icons/TrailIcon';
+import TrailIcon from 'icons/TrailIcon';
 import { useCookies } from 'react-cookie';
-import { registerAppChanges } from '../utils';
+import { registerAppChanges } from 'utils';
+import EditIcon from 'icons/EditIcon';
+import TrashIcon from 'icons/TrashIcon';
 
 const UserTrailItem = (props) => {
   const [visability, setVisability] = useState('flex');
@@ -68,7 +70,7 @@ const UserTrailItem = (props) => {
           }}
           onClick={handleUpdateModalVisability}
         >
-          <img src='../../assets/edit_white_icon.svg' className='w-6 h-6' />
+          <EditIcon className='w-6 h-6' color='#ffffff' />
         </motion.div>
         <motion.div
           className='rounded-full bg-red-700 h-10 w-10 flex justify-center items-center hover:bg-red-900 cursor-pointer'
@@ -77,7 +79,7 @@ const UserTrailItem = (props) => {
           }}
           onClick={handleTrailDelete}
         >
-          <img src='../../assets/trash_icon.svg' className='w-6 h-6' />
+          <TrashIcon className='w-6 h-6' color='#ffffff' />
         </motion.div>
       </div>
     </li>

@@ -8,27 +8,27 @@ import {
   ControlPosition,
 } from '@vis.gl/react-google-maps';
 import { useEffect, useMemo, useState } from 'react';
-import { selectLocation } from '../Redux/locationSlice';
+import { selectLocation } from 'Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions, selectModals } from '../Redux/modalsSlice';
-import { selectUserPlaces } from '../Redux/userPlacesSlice';
-import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
-import { filterTrails, fetchMapTrails } from '../Redux/allMapTrailsSlice';
-import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
-import { addPlaceActions } from '../Redux/addPlaceSlice';
-import AddPlaceButton from '../AddPlace/AddPlaceButton';
-import Loader from '../Loader/Loader';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { modalsActions, selectModals } from 'Redux/modalsSlice';
+import { selectUserPlaces } from 'Redux/userPlacesSlice';
+import { filterPlaces, fetchMapPlaces } from 'Redux/allMapPlacesSlice';
+import { filterTrails, fetchMapTrails } from 'Redux/allMapTrailsSlice';
+import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
+import { addPlaceActions } from 'Redux/addPlaceSlice';
+import AddPlaceButton from 'AddPlace/AddPlaceButton';
+import Loader from 'Loader/Loader';
 import { useTranslation } from 'react-i18next';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
 import GoogleMapPin from './GoogleMapPin.jsx';
-import { selectAddTrail } from '../Redux/addTrailSlice.jsx';
+import { selectAddTrail } from 'Redux/addTrailSlice.jsx';
 import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
-import { selectUpdateTrail } from '../Redux/updateTrailSlice.jsx';
+import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 
 // TO DO
 // When frontend will be rewrited this prop will be deleted with functionality to it

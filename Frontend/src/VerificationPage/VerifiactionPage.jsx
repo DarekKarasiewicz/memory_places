@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 

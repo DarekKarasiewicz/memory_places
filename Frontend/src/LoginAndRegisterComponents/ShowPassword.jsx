@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import EyeCloseIcon from '../icons/EyeCloseIcon';
-import EyeOpenIcon from '../icons/EyeOpenIcon';
+import EyeCloseIcon from 'icons/EyeCloseIcon';
+import EyeOpenIcon from 'icons/EyeOpenIcon';
 
 const ShowPassword = ({ isVisible, handlePasswordVisability }) => {
   const { t } = useTranslation();

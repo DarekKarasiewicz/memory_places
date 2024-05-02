@@ -6,11 +6,11 @@ import SearchBar from './SearchBar/SearchBar';
 import { useSelector } from 'react-redux';
 import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
-import { selectUserPlaces } from '../Redux/userPlacesSlice';
+import { selectUserPlaces } from 'Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
-import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
-import MenuIcon from '../icons/MenuIcon';
-import CancelIcon from '../icons/CancelIcon';
+import ThemeSwitcher from 'ThemeSwitcher/ThemeSwitcher';
+import MenuIcon from 'icons/MenuIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);

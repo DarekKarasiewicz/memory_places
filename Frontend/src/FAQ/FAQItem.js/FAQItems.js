@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import ArrowDownIcon from '../../icons/ArrowDownIcon';
-import ArrowUpIcon from '../../icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
 
 function FAQItems(props) {
   const [isActive, setIsActive] = useState(false);

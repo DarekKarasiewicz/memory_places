@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import NotificationIcon from '../../../icons/NotificationIcon';
-import PinIcon from '../../../icons/PinIcon';
-import UserIcon from '../../../icons/UserIcon';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import HelpIcon from '../../../icons/HelpIcon';
-import ContactIcon from '../../../icons/ContactIcon';
-import LogoutIcon from '../../../icons/LogoutIcon';
+import NotificationIcon from 'icons/NotificationIcon';
+import PinIcon from 'icons/PinIcon';
+import UserIcon from 'icons/UserIcon';
+import SettingsIcon from 'icons/SettingsIcon';
+import HelpIcon from 'icons/HelpIcon';
+import ContactIcon from 'icons/ContactIcon';
+import LogoutIcon from 'icons/LogoutIcon';
 
 const UserMenuOption = (props) => {
   const iconComponents = {

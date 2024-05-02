@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { drawingToolsActions, selectDrawingTools } from '../../Redux/drawingToolsSlice';
-import { drawingEventsActions, selectDrawingEvents } from '../../Redux/drawingEventsSlice';
+import { drawingToolsActions, selectDrawingTools } from 'Redux/drawingToolsSlice';
+import { drawingEventsActions, selectDrawingEvents } from 'Redux/drawingEventsSlice';
 
 export function useDrawingManagerEvents(drawingManager, overlaysShouldUpdateRef) {
   const dispatch = useDispatch();

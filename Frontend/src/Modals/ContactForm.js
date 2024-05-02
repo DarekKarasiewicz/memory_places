@@ -1,14 +1,14 @@
-import BaseModal from '../Base/BaseModal';
-import BaseInput from '../Base/BaseInput';
-import BaseTextarea from '../Base/BaseTextarea';
-import BaseButton from '../Base/BaseButton';
+import BaseModal from 'Base/BaseModal';
+import BaseInput from 'Base/BaseInput';
+import BaseTextarea from 'Base/BaseTextarea';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../Redux/modalsSlice';
-import { registerAppChanges } from '../utils';
+import { modalsActions } from 'Redux/modalsSlice';
+import { registerAppChanges } from 'utils';
 
 function ContactForm(props) {
   const nameRef = useRef(null);

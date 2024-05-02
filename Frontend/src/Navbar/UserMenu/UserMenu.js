@@ -2,14 +2,15 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../../Redux/modalsSlice';
-import { userPlacesActions } from '../../Redux/userPlacesSlice';
-import BaseButton from '../../Base/BaseButton';
+import { modalsActions } from 'Redux/modalsSlice';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
+import BaseButton from 'Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import ArrowUpIcon from '../../icons/ArrowUpIcon';
-import ArrowDownIcon from '../../icons/ArrowDownIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import UserIcon from 'icons/UserIcon';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
@@ -147,7 +148,7 @@ function UserMenu() {
       <div className='relative' ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick} ref={popupRef}>
           <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
-            <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>
+            <UserIcon className='h-6 w-6' />
           </div>
           {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}
         </div>

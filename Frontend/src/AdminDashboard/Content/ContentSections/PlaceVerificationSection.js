@@ -1,5 +1,5 @@
 import AdminTileStat from '../Charts/AdminTileStat';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import PlaceVerificationTable from '../Tables/PlaceVerificationTable';
