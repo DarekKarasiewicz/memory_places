@@ -6,6 +6,8 @@ from memo_places.serializers import (
     Places_serailizer,
     Questions_serializer,
     Path_serailizer,
+    PathImage_serializer,
+    PlaceImage_serializer,
 )
 from .serializers import (
     User_serializer,
@@ -13,7 +15,7 @@ from .serializers import (
     Period_serializer,
     Sortof_serializer,
 )
-from memo_places.models import Place, User, Question, Change, Sortof, Type, Period, Path
+from memo_places.models import Place, User, Question, Change, Sortof, Type, Period, Path, PlaceImage, PathImage
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -135,8 +137,6 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.wiki_link = data["wiki_link"]
                 case "topic_link":
                     place_object.topic_link = data["topic_link"]
-                case "img":
-                    place_object.img = data["img"]
                 case "verified":
                     place_object.verified = data["verified"]
                 case _:
@@ -183,8 +183,8 @@ class Path_view(viewsets.ModelViewSet):
                     new_path.wiki_link = data["wiki_link"]
                 case "topic_link":
                     new_path.topic_link = data["topic_link"]
-                case "outside":
-                    new_path.img = data["img"]
+                case _:
+                    pass
         new_path.save()
 
         serializer = self.serializer_class(new_path)
@@ -250,8 +250,6 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.wiki_link = data["wiki_link"]
                 case "topic_link":
                     path_object.topic_link = data["topic_link"]
-                case "img":
-                    path_object.img = data["img"]
                 case _:
                     pass
 
@@ -365,8 +363,6 @@ class User_view(viewsets.ModelViewSet):
             case "master":
                 user = self.model.objects.filter(master=True)
                 serializer = self.serializer_class(user, many=True)
-            # case "data_join":
-            #     #TODO
         return Response(
             {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
         )
@@ -593,7 +589,107 @@ class Sortofs_view(CategoryBaseView):
     serializer_class = Sortof_serializer
     model = Sortof
 
-
 class Periods_view(CategoryBaseView):
     serializer_class = Period_serializer
     model = Period
+class Place_image_view(viewsets.ModelViewSet):
+    model = PlaceImage
+    serializer_class= PlaceImage_serializer
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                placeimage = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(placeimage, many=False)
+                return Response(serializer.data)
+            case "place":
+                place = get_object_or_404(Place, id=value)
+                placeimage = self.model.objects.filter(place=place)
+                serializer = self.serializer_class(placeimage, many=True)
+                return Response(serializer.data)
+            case _:
+                return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request, *args, **kwargs):
+        place_object = get_object_or_404(Place, id=request.data["place"])
+        placeimage_object = self.model(
+            place = place_object,
+            img = request.data["img"] 
+        )
+        placeimage_object.save()
+        serializer = self.serializer_class(placeimage_object)
+        return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        placeimage_object = get_object_or_404(PlaceImage, id=request.data["id"])
+        for i in request.data.keys():
+            match i:
+                case "place":
+                    placeimage_object.place = request.data["place"]
+                case "img":
+                    placeimage_object.img = request.data["img"]
+
+        placeimage_object.save()
+        serializer = self.serializer_class(placeimage_object)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        placeimage_object = get_object_or_404(PlaceImage, id =request.data["place"])
+        placeimage_object.delete()
+        serializer = self.serializer_class(placeimage_object)
+        return Response(serializer.data) 
+
+class Path_image_view(viewsets.ModelViewSet):
+    model = PathImage
+    serializer_class= PathImage_serializer 
+
+    def get_queryset(self):
+        return self.model.objects.all()
+    
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                pathimage = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(pathimage, many=False)
+                return Response(serializer.data)
+            case "path":
+                path = get_object_or_404(Path, id=value)
+                pathimage = self.model.objects.filter(path=path)
+                serializer = self.serializer_class(pathimage, many=True)
+                return Response(serializer.data)
+            case _:
+                return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request, *args, **kwargs):
+        path_object = get_object_or_404(Path, id=request.data["place"])
+        pathimage_object = self.model(
+            path = path_object,
+            img = request.data["img"] 
+        )
+        pathimage_object.save()
+        serializer = self.serializer_class(pathimage_object)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        pathimage_object = get_object_or_404(PathImage, id=request.data["id"])
+        for i in request.data.keys():
+            match i:
+                case "place":
+                    pathimage_object.path = request.data["path"]
+                case "img":
+                    pathimage_object.img = request.data["img"]
+
+        pathimage_object.save()
+        serializer = self.serializer_class(pathimage_object)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        pathimage_object = get_object_or_404(PathImage, id =request.data["place"])
+        pathimage_object.delete()
+        serializer = self.serializer_class(pathimage_object)
+        return Response(serializer.data) 

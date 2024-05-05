@@ -137,7 +137,7 @@ class Place(models.Model):
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to="images/")
+    img = models.ImageField(upload_to="place_images/")
 
 class Path(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
@@ -150,9 +150,12 @@ class Path(models.Model):
     period = models.ForeignKey(Period, on_delete=models.CASCADE)
     wiki_link = models.CharField(max_length=64, default=None, null=True)
     topic_link = models.CharField(max_length=64, default=None, null=True)
-    img = models.ImageField(upload_to="test_image/")
     verified = models.BooleanField(default=False)
     creation_date = models.DateField(default=None, null=True)
+
+class PathImage(models.Model):
+    path = models.ForeignKey(Path, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to="path_images/")
 
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
