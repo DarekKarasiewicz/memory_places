@@ -1,11 +1,18 @@
 from rest_framework import serializers
-from .models import Place, User, Question, Path, PlaceImage, Change
+from .models import Place, User, Question, Path, PlaceImage, Change, PathImage
 
 
 class User_serializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "email", "password", "active", "confirmed")
+        fields = (
+            "id",
+            "username",
+            "email",
+            "password",
+            "active",
+            "confirmed",
+        )
 
 
 class Places_serailizer(serializers.ModelSerializer):
@@ -13,7 +20,6 @@ class Places_serailizer(serializers.ModelSerializer):
     type_value = serializers.CharField(source="type.value")
     period_value = serializers.CharField(source="period.value")
     sortof_value = serializers.CharField(source="sortof.value")
-    # place_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Place
@@ -46,6 +52,11 @@ class PlaceImage_serializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceImage
         fields= "__all__"
+class PathImage_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = PathImage 
+        fields= "__all__"
+
 class Path_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     type_value = serializers.CharField(source="type.value")
@@ -68,7 +79,6 @@ class Path_serailizer(serializers.ModelSerializer):
             "period_value",
             "topic_link",
             "wiki_link",
-            "img",
         )
 
 class Short_Places_serailizer(serializers.ModelSerializer):
@@ -87,9 +97,7 @@ class Short_Places_serailizer(serializers.ModelSerializer):
             "sortof",
             "type",
             "period",
-            "img",
         )
-
 
 class Questions_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)
@@ -110,7 +118,6 @@ class Questions_serializer(serializers.ModelSerializer):
         if data.get("user") is None:
             data.pop("username", None)
         return data
-
 
 class Changes_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)

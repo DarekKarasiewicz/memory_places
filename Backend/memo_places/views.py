@@ -8,8 +8,9 @@ from .serializers import (
     Changes_serializer,
     Path_serailizer,
     PlaceImage_serializer,
+    PathImage_serializer,
 )
-from .models import Place, User, Question, Change, Path, Type, Sortof, Period, PlaceImage
+from .models import Place, User, Question, Change, Path, Type, Sortof, Period, PlaceImage, PathImage
 from admin_dashboard.serializers import (
     Types_serializer,
     Sortof_serializer,
@@ -76,14 +77,9 @@ class Place_view(viewsets.ModelViewSet):
                     new_place.wiki_link = data["wiki_link"]
                 case "topic_link":
                     new_place.topic_link = data["topic_link"]
-                # case "img":
-                    # for img in data[img]:
-                    #     place_img = PlaceImage(
-                    #         place=new_place,
-                    #         img=img
-                    #     )
-                    #     place_img.save()
-                        # new_place.img = data["img"]
+                case _:
+                    pass
+
         new_place.save()
 
         serializer = self.serializer_class(new_place)
@@ -165,15 +161,29 @@ class Place_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Image_view(viewsets.ModelViewSet):
+class Place_image_view(viewsets.ModelViewSet):
     model = PlaceImage
     serializer_class= PlaceImage_serializer
 
     def get_queryset(self):
         return self.model.objects.all()
 
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                placeimage = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(placeimage, many=False)
+                return Response(serializer.data)
+            case "place":
+                place = get_object_or_404(Place, id=value)
+                placeimage = self.model.objects.filter(place=place)
+                serializer = self.serializer_class(placeimage, many=True)
+                return Response(serializer.data)
+            case _:
+                return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
     def create(self, request, *args, **kwargs):
-        print(request.data)
         place_object = get_object_or_404(Place, id=request.data["place"])
         placeimage_object = self.model(
             place = place_object,
@@ -181,6 +191,38 @@ class Image_view(viewsets.ModelViewSet):
         )
         placeimage_object.save()
         serializer = self.serializer_class(placeimage_object)
+        return Response(serializer.data)
+
+class Path_image_view(viewsets.ModelViewSet):
+    model = PathImage
+    serializer_class= PathImage_serializer 
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                pathimage = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(pathimage, many=False)
+                return Response(serializer.data)
+            case "path":
+                path = get_object_or_404(Path, id=value)
+                pathimage = self.model.objects.filter(path=path)
+                serializer = self.serializer_class(pathimage, many=True)
+                return Response(serializer.data)
+            case _:
+                return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request, *args, **kwargs):
+        path_object = get_object_or_404(Path, id=request.data["place"])
+        pathimage_object = self.model(
+            path = path_object,
+            img = request.data["img"] 
+        )
+        pathimage_object.save()
+        serializer = self.serializer_class(pathimage_object)
         return Response(serializer.data)
 
 class Path_view(viewsets.ModelViewSet):
@@ -491,7 +533,7 @@ class Reset_password(viewsets.ModelViewSet):
             subject="Reset password",
             message="",
             from_email="info@miejscapamieci.org.pl",
-            recipient_list=[serializer["email"].value],
+            recipient_list=[user.email],
             fail_silently=False,
             html_message=html_message)
 
