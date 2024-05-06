@@ -1,5 +1,12 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.core.mail import send_mail
+from rest_framework.renderers import JSONRenderer
+from django.template.loader import render_to_string
+
 from .serializers import (
     Places_serailizer,
     User_serializer,
@@ -16,12 +23,6 @@ from admin_dashboard.serializers import (
     Sortof_serializer,
     Period_serializer,
 )
-from rest_framework.response import Response
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-from django.core.mail import send_mail
-from rest_framework.renderers import JSONRenderer
-from django.template.loader import render_to_string
 
 import re
 import secrets
@@ -415,7 +416,6 @@ class User_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        # user_object = User.objects.get(id=kwargs['pk'])
         try:
             print(isinstance(int(kwargs["pk"]), int))
             user_object = self.model.objects.get(id=kwargs["pk"])
@@ -427,7 +427,7 @@ class User_view(viewsets.ModelViewSet):
         if key == "password_reset":
             user_object.set_password(data["password"])
         else:
-            # should we consider update email
+            # we should consider updating email
             if "email" in data and "username" in data:
                 user_object.email = data["email"]
                 user_object.username = data["username"]
