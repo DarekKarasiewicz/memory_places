@@ -9,7 +9,7 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
         <input
           className={`block w-${
             props.width ? props.width : 'full'
-          } rounded-l-lg rounded-r-lg p-2 pl-3 text-black focus:outline-contrastColor ${
+          } rounded-l-lg rounded-r-lg p-2 pl-3 text-black drop-shadow-sm shadow-itemShadow focus:outline-contrastColor ${
             props.className ? props.className : ''
           } ${props.isValid === false ? 'bg-red-400' : ''}`}
           type={props.type}

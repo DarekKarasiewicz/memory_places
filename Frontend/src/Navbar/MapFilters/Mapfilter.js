@@ -1,22 +1,100 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseInput from '../../Base/BaseInput';
-import BaseSelect from '../../Base/BaseSelect';
-import BaseButton from '../../Base/BaseButton';
+import BaseInput from 'Base/BaseInput';
+import BaseSelect from 'Base/BaseSelect';
+import BaseButton from 'Base/BaseButton';
 import { useDispatch } from 'react-redux';
-import { filterPlaces } from '../../Redux/allMapPlacesSlice';
+import { filterPlaces } from 'Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import FilterIcon from 'icons/FilterIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
-  const [selectedSortOfOption, setSelectedSortOfOption] = useState('all');
-  const [selectedTypeOption, setSelectedTypeOption] = useState('all');
-  const [selectedPeriodOption, setSelectedPeriodOption] = useState('all');
+  const [sortOf, setSortOf] = useState([]);
+  const [type, setType] = useState([]);
+  const [period, setPeriod] = useState([]);
+  const [selectedSortOfOption, setSelectedSortOfOption] = useState(0);
+  const [selectedTypeOption, setSelectedTypeOption] = useState(0);
+  const [selectedPeriodOption, setSelectedPeriodOption] = useState(0);
   const [textValue, setTextValue] = useState('');
   const dispatch = useDispatch();
   const filterItemsLength = useSelector((state) => state.allMapPlaces.filterItemsLength);
   const { t } = useTranslation();
+
+  const fetchSortOfItems = async () => {
+    try {
+      const responseSort = await axios.get(`http://127.0.0.1:8000/memo_places/sortofs`);
+      const sortOfItems = responseSort.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(sortOfItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setSortOf([{ id: 0, label: t('modal.all'), value: 0 }, ...sortOfItems]);
+      } else {
+        setSortOf(sortOfItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTypeItems = async () => {
+    try {
+      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const typeItems = responseType.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(typeItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setType([{ id: 0, label: t('modal.all'), value: 0 }, ...typeItems]);
+      } else {
+        setType(typeItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPeriodItems = async () => {
+    try {
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const periodItems = responsePeriod.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(periodItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setPeriod([{ id: 0, label: t('modal.all'), value: 0 }, ...periodItems]);
+      } else {
+        setPeriod(periodItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClick = () => {
     setIsActive((current) => !current);
@@ -42,44 +120,18 @@ function MapFilter() {
     dispatch(
       filterPlaces({
         name: textValue,
-        sortof: selectedSortOfOption,
-        type: selectedTypeOption,
-        period: selectedPeriodOption,
+        sortof: parseInt(selectedSortOfOption),
+        type: parseInt(selectedTypeOption),
+        period: parseInt(selectedPeriodOption),
       }),
     );
   };
 
-  //For each options later will be added more 9 options from client
-  const sortof_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.existing'), value: 'existing' },
-    { label: t('modal.non_existing'), value: 'non_existing' },
-    { label: t('modal.commemorative_plaque'), value: 'commemorative_plaque' },
-    { label: t('modal.commemorative_monument'), value: 'commemorative_monument' },
-  ];
-
-  const type_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.war_cemetery'), value: 'war_cemetery' },
-    { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
-    { label: t('modal.burial_site'), value: 'burial_site' },
-    { label: t('modal.execution_site'), value: 'execution_site' },
-    { label: t('modal.battlefield'), value: 'battlefield' },
-    { label: t('modal.archaeological_site'), value: 'archaeological_site' },
-    { label: t('modal.wayside_shrine'), value: 'wayside_shrine' },
-    { label: t('modal.historical_monument'), value: 'historical_monument' },
-  ];
-
-  const period_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.poland_before_third_partition'), value: 'poland_before_third_partition' },
-    { label: t('modal.napoleonic_wars'), value: 'napoleonic_wars' },
-    { label: t('modal.poland_after_partitions'), value: 'poland_after_partitions' },
-    { label: t('modal.world_war_I'), value: 'world_war_I' },
-    { label: t('modal.interwar_period'), value: 'interwar_period' },
-    { label: t('modal.world_war_II'), value: 'world_war_II' },
-    { label: t('modal.stalinist_period'), value: 'stalinist_period' },
-  ];
+  useEffect(() => {
+    fetchSortOfItems();
+    fetchTypeItems();
+    fetchPeriodItems();
+  }, []);
 
   return (
     <div className='flex'>
@@ -87,30 +139,26 @@ function MapFilter() {
         whileHover={{ scale: 1.05 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300 ${
+        className={`h-12 w-12 flex justify-center items-center cursor-pointer ${
           isActive ? 'right-72 absolute mr-3 top-2' : ''
         }`}
         onClick={handleClick}
       >
-        <img
-          src={`./assets/${!isActive ? 'filter_icon' : 'cancel_icon'}.svg`}
-          alt={`${!isActive ? 'filter_icon' : 'cancel_icon'}`}
-          className='h-8 w-8'
-        ></img>
+        {!isActive ? <FilterIcon /> : <CancelIcon />}
       </motion.div>
       {isActive && (
         <motion.div
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-slate-600 rounded-s-lg z-10 shadow-xl'
+          className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-mainBgColor text-textColor rounded-s-lg z-10 shadow-xl'
         >
-          <div className='flex flex-col gap-y-3 justify-start items-center'>
-            <div className='text-2xl border-b-2 border-black p-2 w-1/2 text-center'>
+          <div className='flex flex-col gap-y-4 justify-start items-center w-full'>
+            <div className='text-2xl border-b-2 border-textColor p-2 w-1/2 text-center'>
               <span>{t('common.filter1')}</span>
               <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>
             </div>
-            <div className='flex flex-col gap-2 mb-2'>
+            <div className='flex flex-col gap-4 mb-2'>
               <BaseInput
                 type='text'
                 label={t('common.name')}
@@ -122,21 +170,21 @@ function MapFilter() {
                 label={t('common.type_of')}
                 name={t('common.type_of')}
                 value={selectedSortOfOption}
-                options={sortof_options}
+                options={sortOf}
                 onChange={handleSelectSortOfChange}
               />
               <BaseSelect
                 label={t('common.type')}
                 name={t('common.type')}
                 value={selectedTypeOption}
-                options={type_options}
+                options={type}
                 onChange={handleSelectTypeChange}
               />
               <BaseSelect
                 label={t('common.period')}
                 name={t('common.period')}
                 value={selectedPeriodOption}
-                options={period_options}
+                options={period}
                 onChange={handleSelectPeriodChange}
               />
             </div>

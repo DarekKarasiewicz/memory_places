@@ -1,20 +1,35 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseModal from '../Base/BaseModal';
-import AccountSettings from '../Navbar/UserMenu/UserMenuSettings/AccountSettings';
-import SecuritySettings from '../Navbar/UserMenu/UserMenuSettings/SecuritySettings';
-import RoleSettings from '../Navbar/UserMenu/UserMenuSettings/RoleSettings';
-import NotificiationsSettings from '../Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
-import LanguageSettings from '../Navbar/UserMenu/UserMenuSettings/LanguageSettings';
-import PreferencesSettings from '../Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
+import BaseModal from 'Base/BaseModal';
+import AccountSettings from 'Navbar/UserMenu/UserMenuSettings/AccountSettings';
+import SecuritySettings from 'Navbar/UserMenu/UserMenuSettings/SecuritySettings';
+import RoleSettings from 'Navbar/UserMenu/UserMenuSettings/RoleSettings';
+import NotificiationsSettings from 'Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
+import LanguageSettings from 'Navbar/UserMenu/UserMenuSettings/LanguageSettings';
+import PreferencesSettings from 'Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
 import { useTranslation } from 'react-i18next';
+import { modalsActions } from 'Redux/modalsSlice';
+import { useDispatch } from 'react-redux';
+
+import AccountIcon from 'icons/AccountIcon';
+import ShieldLockIcon from 'icons/ShieldLockIcon';
+import UserRoleIcon from 'icons/UserRoleIcon';
+import NotificationIcon from 'icons/NotificationIcon';
+import LanguageIcon from 'icons/LanguageIcon';
+import PreferencesIcon from 'icons/PreferencesIcon';
 
 function UserMenuSettingsModal(props) {
   const [currentOption, setCurrentOption] = useState('account');
   const { t } = useTranslation();
+  const modalRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleCurrentOption = (option) => {
     setCurrentOption(option);
+  };
+
+  const handleUserSettingsVisability = () => {
+    dispatch(modalsActions.changeIsUserSettingsOpen());
   };
 
   let contentComponent;
@@ -43,75 +58,94 @@ function UserMenuSettingsModal(props) {
       break;
   }
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        handleUserSettingsVisability();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
   return (
     <>
-      <BaseModal closeModal={props.closeModal} width='2/6'>
-        <div className='flex p-2'>
-          <div className='w-2/6 text-xl flex flex-col gap-2 pr-4'>
-            <div>{t('user.general')}</div>
+      <BaseModal closeModal={props.closeModal} minHeight='min-h-[calc(100vh/2)]'>
+        <div ref={modalRef} className='flex p-2'>
+          <div className='w-2/6 text-xl flex flex-col gap-3 pr-4'>
+            <div className='text-2xl'>{t('user.general')}</div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'account' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'account'
+                  ? 'text-contrastColor border-l-2 border-contrastColor'
+                  : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('account')}
             >
-              <img src='./assets/account_icon.svg' alt='account_icon' className='h-5 w-5' />
+              <AccountIcon className='h-6 w-6' />
               {t('user.account')}
             </motion.div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'security' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'security'
+                  ? 'text-contrastColor border-l-2 border-contrastColor'
+                  : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('security')}
             >
-              <img src='./assets/shield_lock_icon.svg' alt='shield_lock_icon' className='h-5 w-5' />
+              <ShieldLockIcon className='h-6 w-6' />
               {t('user.security')}
             </motion.div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'role' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'role' ? 'text-contrastColor border-l-2 border-contrastColor' : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('role')}
             >
-              <img src='./assets/user_role_icon.svg' alt='user_role_icon' className='h-5 w-5' />
+              <UserRoleIcon className='h-6 w-6' />
               {t('user.role')}
             </motion.div>
-            <div>{t('user.system')}</div>
+            <div className='text-2xl'>{t('user.system')}</div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'notificiations' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'notificiations'
+                  ? 'text-contrastColor border-l-2 border-contrastColor'
+                  : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('notificiations')}
             >
-              <img
-                src='./assets/notification_icon.svg'
-                alt='notification_icon'
-                className='h-5 w-5'
-              />
+              <NotificationIcon className='h-6 w-6' />
               {t('user.notifications')}
             </motion.div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'language' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'language'
+                  ? 'text-contrastColor border-l-2 border-contrastColor'
+                  : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('language')}
             >
-              <img src='./assets/language_icon.svg' alt='preferences_icon' className='h-5 w-5' />
+              <LanguageIcon className='h-6 w-6' />
               {t('user.language')}
             </motion.div>
             <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-lg pl-2 rounded-md hover:bg-slate-400 ${
-                currentOption === 'preferences' ? 'bg-slate-400' : ''
+              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
+                currentOption === 'preferences'
+                  ? 'text-contrastColor border-l-2 border-contrastColor'
+                  : ''
               }`}
               whileHover={{ scale: 1.05 }}
               onClick={() => handleCurrentOption('preferences')}
             >
-              <img src='./assets/preferences_icon.svg' alt='preferences_icon' className='h-5 w-5' />
+              <PreferencesIcon className='h-6 w-6' />
               {t('user.preferences')}
             </motion.div>
           </div>

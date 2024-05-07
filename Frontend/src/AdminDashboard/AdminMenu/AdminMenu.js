@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { changeSection } from '../../Redux/contentSectionSlice';
+import { changeSection } from 'Redux/contentSectionSlice';
 import { useState, useEffect } from 'react';
 import AdminMenuItem from './AdminMenuItem/AdminMenuItem';
 import { useTranslation } from 'react-i18next';

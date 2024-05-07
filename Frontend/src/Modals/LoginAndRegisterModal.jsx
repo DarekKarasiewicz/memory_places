@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import BaseModal from '../Base/BaseModal';
+import BaseModal from 'Base/BaseModal';
 import { useTranslation } from 'react-i18next';
-import LoginComponent from '../LoginAndRegisterComponents/LoginComponent';
-import RegisterComponent from '../LoginAndRegisterComponents/RegisterComponent';
+import LoginComponent from 'LoginAndRegisterComponents/LoginComponent';
+import RegisterComponent from 'LoginAndRegisterComponents/RegisterComponent';
 
 const LoginAndRegisterModal = (props) => {
   const [title, setTitle] = useState();
@@ -23,7 +23,7 @@ const LoginAndRegisterModal = (props) => {
   };
 
   return (
-    <BaseModal title={title} closeModal={props.closeModal}>
+    <BaseModal title={title} closeModal={props.closeModal} width='1/3'>
       <div className='flex flex-col p-2 items-center'>
         {isLogging ? <LoginComponent /> : <RegisterComponent setIsLogging={setIsLogging} />}
         {isLogging ? (

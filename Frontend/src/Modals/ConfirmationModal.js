@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmationModalActions, selectConfirmationModal } from '../Redux/confirmationModalSlice';
+import { confirmationModalActions, selectConfirmationModal } from 'Redux/confirmationModalSlice';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import CheckIcon from '../icons/CheckIcon';
-import CancelIcon from '../icons/CancelIcon';
+import CheckIcon from 'icons/CheckIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 function ConfirmationModal() {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ function ConfirmationModal() {
           transition={{ duration: 0.25, ease: 'easeOut' }}
         >
           <div
-            className={`rounded-xl shadow-itemShadow bg-mainBgColor relative flex flex-col border-2 ${
+            className={`rounded-xl bg-mainBgColor relative flex flex-col border-2 ${
               type === 'success' ? 'border-green-500' : 'border-red-500'
             } `}
           >

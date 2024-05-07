@@ -1,9 +1,9 @@
-import StatisticsIcon from '../../../icons/admin/StatisticsIcon';
-import UserGroupIcon from '../../../icons/admin/UserGroupIcon';
-import PlacesIcon from '../../../icons/admin/PlacesIcon';
-import VarChangesIcon from '../../../icons/admin/VarChangesIcon';
-import VerificationIcon from '../../../icons/admin/VerificationIcon';
-import WebChangesIcon from '../../../icons/admin/WebChangesIcon';
+import StatisticsIcon from 'icons/admin/StatisticsIcon';
+import UserGroupIcon from 'icons/admin/UserGroupIcon';
+import PlacesIcon from 'icons/admin/PlacesIcon';
+import VarChangesIcon from 'icons/admin/VarChangesIcon';
+import VerificationIcon from 'icons/admin/VerificationIcon';
+import WebChangesIcon from 'icons/admin/WebChangesIcon';
 
 function AdminMenuItem(props) {
   const iconComponents = {

@@ -1,20 +1,24 @@
 import { useState, useEffect, useRef, Fragment, useMemo } from 'react';
 import axios from 'axios';
-import BaseModal from '../Base/BaseModal';
-import BaseInput from '../Base/BaseInput';
-import BaseTextarea from '../Base/BaseTextarea';
-import BaseButton from '../Base/BaseButton';
-import BaseSelect from '../Base/BaseSelect';
+import BaseModal from 'Base/BaseModal';
+import BaseInput from 'Base/BaseInput';
+import BaseTextarea from 'Base/BaseTextarea';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions } from '../Redux/modalsSlice';
-import { selectUpdatePlace, updatePlaceActions } from '../Redux/updatePlaceSlice';
-import { addPlaceActions, selectAddPlace } from '../Redux/addPlaceSlice';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { modalsActions } from 'Redux/modalsSlice';
+import { selectUpdatePlace, updatePlaceActions } from 'Redux/updatePlaceSlice';
+import { addPlaceActions, selectAddPlace } from 'Redux/addPlaceSlice';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { formValidationActions, selectFormValidation } from '../Redux/formValidationSlice';
-import { addPlace, deletePlace } from '../Redux/allMapPlacesSlice';
-import BaseImageUpload from '../Base/BaseImageUpload/BaseImageUpload';
+import { formValidationActions, selectFormValidation } from 'Redux/formValidationSlice';
+import { addPlace, deletePlace } from 'Redux/allMapPlacesSlice';
+import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
+import WebIcon from 'icons/WebIcon';
+import WikiIcon from 'icons/WikiIcon';
+import { registerAppChanges } from 'utils';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -37,37 +41,81 @@ function FormModal(props) {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { t } = useTranslation();
+  const [sortOf, setSortOf] = useState([]);
+  const [type, setType] = useState([]);
+  const [period, setPeriod] = useState([]);
 
-  const sortof_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.existing'), value: 'existing' },
-    { label: t('modal.non_existing'), value: 'non_existing' },
-    { label: t('modal.commemorative_plaque'), value: 'commemorative_plaque' },
-    { label: t('modal.commemorative_monument'), value: 'commemorative_monument' },
-  ];
+  const fetchSortOfItems = async () => {
+    try {
+      const responseSort = await axios.get(`http://127.0.0.1:8000/memo_places/sortofs`);
+      const sortOfItems = responseSort.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
 
-  const type_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.war_cemetery'), value: 'war_cemetery' },
-    { label: t('modal.civil_cemetery'), value: 'civil_cemetery' },
-    { label: t('modal.burial_site'), value: 'burial_site' },
-    { label: t('modal.execution_site'), value: 'execution_site' },
-    { label: t('modal.battlefield'), value: 'battlefield' },
-    { label: t('modal.archaeological_site'), value: 'archaeological_site' },
-    { label: t('modal.wayside_shrine'), value: 'wayside_shrine' },
-    { label: t('modal.historical_monument'), value: 'historical_monument' },
-  ];
+      const idSet = new Set(sortOfItems.map((item) => item.id));
 
-  const period_options = [
-    { label: t('modal.all'), value: 'all' },
-    { label: t('modal.poland_before_third_partition'), value: 'poland_before_third_partition' },
-    { label: t('modal.napoleonic_wars'), value: 'napoleonic_wars' },
-    { label: t('modal.poland_after_partitions'), value: 'poland_after_partitions' },
-    { label: t('modal.world_war_I'), value: 'world_war_I' },
-    { label: t('modal.interwar_period'), value: 'interwar_period' },
-    { label: t('modal.world_war_II'), value: 'world_war_II' },
-    { label: t('modal.stalinist_period'), value: 'stalinist_period' },
-  ];
+      if (!idSet.has(0)) {
+        setSortOf([{ id: 0, label: t('modal.all'), value: 0 }, ...sortOfItems]);
+      } else {
+        setSortOf(sortOfItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTypeItems = async () => {
+    try {
+      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const typeItems = responseType.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(typeItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setType([{ id: 0, label: t('modal.all'), value: 0 }, ...typeItems]);
+      } else {
+        setType(typeItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPeriodItems = async () => {
+    try {
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const periodItems = responsePeriod.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(periodItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setPeriod([{ id: 0, label: t('modal.all'), value: 0 }, ...periodItems]);
+      } else {
+        setPeriod(periodItems);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (updatePlaceData.isDataLoaded === true || props.type !== 'update') {
@@ -82,6 +130,7 @@ function FormModal(props) {
 
   useEffect(() => {
     if (props.type === 'update' && updatePlaceData.isDataLoaded === false) {
+      console.log(updatePlaceData);
       dispatch(addPlaceActions.changeName(updatePlaceData.place.place_name));
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
@@ -97,9 +146,9 @@ function FormModal(props) {
       dispatch(formValidationActions.changeIsValidDate(isNaN(updatePlaceData.place.found_date)));
       validateLat(updatePlaceData.place.lat);
       validateLng(updatePlaceData.place.lng);
-      dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== 'all'));
-      dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== 'all'));
-      dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== 'all'));
+      dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== 0));
+      dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== 0));
+      dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== 0));
       dispatch(updatePlaceActions.dataIsLoaded());
     }
   }, []);
@@ -163,6 +212,9 @@ function FormModal(props) {
             topic_link: addPlaceData.topic_link,
           })
           .then((response) => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_edit', user, updatePlaceData.place.id);
             dispatch(deletePlace(response.data.id));
             dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
@@ -170,8 +222,14 @@ function FormModal(props) {
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsUpdateModalOpen());
             dispatch(formValidationActions.reset());
+          })
+          .catch(() => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
           });
       } else {
+        console.log(addPlaceData.place_name);
+
         axios
           .post(`http://localhost:8000/memo_places/places/`, {
             user: user.user_id,
@@ -187,11 +245,18 @@ function FormModal(props) {
             topic_link: addPlaceData.topic_link,
           })
           .then((response) => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_add', user, addPlaceData.place_name);
             dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsFormModalOpen());
             dispatch(formValidationActions.reset());
+          })
+          .catch(() => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
           });
       }
     } else {
@@ -208,49 +273,19 @@ function FormModal(props) {
     }
   };
 
+  useEffect(() => {
+    fetchSortOfItems();
+    fetchTypeItems();
+    fetchPeriodItems();
+  }, []);
+
   return (
     <>
       <BaseModal title={props.title} closeModal={props.closeModal}>
-        <div className='p-2 max-h-[75vh] overflow-y-auto'>
-          <BaseInput
-            type='text'
-            name='nameInput'
-            label={t('common.name')}
-            value={addPlaceData.place_name}
-            onBlur={() => {
-              dispatch(addPlaceActions.changeName(nameRef.current.value));
-              validateName(nameRef.current.value);
-            }}
-            onChange={() => {
-              validateName(nameRef.current.value);
-            }}
-            ref={nameRef}
-            isValid={formValidation.isValidName}
-          />
-          {formValidation.isValidName === false && (
-            <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
-          )}
-          <BaseInput
-            type='date'
-            name='dateInput'
-            label={t('common.date')}
-            blockFuture={true}
-            ref={dateRef}
-            value={addPlaceData.found_date}
-            onBlur={() => {
-              dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
-              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-            }}
-            onChange={() => {
-              dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-            }}
-            isValid={formValidation.isValidDate}
-          />
-          <BaseImageUpload fileSize={5} />
-          <div className='flex gap-8'>
+        <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4'>
+          <div className='flex flex-col gap-2 w-2/5'>
             <BaseInput
               type='number'
-              placeholder={t('common.latitude')}
               name='lat'
               label={t('common.latitude')}
               value={lat}
@@ -267,7 +302,6 @@ function FormModal(props) {
             />
             <BaseInput
               type='number'
-              placeholder={t('common.longitude')}
               name='lng'
               label={t('common.longitude')}
               value={lng}
@@ -282,15 +316,32 @@ function FormModal(props) {
               }}
               isValid={formValidation.isValidLng}
             />
-          </div>
-          <div className='p-2 flex justify-center mt-2'>
-            <BaseButton
-              name={t('common.location_select')}
-              btnBg='blue'
-              onClick={handleSelectLocationBtn}
+            <div className='px-2 pb-2 flex flex-col justify-center items-center mt-2 gap-2'>
+              <span>lub</span>
+              <BaseButton
+                breakWidth={true}
+                name={t('common.location_select')}
+                btnBg='blue'
+                onClick={handleSelectLocationBtn}
+              />
+            </div>
+            <hr className='border-textColor' />
+            <BaseInput
+              type='date'
+              name='dateInput'
+              label={t('common.date')}
+              blockFuture={true}
+              ref={dateRef}
+              value={addPlaceData.found_date}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
+                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+              }}
+              onChange={() => {
+                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+              }}
+              isValid={formValidation.isValidDate}
             />
-          </div>
-          <div className='flex gap-8'>
             <BaseSelect
               label={t('common.type_of')}
               name={t('common.type_of')}
@@ -299,18 +350,14 @@ function FormModal(props) {
                   ? updatePlaceData.place.sortof
                   : addPlaceData.sortof
               }
-              options={sortof_options}
+              options={sortOf}
               ref={sortofRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
-                dispatch(
-                  formValidationActions.changeIsValidSortof(sortofRef.current.value !== 'all'),
-                );
+                dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
               }}
               onChange={() => {
-                dispatch(
-                  formValidationActions.changeIsValidSortof(sortofRef.current.value !== 'all'),
-                );
+                dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
               }}
               isValid={formValidationActions.isValidSortof}
             />
@@ -322,96 +369,106 @@ function FormModal(props) {
                   ? updatePlaceData.place.type
                   : addPlaceData.type
               }
-              options={type_options}
+              options={type}
               ref={typeRef}
               onBlur={() => {
                 dispatch(addPlaceActions.changeType(typeRef.current.value));
-                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
+                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 0));
               }}
               onChange={() => {
-                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
+                dispatch(addPlaceActions.changeType(typeRef.current.value));
+                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 0));
               }}
               isValid={formValidation.isValidType}
             />
+            <BaseSelect
+              label={t('common.period')}
+              name={t('common.period')}
+              value={
+                props.type === 'update' && !updatePlaceData.isDataLoaded
+                  ? updatePlaceData.place.period
+                  : addPlaceData.period
+              }
+              options={period}
+              ref={periodRef}
+              onBlur={() => {
+                dispatch(addPlaceActions.changePeriod(periodRef.current.value));
+                dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
+              }}
+              onChange={() => {
+                dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
+              }}
+              isValid={formValidation.isValidPeriod}
+            />
+            <div className='mt-1 flex flex-col gap-1'>
+              <p>{t('common.useful_links')}</p>
+              <div className='flex justify-center items-center gap-2'>
+                <WikiIcon />
+                <BaseInput
+                  type='text'
+                  name='wikiLinkInput'
+                  value={addPlaceData.wiki_link}
+                  onBlur={() => {
+                    dispatch(addPlaceActions.changeWikiLink(wikiLinkRef.current.value));
+                  }}
+                  ref={wikiLinkRef}
+                />
+              </div>
+              <div className='flex justify-center items-center gap-2'>
+                <WebIcon />
+                <BaseInput
+                  type='text'
+                  name='topicLinkInput'
+                  value={addPlaceData.topic_link}
+                  onBlur={() => {
+                    dispatch(addPlaceActions.changeTopicLink(topicLinkRef.current.value));
+                  }}
+                  ref={topicLinkRef}
+                />
+              </div>
+            </div>
           </div>
-          <BaseSelect
-            label={t('common.period')}
-            name={t('common.period')}
-            value={
-              props.type === 'update' && !updatePlaceData.isDataLoaded
-                ? updatePlaceData.place.period
-                : addPlaceData.period
-            }
-            options={period_options}
-            ref={periodRef}
-            onBlur={() => {
-              dispatch(addPlaceActions.changePeriod(periodRef.current.value));
-              dispatch(
-                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
-              );
-            }}
-            onChange={() => {
-              dispatch(
-                formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
-              );
-            }}
-            isValid={formValidation.isValidPeriod}
-          />
-          <BaseTextarea
-            rows='6'
-            label={t('common.description')}
-            secondLabel={t('common.description-max')}
-            maxLength={1000}
-            ref={descriptionRef}
-            value={addPlaceData.description}
-            onBlur={() => {
-              dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
-              validateDescription(descriptionRef.current.value);
-            }}
-            onChange={() => {
-              validateDescription(descriptionRef.current.value);
-            }}
-            isValid={formValidation.isValidDescription}
-          />
-          <div className='mt-1'>
-            <p>{t('common.useful_links')}</p>
-            <div className='flex'>
-              <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
-                <img src='./assets/wiki_icon.svg' alt='wiki_icon' />
-              </div>
-              <BaseInput
-                type='text'
-                name='wikiLinkInput'
-                value={addPlaceData.wiki_link}
-                onBlur={() => {
-                  dispatch(addPlaceActions.changeWikiLink(wikiLinkRef.current.value));
-                }}
-                ref={wikiLinkRef}
-              />
-            </div>
-            <div className='flex'>
-              <div className='h-10 w-10 mr-1 mt-1 flex justify-center items-center'>
-                <img src='./assets/web_icon.svg' alt='web_icon' />
-              </div>
-              <BaseInput
-                type='text'
-                name='topicLinkInput'
-                value={addPlaceData.topic_link}
-                onBlur={() => {
-                  dispatch(addPlaceActions.changeTopicLink(topicLinkRef.current.value));
-                }}
-                ref={topicLinkRef}
-              />
-            </div>
+          <div className='flex flex-col gap-2 w-3/5'>
+            <BaseInput
+              type='text'
+              name='nameInput'
+              label={t('common.name')}
+              value={addPlaceData.place_name}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeName(nameRef.current.value));
+                validateName(nameRef.current.value);
+              }}
+              onChange={() => {
+                validateName(nameRef.current.value);
+              }}
+              ref={nameRef}
+              isValid={formValidation.isValidName}
+            />
+            {formValidation.isValidName === false && (
+              <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
+            )}
+            <BaseImageUpload fileSize={5} />
+            <BaseTextarea
+              rows='12'
+              label={t('common.description')}
+              secondLabel={t('common.description-max')}
+              maxLength={1000}
+              ref={descriptionRef}
+              value={addPlaceData.description}
+              onBlur={() => {
+                dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
+                validateDescription(descriptionRef.current.value);
+              }}
+              onChange={() => {
+                validateDescription(descriptionRef.current.value);
+              }}
+              isValid={formValidation.isValidDescription}
+            />
           </div>
         </div>
         <div className='p-2 flex gap-4 justify-center'>
-          <BaseButton
-            type='submit'
-            name={t('common.confirm')}
-            btnBg='blue'
-            onClick={handleConfirm}
-          ></BaseButton>
+          <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal} />
+          <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleConfirm} />
         </div>
       </BaseModal>
     </>

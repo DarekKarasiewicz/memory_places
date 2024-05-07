@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import i18n from '../i18n';
-import ArrowUpIcon from '../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../icons/admin/ArrowDownIcon';
+import i18n from 'i18n';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
 
 function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);
@@ -24,6 +24,18 @@ function LanguageSwitcher(props) {
     { label: t('user.ru'), value: 'ru', image: '../../assets/flags/ru.png', alt: t('user.ru') },
   ];
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -41,7 +53,9 @@ function LanguageSwitcher(props) {
     <>
       <div
         className={`${
-          props.variant !== 'admin_dashboard' ? 'absolute right-0 top-20 my-auto' : 'relative z-10'
+          props.variant !== 'admin_dashboard'
+            ? 'absolute right-0 top-20 my-auto shadow-itemShadow'
+            : 'relative z-10'
         }`}
         ref={wrapperRef}
       >
@@ -50,7 +64,7 @@ function LanguageSwitcher(props) {
             type='button'
             className={`${
               props.variant !== 'admin_dashboard'
-                ? 'rounded-l-lg border border-gray-600 bg-slate-300 pl-3 pr-1 py-2 active:bg-slate-50'
+                ? 'rounded-l-lg bg-mainBgColor pl-4 pr-1 py-3 active:bg-slate-50'
                 : ''
             } inline-flex gap-1 justify-center items-center w-full`}
             aria-haspopup='true'
@@ -60,7 +74,7 @@ function LanguageSwitcher(props) {
             <img
               src={lang_options.find((option) => option.value === language).image}
               alt={lang_options.find((option) => option.value === language).alt}
-              className='h-4 w-5 drop-shadow-md border-1 border-black'
+              className='h-4 w-5 shadow-itemShadow'
             />
             {isOpen ? (
               <ArrowUpIcon className={'h-7 w-7'} />
@@ -70,36 +84,38 @@ function LanguageSwitcher(props) {
           </button>
 
           {isOpen && (
-            <div
+            <motion.div
               className={`${
                 props.variant !== 'admin_dashboard'
-                  ? 'right-0 rounded-l-lg bg-slate-600'
-                  : 'left-1/2 -translate-x-1/2 bg-thirdBgColor flex justify-center items-center'
-              } absolute mt-2 w-24 shadow-lg`}
+                  ? 'right-2 rounded-lg bg-mainBgColor'
+                  : '-left-1/2 bg-mainBgColor flex justify-center items-center rounded-lg'
+              } absolute mt-2 w-24 shadow-itemShadow`}
+              variants={parentItem}
+              initial='hidden'
+              animate='visible'
             >
               <div
-                className='py-1 origin-top'
+                className='py-2'
                 role='menu'
                 aria-orientation='vertical'
                 aria-labelledby='options-menu'
               >
                 {lang_options.map((option) => (
                   <motion.div
+                    whileHover={{ scale: 1.05 }}
                     key={option.value}
                     onClick={() => handleLanguageChange(option.value)}
-                    className={`${
-                      props.variant !== 'admin_dashboard'
-                        ? 'text-white hover:bg-slate-400 hover:text-red-500'
-                        : 'hover:bg-secondaryBgColor hover:text-cyan-600'
-                    } block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer`}
+                    className={`block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer hover:text-contrastColor ${
+                      language === option.value ? 'text-contrastColor font-bold' : 'text-textColor'
+                    }`}
                     role='menuitem'
                   >
-                    <img src={option.image} alt={option.alt} className='drop-shadow-md' />
+                    <img src={option.image} alt={option.alt} className='shadow-itemShadow' />
                     {option.label}
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

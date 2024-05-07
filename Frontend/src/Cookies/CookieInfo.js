@@ -1,4 +1,5 @@
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
+import CookieIcon from 'icons/CookieIcon';
 
 function CookiesInfo(props) {
   return (
@@ -8,7 +9,7 @@ function CookiesInfo(props) {
           <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
             <div className='flex justify-center items-center gap-2 text-xl'>
               <span className='capitalize font-medium'>Want a cookie?</span>
-              <img src='./assets/cookie_icon.svg' alt='cookie_icon' className='h-8 w-8'></img>
+              <CookieIcon className='h-8 w-8' />
             </div>
           </div>
           <div className='pt-4 mb-5 text-center'>

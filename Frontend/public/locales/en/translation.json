@@ -12,7 +12,7 @@
         "longitude": "Longitude:",
         "wiki-link": "Wikipedia link:",
         "topic-link": "Topic page link:",
-        "location_select": "Select location",
+        "location_select": "Select a location on the map",
         "type_of": "Type of:",
         "type": "Type:",
         "period": "Period:",
@@ -51,12 +51,16 @@
         "only_images": "You can only upload images.",
         "max_files_number": "The maximum number of files is ",
         "already_uploaded": "File already uploaded: ",
+        "drag_info1" : "Drag and drop, or click here",
+        "drag_info2" : "to upload your images(max. {{value}} MB)",
         "edit_trail": "Edit Trail",
         "add_trail": "Add Trail",
         "select_trail": "Select Trail",
         "trail_delete_warning": "Are you sure you want to delete this trail?",
         "place_delete_warning": "Are you sure you want to delete this place?",
-        "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?"
+        "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?",
+        "detailed_info": "Detailed information",
+        "no_image_error": "No image"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -106,7 +110,15 @@
         "interwar_period": "Interwar period (1918-1939)",
         "world_war_II": "World War II (1939-1945)",
         "stalinist_period": "Stalinist period (1945-1953)",
-        "filled_box_error": "All boxes need to be filled"
+        "filled_box_error": "All boxes need to be filled",
+
+        "okresstalinowski": "Stalinist period (1945-1953)",
+        "istniejace": "Existing",
+        "nieistniejace": "Non-existing",
+        "zabytek": "Historical monument",
+        "miejsce": "Battlefield",
+        "iiwojnaswiatowa": "World War II (1939-1945)",
+        "no_translation_given": "No translations"
     },
     "user":{
         "general": "General",
@@ -153,11 +165,14 @@
         "user": "user",
         "current_role": "Your current role:",
         "promo_role_info": "If you want to become moderator, send your application via form in user help section.",
-        "your_memory_places": "your memory places",
+        "your_memory_places": "Your memory places",
         "your_trails": "Your trails",
         "settings": "settings",
         "admin_panel": "Admin Panel",
         "back_to_main_page": "Back to main page",
+        "error404_title": "Page Not Found",
+        "error404_info": "It seems you are looking for page that doesn't exist.",
+        "add_place_login_req": "To add place you need to be logged in!",
         "help": "help",
         "logout": "logout",
         "login": "Log In",
@@ -289,7 +304,30 @@
             "changed_date": "Change date",
             "changed_by": "Changed by",
             "alert_success": "Action executed successfully!",
-            "alert_error": "Something went wrong. Please try again!"
+            "alert_error": "Something went wrong. Please try again!",
+            "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
+            "place_var_info2": "Current values to assign translations to:"
+        },
+        "changes_messages": {
+            "blocked": "Blocked user with ID {{element_id}}",
+            "unlocked": "Unlocked user with ID {{element_id}}",
+            "reset_pass": "Password reset for user with ID {{element_id}}",
+            "user_role": "Changed user role with ID {{element_id}}",
+            "place_delete": "Place with ID {{element_id}} was deleted",
+            "place_add": "Place with ID {{element_id}} was added",
+            "place_edit": "Place with ID {{element_id}} was editted",
+            "trail_delete": "Trial with ID {{element_id}} was deleted",
+            "trail_add": "Trial with ID {{element_id}} was added",
+            "trail_edit": "Trial with ID {{element_id}} was editted",
+            "place_verified": "Place with ID {{element_id}} was verified successfully",
+            "place_unverified": "Place with ID {{element_id}} was unverified",
+            "trail_verified": "Trial with ID {{element_id}} was verified successfully",
+            "trail_unverified": "Trial with ID {{element_id}} was unverified",
+            "variables_changed": "Vairables has been changed",
+            "comment_added": "Comment has been added",
+            "post_added": "Post has been added",
+            "post_edit": "Post with ID {{element_id}} has been added",
+            "contact_send": "Contact request has been send"
         }
     }
 }

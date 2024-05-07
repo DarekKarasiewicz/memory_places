@@ -1,5 +1,5 @@
 import AdminTileStat from '../Charts/AdminTileStat';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import PlacesTable from '../Tables/PlacesTable';
@@ -63,15 +63,36 @@ function PlaceManagementSection() {
     },
     {
       header: t('admin.content.sortof'),
-      accessorKey: 'sortof',
+      accessorKey: 'sortof_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.type'),
-      accessorKey: 'type',
+      accessorKey: 'type_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.period'),
-      accessorKey: 'period',
+      accessorKey: 'period_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.created_by'),

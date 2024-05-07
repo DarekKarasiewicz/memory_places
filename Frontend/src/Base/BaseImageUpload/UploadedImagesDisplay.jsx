@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAddPlace, addPlaceActions } from '../../Redux/addPlaceSlice';
+import { selectAddPlace, addPlaceActions } from 'Redux/addPlaceSlice';
+import CancelIcon from 'icons/CancelIcon';
 
 const UploadedImagesDisplay = () => {
   const dispatch = useDispatch();
@@ -33,12 +34,12 @@ const UploadedImagesDisplay = () => {
       <div className='flex space-x-4 p-2'>
         {imagePreviews.map((preview, index) => (
           <div key={index} className='flex-shrink-0 relative p-2'>
-            <img src={preview.url} alt={preview.name} className='w-48 h-36 ' />
+            <img src={preview.url} alt={preview.name} className='w-32 h-24' />
             <button
               className='absolute w-6 h-6 top-0 right-0 bg-red-500 p-1 text-sm rounded-full border-black border'
               onClick={() => deleteImage(preview.name)}
             >
-              <img src='../assets/cancel_icon.svg' alt='cancel_icon'></img>
+              <CancelIcon />
             </button>
           </div>
         ))}

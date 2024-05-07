@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import axios from 'axios';
-import ArrowUpIcon from '../../../../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../../../../icons/admin/ArrowDownIcon';
-import CheckIcon from '../../../../icons/CheckIcon';
-import CancelIcon from '../../../../icons/CancelIcon';
-import EditIcon from '../../../../icons/EditIcon';
-import Trash2Icon from '../../../../icons/Trash2Icon';
-import PlusIcon from '../../../../icons/PlusIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import CheckIcon from 'icons/CheckIcon';
+import CancelIcon from 'icons/CancelIcon';
+import EditIcon from 'icons/EditIcon';
+import Trash2Icon from 'icons/Trash2Icon';
+import PlusIcon from 'icons/PlusIcon';
 
 const PlaceVariableItem = forwardRef(function PlaceVariableItem(
   { itemsName, items, itemsBase, error },
@@ -204,7 +205,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         <div className='flex justify-center items-center mb-2'>
           <div className='w-1/2'>
             <label className='block pl-1 pb-1 text-base'>{t('admin.content.select_preview')}</label>
-            <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black'>
+            <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black cursor-pointer'>
               {data.length > 0 ? (
                 <>
                   {data.map((item, index) => (
@@ -231,11 +232,11 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
                   >
                     <div className='flex flex-col justify-center items-center shadow'>
                       <ArrowUpIcon
-                        className='h-8 w-8 cursor-pointer hover:scale-125'
+                        className='h-8 w-8 cursor-pointer hover:scale-125 transition'
                         onClick={() => changeOrder(index, index - 1, 'sortof')}
                       />
                       <ArrowDownIcon
-                        className='h-8 w-8 cursor-pointer hover:scale-125'
+                        className='h-8 w-8 cursor-pointer hover:scale-125 transition'
                         onClick={() => changeOrder(index, index + 1, 'sortof')}
                       />
                     </div>
@@ -243,7 +244,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
                       {editIndex === index ? (
                         <input
                           type='text'
-                          className='text-black'
+                          className='text-black py-2 px-3 rounded-lg'
                           defaultValue={item.name}
                           ref={inputRef}
                         ></input>
@@ -255,22 +256,22 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
                       {editIndex === index ? (
                         <>
                           <CheckIcon
-                            className='h-6 w-6 cursor-pointer hover:scale-125'
+                            className='h-6 w-6 cursor-pointer hover:scale-125 transition'
                             onClick={() => handleSaveItem(index, 'sortof')}
                           />
                           <CancelIcon
-                            className='h-6 w-6 cursor-pointer hover:scale-125'
+                            className='h-6 w-6 cursor-pointer hover:scale-125 transition'
                             onClick={() => handleCancelEdit()}
                           />
                         </>
                       ) : (
                         <>
                           <EditIcon
-                            className='h-6 w-6 cursor-pointer hover:scale-125'
+                            className='h-6 w-6 cursor-pointer hover:scale-125 transition'
                             onClick={() => handleEditItem(index)}
                           />
                           <Trash2Icon
-                            className='h-6 w-6 cursor-pointer hover:scale-125'
+                            className='h-6 w-6 cursor-pointer hover:scale-125 transition'
                             onClick={() => handleDeleteTypeItem(item.id, 'sortof')}
                           />
                         </>
@@ -280,13 +281,14 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
                 ))}
               </>
             )}
-            <div
-              className='flex justify-center items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
+            <motion.div
+              className='flex justify-center hover:text-contrastColor items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
               onClick={() => handleAddingElement()}
+              whileHover={{ scale: 1.05 }}
             >
               <PlusIcon className='h-8 w-8' />
-              <span className='hover:text-contrastColor'>{t('admin.content.add_element')}</span>
-            </div>
+              <span>{t('admin.content.add_element')}</span>
+            </motion.div>
           </div>
         </div>
       </div>

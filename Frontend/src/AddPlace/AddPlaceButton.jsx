@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import { useState, useEffect, useRef } from 'react';
-import BaseButton from '../Base/BaseButton';
+import { useTranslation } from 'react-i18next';
+import BaseButton from 'Base/BaseButton';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../Redux/modalsSlice';
+import { modalsActions } from 'Redux/modalsSlice';
 import AddingOption from './AddingOpction';
+import PlusIcon from 'icons/PlusIcon';
+import CancelIcon from 'icons/CancelIcon';
 
 const AddPlaceButton = (props) => {
   const dispatch = useDispatch();
@@ -14,6 +17,7 @@ const AddPlaceButton = (props) => {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const popupRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -50,6 +54,18 @@ const AddPlaceButton = (props) => {
     dispatch(modalsActions.changeIsLoginAndRegisterOpen());
   };
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   const childItem = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -62,45 +78,40 @@ const AddPlaceButton = (props) => {
     },
   };
 
-  const parentItem = {
-    hover: {
-      scale: isActive || isSelecting ? 1 : 1.05,
-    },
-  };
-
   return (
     <motion.div
-      whileHover={'hover'}
+      whileHover={{ scale: isActive || isSelecting ? 1 : 1.05 }}
       variants={parentItem}
       onClick={handleAddClick}
-      className={`absolute bottom-7 border-2 border-black bg-slate-300 h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto`}
+      className={`absolute bottom-11 bg-mainBgColor h-14 w-14 rounded-full cursor-pointer flex justify-center items-center left-0 right-0 m-auto shadow-itemShadow`}
       ref={popupRef}
     >
       {isActive && (
         <motion.div
-          className='absolute bg-slate-300 w-80 p-4 border border-black rounded-lg bottom-20 '
+          className='absolute bg-mainBgColor w-96 px-4 py-6 rounded-lg bottom-20 shadow-itemShadow'
           variants={childItem}
           initial='hidden'
           animate='visible'
         >
-          <div className='flex flex-col justify-center items-center'>
-            <p className='pb-2'>To add place you need to be logged in!</p>
+          <div className='flex flex-col justify-center items-center gap-2'>
+            <p className='pb-2 text-lg'>{t('user.add_place_login_req')}</p>
             <BaseButton name='Log in' btnBg='blue' onClick={handleLoginRedirect} />
           </div>
-          <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-r border-b border-black'></div>
+          <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>
         </motion.div>
       )}
       {isSelecting && (
-        <div className='absolute bottom-16 w-32 flex flex-row justify-between items-center'>
-          <AddingOption type={'place'} />
-          <AddingOption type={'trail'} />
-        </div>
+        <motion.div
+          className='absolute bottom-16 w-32 flex flex-row justify-between items-center'
+          variants={parentItem}
+          initial='hidden'
+          animate='visible'
+        >
+          <AddingOption type='place' />
+          <AddingOption type='trail' />
+        </motion.div>
       )}
-      <img
-        src='./assets/plus_icon.svg'
-        alt='plus_icon'
-        className={`h-14 w-14 ${isSelecting ? 'rotate-45' : ''}`}
-      ></img>
+      {!isSelecting ? <PlusIcon className='h-10 w-10' /> : <CancelIcon className='h-10 w-10' />}
     </motion.div>
   );
 };

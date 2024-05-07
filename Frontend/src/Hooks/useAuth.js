@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { authActions, selectAuth } from '../Redux/authSlice';
+import { authActions, selectAuth } from 'Redux/authSlice';
 
 const useAuth = () => {
   const dispatch = useDispatch();

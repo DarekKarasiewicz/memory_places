@@ -2,20 +2,23 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../../Redux/addPlaceLocationSlice';
-import { addPlaceActions } from '../../Redux/addPlaceSlice';
-import { confirmationModalActions } from '../../Redux/confirmationModalSlice';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { addPlaceActions } from 'Redux/addPlaceSlice';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import PinIcon from '../../icons/PinIcon';
-import BaseInput from '../../Base/BaseInput';
-import BaseTextarea from '../../Base/BaseTextarea';
-import BaseButton from '../../Base/BaseButton';
-import BaseSelect from '../../Base/BaseSelect';
-import BaseRadioGroup from '../../Base/BaseRadioGroup';
-import WebIcon from '../../icons/WebIcon';
-import WikiIcon from '../../icons/WikiIcon';
-import GoogleMap from '../../GoogleMap/GoogleMap';
+import PinIcon from 'icons/PinIcon';
+import BaseInput from 'Base/BaseInput';
+import BaseTextarea from 'Base/BaseTextarea';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
+import BaseRadioGroup from 'Base/BaseRadioGroup';
+import WebIcon from 'icons/WebIcon';
+import WikiIcon from 'icons/WikiIcon';
+import GoogleMap from 'GoogleMap/GoogleMap';
+import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
+import { registerAppChanges } from 'utils';
+import AlertIcon from 'icons/AlertIcon';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -42,6 +45,9 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [isValidLat, setIsValidLat] = useState(null);
   const [isValidLng, setIsValidLng] = useState(null);
   const [isValidDate, setIsValidDate] = useState(null);
+  const [isValidSortof, setIsValidSortof] = useState(null);
+  const [isValidType, setIsValidType] = useState(null);
+  const [isValidPeriod, setIsValidPeriod] = useState(null);
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const [toVerification, setToVerification] = useState(false);
@@ -53,17 +59,22 @@ function AdminPlaceActionSection({ action, placeId }) {
   const fetchSortOfItems = async () => {
     try {
       const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      setSortOf(
-        responseSort.data
-          .map((obj) => ({
-            id: obj.id,
-            label: obj.name,
-            value: obj.id,
-            text: obj.value,
-            order: obj.order,
-          }))
-          .sort((a, b) => (a.order > b.order ? 1 : -1)),
-      );
+      const sortOfItems = responseSort.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(sortOfItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setSortOf([{ id: 0, label: t('modal.all'), value: 0 }, ...sortOfItems]);
+      } else {
+        setSortOf(sortOfItems);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -71,18 +82,23 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
-      setType(
-        responseType.data
-          .map((obj) => ({
-            id: obj.id,
-            label: obj.name,
-            value: obj.id,
-            text: obj.value,
-            order: obj.order,
-          }))
-          .sort((a, b) => (a.order > b.order ? 1 : -1)),
-      );
+      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const typeItems = responseType.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(typeItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setType([{ id: 0, label: t('modal.all'), value: 0 }, ...typeItems]);
+      } else {
+        setType(typeItems);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -90,18 +106,23 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
-      setPeriod(
-        responsePeriod.data
-          .map((obj) => ({
-            id: obj.id,
-            label: obj.name,
-            value: obj.id,
-            text: obj.value,
-            order: obj.order,
-          }))
-          .sort((a, b) => (a.order > b.order ? 1 : -1)),
-      );
+      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const periodItems = responsePeriod.data
+        .map((obj) => ({
+          id: obj.id,
+          label: t(`modal.${obj.value}`),
+          value: obj.id,
+          order: obj.order,
+        }))
+        .sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      const idSet = new Set(periodItems.map((item) => item.id));
+
+      if (!idSet.has(0)) {
+        setPeriod([{ id: 0, label: t('modal.all'), value: 0 }, ...periodItems]);
+      } else {
+        setPeriod(periodItems);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -134,13 +155,16 @@ function AdminPlaceActionSection({ action, placeId }) {
           periodRef.current.value = response.data.period;
           wikiLinkRef.current.value = response.data.wiki_link;
           webLinkRef.current.value = response.data.topic_link;
-          setToVerification(response.data.verified === true ? 'true' : 'false');
+          setToVerification(response.data.verified === true ? 'false' : 'true');
 
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
           validateLng(lngRef.current.value);
           validateDescription(descRef.current.value);
           validateDate(dateRef.current.value);
+          validateSortof(sortOfRef.current.value);
+          validateType(typeRef.current.value);
+          validatePeriod(periodRef.current.value);
         } catch (error) {
           console.log(error);
         }
@@ -208,13 +232,37 @@ function AdminPlaceActionSection({ action, placeId }) {
     return setIsValidDate(isNaN(date));
   };
 
+  const validateSortof = (sortof) => {
+    if (sortof !== 0) {
+      return setIsValidSortof(true);
+    }
+    return setIsValidSortof(false);
+  };
+
+  const validateType = (type) => {
+    if (type !== 0) {
+      return setIsValidType(true);
+    }
+    return setIsValidType(false);
+  };
+
+  const validatePeriod = (period) => {
+    if (period !== 0) {
+      return setIsValidPeriod(true);
+    }
+    return setIsValidPeriod(false);
+  };
+
   const validateForm = () => {
     if (
       isValidName === true &&
       isValidDate === true &&
       isValidLat === true &&
       isValidLng === true &&
-      isValidDesc === true
+      isValidDesc === true &&
+      isValidSortof === true &&
+      isValidType === true &&
+      isValidPeriod === true
     ) {
       return true;
     }
@@ -229,9 +277,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
-      var isValidated = toVerification === 'true' ? true : false;
-
-      console.log(isValidated);
+      var isValidated = toVerification === 'true' ? false : true;
 
       if (action === 'edit') {
         axios
@@ -248,12 +294,13 @@ function AdminPlaceActionSection({ action, placeId }) {
             topic_link: webLinkRef.current.value,
             verified: isValidated,
           })
-          .then((response) => {
+          .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_edit', user, placeId);
             navigate('/adminDashboard');
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
             navigate('/adminDashboard');
@@ -264,7 +311,6 @@ function AdminPlaceActionSection({ action, placeId }) {
             user: user.user_id,
             place_name: nameRef.current.value,
             description: descRef.current.value,
-            // creation_date: new Date().toJSON().slice(0, 10),
             found_date: dateRef.current.value,
             lat: latRef.current.value,
             lng: lngRef.current.value,
@@ -275,13 +321,14 @@ function AdminPlaceActionSection({ action, placeId }) {
             topic_link: webLinkRef.current.value,
             verified: isValidated,
           })
-          .then((response) => {
+          .then(() => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges('admin.changes_messages.place_add', user, nameRef.current.value);
             navigate('/adminDashboard');
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
@@ -328,11 +375,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex justify-between px-2'>
                     {!isValidName ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.field_required')}</span>
                       </span>
                     ) : (
@@ -342,30 +385,72 @@ function AdminPlaceActionSection({ action, placeId }) {
                   </div>
                 </div>
                 <div className='flex justify-start items-center gap-4'>
-                  <BaseSelect
-                    label={t('common.type_of')}
-                    name={t('common.type_of')}
-                    options={sortOf}
-                    ref={sortOfRef}
-                    onChange={() => sortOfRef.current.value}
-                    readOnly={isReadOnly}
-                  />
-                  <BaseSelect
-                    label={t('common.type')}
-                    name={t('common.type')}
-                    options={type}
-                    ref={typeRef}
-                    onChange={() => typeRef.current.value}
-                    readOnly={isReadOnly}
-                  />
-                  <BaseSelect
-                    label={t('common.period')}
-                    name={t('common.period')}
-                    options={period}
-                    ref={periodRef}
-                    onChange={() => periodRef.current.value}
-                    readOnly={isReadOnly}
-                  />
+                  <div className='flex flex-col gap-2 w-1/3'>
+                    <BaseSelect
+                      label={t('common.type_of')}
+                      name={t('common.type_of')}
+                      options={sortOf}
+                      ref={sortOfRef}
+                      onChange={() => {
+                        validateSortof(sortOfRef.current.value);
+                      }}
+                      onBlur={() => validateSortof(sortOfRef.current.value)}
+                      readOnly={isReadOnly}
+                      isValid={isValidSortof}
+                    />
+                    {!isValidSortof ? (
+                      <span className='text-red-500 flex items-center gap-2'>
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
+                        <span>{t('admin.common.field_required')}</span>
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                  </div>
+                  <div className='flex flex-col gap-2 w-1/3'>
+                    <BaseSelect
+                      label={t('common.type')}
+                      name={t('common.type')}
+                      options={type}
+                      ref={typeRef}
+                      onChange={() => {
+                        validateType(typeRef.current.value);
+                      }}
+                      onBlur={() => validateType(typeRef.current.value)}
+                      readOnly={isReadOnly}
+                      isValid={isValidType}
+                    />
+                    {!isValidType ? (
+                      <span className='text-red-500 flex items-center gap-2'>
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
+                        <span>{t('admin.common.field_required')}</span>
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                  </div>
+                  <div className='flex flex-col gap-2 w-1/3'>
+                    <BaseSelect
+                      label={t('common.period')}
+                      name={t('common.period')}
+                      options={period}
+                      ref={periodRef}
+                      onChange={() => {
+                        validatePeriod(periodRef.current.value);
+                      }}
+                      onBlur={() => validatePeriod(periodRef.current.value)}
+                      readOnly={isReadOnly}
+                      isValid={isValidPeriod}
+                    />
+                    {!isValidPeriod ? (
+                      <span className='text-red-500 flex items-center gap-2'>
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
+                        <span>{t('admin.common.field_required')}</span>
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -388,11 +473,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex px-2'>
                     {!isValidLat ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.correct_info_data')}</span>
                       </span>
                     ) : (
@@ -416,11 +497,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   <div className='flex px-2'>
                     {!isValidLng ? (
                       <span className='text-red-500 flex items-center gap-2'>
-                        <img
-                          src='../../assets/alert_icon.svg'
-                          alt='alert icon'
-                          className='h-6 w-6'
-                        />
+                        <AlertIcon className='h-6 w-6' color='#ef4444' />
                         <span>{t('admin.common.correct_info_data')}</span>
                       </span>
                     ) : (
@@ -431,6 +508,8 @@ function AdminPlaceActionSection({ action, placeId }) {
               </div>
               <p className='text-xl'>{t('admin.common.lat_lng_info2')}</p>
               <BaseButton
+                breakWidth={true}
+                className='w-fit'
                 name={t('common.location_select')}
                 btnBg='blue'
                 onClick={handleSelectLocationBtn}
@@ -453,7 +532,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                 <div className='flex px-2'>
                   {!isValidDate ? (
                     <span className='text-red-500 flex items-center gap-2'>
-                      <img src='../../assets/alert_icon.svg' alt='alert icon' className='h-6 w-6' />
+                      <AlertIcon className='h-6 w-6' color='#ef4444' />
                       <span>{t('admin.common.field_required')}</span>
                     </span>
                   ) : (
@@ -466,7 +545,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               <p className='text-xl'>{t('admin.common.desc_info')}</p>
               <div className='flex flex-col gap-2'>
                 <BaseTextarea
-                  rows='6'
+                  rows='12'
                   label={t('common.description')}
                   secondLabel={t('common.description-max')}
                   ref={descRef}
@@ -481,7 +560,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                 <div className='flex justify-between px-2'>
                   {!isValidDesc ? (
                     <span className='text-red-500 flex items-center gap-2'>
-                      <img src='../../assets/alert_icon.svg' alt='alert icon' className='h-6 w-6' />
+                      <AlertIcon className='h-6 w-6' color='#ef4444' />
                       <span>{t('admin.common.field_required')}</span>
                     </span>
                   ) : (
@@ -526,8 +605,9 @@ function AdminPlaceActionSection({ action, placeId }) {
               />
             </div>
           </div>
-          <div className='w-1/2 h-3/4'>
+          <div className='w-1/2 h-3/4 flex flex-col gap-4'>
             <GoogleMap adminVersion={true} />
+            <BaseImageUpload fileSize={5} />
           </div>
         </div>
         <hr />

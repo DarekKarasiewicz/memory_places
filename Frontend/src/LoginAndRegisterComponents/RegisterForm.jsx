@@ -1,4 +1,4 @@
-import BaseInput from '../Base/BaseInput';
+import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import ShowPassword from './ShowPassword';
@@ -25,7 +25,7 @@ const RegisterForm = ({
   };
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col gap-2'>
       <BaseInput
         type='text'
         label={t('common.username')}

@@ -8,8 +8,8 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
         <select
           className={`block w-${
             props.width ? props.width : 'full'
-          } rounded-l-lg rounded-r-lg p-2 text-black ${
-            props.isValid === false ? 'bg-red-500' : ''
+          } rounded-l-lg rounded-r-lg p-2 text-black drop-shadow-sm shadow-itemShadow focus:outline-contrastColor ${
+            props.isValid === false ? 'bg-red-400' : ''
           }`}
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}

@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import BaseButton from '../../../Base/BaseButton';
-import BaseSelect from '../../../Base/BaseSelect';
+import { motion } from 'framer-motion';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
+import NotificationIcon from 'icons/NotificationIcon';
 
 function NotificiationsSettings() {
   const [selectedNotifyLevelOption, setSelectedNotifyLevelOption] = useState('');
@@ -19,10 +21,25 @@ function NotificiationsSettings() {
 
   const message = t('user.notificiation_info');
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
-    <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.notifications')}</div>
-      <div className='flex flex-col items-center py-2 gap-2'>
+    <motion.div variants={parentItem} initial='hidden' animate='visible'>
+      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+        <NotificationIcon />
+        <span>{t('user.notifications')}</span>
+      </div>
+      <div className='flex flex-col items-center py-4 gap-4'>
         <div className='flex flex-col items-center gap-2'>
           <BaseSelect
             label={t('user.notificiation_level')}
@@ -35,7 +52,7 @@ function NotificiationsSettings() {
         <span className='text-center italic text-lg whitespace-pre-line'>{message}</span>
         <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

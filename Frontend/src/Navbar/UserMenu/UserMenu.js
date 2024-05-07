@@ -2,21 +2,26 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
 import { useDispatch } from 'react-redux';
-import { modalsActions } from '../../Redux/modalsSlice';
-import { userPlacesActions } from '../../Redux/userPlacesSlice';
-import BaseButton from '../../Base/BaseButton';
+import { modalsActions } from 'Redux/modalsSlice';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
+import BaseButton from 'Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import UserIcon from 'icons/UserIcon';
 
 function UserMenu() {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [cookies, removeCookie] = useCookies(['user']);
   const dispatch = useDispatch();
   const user = cookies.user;
   const popupRef = useRef(null);
+  const wrapperRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -69,6 +74,7 @@ function UserMenu() {
   const handleClick = (event) => {
     if (isLogged) {
       setIsActive((current) => !current);
+      setIsOpen((current) => !current);
     } else {
       setIsPopupOpen((current) => !current);
       popupRef.current = event.target;
@@ -76,7 +82,7 @@ function UserMenu() {
   };
 
   const menuItems = [
-    { icon: 'notification', name: t('user.notifications') },
+    // { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     {
       icon: 'user',
@@ -90,7 +96,7 @@ function UserMenu() {
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
 
-  const isAdminOrMaster = user.admin || user.master;
+  const isAdminOrMaster = user && (user.admin || user.master);
 
   const filteredMenuItems = menuItems.filter((item) => {
     if (item.isAdministration) {
@@ -123,25 +129,32 @@ function UserMenu() {
     },
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsActive(false);
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <>
-      <div className='relative'>
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className='rounded-full border-2 h-12 w-12 border-black flex justify-center items-center cursor-pointer bg-slate-300'
-          onClick={handleClick}
-          ref={popupRef}
-        >
-          {/*TODO when avatars will be implemented rewrite this code */}
-          <img
-            src={`./assets/${isLogged ? 'user_icon' : 'user_icon'}.svg`}
-            alt={`${isLogged ? 'user_icon' : 'user_icon'}`}
-            className='h-8 w-8'
-          ></img>
-        </motion.div>
+      <div className='relative' ref={wrapperRef}>
+        <div className='flex items-center cursor-pointer' onClick={handleClick} ref={popupRef}>
+          <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
+            <UserIcon className='h-6 w-6' />
+          </div>
+          {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}
+        </div>
         {isActive && (
           <motion.ul
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-12 right-0 w-52 p-4 z-10'
+            className='bg-mainBgColor text-textColor shadow-itemShadow rounded-lg flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'
@@ -166,14 +179,14 @@ function UserMenu() {
         )}
         {isPopupOpen && (
           <motion.div
-            className='bg-slate-300 flex flex-col gap-2 mt-2 absolute top-16 right-0 w-52 p-4 justify-center items-center border border-black '
+            className='bg-mainBgColor text-textColor flex flex-col gap-3 mt-2 absolute top-16 right-5 w-52 p-4 justify-center items-center z-1'
             variants={parentItem}
             initial='hidden'
             animate='visible'
           >
             <span className='text-center'>{t('user.login_info')}</span>
             <BaseButton name={t('user.login')} btnBg='blue' onClick={handleLoginModalOpen} />
-            <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-slate-300 border-l border-t border-black'></div>
+            <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>
           </motion.div>
         )}
       </div>

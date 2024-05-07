@@ -7,28 +7,28 @@ import {
   MapControl,
   ControlPosition,
 } from '@vis.gl/react-google-maps';
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { selectLocation } from '../Redux/locationSlice';
+import { useEffect, useMemo, useState } from 'react';
+import { selectLocation } from 'Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from '../Redux/addPlaceLocationSlice';
-import { modalsActions, selectModals } from '../Redux/modalsSlice';
-import { selectUserPlaces, userPlacesActions } from '../Redux/userPlacesSlice';
-import { filterPlaces, fetchMapPlaces } from '../Redux/allMapPlacesSlice';
-import { filterTrails, fetchMapTrails } from '../Redux/allMapTrailsSlice';
-import { selectUpdatePlace } from '../Redux/updatePlaceSlice';
-import { selectAddPlace, addPlaceActions } from '../Redux/addPlaceSlice';
-import AddPlaceButton from '../AddPlace/AddPlaceButton';
-import Loader from '../Loader/Loader';
+import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { modalsActions, selectModals } from 'Redux/modalsSlice';
+import { selectUserPlaces } from 'Redux/userPlacesSlice';
+import { filterPlaces, fetchMapPlaces } from 'Redux/allMapPlacesSlice';
+import { filterTrails, fetchMapTrails } from 'Redux/allMapTrailsSlice';
+import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
+import { addPlaceActions } from 'Redux/addPlaceSlice';
+import AddPlaceButton from 'AddPlace/AddPlaceButton';
+import Loader from 'Loader/Loader';
 import { useTranslation } from 'react-i18next';
-import BaseButton from '../Base/BaseButton';
+import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
 import GoogleMapPin from './GoogleMapPin.jsx';
-import { selectAddTrail } from '../Redux/addTrailSlice.jsx';
+import { selectAddTrail } from 'Redux/addTrailSlice.jsx';
 import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
-import { selectUpdateTrail } from '../Redux/updateTrailSlice.jsx';
+import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 
 // TO DO
 // When frontend will be rewrited this prop will be deleted with functionality to it
@@ -53,7 +53,6 @@ const GoogleMap = ({ adminVersion }) => {
   const [currentPlaceData, setCurrentPlaceData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
-  const addPlaceData = useSelector(selectAddPlace);
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
@@ -85,11 +84,11 @@ const GoogleMap = ({ adminVersion }) => {
   useEffect(() => {
     const fetchDataAndFilter = async () => {
       await dispatch(fetchMapPlaces());
-      dispatch(filterPlaces({ sortof: 'all', type: 'all', period: 'all' }));
+      dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
     const fetchTrailsAndFilter = async () => {
       await dispatch(fetchMapTrails());
-      dispatch(filterTrails({ type: 'all', period: 'all' }));
+      dispatch(filterTrails({ type: 0, period: 0 }));
     };
 
     fetchTrailsAndFilter();
@@ -200,7 +199,7 @@ const GoogleMap = ({ adminVersion }) => {
             ref={markerRef}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <GoogleMapPin iconPath={'./assets/plus_icon.svg'} />
+            <GoogleMapPin />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
                 <div className='w-36 h-12 flex justify-center items-center'>
@@ -258,11 +257,11 @@ const GoogleMap = ({ adminVersion }) => {
                   className='w-full h-full object-cover'
                 ></img>
               </section>
-              <section className='flex flex-col gap-1 my-1 justify-center items-center'>
+              <section className='flex flex-col gap-1 my-1 justify-center items-center text-sm'>
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
-                  {currentPlace.creation_date}
+                  {currentPlace.found_date}
                 </span>
                 <span>
                   <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}

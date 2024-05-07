@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import BaseInput from '../Base/BaseInput';
+import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import ShowPassword from './ShowPassword';
 
@@ -19,7 +19,7 @@ const LoginForm = ({
   };
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col gap-2'>
       <BaseInput
         type='text'
         label='Email'

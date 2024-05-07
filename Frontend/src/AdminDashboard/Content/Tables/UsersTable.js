@@ -9,19 +9,20 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { adminActions } from '../../../Redux/adminActionSlice';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import BlockIcon from '../../../icons/BlockIcon';
-import PassIcon from '../../../icons/PassIcon';
-import UnlockIcon from '../../../icons/UnlockIcon';
+import { adminActions } from 'Redux/adminActionSlice';
+import SettingsIcon from 'icons/SettingsIcon';
+import BlockIcon from 'icons/BlockIcon';
+import PassIcon from 'icons/PassIcon';
+import UnlockIcon from 'icons/UnlockIcon';
 import { useCookies } from 'react-cookie';
+import SearchIcon from 'icons/SearchIcon';
 
 function UsersTable({ data, columns }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
-  const [cookies, removeCookie] = useCookies(['user']);
+  const [cookies] = useCookies(['user']);
   const user = cookies.user;
 
   const table = useReactTable({
@@ -80,11 +81,7 @@ function UsersTable({ data, columns }) {
         </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
-            <img
-              src={`./assets/search_icon.svg`}
-              alt={`search_icon`}
-              className='h-5 w-5 absolute left-2'
-            />
+            <SearchIcon className='h-5 w-5 absolute left-2' />
             <input
               className='rounded-lg p-2 pl-8 text-black'
               type='text'
@@ -133,7 +130,7 @@ function UsersTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-4'>
+              <td className='flex my-1 gap-2'>
                 {user.admin && (
                   <span
                     className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'

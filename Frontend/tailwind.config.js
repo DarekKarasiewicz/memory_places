@@ -11,8 +11,10 @@ module.exports = {
         thirdBgColor: 'var(--thirdBgColor)',
         textColor: 'var(--textColor)',
         contrastColor: 'var(--contrastColor)',
-        itemShadow: 'var(--shadow)',
-      }
+      },
+      boxShadow: {
+        itemShadow: 'var(--itemShadow)',
+      },
     },
   },
   plugins: [

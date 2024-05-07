@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const initialState = {
   name: '',
-  sortof: 'all',
-  type: 'all',
-  period: 'all',
+  sortof: 0,
+  type: 0,
+  period: 0,
   filterItems: [],
   allItems: [],
   loading: false,
@@ -24,7 +24,7 @@ export const allMapPlacesSlice = createSlice({
       state.type = type;
       state.period = period;
 
-      if (name === '' && sortof === 'all' && type === 'all' && period === 'all') {
+      if (name === '' && sortof === 0 && type === 0 && period === 0) {
         state.filterItems = state.allItems;
       } else {
         state.filterItems = state.allItems.filter((item) => {
@@ -33,9 +33,9 @@ export const allMapPlacesSlice = createSlice({
 
           return (
             (name === '' || itemName.includes(filterName)) &&
-            (sortof === 'all' || item.sortof === sortof) &&
-            (type === 'all' || item.type === type) &&
-            (period === 'all' || item.period === period)
+            (sortof === 0 || item.sortof === sortof) &&
+            (type === 0 || item.type === type) &&
+            (period === 0 || item.period === period)
           );
         });
       }

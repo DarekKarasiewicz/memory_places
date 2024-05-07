@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import BaseButton from '../../../Base/BaseButton';
-import BaseSelect from '../../../Base/BaseSelect';
+import { motion } from 'framer-motion';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
+import LanguageIcon from 'icons/LanguageIcon';
 
 function LanguageSettings() {
   const [selectedLanguageOption, setSelectedLanguageOption] = useState('');
@@ -29,11 +31,26 @@ function LanguageSettings() {
     { label: t('user.date3'), value: 'date_dmy' },
   ];
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
-    <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.language')}</div>
-      <div className='flex flex-col items-center py-2 gap-2'>
-        <div className='flex flex-col items-center gap-2'>
+    <motion.div variants={parentItem} initial='hidden' animate='visible'>
+      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+        <LanguageIcon />
+        <span>{t('user.language')}</span>
+      </div>
+      <div className='flex flex-col items-center py-4 gap-4'>
+        <div className='flex flex-col items-center gap-4'>
           <div className='pb-2'>
             <BaseSelect
               label={t('user.app_language')}
@@ -43,7 +60,7 @@ function LanguageSettings() {
               onChange={handleSelectLanguageChange}
             />
           </div>
-          <div className='pt-2 border-t-2 border-t-black'>
+          <div className='pt-2 border-t-2 border-t-textColor'>
             <BaseSelect
               label={t('user.date_format')}
               name='DateFormat'
@@ -53,9 +70,9 @@ function LanguageSettings() {
             />
           </div>
         </div>
-        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
+        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-4' />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

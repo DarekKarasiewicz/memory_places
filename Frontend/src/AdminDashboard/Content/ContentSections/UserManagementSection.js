@@ -1,5 +1,5 @@
 import AdminTileStat from '../Charts/AdminTileStat';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import UsersTable from '../Tables/UsersTable';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ function UserManagementSection() {
   const [users, setUsers] = useState([]);
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
-  const [cookies, removeCookie] = useCookies(['user']);
+  const [cookies] = useCookies(['user']);
   const user = cookies.user;
 
   const fetchUserItems = async () => {

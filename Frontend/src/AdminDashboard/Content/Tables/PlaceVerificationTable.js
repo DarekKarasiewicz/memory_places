@@ -8,15 +8,25 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import CancelIcon from '../../../icons/CancelIcon';
-import EditIcon from '../../../icons/EditIcon';
-import CheckIcon from '../../../icons/CheckIcon';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import axios from 'axios';
+import SettingsIcon from 'icons/SettingsIcon';
+import CancelIcon from 'icons/CancelIcon';
+import EditIcon from 'icons/EditIcon';
+import CheckIcon from 'icons/CheckIcon';
+import { useCookies } from 'react-cookie';
+import { registerAppChanges } from 'utils';
+import SearchIcon from 'icons/SearchIcon';
 
 function PlaceVerificationTable({ data, columns }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
+  const [cookies] = useCookies(['user']);
 
   const table = useReactTable({
     data,
@@ -38,6 +48,31 @@ function PlaceVerificationTable({ data, columns }) {
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
 
+  const handlePlaceConfirmation = (placeId) => {
+    axios
+      .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
+        verified: true,
+      })
+      .then(() => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('success'));
+        registerAppChanges('admin.changes_messages.place_verified', cookies.user, placeId);
+      })
+      .catch(() => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('error'));
+      });
+  };
+
+  const handlePlaceDismiss = (placeId) => {
+    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+    dispatch(confirmationModalActions.changeType('error'));
+    registerAppChanges('admin.changes_messages.place_unverified', cookies.user, placeId);
+
+    //TO DO
+    //On dismiss should element will be wiped out or what?
+  };
+
   return (
     <>
       <div className='flex justify-between items-center'>
@@ -46,11 +81,7 @@ function PlaceVerificationTable({ data, columns }) {
         </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
-            <img
-              src={`./assets/search_icon.svg`}
-              alt={`search_icon`}
-              className='h-5 w-5 absolute left-2'
-            />
+            <SearchIcon className='h-5 w-5 absolute left-2' />
             <input
               className='rounded-lg p-2 pl-8 text-black'
               type='text'
@@ -99,20 +130,32 @@ function PlaceVerificationTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-4'>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+              <td className='flex my-1 gap-2'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handlePlaceConfirmation(row.original.id)}
+                >
                   <CheckIcon className='h-5 w-5' />
                   <span>{t('admin.common.confirm')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => handlePlaceDismiss(row.original.id)}
+                >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.common.dismiss')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
+                >
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
-                <span className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'>
+                <span
+                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
+                >
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
                 </span>

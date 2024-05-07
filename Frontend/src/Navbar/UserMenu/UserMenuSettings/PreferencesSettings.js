@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import BaseButton from '../../../Base/BaseButton';
-import BaseSelect from '../../../Base/BaseSelect';
+import { motion } from 'framer-motion';
+import BaseButton from 'Base/BaseButton';
+import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
+import PreferencesIcon from 'icons/PreferencesIcon';
 
 function PreferencesSettings() {
   const [selectedFontOption, setSelectedFontOption] = useState('');
@@ -20,6 +22,7 @@ function PreferencesSettings() {
   const handleSelectAppThemeChange = (value) => {
     setSelectedAppThemeOption(value);
   };
+
   const font_options = [
     { label: 'Arial', value: 'arial' },
     { label: 'Calibri', value: 'calibri' },
@@ -47,11 +50,26 @@ function PreferencesSettings() {
     { label: t('user.color5'), value: 'contrast3' },
   ];
 
+  const parentItem = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.15,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
   return (
-    <div>
-      <div className='border-b-2 border-black pr-2 pb-2 pl-2'>{t('user.preferences')}</div>
-      <div className='flex flex-col items-center py-2 gap-2'>
-        <div className='flex flex-col items-center gap-2'>
+    <motion.div variants={parentItem} initial='hidden' animate='visible'>
+      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+        <PreferencesIcon />
+        <span>{t('user.preferences')}</span>
+      </div>
+      <div className='flex flex-col items-center py-4 gap-4'>
+        <div className='flex flex-col items-center gap-4'>
           <BaseSelect
             label={t('user.font')}
             name='NotifyLevel'
@@ -74,9 +92,9 @@ function PreferencesSettings() {
             onChange={handleSelectAppThemeChange}
           />
         </div>
-        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
+        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-4' />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

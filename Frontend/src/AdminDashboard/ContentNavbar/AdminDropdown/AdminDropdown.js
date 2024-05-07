@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import AdminDropdownItem from './AdminDropdownItem/AdminDropdownItem';
-import ArrowUpIcon from '../../../icons/admin/ArrowUpIcon';
-import ArrowDownIcon from '../../../icons/admin/ArrowDownIcon';
+import ArrowUpIcon from 'icons/ArrowUpIcon';
+import ArrowDownIcon from 'icons/ArrowDownIcon';
+import UserIcon from 'icons/UserIcon';
 
 function AdminDropdown() {
   const [isActive, setIsActive] = useState(false);
@@ -55,7 +56,7 @@ function AdminDropdown() {
     },
   };
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setIsActive((current) => !current);
     setIsOpen((current) => !current);
   };
@@ -79,13 +80,13 @@ function AdminDropdown() {
       <div className='flex items-center pl-4' ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick}>
           <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
-            <img src='./assets/user_icon.svg' alt='user_icon' className='h-6 w-6'></img>
+            <UserIcon className='h-6 w-6' />
           </div>
           {isOpen ? <ArrowUpIcon className={'h-7 w-7'} /> : <ArrowDownIcon className={'h-7 w-7'} />}
         </div>
         {isActive && (
           <motion.ul
-            className='bg-mainBgColor flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
+            className='bg-mainBgColor shadow-itemShadow rounded-lg flex flex-col gap-2 mt-2 absolute top-16 right-2 w-52 p-4 z-10'
             variants={parentItem}
             initial='hidden'
             animate='visible'

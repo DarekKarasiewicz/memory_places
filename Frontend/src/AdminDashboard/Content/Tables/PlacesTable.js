@@ -7,13 +7,15 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useDispatch } from 'react-redux';
-import { adminActions } from '../../../Redux/adminActionSlice';
+import { adminActions } from 'Redux/adminActionSlice';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import SettingsIcon from '../../../icons/SettingsIcon';
-import CancelIcon from '../../../icons/CancelIcon';
-import EditIcon from '../../../icons/EditIcon';
+import BaseButton from 'Base/BaseButton';
+import SettingsIcon from 'icons/SettingsIcon';
+import CancelIcon from 'icons/CancelIcon';
+import EditIcon from 'icons/EditIcon';
+import SearchIcon from 'icons/SearchIcon';
 
 function PlacesTable({ data, columns }) {
   const dispatch = useDispatch();
@@ -56,18 +58,13 @@ function PlacesTable({ data, columns }) {
           {t('admin.content.all_places')} ({rowCount})
         </div>
         <div className='flex gap-4'>
-          <button
-            className='w-32 normal-case bg-blue-600 leading-6 p-2 shadow-lg text-white font-medium rounded-lg'
+          <BaseButton
+            name={t('admin.common.memo_add')}
+            btnBg='blue'
             onClick={() => navigate('/adminDashboard/placeAdd')}
-          >
-            {t('admin.common.memo_add')}
-          </button>
+          ></BaseButton>
           <div className='relative flex items-center shadow-sm'>
-            <img
-              src={`./assets/search_icon.svg`}
-              alt={`search_icon`}
-              className='h-5 w-5 absolute left-2'
-            />
+            <SearchIcon className='h-5 w-5 absolute left-2' />
             <input
               className='rounded-lg p-2 pl-8 text-black'
               type='text'
@@ -116,7 +113,7 @@ function PlacesTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-4'>
+              <td className='flex my-1 gap-2'>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}

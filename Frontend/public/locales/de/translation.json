@@ -12,7 +12,7 @@
         "longitude": "Längengrad:",
         "wiki-link": "Wikipedia-Link:",
         "topic-link": "Themen-Seiten-Link:",
-        "location_select": "Ort auswählen",
+        "location_select": "Wählen Sie einen Ort auf der Karte aus",
         "type_of": "Art:",
         "type": "Typ:",
         "period": "Zeitraum:",
@@ -51,12 +51,16 @@
         "only_images": "Sie können nur Bilder hochladen.",
         "max_files_number": "Die maximale Anzahl an Dateien beträgt ",
         "already_uploaded": "Datei bereits hochgeladen: ",
+        "drag_info1": "Ziehen und ablegen oder hier klicken",
+        "drag_info2": "um Ihre Bilder hochzuladen (max. {{value}} MB)",
         "edit_trail": "Trail bearbeiten",
         "add_trail": "Trail hinzufügen",
         "select_trail": "Wählen Sie Trail",
         "trail_delete_warning": "Sind Sie sicher, dass Sie diesen Weg löschen möchten?",
         "place_delete_warning": "Sind Sie sicher, dass Sie diesen Ort löschen möchten?",
-        "trail_change_warning": "Ihr aktueller Pfad wird durch einen neuen überschrieben. Sind Sie sicher, dass Sie das tun möchten?"
+        "trail_change_warning": "Ihr aktueller Pfad wird durch einen neuen überschrieben. Sind Sie sicher, dass Sie das tun möchten?",
+        "detailed_info": "Ausführliche Informationen",
+        "no_image_error": "Kein Bild"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -106,7 +110,15 @@
         "interwar_period": "Zwischenkriegszeit (1918 – 1939)",
         "world_war_II": "Zweiter Weltkrieg (1939 – 1945)",
         "stalinist_period": "Stalinistische Ära (1945 – 1953)",
-        "filled_box_error": "Alle Felder müssen ausgefüllt sein"
+        "filled_box_error": "Alle Felder müssen ausgefüllt sein",
+
+        "okresstalinowski": "Stalinistische Ära (1945 – 1953)",
+        "istniejace": "Bestehende",
+        "nieistniejace": "Nicht existierende",
+        "zabytek": "Historisches Denkmal",
+        "miejsce": "Schlachtfeld",
+        "iiwojnaswiatowa": "Zweiter Weltkrieg (1939 – 1945)",
+        "no_translation_given": "Fehlende Übersetzungen"
     },
     "user": {
         "general": "Allgemein",
@@ -158,6 +170,9 @@
         "settings": "Einstellungen",
         "admin_panel": "Admin-Panel",
         "back_to_main_page": "Zurück zur Startseite",
+        "error404_title": "Seite nicht gefunden",
+        "error404_info": "Es scheint, als ob du nach einer Seite suchst, die nicht existiert.",
+        "add_place_login_req": "Um einen Ort hinzuzufügen, musst du angemeldet sein!",
         "help": "Hilfe",
         "logout": "Ausloggen",
         "login": "Anmelden",
@@ -289,7 +304,30 @@
             "changed_date": "Änderungsdatum",
             "changed_by": "Geändert von",
             "alert_success": "Aktion erfolgreich ausgeführt!",
-            "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!"
+            "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!",
+            "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
+            "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:"
+        },
+        "changes_messages": {
+            "blocked": "Benutzer mit ID {{element_id}} gesperrt",
+            "unlocked": "Benutzer mit ID {{element_id}} entsperrt",
+            "reset_pass": "Passwort für Benutzer mit ID {{element_id}} zurückgesetzt",
+            "user_role": "Benutzerrolle mit ID {{element_id}} geändert",
+            "place_delete": "Ort mit ID {{element_id}} gelöscht",
+            "place_add": "Ort mit ID {{element_id}} hinzugefügt",
+            "place_edit": "Ort mit ID {{element_id}} bearbeitet",
+            "trail_delete": "Test mit ID {{element_id}} gelöscht",
+            "trail_add": "Test mit ID {{element_id}} hinzugefügt",
+            "trail_edit": "Test mit ID {{element_id}} bearbeitet",
+            "place_verified": "Ort mit ID {{element_id}} erfolgreich verifiziert",
+            "place_unverified": "Ort mit ID {{element_id}} nicht verifiziert",
+            "trail_verified": "Test mit ID {{element_id}} erfolgreich verifiziert",
+            "trail_unverified": "Test mit ID {{element_id}} nicht verifiziert",
+            "variables_changed": "Variablen geändert",
+            "comment_added": "Kommentar hinzugefügt",
+            "post_added": "Beitrag hinzugefügt",
+            "post_edit": "Beitrag mit ID {{element_id}} bearbeitet",
+            "contact_send": "Kontaktanfrage gesendet"
         }
     }
 }

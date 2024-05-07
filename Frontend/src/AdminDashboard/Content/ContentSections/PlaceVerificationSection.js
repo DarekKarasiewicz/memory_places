@@ -1,5 +1,5 @@
 import AdminTileStat from '../Charts/AdminTileStat';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import PlaceVerificationTable from '../Tables/PlaceVerificationTable';
@@ -11,7 +11,7 @@ function PlaceVerificationSection() {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
+      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/not_verified_places`);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -61,15 +61,36 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.sortof'),
-      accessorKey: 'sortof',
+      accessorKey: 'sortof_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.type'),
-      accessorKey: 'type',
+      accessorKey: 'type_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.period'),
-      accessorKey: 'period',
+      accessorKey: 'period_value',
+      cell: (props) => {
+        if (props.getValue()) {
+          return <span>{t(`modal.${props.getValue()}`)}</span>;
+        } else {
+          return <span>{t('modal.no_translation_given')}</span>;
+        }
+      },
     },
     {
       header: t('admin.content.created_by'),
@@ -77,7 +98,7 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'creation_date',
+      accessorKey: 'found_date',
     },
   ];
 
