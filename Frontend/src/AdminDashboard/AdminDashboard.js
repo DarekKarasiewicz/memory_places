@@ -8,11 +8,14 @@ import Content from './Content/Content.js';
 import Loader from 'Loader/Loader.js';
 import AdminModal from 'Modals/AdminModal.js';
 import ConfirmationModal from 'Modals/ConfirmationModal.js';
+import NotificationModal from 'Modals/NotificationModal';
+import { selectNotificationModal } from 'Redux/notificationModalSlice.jsx';
 
 function AdminDashboard() {
   const dispatch = useDispatch();
   const modalAdminAction = useSelector(selectAdminAction);
-  const modalConfirmationModal = useSelector(selectConfirmationModal);
+  const confirmationModal = useSelector(selectConfirmationModal);
+  const notificationModal = useSelector(selectNotificationModal);
 
   const handleAdminActionModal = () => {
     dispatch(adminActions.changeIsAdminActionsModalOpen());
@@ -31,7 +34,8 @@ function AdminDashboard() {
         {modalAdminAction.isAdminActionsModalOpen && (
           <AdminModal closeModal={handleAdminActionModal} />
         )}
-        {modalConfirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
+        {confirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
+        {notificationModal.isNotificationModalOpen && <NotificationModal />}
       </div>
     </Suspense>
   );

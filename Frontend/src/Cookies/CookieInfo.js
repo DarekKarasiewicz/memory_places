@@ -4,7 +4,7 @@ import CookieIcon from 'icons/CookieIcon';
 function CookiesInfo(props) {
   return (
     <>
-      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
+      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-40'>
         <div className='m-auto min-w-sm max-w-lg rounded-[24px] border-2 border-black h-auto p-4 bg-white relative break-all'>
           <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
             <div className='flex justify-center items-center gap-2 text-xl'>

@@ -5,6 +5,8 @@ import CommentForm from './CommentForm';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function SubForum() {
   const { id } = useParams();
@@ -12,18 +14,20 @@ function SubForum() {
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/memo_places_forum/forum_posts/${id}`)
       .then((res) => {
-        console.log(res.data);
         setPosts(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setLoading(false);
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   }, [id]);
 
@@ -46,12 +50,16 @@ function SubForum() {
             setLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setLoading(false);
+            dispatch(notificationModalActions.changeType('alert'));
+            dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+            dispatch(notificationModalActions.changeIsNotificationModalOpen());
           });
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   };
 

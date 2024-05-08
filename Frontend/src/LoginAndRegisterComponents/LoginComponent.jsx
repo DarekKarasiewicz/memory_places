@@ -10,6 +10,7 @@ import { modalsActions } from 'Redux/modalsSlice';
 import { useDispatch } from 'react-redux';
 import useAuth from 'Hooks/useAuth';
 import useRefreshToken from 'Hooks/useRefreshToken';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 const LoginComponent = () => {
   const [isValidEmail, setIsValidEmail] = useState(null);
@@ -23,7 +24,7 @@ const LoginComponent = () => {
   const refresh = useRefreshToken();
 
   const responseFacebook = (response) => {
-    console.log(response);
+    //console.log(response);
   };
 
   const handleBlurEmail = () => {
@@ -72,13 +73,18 @@ const LoginComponent = () => {
         })
         .catch((error) => {
           if (!error.response) {
-            alert(t('common.no_response'));
+            dispatch(notificationModalActions.changeType('alert'));
+            dispatch(notificationModalActions.changeTitle(t('common.no_response')));
           } else {
-            alert(t('common.login_error'));
+            dispatch(notificationModalActions.changeType('alert'));
+            dispatch(notificationModalActions.changeTitle(t('common.login_error')));
           }
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
         });
     } else {
-      alert(t('common.check_inputs'));
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.check_inputs')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -97,7 +103,6 @@ const LoginComponent = () => {
         shape='pill'
         onSuccess={(credentialResponse) => {
           let decoded = jwtDecode(credentialResponse.credential);
-          console.log(decoded.email.replace(/\./g, '%26'));
           axios
             .get(
               `http://localhost:8000/memo_places/users/email%3D${decoded.email.replace(
@@ -113,7 +118,6 @@ const LoginComponent = () => {
               setCookie('user', decoded);
             })
             .catch((error) => {
-              console.log(error);
               if (error.response.status === 404) {
                 axios
                   .post(
@@ -133,7 +137,9 @@ const LoginComponent = () => {
                     setCookie('user', decoded);
                   })
                   .catch((error) => {
-                    // Handle error
+                    dispatch(notificationModalActions.changeType('alert'));
+                    dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+                    dispatch(notificationModalActions.changeIsNotificationModalOpen());
                   });
               } else {
                 // Handle other errors from GET request
@@ -142,7 +148,9 @@ const LoginComponent = () => {
           setCookie('user', decoded);
         }}
         onError={() => {
-          alert(t('common.login_error'));
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('common.login_error')));
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
         }}
       />
 

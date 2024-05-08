@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import BaseModal from 'Base/BaseModal';
 import BaseInput from 'Base/BaseInput';
@@ -19,6 +19,7 @@ import WebIcon from 'icons/WebIcon';
 import WikiIcon from 'icons/WikiIcon';
 import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -52,7 +53,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.id,
+          value: obj.value,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -65,7 +66,9 @@ function FormModal(props) {
         setSortOf(sortOfItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -76,7 +79,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.id,
+          value: obj.value,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -89,7 +92,9 @@ function FormModal(props) {
         setType(typeItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -100,7 +105,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.id,
+          value: obj.value,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -113,9 +118,17 @@ function FormModal(props) {
         setPeriod(periodItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
+
+  useEffect(() => {
+    fetchSortOfItems();
+    fetchTypeItems();
+    fetchPeriodItems();
+  }, []);
 
   useEffect(() => {
     if (updatePlaceData.isDataLoaded === true || props.type !== 'update') {
@@ -130,15 +143,14 @@ function FormModal(props) {
 
   useEffect(() => {
     if (props.type === 'update' && updatePlaceData.isDataLoaded === false) {
-      console.log(updatePlaceData);
       dispatch(addPlaceActions.changeName(updatePlaceData.place.place_name));
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
       setLat(updatePlaceData.place.lat);
       setLng(updatePlaceData.place.lng);
-      dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
-      dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
-      dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
+      dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof_value));
+      dispatch(addPlaceActions.changeType(updatePlaceData.place.type_value));
+      dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period_value));
       dispatch(addPlaceActions.changeWikiLink(updatePlaceData.place.wiki_link));
       dispatch(addPlaceActions.changeTopicLink(updatePlaceData.place.topic_link));
       validateName(updatePlaceData.place.place_name);
@@ -228,8 +240,6 @@ function FormModal(props) {
             dispatch(confirmationModalActions.changeType('error'));
           });
       } else {
-        console.log(addPlaceData.place_name);
-
         axios
           .post(`http://localhost:8000/memo_places/places/`, {
             user: user.user_id,
@@ -260,7 +270,9 @@ function FormModal(props) {
           });
       }
     } else {
-      alert(t('modal.filled_box_error'));
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -272,12 +284,6 @@ function FormModal(props) {
       dispatch(modalsActions.changeIsFormModalOpen());
     }
   };
-
-  useEffect(() => {
-    fetchSortOfItems();
-    fetchTypeItems();
-    fetchPeriodItems();
-  }, []);
 
   return (
     <>

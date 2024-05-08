@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import HistoryTable from '../Tables/HistoryTable';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function ChangesHistorySection() {
   const { t } = useTranslation();
   const [changesData, setChangesData] = useState([]);
+  const dispatch = useDispatch();
 
   const fetchItems = async () => {
     try {
@@ -24,7 +27,9 @@ function ChangesHistorySection() {
         .sort((a, b) => (a.order > b.order ? 1 : -1));
       setChangesData(changesItems);
     } catch (error) {
-      alert(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

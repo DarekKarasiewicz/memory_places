@@ -2,10 +2,16 @@ import { Link, useParams } from 'react-router-dom';
 import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
+import Loader from 'Loader/Loader';
 
 const VerifiactionPage = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // decode id here
@@ -16,14 +22,16 @@ const VerifiactionPage = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(`Something went wrong.\nError message: ${error.message}`);
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   }, []);
 
   return (
     <div className='flex justify-center items-center w-screen h-screen'>
       {isLoading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <div className='bg-slate-300 p-10 rounded-lg'>
           <p className='text-3xl mb-3'>Your account has been verified</p>

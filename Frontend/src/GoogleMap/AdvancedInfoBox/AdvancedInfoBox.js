@@ -78,8 +78,10 @@ const AdvancedInfoBox = (props) => {
             </section>
           </div>
           <div className='flex flex-col w-3/5 gap-4'>
-            <section className='flex flex-col justify-center w-[32rem] h-[22rem]'>
-              <ImageSlider slides={sliderData} />
+            <section className='flex justify-center items-center'>
+              <section className='flex flex-col mx-0 justify-center w-[32rem] h-[22rem]'>
+                <ImageSlider slides={sliderData} />
+              </section>
             </section>
             <section className='text-center font-bold'>{receivedData.place_name}</section>
             <section className='flex flex-col'>

@@ -29,6 +29,7 @@ import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
 import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 // TO DO
 // When frontend will be rewrited this prop will be deleted with functionality to it
@@ -65,12 +66,16 @@ const GoogleMap = ({ adminVersion }) => {
       },
       (error) => {
         if (error.code === 1) {
-          alert(t('google_maps.error1_info'));
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('google_maps.error1_info')));
         } else if (error.code === 2) {
-          alert(t('google_maps.error2_info'));
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('google_maps.error2_info')));
         } else {
-          alert(t('google_maps.error3_info'));
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('google_maps.error3_info')));
         }
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
@@ -149,7 +154,9 @@ const GoogleMap = ({ adminVersion }) => {
       setCurrentPlaceData(response.data);
       dispatch(modalsActions.changeIsAdvancedInfoOpen());
     } catch (error) {
-      alert(t('common.axios_warning'));
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

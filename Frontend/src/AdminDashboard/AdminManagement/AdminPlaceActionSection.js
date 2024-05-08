@@ -19,6 +19,7 @@ import GoogleMap from 'GoogleMap/GoogleMap';
 import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
 import { registerAppChanges } from 'utils';
 import AlertIcon from 'icons/AlertIcon';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -76,7 +77,9 @@ function AdminPlaceActionSection({ action, placeId }) {
         setSortOf(sortOfItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -100,7 +103,9 @@ function AdminPlaceActionSection({ action, placeId }) {
         setType(typeItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -124,7 +129,9 @@ function AdminPlaceActionSection({ action, placeId }) {
         setPeriod(periodItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -166,7 +173,9 @@ function AdminPlaceActionSection({ action, placeId }) {
           validateType(typeRef.current.value);
           validatePeriod(periodRef.current.value);
         } catch (error) {
-          console.log(error);
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
         }
       };
 
@@ -336,7 +345,9 @@ function AdminPlaceActionSection({ action, placeId }) {
           });
       }
     } else {
-      alert(t('modal.filled_box_error'));
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

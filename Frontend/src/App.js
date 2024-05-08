@@ -30,6 +30,7 @@ import { drawingToolsActions, selectDrawingTools } from './Redux/drawingToolsSli
 import { updateTrailActions } from './Redux/updateTrailSlice.jsx';
 import ConfirmationModal from 'Modals/ConfirmationModal.js';
 import { selectConfirmationModal } from 'Redux/confirmationModalSlice';
+import { selectNotificationModal } from 'Redux/notificationModalSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,8 @@ function App() {
   const { t } = useTranslation();
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
-  const modalConfirmationModal = useSelector(selectConfirmationModal);
+  const confirmationModal = useSelector(selectConfirmationModal);
+  const notificationModal = useSelector(selectNotificationModal);
 
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
@@ -70,10 +72,6 @@ function App() {
 
   const handleUserSettingsVisability = () => {
     dispatch(modalsActions.changeIsUserSettingsOpen());
-  };
-
-  const handleNotificationModalVisability = () => {
-    dispatch(modalsActions.changeIsNotificationModalOpen());
   };
 
   const handleCookiesInfoVisability = () => {
@@ -163,14 +161,7 @@ function App() {
         {modalData.isUserSettingsOpen && (
           <UserMenuSettings closeModal={handleUserSettingsVisability} />
         )}
-        {modalData.isNotificationModalOpen && (
-          <NotificationModal
-            title={t('common.warning_title')}
-            info={t('common.warning_info')}
-            type='warning'
-            closeModal={handleNotificationModalVisability}
-          />
-        )}
+        {notificationModal.isNotificationModalOpen && <NotificationModal />}
 
         {/* TO DO Save user cookie preferences in db */}
         {showCookiesInfo && modalData.isCookiesInfoOpen && (
@@ -185,7 +176,7 @@ function App() {
 
         {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <LanguageSwitcher /> : null}
 
-        {modalConfirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
+        {confirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
       </div>
     </Suspense>
   );

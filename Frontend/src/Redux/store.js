@@ -11,6 +11,7 @@ import formValidationReducer from './formValidationSlice';
 import contentSectionReducer from './contentSectionSlice';
 import adminActionsReducer from './adminActionSlice';
 import confirmationModalReducer from './confirmationModalSlice';
+import notificationModalReducer from './notificationModalSlice';
 import addTrailReducer from './addTrailSlice';
 import drawingToolsReducer from './drawingToolsSlice';
 import drawingEventsReducer from './drawingEventsSlice';
@@ -35,6 +36,7 @@ export const store = configureStore({
     contentSection: contentSectionReducer,
     adminActions: adminActionsReducer,
     confirmationModal: confirmationModalReducer,
+    notificationModal: notificationModalReducer,
     addTrail: addTrailReducer,
     drawingTools: drawingToolsReducer,
     drawingEvents: drawingEventsReducer,
