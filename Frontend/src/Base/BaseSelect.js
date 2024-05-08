@@ -14,13 +14,17 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
           ref={ref}
-          defaultValue={props.value}
+          value={props.value}
           onBlur={props.onBlur}
           onChange={props.onChange}
           disabled={props.readOnly}
         >
           {props.options.map((option, index) => (
-            <option key={index} value={option.value} data-id={option.id ? option.id : index}>
+            <option
+              key={index}
+              value={option.value}
+              data-id={option.id ? option.id : index}
+            >
               {option.label}
             </option>
           ))}

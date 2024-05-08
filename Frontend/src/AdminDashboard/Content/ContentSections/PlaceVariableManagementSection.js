@@ -9,6 +9,7 @@ import BaseButton from 'Base/BaseButton';
 import HelpIcon from 'icons/HelpIcon';
 import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function PlaceVariableManagementSection() {
   const dispatch = useDispatch();
@@ -39,7 +40,9 @@ function PlaceVariableManagementSection() {
       setSortOfBase(responseSort.data);
       pushValuesToTranslate(...responseSort.data.map((item) => item.value));
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -50,7 +53,9 @@ function PlaceVariableManagementSection() {
       setTypeBase(responseType.data);
       pushValuesToTranslate(...responseType.data.map((item) => item.value));
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -61,7 +66,9 @@ function PlaceVariableManagementSection() {
       setPeriodBase(responsePeriod.data);
       pushValuesToTranslate(...responsePeriod.data.map((item) => item.value));
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

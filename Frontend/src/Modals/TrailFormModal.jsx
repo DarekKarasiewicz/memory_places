@@ -20,6 +20,7 @@ import WebIcon from 'icons/WebIcon';
 import WikiIcon from 'icons/WikiIcon';
 import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -61,7 +62,9 @@ const TrailFormModal = (props) => {
         setType(typeItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -85,7 +88,9 @@ const TrailFormModal = (props) => {
         setPeriod(periodItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -179,45 +184,48 @@ const TrailFormModal = (props) => {
             dispatch(confirmationModalActions.changeType('error'));
           });
         return;
+      } else {
+        axios
+          .post(`http://localhost:8000/memo_places/path/`, {
+            user: user.user_id,
+            path_name: addTrailData.path_name,
+            description: addTrailData.description,
+            found_date: addTrailData.found_date,
+            type: 1,
+            period: 1,
+            wiki_link: addTrailData.wiki_link,
+            topic_link: addTrailData.topic_link,
+            coordinates: JSON.stringify(addTrailData.coordinates),
+          })
+          .then((response) => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
+            registerAppChanges(
+              'admin.changes_messages.trail_add',
+              user.user_id,
+              addTrailData.path_name,
+            );
+            dispatch(addTrail(response.data));
+            drawingTools.now[0].geometry.setMap(null);
+            drawingEvents.events.forEach((listener) =>
+              window.google.maps.event.removeListener(listener),
+            );
+            dispatch(drawingEventsActions.reset());
+            dispatch(drawingToolsActions.reset());
+            dispatch(addTrailActions.reset());
+            dispatch(modalsActions.changeIsTrailFormOpen());
+            dispatch(formValidationActions.reset());
+          })
+          .catch(() => {
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('error'));
+          });
       }
-      axios
-        .post(`http://localhost:8000/memo_places/path/`, {
-          user: user.user_id,
-          path_name: addTrailData.path_name,
-          description: addTrailData.description,
-          found_date: addTrailData.found_date,
-          type: 1,
-          period: 1,
-          wiki_link: addTrailData.wiki_link,
-          topic_link: addTrailData.topic_link,
-          coordinates: JSON.stringify(addTrailData.coordinates),
-        })
-        .then((response) => {
-          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-          dispatch(confirmationModalActions.changeType('success'));
-          registerAppChanges(
-            'admin.changes_messages.trail_add',
-            user.user_id,
-            addTrailData.path_name,
-          );
-          dispatch(addTrail(response.data));
-          drawingTools.now[0].geometry.setMap(null);
-          drawingEvents.events.forEach((listener) =>
-            window.google.maps.event.removeListener(listener),
-          );
-          dispatch(drawingEventsActions.reset());
-          dispatch(drawingToolsActions.reset());
-          dispatch(addTrailActions.reset());
-          dispatch(modalsActions.changeIsTrailFormOpen());
-          dispatch(formValidationActions.reset());
-        })
-        .catch(() => {
-          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-          dispatch(confirmationModalActions.changeType('error'));
-        });
-      return;
+    } else {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
-    alert(t('modal.filled_box_error'));
   };
 
   useEffect(() => {

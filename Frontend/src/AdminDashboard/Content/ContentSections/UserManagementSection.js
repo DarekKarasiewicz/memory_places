@@ -4,6 +4,8 @@ import axios from 'axios';
 import UsersTable from '../Tables/UsersTable';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function UserManagementSection() {
   const [users, setUsers] = useState([]);
@@ -11,6 +13,7 @@ function UserManagementSection() {
   const [statistics, setStatistics] = useState([]);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const dispatch = useDispatch();
 
   const fetchUserItems = async () => {
     try {
@@ -52,7 +55,9 @@ function UserManagementSection() {
         ['sumOfMonthUsers']: sumOfCurrentMonthUsers.length,
       }));
     } catch (error) {
-      alert(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

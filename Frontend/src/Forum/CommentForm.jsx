@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function CommentForm(props) {
   const [content, setContent] = useState('');
   const { postID } = props;
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     const item = { content: content, author: cookies.user_id, post: postID };
@@ -21,10 +24,11 @@ function CommentForm(props) {
       .then(() => {
         registerAppChanges('admin.changes_messages.comment_added', cookies.user);
       })
-      .catch((error) => {
-        console.log('Error with:', error);
+      .catch(() => {
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
-    console.log(`${content} ${postID}`);
   };
 
   return (

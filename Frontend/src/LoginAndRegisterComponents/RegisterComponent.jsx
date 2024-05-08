@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import RegisterForm from './RegisterForm';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 const RegisterComponent = ({ setIsLogging }) => {
   const [isValidEmail, setIsValidEmail] = useState(null);
@@ -14,6 +16,7 @@ const RegisterComponent = ({ setIsLogging }) => {
   const confPasswordRef = useRef(null);
   const usernameRef = useRef(null);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const handleBlurConfPassword = () => {
     setIsValidConfPassword(confPasswordRef.current.value === passwordRef.current.value);
@@ -47,11 +50,15 @@ const RegisterComponent = ({ setIsLogging }) => {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(() => {
-          alert(t('common.verify_account'));
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('common.verify_account')));
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
           setIsLogging(true);
         });
     } else {
-      alert(t('common.check_inputs'));
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.check_inputs')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

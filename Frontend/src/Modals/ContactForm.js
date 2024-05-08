@@ -9,6 +9,7 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { registerAppChanges } from 'utils';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function ContactForm(props) {
   const nameRef = useRef(null);
@@ -33,12 +34,16 @@ function ContactForm(props) {
       .post('http://localhost:8000/memo_places/contact_us', contact_form_req, {
         headers: { 'Content-Type': 'application/json' },
       })
-      .then((response) => {
-        alert(t('user.contact_success'));
+      .then(() => {
+        dispatch(notificationModalActions.changeType('success'));
+        dispatch(notificationModalActions.changeTitle(t('user.contact_success')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
         registerAppChanges('admin.changes_messages.contact_send', user);
       })
-      .catch((error) => {
-        alert(t('common.axios_warning'));
+      .catch(() => {
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   };
 

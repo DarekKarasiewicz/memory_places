@@ -150,11 +150,10 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
             order: item.order,
           })
           .then((response) => {
-            console.log(response);
+            //console.log(response);
           })
-          .catch((error) => {
+          .catch(() => {
             handleIfAnyErrorAppeared();
-            console.log(error);
           });
       });
     }
@@ -167,11 +166,10 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
             order: item.order,
           })
           .then((response) => {
-            console.log(response);
+            //console.log(response);
           })
-          .catch((error) => {
+          .catch(() => {
             handleIfAnyErrorAppeared();
-            console.log(error);
           });
       });
     }
@@ -181,11 +179,10 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
         axios
           .delete(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}`)
           .then((response) => {
-            console.log(response);
+            //console.log(response);
           })
-          .catch((error) => {
+          .catch(() => {
             handleIfAnyErrorAppeared();
-            console.log(error);
           });
       });
     }

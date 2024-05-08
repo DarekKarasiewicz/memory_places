@@ -15,7 +15,7 @@ function BaseModal(props) {
 
   return (
     <>
-      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
+      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-40'>
         <motion.div
           className={`m-auto w-${
             props.width ? props.width : '1/2'

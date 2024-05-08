@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import CancelIcon from 'icons/CancelIcon';
 import PlaceIcon from 'icons/PlaceIcon';
 import TrailIcon from 'icons/TrailIcon';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 const UserMenu = () => {
   const filterPlaces = useSelector((state) => state.allMapPlaces.filterItems);
@@ -31,7 +32,9 @@ const UserMenu = () => {
         setUserPlaces(response.data);
       })
       .catch((error) => {
-        alert(t('common.axios_warning'));
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
     axios
       .get(`http://localhost:8000/memo_places/path/user=${user.user_id}`)
@@ -39,7 +42,9 @@ const UserMenu = () => {
         setUserTrails(response.data);
       })
       .catch((error) => {
-        alert(t('common.axios_warning'));
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   }, []);
 
@@ -50,7 +55,9 @@ const UserMenu = () => {
         setUserPlaces(response.data);
       })
       .catch((error) => {
-        alert(t('common.axios_warning'));
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   }, [filterPlaces]);
 
@@ -61,7 +68,9 @@ const UserMenu = () => {
         setUserTrails(response.data);
       })
       .catch((error) => {
-        alert(t('common.axios_warning'));
+        dispatch(notificationModalActions.changeType('alert'));
+        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+        dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
   }, [filteredTrails]);
 

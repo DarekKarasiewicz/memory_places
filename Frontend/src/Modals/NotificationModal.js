@@ -2,61 +2,56 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import BaseButton from 'Base/BaseButton';
 import { useTranslation } from 'react-i18next';
-import CancelIcon from 'icons/CancelIcon';
+import { useDispatch, useSelector } from 'react-redux';
+import { notificationModalActions, selectNotificationModal } from 'Redux/notificationModalSlice';
+import AlertCircleIcon from 'icons/dialog/AlertCircleIcon';
+import CheckCircleIcon from 'icons/dialog/CheckCircleIcon';
+import WarningCircleIcon from 'icons/dialog/WarningCircleIcon';
 
-function NotificationModal(props) {
-  const [typeColor, setTypeColor] = useState('');
-  const [iconName, setIconName] = useState('');
+function NotificationModal() {
+  const dispatch = useDispatch();
+  const modalData = useSelector(selectNotificationModal);
+  const { type, title } = modalData;
   const { t } = useTranslation();
+  const [iconComponent, setIconComponent] = useState(null);
+
+  const handleNotificationModalVisibility = () => {
+    dispatch(notificationModalActions.changeIsNotificationModalOpen());
+  };
 
   useEffect(() => {
-    if (props.type === 'alert') {
-      setTypeColor('text-yellow-500');
-      setIconName('alert_circle_icon');
-    } else if (props.type === 'warning') {
-      setTypeColor('text-red-500');
-      setIconName('warning_circle_icon');
-    } else if (props.type === 'success') {
-      setTypeColor('text-green-500');
-      setIconName('check_circle_icon');
-    } else {
-      setTypeColor('text-black');
-      setIconName('warning_circle_icon');
-    }
-  }, [props.type]);
+    const iconComponents = {
+      alert: <AlertCircleIcon className='h-20 w-20' />,
+      success: <CheckCircleIcon className='h-20 w-20' />,
+      warning: <WarningCircleIcon className='h-20 w-20' />,
+    };
+
+    setIconComponent(iconComponents[type] || null);
+  }, [type]);
+
   return (
     <>
-      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-50'>
-        <div
-          className={`m-auto min-w-sm max-w-lg rounded-[24px] border-2 border-black h-auto p-4 bg-white relative break-all`}
-        >
-          <div className='flex justify-between items-center h-10 pb-4 border-gray-300 border-b-2'>
-            <div className='flex justify-center items-center gap-2 text-xl'>
-              <img src={`./assets/dialog/${iconName}.svg`} alt={iconName} className='h-8 w-8'></img>
-              <span className={`capitalize font-medium ${typeColor}`}>{props.title}</span>
-            </div>
-            <motion.div
-              className='flex justify-center items-center cursor-pointer'
-              onClick={props.closeModal}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <CancelIcon className='h-8 w-8' />
-            </motion.div>
-          </div>
-          <div className='pt-4 pb-6 text-center'>
-            <span className='text-lg'>{props.info}</span>
-          </div>
-          <div className='flex justify-end gap-2 mb-2'>
-            <BaseButton
-              name={t('common.cancel')}
-              btnBg='red'
-              onClick={props.closeModal}
-            ></BaseButton>
-            <BaseButton name={t('common.confirm')} btnBg='blue'></BaseButton>
+      <motion.div
+        className='absolute left-0 right-0 mx-auto top-4 min-w-sm max-w-lg rounded-[24px] shadow-itemShadow h-auto p-4 bg-thirdBgColor break-all text-textColor z-50 flex flex-col gap-4'
+        initial={{ y: '50%', opacity: 0, scale: 0.5 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: '50%', opacity: 0, transition: { duration: 0.1 } }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+      >
+        <div className='flex justify-center items-center'>
+          <div className='flex flex-col justify-center items-center gap-2 text-xl'>
+            {iconComponent}
+            <span className='capitalize font-medium text-2xl'>{title}</span>
           </div>
         </div>
-      </div>
+        <div className='flex justify-center gap-2 mb-2'>
+          <BaseButton
+            name={t('common.close')}
+            btnBg='red'
+            onClick={handleNotificationModalVisibility}
+          ></BaseButton>
+        </div>
+      </motion.div>
     </>
   );
 }

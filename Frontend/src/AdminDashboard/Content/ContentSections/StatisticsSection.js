@@ -3,10 +3,13 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import AdminBarChart from '../Charts/AdminBarChart';
 import AdminTileStat from '../Charts/AdminTileStat';
+import { useDispatch } from 'react-redux';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function StatisticsSection() {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
+  const dispatch = useDispatch();
 
   const fetchItems = async () => {
     try {
@@ -143,7 +146,9 @@ function StatisticsSection() {
         ['monthlyPlacesCount']: monthlyPlacesCount,
       }));
     } catch (error) {
-      alert(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 

@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import FilterIcon from 'icons/FilterIcon';
 import CancelIcon from 'icons/CancelIcon';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
@@ -44,7 +45,9 @@ function MapFilter() {
         setSortOf(sortOfItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -68,7 +71,9 @@ function MapFilter() {
         setType(typeItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
@@ -92,7 +97,9 @@ function MapFilter() {
         setPeriod(periodItems);
       }
     } catch (error) {
-      console.log(error);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
 
