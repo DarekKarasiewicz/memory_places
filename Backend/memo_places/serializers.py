@@ -28,7 +28,6 @@ class Places_serailizer(serializers.ModelSerializer):
             "place_name",
             "description",
             "creation_date",
-            "found_date",
             "lng",
             "lat",
             "user",
@@ -42,6 +41,7 @@ class Places_serailizer(serializers.ModelSerializer):
             "topic_link",
             "wiki_link",
             "verified",
+            "verified_date",
         )
 
     # def get_place_image(self, obj):
@@ -69,7 +69,7 @@ class Path_serailizer(serializers.ModelSerializer):
             "path_name",
             "description",
             "creation_date",
-            "found_date",
+            "verified_date",
             "coordinates",
             "user",
             "username",

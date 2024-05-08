@@ -65,7 +65,6 @@ class Place_view(viewsets.ModelViewSet):
             user=creator,
             place_name=data["place_name"],
             description=data["description"],
-            found_date=data["found_date"],
             lng=data["lng"],
             lat=data["lat"],
             type=type,
@@ -129,8 +128,6 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.place_name = data["place_name"]
                 case "description":
                     place_object.description = data["description"]
-                case "found_date":
-                    place_object.found_date = data["found_date"]
                 case "lat":
                     place_object.lat = data["lat"]
                 case "lng":
@@ -242,7 +239,6 @@ class Path_view(viewsets.ModelViewSet):
             user=creator,
             path_name=request.data["path_name"],
             description=request.data["description"],
-            found_date=request.data["found_date"],
             coordinates=request.data["coordinates"],
             type=type,
             period=period,
@@ -291,8 +287,6 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.path_name = data["path_name"]
                 case "description":
                     path_object.description = data["description"]
-                case "found_date":
-                    path_object.found_date = data["found_date"]
                 case "coordinates":
                     path_object.coordinates = (data["coordinates"],)
                 case "type":
