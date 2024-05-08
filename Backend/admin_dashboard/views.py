@@ -51,7 +51,6 @@ class Place_view(viewsets.ModelViewSet):
             user=creator,
             place_name=data["place_name"],
             description=data["description"],
-            found_date=data["found_date"],
             lng=data["lng"],
             lat=data["lat"],
             type=type,
@@ -66,6 +65,8 @@ class Place_view(viewsets.ModelViewSet):
                     new_place.wiki_link = data["wiki_link"]
                 case "topic_link":
                     new_place.topic_link = data["topic_link"]
+                case "verified_date":
+                    new_place.verified_date = data["verified_date"]
                 case _:
                     pass 
 
@@ -117,8 +118,8 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.place_name = data["place_name"]
                 case "description":
                     place_object.description = data["description"]
-                case "found_date":
-                    place_object.found_date = data["found_date"]
+                case "verified_date":
+                    place_object.verified_date = data["verified_date"]
                 case "creation_date":
                     place_object.creation_date = data["creation_date"]
                 case "lat":
@@ -223,7 +224,6 @@ class Path_view(viewsets.ModelViewSet):
             user=creator,
             path_name=data["path_name"],
             description=data["description"],
-            found_date=data["found_date"],
             coordinates=data["coordinates"],
             type=type,
             period=period,
@@ -234,6 +234,8 @@ class Path_view(viewsets.ModelViewSet):
                     new_path.wiki_link = data["wiki_link"]
                 case "topic_link":
                     new_path.topic_link = data["topic_link"]
+                case "verified_date":
+                    new_path.verified_date = data["verified_date"]
                 case _:
                     pass
 
@@ -281,8 +283,8 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.path_name = data["path_name"]
                 case "description":
                     path_object.description = data["description"]
-                case "found_date":
-                    path_object.found_date = data["found_date"]
+                case "verified_date":
+                    path_object.verified_date = data["verified_date"]
                 case "creation_date":
                     path_object.creation_date = data["creation_date"]
                 case "coordinates":
