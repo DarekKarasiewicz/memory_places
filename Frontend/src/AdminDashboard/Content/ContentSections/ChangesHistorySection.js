@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import HistoryTable from '../Tables/HistoryTable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 function ChangesHistorySection() {
   const { t } = useTranslation();
   const [changesData, setChangesData] = useState([]);
   const dispatch = useDispatch();
+  const modalData = useSelector(selectAdminData);
+  const { isHistoryChanged } = modalData;
 
-  const fetchItems = async () => {
+  const fetchHistoryItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
       const changesItems = response.data
@@ -26,6 +29,7 @@ function ChangesHistorySection() {
         })
         .sort((a, b) => (a.order > b.order ? 1 : -1));
       setChangesData(changesItems);
+      dispatch(adminDataActions.updateIsHistoryChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -57,8 +61,10 @@ function ChangesHistorySection() {
   ];
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    if (isHistoryChanged || changesData.length === 0) {
+      fetchHistoryItems();
+    }
+  }, [isHistoryChanged]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import StatisticsIcon from 'icons/admin/StatisticsIcon';
 import UserGroupIcon from 'icons/admin/UserGroupIcon';
 import PlacesIcon from 'icons/admin/PlacesIcon';
+import TrailIcon from 'icons/TrailIcon';
 import VarChangesIcon from 'icons/admin/VarChangesIcon';
 import VerificationIcon from 'icons/admin/VerificationIcon';
 import WebChangesIcon from 'icons/admin/WebChangesIcon';
@@ -10,6 +11,7 @@ function AdminMenuItem(props) {
     statistics: <StatisticsIcon />,
     userGroup: <UserGroupIcon />,
     places: <PlacesIcon />,
+    trails: <TrailIcon />,
     varChanges: <VarChangesIcon />,
     verification: <VerificationIcon />,
     webChanges: <WebChangesIcon />,

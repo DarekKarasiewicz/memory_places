@@ -3,14 +3,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import PlacesTable from '../Tables/PlacesTable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 function PlaceManagementSection() {
   const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
+  const modalData = useSelector(selectAdminData);
+  const { isPlacesChanged } = modalData;
 
   const fetchPlaceItems = async () => {
     try {
@@ -46,6 +49,7 @@ function PlaceManagementSection() {
         ...statistics,
         ['currentMonthPlaces']: sumOfCurrentMonthPlaces.length,
       }));
+      dispatch(adminDataActions.updateIsPlacesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -54,8 +58,10 @@ function PlaceManagementSection() {
   };
 
   useEffect(() => {
-    fetchPlaceItems();
-  }, []);
+    if (isPlacesChanged || places.length === 0) {
+      fetchPlaceItems();
+    }
+  }, [isPlacesChanged]);
 
   const placesColumns = [
     {

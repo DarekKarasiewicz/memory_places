@@ -264,6 +264,7 @@ const TrailFormModal = (props) => {
               dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
             }}
             onChange={() => {
+              dispatch(addTrailActions.changeType(typeRef.current.value));
               dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 'all'));
             }}
             isValid={formValidation.isValidType}
@@ -281,6 +282,7 @@ const TrailFormModal = (props) => {
               );
             }}
             onChange={() => {
+              dispatch(addTrailActions.changePeriod(periodRef.current.value));
               dispatch(
                 formValidationActions.changeIsValidPeriod(periodRef.current.value !== 'all'),
               );

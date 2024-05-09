@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import StatisticsSection from './ContentSections/StatisticsSection';
 import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
+import TrailManagementSection from './ContentSections/TrailManagementSection';
 import PlaceVariableManagementSection from './ContentSections/PlaceVariableManagementSection';
 import ChangesHistorySection from './ContentSections/ChangesHistorySection';
 import PlaceVerificationSection from './ContentSections/PlaceVerificationSection';
@@ -10,6 +11,7 @@ const contentSectionMap = {
   StatisticsSection,
   UserManagementSection,
   PlaceManagementSection,
+  TrailManagementSection,
   PlaceVariableManagementSection,
   PlaceVerificationSection,
   ChangesHistorySection,

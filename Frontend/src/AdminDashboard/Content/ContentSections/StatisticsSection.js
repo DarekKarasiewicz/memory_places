@@ -3,18 +3,24 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import AdminBarChart from '../Charts/AdminBarChart';
 import AdminTileStat from '../Charts/AdminTileStat';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 function StatisticsSection() {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
+  const modalData = useSelector(selectAdminData);
+  const { isStatisticsChanged } = modalData;
 
-  const fetchItems = async () => {
+  const fetchStatisticItems = async () => {
     try {
       const responseUsers = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
       const responsePlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
+
+      const modifiedPlaceData = responsePlaces.data.filter((item) => item.verified === true);
+      console.log(responsePlaces.data.filter((item) => item.verified === true));
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -30,15 +36,15 @@ function StatisticsSection() {
         (item) => getItemDate(item.data_join) === new Date().getMonth(),
       );
 
-      const sumOfCurrentMonthPlaces = responsePlaces.data.filter(
+      const sumOfCurrentMonthPlaces = modifiedPlaceData.filter(
         (item) => getItemDate(item.found_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthPlaces = responsePlaces.data.filter(
+      const sumOfPreviousMonthPlaces = modifiedPlaceData.filter(
         (item) => getItemDate(item.found_date) === previousMonthDate,
       );
 
-      const sumOfPreviousMonthUsers = responsePlaces.data.filter(
+      const sumOfPreviousMonthUsers = responseUsers.data.filter(
         (item) => getItemDate(item.data_join) === previousMonthDate,
       );
 
@@ -131,7 +137,7 @@ function StatisticsSection() {
       });
 
       setStatistics((statistics) => ({ ...statistics, ['allUsers']: responseUsers.data.length }));
-      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: responsePlaces.data.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: modifiedPlaceData.length }));
       setStatistics((statistics) => ({
         ...statistics,
         ['currentMonthUsers']: sumOfCurrentMonthUsers.length,
@@ -145,6 +151,8 @@ function StatisticsSection() {
         ...statistics,
         ['monthlyPlacesCount']: monthlyPlacesCount,
       }));
+
+      dispatch(adminDataActions.updateIsStatisticsChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -153,8 +161,11 @@ function StatisticsSection() {
   };
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    if (isStatisticsChanged || statistics.length === 0) {
+      fetchStatisticItems();
+    }
+  }, [isStatisticsChanged]);
+
   return (
     <>
       <div className='flex flex-col gap-1'>

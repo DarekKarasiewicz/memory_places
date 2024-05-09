@@ -8,12 +8,17 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import SearchIcon from 'icons/SearchIcon';
+import RefreshIcon from 'icons/RefreshIcon';
+import { useDispatch } from 'react-redux';
+import { adminDataActions } from 'Redux/adminDataSlice';
 
 function HistoryTable({ data, columns }) {
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
+  const dispatch = useDispatch();
 
   const table = useReactTable({
     data,
@@ -41,11 +46,18 @@ function HistoryTable({ data, columns }) {
         <div className='text-xl font-semibold'>
           {t('admin.content.all_history')} ({rowCount})
         </div>
-        <div className='flex gap-4'>
+        <div className='flex justify-center items-center gap-4'>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className='cursor-pointer relative'
+            onClick={() => dispatch(adminDataActions.updateIsHistoryChanged(true))}
+          >
+            <RefreshIcon className='h-8 w-8' />
+          </motion.div>
           <div className='relative flex items-center shadow-sm'>
-            <SearchIcon className='h-5 w-5 absolute left-2' />
+            <SearchIcon className='h-5 w-5 absolute left-2' color='#000000' />
             <input
-              className='rounded-lg p-2 pl-8 text-black'
+              className='rounded-lg p-2 pl-8 text-black focus:outline-contrastColor'
               type='text'
               placeholder={t('admin.content.search')}
               value={filtering}
