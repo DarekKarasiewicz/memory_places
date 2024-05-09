@@ -20,11 +20,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
           disabled={props.readOnly}
         >
           {props.options.map((option, index) => (
-            <option
-              key={index}
-              value={option.value}
-              data-id={option.id ? option.id : index}
-            >
+            <option key={index} value={option.value} data-id={option.id ? option.id : index}>
               {option.label}
             </option>
           ))}
