@@ -1,11 +1,12 @@
 import AdminTileStat from '../Charts/AdminTileStat';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import UsersTable from '../Tables/UsersTable';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 function UserManagementSection() {
   const [users, setUsers] = useState([]);
@@ -14,8 +15,10 @@ function UserManagementSection() {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const dispatch = useDispatch();
+  const modalData = useSelector(selectAdminData);
+  const { isUsersChanged } = modalData;
 
-  const fetchUserItems = async () => {
+  const fetchUserItems = useCallback(async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
 
@@ -54,16 +57,19 @@ function UserManagementSection() {
         ...statistics,
         ['sumOfMonthUsers']: sumOfCurrentMonthUsers.length,
       }));
+      dispatch(adminDataActions.updateIsUsersChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
-  };
+  });
 
   useEffect(() => {
-    fetchUserItems();
-  }, []);
+    if (isUsersChanged || users.length === 0) {
+      fetchUserItems();
+    }
+  }, [isUsersChanged]);
 
   const usersColumns = [
     {

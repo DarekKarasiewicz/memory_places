@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { confirmationModalActions } from './confirmationModalSlice';
 import axios from 'axios';
+import { adminDataActions } from './adminDataSlice';
 
 const initialState = {
   place_id: null,
   place_name: '',
+  trail_id: null,
+  trail_name: '',
   user_id: null,
   user_name: '',
   isAdminActionsModalOpen: false,
@@ -20,6 +23,12 @@ export const adminActionSlice = createSlice({
     },
     changePlaceName: (state, action) => {
       state.place_name = action.payload;
+    },
+    changeTrailId: (state, action) => {
+      state.trail_id = action.payload;
+    },
+    changeTrailName: (state, action) => {
+      state.trail_name = action.payload;
     },
     changeUserId: (state, action) => {
       state.user_id = action.payload;
@@ -47,6 +56,22 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
   try {
     await axios.delete(`http://localhost:8000/memo_places/places/${place_id}`);
     dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsPlacesChanged(true));
+    dispatch(adminDataActions.updateIsStatisticsChanged(true));
+  } catch (error) {
+    dispatch(confirmationModalActions.changeType('error'));
+  }
+};
+
+export const deleteTrailItem = (trail_id) => async (dispatch) => {
+  dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+
+  dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  try {
+    await axios.delete(`http://localhost:8000/memo_places/path/${trail_id}`);
+    dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsTrailsChanged(true));
+    dispatch(adminDataActions.updateIsStatisticsChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }
@@ -70,8 +95,8 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
     await axios.put(`http://localhost:8000/admin_dashboard/users/pk=${user_id}/`, item, {
       headers: { 'Content-Type': 'application/json' },
     });
-
     dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }
@@ -85,6 +110,7 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
       headers: { 'Content-Type': 'application/json' },
     });
     dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }
@@ -105,6 +131,7 @@ export const blockUser = (user_id) => async (dispatch) => {
     );
 
     dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }
@@ -124,8 +151,8 @@ export const unlockUser = (user_id) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
       },
     );
-
     dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }

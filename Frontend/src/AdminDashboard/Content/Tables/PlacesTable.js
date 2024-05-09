@@ -62,11 +62,11 @@ function PlacesTable({ data, columns }) {
             name={t('admin.common.memo_add')}
             btnBg='blue'
             onClick={() => navigate('/adminDashboard/placeAdd')}
-          ></BaseButton>
+          />
           <div className='relative flex items-center shadow-sm'>
-            <SearchIcon className='h-5 w-5 absolute left-2' />
+            <SearchIcon className='h-5 w-5 absolute left-2' color='#000000' />
             <input
-              className='rounded-lg p-2 pl-8 text-black'
+              className='rounded-lg p-2 pl-8 text-black focus:outline-contrastColor'
               type='text'
               placeholder={t('admin.content.search')}
               value={filtering}

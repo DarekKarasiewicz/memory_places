@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
-import { addPlaceActions } from 'Redux/addPlaceSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTrailActions } from 'Redux/addTrailSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
@@ -22,67 +21,31 @@ import AlertIcon from 'icons/AlertIcon';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
 
-function AdminPlaceActionSection({ action, placeId }) {
-  const addPlaceLocation = useSelector(selectAddPlaceLocation);
+function AdminTrailActionSection({ action, trailId }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [sortOf, setSortOf] = useState([]);
   const [type, setType] = useState([]);
   const [period, setPeriod] = useState([]);
   const nameRef = useRef(null);
   const descRef = useRef(null);
-  const latRef = useRef(null);
-  const lngRef = useRef(null);
   const dateRef = useRef(null);
-  const sortOfRef = useRef(null);
   const typeRef = useRef(null);
   const periodRef = useRef(null);
   const wikiLinkRef = useRef(null);
   const webLinkRef = useRef(null);
-  const [lat, setLat] = useState();
-  const [lng, setLng] = useState();
   const [isValidName, setIsValidName] = useState(null);
   const [isValidDesc, setIsValidDesc] = useState(null);
-  const [isValidLat, setIsValidLat] = useState(null);
-  const [isValidLng, setIsValidLng] = useState(null);
   const [isValidDate, setIsValidDate] = useState(null);
-  const [isValidSortof, setIsValidSortof] = useState(null);
   const [isValidType, setIsValidType] = useState(null);
   const [isValidPeriod, setIsValidPeriod] = useState(null);
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const [toVerification, setToVerification] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(false);
-  const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
+  const [actionTitle, setActionTitle] = useState(t('admin.common.memo_trail_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-
-  const fetchSortOfItems = async () => {
-    try {
-      const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      const sortOfItems = responseSort.data
-        .map((obj) => ({
-          id: obj.id,
-          label: t(`modal.${obj.value}`),
-          value: obj.id,
-          order: obj.order,
-        }))
-        .sort((a, b) => (a.order > b.order ? 1 : -1));
-
-      const idSet = new Set(sortOfItems.map((item) => item.id));
-
-      if (!idSet.has(0)) {
-        setSortOf([{ id: 0, label: t('modal.all'), value: 0 }, ...sortOfItems]);
-      } else {
-        setSortOf(sortOfItems);
-      }
-    } catch (error) {
-      dispatch(notificationModalActions.changeType('alert'));
-      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
-      dispatch(notificationModalActions.changeIsNotificationModalOpen());
-    }
-  };
 
   const fetchTypeItems = async () => {
     try {
@@ -137,28 +100,16 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   useEffect(() => {
-    if (addPlaceLocation.lat || addPlaceLocation.lng) {
-      validateLat(addPlaceLocation.lat);
-      validateLng(addPlaceLocation.lng);
-    }
-    setLat(addPlaceLocation.lat);
-    setLng(addPlaceLocation.lng);
-  }, [addPlaceLocation]);
-
-  useEffect(() => {
     if (action === 'edit' || action === 'view') {
-      const getPlaceItems = async (placeId) => {
+      const getPlaceItems = async (trailId) => {
         try {
           const response = await axios.get(
-            `http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`,
+            `http://127.0.0.1:8000/admin_dashboard/path/pk=${trailId}`,
           );
 
           nameRef.current.value = response.data.place_name;
           descRef.current.value = response.data.description;
-          latRef.current.value = response.data.lat;
-          lngRef.current.value = response.data.lng;
           dateRef.current.value = response.data.found_date;
-          sortOfRef.current.value = response.data.sortof;
           typeRef.current.value = response.data.type;
           periodRef.current.value = response.data.period;
           wikiLinkRef.current.value = response.data.wiki_link;
@@ -166,11 +117,8 @@ function AdminPlaceActionSection({ action, placeId }) {
           setToVerification(response.data.verified === true ? 'false' : 'true');
 
           validateName(nameRef.current.value);
-          validateLat(latRef.current.value);
-          validateLng(lngRef.current.value);
           validateDescription(descRef.current.value);
           validateDate(dateRef.current.value);
-          validateSortof(sortOfRef.current.value);
           validateType(typeRef.current.value);
           validatePeriod(periodRef.current.value);
         } catch (error) {
@@ -181,15 +129,15 @@ function AdminPlaceActionSection({ action, placeId }) {
       };
 
       if (action === 'edit') {
-        setActionTitle(t('admin.common.memo_place_edit'));
+        setActionTitle(t('admin.common.memo_trail_edit'));
       }
 
       if (action === 'view') {
-        setActionTitle(t('admin.common.memo_place_view'));
+        setActionTitle(t('admin.common.memo_trail_view'));
         setIsReadOnly(true);
       }
 
-      getPlaceItems(placeId);
+      getPlaceItems(trailId);
     }
   }, []);
 
@@ -221,16 +169,6 @@ function AdminPlaceActionSection({ action, placeId }) {
     return setIsValidName(nameRegex.test(name));
   };
 
-  const validateLat = (lat) => {
-    const latRegex = /^(-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,})$/;
-    return setIsValidLat(latRegex.test(lat));
-  };
-
-  const validateLng = (lng) => {
-    const lngRegex = /^(-?((1[0-7]|[1-9]?)[0-9]|[0-9])\.{1}\d{1,})$/;
-    return setIsValidLng(lngRegex.test(lng));
-  };
-
   const validateDescription = (desc) => {
     if (desc.length > 0) {
       return setIsValidDesc(true);
@@ -240,13 +178,6 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const validateDate = (date) => {
     return setIsValidDate(isNaN(date));
-  };
-
-  const validateSortof = (sortof) => {
-    if (sortof !== 0) {
-      return setIsValidSortof(true);
-    }
-    return setIsValidSortof(false);
   };
 
   const validateType = (type) => {
@@ -267,10 +198,7 @@ function AdminPlaceActionSection({ action, placeId }) {
     if (
       isValidName === true &&
       isValidDate === true &&
-      isValidLat === true &&
-      isValidLng === true &&
       isValidDesc === true &&
-      isValidSortof === true &&
       isValidType === true &&
       isValidPeriod === true
     ) {
@@ -280,10 +208,6 @@ function AdminPlaceActionSection({ action, placeId }) {
     return false;
   };
 
-  const handleSelectLocationBtn = () => {
-    dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
-  };
-
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
@@ -291,13 +215,10 @@ function AdminPlaceActionSection({ action, placeId }) {
 
       if (action === 'edit') {
         axios
-          .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
+          .put(`http://127.0.0.1:8000/admin_dashboard/path/${trailId}/`, {
             place_name: nameRef.current.value,
             description: descRef.current.value,
             found_date: dateRef.current.value,
-            lat: latRef.current.value,
-            lng: lngRef.current.value,
-            sortof: sortOfRef.current.value,
             type: typeRef.current.value,
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
@@ -307,7 +228,7 @@ function AdminPlaceActionSection({ action, placeId }) {
           .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
-            registerAppChanges('admin.changes_messages.place_edit', user, placeId);
+            registerAppChanges('admin.changes_messages.place_edit', user, trailId);
             navigate('/adminDashboard');
           })
           .catch(() => {
@@ -317,14 +238,11 @@ function AdminPlaceActionSection({ action, placeId }) {
           });
       } else {
         axios
-          .post(`http://127.0.0.1:8000/admin_dashboard/places/`, {
+          .post(`http://127.0.0.1:8000/admin_dashboard/path/`, {
             user: user.user_id,
             place_name: nameRef.current.value,
             description: descRef.current.value,
             found_date: dateRef.current.value,
-            lat: latRef.current.value,
-            lng: lngRef.current.value,
-            sortof: sortOfRef.current.value,
             type: typeRef.current.value,
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
@@ -332,15 +250,13 @@ function AdminPlaceActionSection({ action, placeId }) {
             verified: isValidated,
           })
           .then(() => {
-            dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
-            dispatch(adminDataActions.updateIsPlacesChanged(true));
+            dispatch(adminDataActions.updateIsTrailsChanged(true));
             registerAppChanges('admin.changes_messages.place_add', user, nameRef.current.value);
             navigate('/adminDashboard');
           })
           .catch(() => {
-            dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('error'));
             navigate('/adminDashboard');
@@ -354,7 +270,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   useEffect(() => {
-    fetchSortOfItems();
     fetchTypeItems();
     fetchPeriodItems();
   }, []);
@@ -398,29 +313,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   </div>
                 </div>
                 <div className='flex justify-start items-center gap-4'>
-                  <div className='flex flex-col gap-2 w-1/3'>
-                    <BaseSelect
-                      label={t('common.type_of')}
-                      name={t('common.type_of')}
-                      options={sortOf}
-                      ref={sortOfRef}
-                      onChange={() => {
-                        validateSortof(sortOfRef.current.value);
-                      }}
-                      onBlur={() => validateSortof(sortOfRef.current.value)}
-                      readOnly={isReadOnly}
-                      isValid={isValidSortof}
-                    />
-                    {!isValidSortof ? (
-                      <span className='text-red-500 flex items-center gap-2'>
-                        <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
-                      </span>
-                    ) : (
-                      <span></span>
-                    )}
-                  </div>
-                  <div className='flex flex-col gap-2 w-1/3'>
+                  <div className='flex flex-col gap-2 w-1/2'>
                     <BaseSelect
                       label={t('common.type')}
                       name={t('common.type')}
@@ -442,7 +335,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                       <span></span>
                     )}
                   </div>
-                  <div className='flex flex-col gap-2 w-1/3'>
+                  <div className='flex flex-col gap-2 w-1/2'>
                     <BaseSelect
                       label={t('common.period')}
                       name={t('common.period')}
@@ -469,63 +362,11 @@ function AdminPlaceActionSection({ action, placeId }) {
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
               <p className='text-xl'>{t('admin.common.lat_lng_info')}</p>
-              <div className='flex gap-2'>
-                <div className='w-1/2 flex flex-col gap-2'>
-                  <BaseInput
-                    type='number'
-                    placeholder={t('common.latitude')}
-                    name='lat'
-                    label={t('common.latitude')}
-                    ref={latRef}
-                    value={lat}
-                    isValid={isValidLat}
-                    onChange={() => validateLat(latRef.current.value)}
-                    onBlur={() => validateLat(latRef.current.value)}
-                    readOnly={isReadOnly}
-                  />
-                  <div className='flex px-2'>
-                    {!isValidLat ? (
-                      <span className='text-red-500 flex items-center gap-2'>
-                        <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.correct_info_data')}</span>
-                      </span>
-                    ) : (
-                      <span></span>
-                    )}
-                  </div>
-                </div>
-                <div className='w-1/2 flex flex-col gap-2'>
-                  <BaseInput
-                    type='number'
-                    placeholder={t('common.longitude')}
-                    name='lng'
-                    label={t('common.longitude')}
-                    ref={lngRef}
-                    value={lng}
-                    isValid={isValidLng}
-                    onChange={() => validateLng(lngRef.current.value)}
-                    onBlur={() => validateLng(lngRef.current.value)}
-                    readOnly={isReadOnly}
-                  />
-                  <div className='flex px-2'>
-                    {!isValidLng ? (
-                      <span className='text-red-500 flex items-center gap-2'>
-                        <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.correct_info_data')}</span>
-                      </span>
-                    ) : (
-                      <span></span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <p className='text-xl'>{t('admin.common.lat_lng_info2')}</p>
               <BaseButton
                 breakWidth={true}
                 className='w-fit'
                 name={t('common.location_select')}
                 btnBg='blue'
-                onClick={handleSelectLocationBtn}
                 disabled={isReadOnly}
               />
             </div>
@@ -640,4 +481,4 @@ function AdminPlaceActionSection({ action, placeId }) {
   );
 }
 
-export default AdminPlaceActionSection;
+export default AdminTrailActionSection;

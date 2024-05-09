@@ -363,6 +363,7 @@ function FormModal(props) {
                 dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
               }}
               onChange={() => {
+                dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
                 dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
               }}
               isValid={formValidationActions.isValidSortof}
@@ -402,6 +403,7 @@ function FormModal(props) {
                 dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
               }}
               onChange={() => {
+                dispatch(addPlaceActions.changePeriod(periodRef.current.value));
                 dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
               }}
               isValid={formValidation.isValidPeriod}

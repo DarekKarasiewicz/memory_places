@@ -30,6 +30,11 @@ function AdminMenu() {
       section: 'PlaceManagementSection',
     },
     {
+      icon: 'trails',
+      name: t('admin.common.trail_manage_title'),
+      section: 'TrailManagementSection',
+    },
+    {
       icon: 'varChanges',
       name: t('admin.common.var_manage_title'),
       section: 'PlaceVariableManagementSection',

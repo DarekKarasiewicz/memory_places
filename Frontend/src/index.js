@@ -14,6 +14,7 @@ import PageNotFound from './ErrorPage/PageNotFound.jsx';
 import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
 import AdminDashboard from './AdminDashboard/AdminDashboard.js';
 import AdminPlaceAction from './AdminDashboard/AdminPlaceAction.js';
+import AdminTrailAction from 'AdminDashboard/AdminTrailAction.js';
 import { ThemeProvider } from './ThemeSwitcher/ThemeContext.js';
 import { useCookies } from 'react-cookie';
 
@@ -75,6 +76,39 @@ export default function AppUrls() {
               role={role}
               roles={['admin', 'master']}
               element={<AdminPlaceAction action='view' />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/trailAdd'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/trailAdd'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminTrailAction />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/trailEdit/:id'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/trailEdit/:id'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminTrailAction action='edit' />}
+            />
+          }
+        />
+        <Route
+          path='/adminDashboard/trailView/:id'
+          element={
+            <ProtectedRoute
+              path='/adminDashboard/trailView/:id'
+              role={role}
+              roles={['admin', 'master']}
+              element={<AdminTrailAction action='view' />}
             />
           }
         />

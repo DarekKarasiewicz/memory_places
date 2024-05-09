@@ -279,7 +279,7 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
               </>
             )}
             <motion.div
-              className='flex justify-center hover:text-contrastColor items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer'
+              className='flex justify-center hover:text-contrastColor items-center shadow rounded-lg border-2 w-3/4 p-2 gap-1 cursor-pointer mt-4'
               onClick={() => handleAddingElement()}
               whileHover={{ scale: 1.05 }}
             >

@@ -2,22 +2,25 @@ import AdminTileStat from '../Charts/AdminTileStat';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import PlaceVerificationTable from '../Tables/PlaceVerificationTable';
+import TrailTable from '../Tables/TrailTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
-function PlaceVerificationSection() {
+function TrailManagementSection() {
   const { t } = useTranslation();
-  const [places, setPlaces] = useState([]);
+  const [trails, setTrails] = useState([]);
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
-  const { isVerificationsChanged } = modalData;
+  const { isTrailsChanged } = modalData;
 
-  const fetchVerificationItems = async () => {
+  const fetchTrailItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/not_verified_places`);
+      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
+      console.log(response.data);
+
+      // const modifiedTrailsData = response.data.filter((item) => item.verified === true);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -29,25 +32,35 @@ function PlaceVerificationSection() {
         return currentDate.getMonth();
       };
 
-      const sumOfCurrentMonthPlaces = response.data.filter(
-        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
+      const sumOfCurrentMonthTrails = response.data.filter(
+        (item) => getItemDate(item.found_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthPlaces = response.data.filter(
-        (item) => getItemDate(item.creation_date) === previousMonthDate,
+      const sumOfPreviousMonthTrails = response.data.filter(
+        (item) => getItemDate(item.found_date) === previousMonthDate,
       );
 
-      setPlaces(response.data);
-      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: response.data.length }));
+      // const sumOfCurrentMonthTrails = modifiedTrailsData.filter(
+      //   (item) => getItemDate(item.found_date) === new Date().getMonth(),
+      // );
+
+      // const sumOfPreviousMonthTrails = modifiedTrailsData.filter(
+      //   (item) => getItemDate(item.found_date) === previousMonthDate,
+      // );
+
+      // setTrails(modifiedTrailsData);
+      setTrails(response.data);
+      // setStatistics((statistics) => ({ ...statistics, ['allTrails']: modifiedPlaceData.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allTrails']: response.data.length }));
       setStatistics((statistics) => ({
         ...statistics,
-        ['sumOfCurrentMonthPlaces']: sumOfCurrentMonthPlaces.length,
+        ['previousMonthTrails']: sumOfPreviousMonthTrails.length,
       }));
       setStatistics((statistics) => ({
         ...statistics,
-        ['sumOfPreviousMonthPlaces']: sumOfPreviousMonthPlaces.length,
+        ['currentMonthTrails']: sumOfCurrentMonthTrails.length,
       }));
-      dispatch(adminDataActions.updateIsVerificationsChanged(false));
+      dispatch(adminDataActions.updateIsTrailsChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -56,30 +69,19 @@ function PlaceVerificationSection() {
   };
 
   useEffect(() => {
-    if (isVerificationsChanged || places.length === 0) {
-      fetchVerificationItems();
+    if (isTrailsChanged || trails.length === 0) {
+      fetchTrailItems();
     }
-  }, [isVerificationsChanged]);
+  }, [isTrailsChanged]);
 
-  const placeVerificationColumns = [
+  const trailsColumns = [
     {
       header: 'ID',
       accessorKey: 'id',
     },
     {
       header: t('admin.content.name'),
-      accessorKey: 'place_name',
-    },
-    {
-      header: t('admin.content.sortof'),
-      accessorKey: 'sortof_value',
-      cell: (props) => {
-        if (props.getValue()) {
-          return <span>{t(`modal.${props.getValue()}`)}</span>;
-        } else {
-          return <span>{t('modal.no_translation_given')}</span>;
-        }
-      },
+      accessorKey: 'trail_name',
     },
     {
       header: t('admin.content.type'),
@@ -116,34 +118,34 @@ function PlaceVerificationSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.verification_title')}</span>
-        <span className='text-md'>{t('admin.content.verification_info')}</span>
+        <span className='text-3xl'>{t('admin.common.trail_manage_title')}</span>
+        <span className='text-md'>{t('admin.content.all_trails_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>
           <AdminTileStat
-            title={t('admin.content.all_verification')}
+            title={t('admin.content.all_trails')}
             value={statistics.allPlaces}
-            icon='clipboardCheck'
+            icon='places'
           />
           <AdminTileStat
-            title={t('admin.content.previous_verified')}
-            value={statistics.sumOfCurrentMonthPlaces}
-            icon='flagCheck'
+            title={t('admin.content.previous_trails')}
+            value={statistics.previousMonthPlaces}
+            icon='mapPin'
           />
           <AdminTileStat
-            title={t('admin.content.current_verified')}
-            value={statistics.sumOfPreviousMonthPlaces}
-            icon='flagCheck'
+            title={t('admin.content.current_trails')}
+            value={statistics.currentMonthPlaces}
+            icon='mapPin'
           />
         </div>
         <hr />
         <div className='w-full flex flex-col gap-3'>
-          <PlaceVerificationTable data={places} columns={placeVerificationColumns} />
+          <TrailTable data={trails} columns={trailsColumns} />
         </div>
       </div>
     </>
   );
 }
 
-export default PlaceVerificationSection;
+export default TrailManagementSection;
