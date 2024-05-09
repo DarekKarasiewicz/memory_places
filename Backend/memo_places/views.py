@@ -231,21 +231,30 @@ class Path_view(viewsets.ModelViewSet):
         return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
-        creator = get_object_or_404(User, id=request.data["user"])
-        type = get_object_or_404(Type, id=request.data["type"])
-        period = get_object_or_404(Period, id=request.data["period"])
+        data = request.data
+        creator = get_object_or_404(User, id=data["user"])
+        type = get_object_or_404(Type, id=data["type"])
+        period = get_object_or_404(Period, id=data["period"])
 
-        new_place = self.model(
+        new_path = self.model(
             user=creator,
-            path_name=request.data["path_name"],
-            description=request.data["description"],
-            coordinates=request.data["coordinates"],
+            path_name=data["path_name"],
+            description=data["description"],
+            coordinates=data["coordinates"],
             type=type,
             period=period,
         )
-        new_place.save()
+        for key in data.keys():
+            match key:
+                case "wiki_link":
+                    new_path.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    new_path.topic_link = data["topic_link"]
+                case _:
+                    pass
+        new_path.save()
 
-        serializer = self.serializer_class(new_place)
+        serializer = self.serializer_class(new_path)
 
         return Response(serializer.data)
 
