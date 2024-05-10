@@ -89,7 +89,7 @@ class Short_Places_serailizer(serializers.ModelSerializer):
         fields = (
             "id",
             "place_name",
-            "found_date",
+            "verified_date",
             "lng",
             "lat",
             "user",
