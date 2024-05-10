@@ -23,11 +23,15 @@ from admin_dashboard.serializers import (
     Sortof_serializer,
     Period_serializer,
 )
+from dotenv import load_dotenv
 
+import os
 import re
 import secrets
 import string
 
+
+load_dotenv()
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -383,18 +387,18 @@ class User_view(viewsets.ModelViewSet):
             password=request.data["password"],
         )
 
-        new_user.save()
+        # new_user.save()
         serializer = self.serializer_class(new_user)
 
         html_message = render_to_string(
             'verification_mail.html',
             {"link": f"http://localhost:3000/userVerification/{serializer['id'].value}"}
         )
-
+        
         send_mail(
             subject="Verifictation mail",
             message="",
-            from_email="info@miejscapamieci.org.pl",
+            from_email=os.getenv('EMAIL_HOST_USER'),
             recipient_list=[serializer["email"].value],
             fail_silently=False,
             html_message=html_message)
@@ -483,7 +487,7 @@ class Contact_us(viewsets.ModelViewSet):
         send_mail(
             subject="Thanks for contact",
             message="",
-            from_email="info@miejscapamieci.org.pl",
+            from_email=os.getenv('EMAIL_HOST_USER'),
             recipient_list=[serializer["email"].value],
             fail_silently=False,
             html_message=html_message)
@@ -535,7 +539,7 @@ class Reset_password(viewsets.ModelViewSet):
         send_mail(
             subject="Reset password",
             message="",
-            from_email="info@miejscapamieci.org.pl",
+            from_email=os.getenv('EMAIL_HOST_USER'),
             recipient_list=[user.email],
             fail_silently=False,
             html_message=html_message)
