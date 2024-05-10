@@ -22,7 +22,9 @@ from .serializers import (
     Sortof_serializer,
 )
 from memo_places.models import Place, User, Question, Change, Sortof, Type, Period, Path, PlaceImage, PathImage
+from dotenv import load_dotenv
 
+import os
 import re
 import secrets
 import string
@@ -404,7 +406,7 @@ class User_view(viewsets.ModelViewSet):
         send_mail(
             subject="Verifictation mail",
             message="",
-            from_email="info@miejscapamieci.org.pl",
+            from_email=os.getenv('EMAIL_HOST_USER'),
             recipient_list=[serializer["email"].value],
             fail_silently=False,
             html_message=html_message)
@@ -522,18 +524,15 @@ class Questions_view(viewsets.ModelViewSet):
         )
         new_question.save()
 
+        html_message = render_to_string('contact.html')
+
         send_mail(
-            "Thanks for contact"
-            # Rethink about it
-            ,
-            "Thanks for your ....."
-            # Env not in views
-            ,
-            # Feature in .env
-            "info@miejscapamieci.org.pl",
-            [request.data["email"]],
+            subject="Thanks for contact",
+            message="",
+            from_email=os.getenv('EMAIL_HOST_USER'),
+            recipient_list=[serializer["email"].value],
             fail_silently=False,
-        )
+            html_message=html_message)
 
         serializer = self.serializer_class(new_question)
         return Response(serializer.data)

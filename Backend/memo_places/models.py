@@ -132,7 +132,7 @@ class Place(models.Model):
     wiki_link = models.CharField(max_length=64, default=None, null=True)
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
-    verified_date = models.DateField()
+    verified_date = models.DateField(default=None, null=True)
     creation_date = models.DateField(default=None, null=True)
 
 class PlaceImage(models.Model):
@@ -150,7 +150,7 @@ class Path(models.Model):
     wiki_link = models.CharField(max_length=64, default=None, null=True)
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
-    verified_date = models.DateField(default=None)
+    verified_date = models.DateField(default=None, null=True)
     creation_date = models.DateField(default=None, null=True)
 
 class PathImage(models.Model):
