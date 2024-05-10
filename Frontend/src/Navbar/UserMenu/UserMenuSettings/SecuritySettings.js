@@ -4,6 +4,9 @@ import BaseButton from 'Base/BaseButton';
 import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import ShieldLockIcon from 'icons/ShieldLockIcon';
+import AlertIcon from 'icons/AlertIcon';
+import { useDispatch } from 'react-redux';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 function SecuritySettings() {
   const [isValidPassword, setIsValidPassword] = useState(null);
@@ -12,20 +15,36 @@ function SecuritySettings() {
   const confirmPasswordRef = useRef(null);
   const { t } = useTranslation();
 
-  const handleBlurPassword = () => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const handlePasswordChange = () => {
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
     setIsValidPassword(passwordRegex.test(passwordRef.current.value));
   };
 
-  const handleBlurConfirmPassword = () => {
+  const handleConfirmPasswordChange = () => {
     setIsValidConfirmPassword(confirmPasswordRef.current.value === passwordRef.current.value);
   };
 
   const handleSumbit = (e) => {
     e.preventDefault();
+
+    if (isValidPassword && isValidConfirmPassword) {
+      const newData = { password: passwordRef.current.value };
+      // axios
+      //   .put(`http://localhost:8000/memo_places/users/pk=${user.user_id}/`, newData, {
+      //     headers: { 'Content-Type': 'application/json' },
+      //   })
+      //   .then(() => {
+      //     //TO DO
+      //     //When refresh token function will be avaiable add it here + when eamil will be changed send verification mail
+      //     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+      //     dispatch(confirmationModalActions.changeType('success'));
+      //   })
+      //   .catch(() => {
+      //     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+      //     dispatch(confirmationModalActions.changeType('error'));
+      //   });
+    }
     // Before axios request should check if password is not the same as previous one
-    // HERE will be axios request to change data
-    // console.log('account password changed!');
   };
 
   const parentItem = {
@@ -46,34 +65,50 @@ function SecuritySettings() {
         <ShieldLockIcon />
         <span>{t('user.security')}</span>
       </div>
-      <div className='flex flex-col items-center py-4 gap-4'>
-        <BaseInput
-          type='password'
-          label={t('common.pass')}
-          name='password'
-          placeholder={t('log_reg_form.your_password')}
-          ref={passwordRef}
-          onBlur={handleBlurPassword}
-        />
-        {isValidPassword === false && (
-          <ul role='list' className='text-red-500 text-xs'>
-            {t('log_reg_form.pass_title')}
-            <li>{t('log_reg_form.pass_info1')}</li>
-            <li>{t('log_reg_form.pass_info2')}</li>
-            <li>{t('log_reg_form.pass_info3')}</li>
-          </ul>
-        )}
-        <BaseInput
-          type='password'
-          label={t('log_reg_form.confirm_pass')}
-          name='confPassword'
-          placeholder={t('log_reg_form.confirm_pass')}
-          ref={confirmPasswordRef}
-          onBlur={handleBlurConfirmPassword}
-        />
-        {isValidConfirmPassword === false && (
-          <p className='text-red-500 text-xs'>{t('log_reg_form.pass_similar')}</p>
-        )}
+      <div className='flex flex-col items-center py-4 gap-4 px-4'>
+        <div className='w-full flex flex-col gap-2'>
+          <BaseInput
+            type='password'
+            label={t('common.pass')}
+            name='password'
+            placeholder={t('log_reg_form.your_password')}
+            isValid={isValidPassword}
+            ref={passwordRef}
+            onBlur={handlePasswordChange}
+            onChange={handlePasswordChange}
+          />
+          {isValidPassword === false && (
+            <div className='text-red-500 flex items-start gap-2'>
+              <AlertIcon className='h-6 w-6 my-1' color='#ef4444' />
+              <div>
+                <span className='text-lg'>{t('log_reg_form.pass_title')}</span>
+                <ul className='text-red-500 text-base leading-5 list-disc ml-5'>
+                  <li>{t('log_reg_form.pass_info1')}</li>
+                  <li>{t('log_reg_form.pass_info2')}</li>
+                  <li>{t('log_reg_form.pass_info3')}</li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='w-full flex flex-col gap-2'>
+          <BaseInput
+            type='password'
+            label={t('log_reg_form.confirm_pass')}
+            name='confPassword'
+            placeholder={t('log_reg_form.confirm_pass')}
+            isValid={isValidConfirmPassword}
+            ref={confirmPasswordRef}
+            onBlur={handleConfirmPasswordChange}
+            onChange={handleConfirmPasswordChange}
+          />
+          {isValidConfirmPassword === false && (
+            <span className='text-red-500 flex items-center gap-2'>
+              <AlertIcon className='h-6 w-6' color='#ef4444' />
+              <p className='text-lg'>{t('log_reg_form.pass_similar')}</p>
+            </span>
+          )}
+        </div>
         {isValidPassword && isValidConfirmPassword ? (
           <BaseButton
             name={t('common.confirm')}

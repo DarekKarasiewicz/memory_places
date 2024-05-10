@@ -5,7 +5,6 @@ import AccountSettings from 'Navbar/UserMenu/UserMenuSettings/AccountSettings';
 import SecuritySettings from 'Navbar/UserMenu/UserMenuSettings/SecuritySettings';
 import RoleSettings from 'Navbar/UserMenu/UserMenuSettings/RoleSettings';
 import NotificiationsSettings from 'Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
-import LanguageSettings from 'Navbar/UserMenu/UserMenuSettings/LanguageSettings';
 import PreferencesSettings from 'Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
 import { useTranslation } from 'react-i18next';
 import { modalsActions } from 'Redux/modalsSlice';
@@ -15,7 +14,6 @@ import AccountIcon from 'icons/AccountIcon';
 import ShieldLockIcon from 'icons/ShieldLockIcon';
 import UserRoleIcon from 'icons/UserRoleIcon';
 import NotificationIcon from 'icons/NotificationIcon';
-import LanguageIcon from 'icons/LanguageIcon';
 import PreferencesIcon from 'icons/PreferencesIcon';
 
 function UserMenuSettingsModal(props) {
@@ -44,12 +42,9 @@ function UserMenuSettingsModal(props) {
     case 'role':
       contentComponent = <RoleSettings />;
       break;
-    case 'notificiations':
-      contentComponent = <NotificiationsSettings />;
-      break;
-    case 'language':
-      contentComponent = <LanguageSettings />;
-      break;
+    // case 'notificiations':
+    //   contentComponent = <NotificiationsSettings />;
+    //   break;
     case 'preferences':
       contentComponent = <PreferencesSettings />;
       break;
@@ -112,7 +107,7 @@ function UserMenuSettingsModal(props) {
               {t('user.role')}
             </motion.div>
             <div className='text-2xl'>{t('user.system')}</div>
-            <motion.div
+            {/* <motion.div
               className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
                 currentOption === 'notificiations'
                   ? 'text-contrastColor border-l-2 border-contrastColor'
@@ -123,19 +118,7 @@ function UserMenuSettingsModal(props) {
             >
               <NotificationIcon className='h-6 w-6' />
               {t('user.notifications')}
-            </motion.div>
-            <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
-                currentOption === 'language'
-                  ? 'text-contrastColor border-l-2 border-contrastColor'
-                  : ''
-              }`}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => handleCurrentOption('language')}
-            >
-              <LanguageIcon className='h-6 w-6' />
-              {t('user.language')}
-            </motion.div>
+            </motion.div> */}
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
                 currentOption === 'preferences'

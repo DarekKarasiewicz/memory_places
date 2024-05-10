@@ -1,42 +1,32 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BaseButton from 'Base/BaseButton';
 import BaseSelect from 'Base/BaseSelect';
 import { useTranslation } from 'react-i18next';
 import PreferencesIcon from 'icons/PreferencesIcon';
+import i18n from 'i18n';
+import { useTheme } from 'ThemeSwitcher/ThemeContext';
 
 function PreferencesSettings() {
-  const [selectedFontOption, setSelectedFontOption] = useState('');
   const [selectedFontSizeOption, setSelectedFontSizeOption] = useState('');
-  const [selectedAppThemeOption, setSelectedAppThemeOption] = useState('');
+  const languageRef = useRef();
+  const themeRef = useRef();
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
 
-  const handleSelectFontChange = (value) => {
-    setSelectedFontOption(value);
-  };
+  useEffect(() => {
+    languageRef.current.value = i18n.language;
+    themeRef.current.value = theme;
+  }, []);
 
   const handleSelectFontSizeChange = (value) => {
     setSelectedFontSizeOption(value);
   };
 
-  const handleSelectAppThemeChange = (value) => {
-    setSelectedAppThemeOption(value);
-  };
-
-  const font_options = [
-    { label: 'Arial', value: 'arial' },
-    { label: 'Calibri', value: 'calibri' },
-    { label: 'Tahoma', value: 'tahoma' },
-    { label: 'Times New Roman', value: 'times_new_roman' },
-    { label: 'Verdana', value: 'verdana' },
-  ];
-  {
-    /* Add maybe options for specific numbers like 12px, 14px, 16px, etc ... */
-  }
-  const font_size_options = [
-    { label: t('user.font1'), value: 'big' },
-    { label: t('user.font2'), value: 'medium' },
-    { label: t('user.font3'), value: 'small' },
+  const lang_options = [
+    { label: t('user.pl'), value: 'pl' },
+    { label: t('user.en'), value: 'en' },
+    { label: t('user.de'), value: 'de' },
+    { label: t('user.ru'), value: 'ru' },
   ];
 
   {
@@ -45,9 +35,16 @@ function PreferencesSettings() {
   const app_theme_options = [
     { label: t('user.color1'), value: 'light' },
     { label: t('user.color2'), value: 'dark' },
-    { label: t('user.color3'), value: 'contrast1' },
-    { label: t('user.color4'), value: 'contrast2' },
-    { label: t('user.color5'), value: 'contrast3' },
+    // { label: t('user.color3'), value: 'contrast1' },
+  ];
+
+  {
+    /* Add maybe options for specific numbers like 12px, 14px, 16px, etc ... */
+  }
+  const font_size_options = [
+    { label: t('user.font1'), value: 'big' },
+    { label: t('user.font2'), value: 'medium' },
+    { label: t('user.font3'), value: 'small' },
   ];
 
   const parentItem = {
@@ -69,30 +66,29 @@ function PreferencesSettings() {
         <span>{t('user.preferences')}</span>
       </div>
       <div className='flex flex-col items-center py-4 gap-4'>
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center gap-4 w-1/2'>
           <BaseSelect
-            label={t('user.font')}
-            name='NotifyLevel'
-            value={selectedFontOption}
-            options={font_options}
-            onChange={handleSelectFontChange}
+            label={t('user.app_language')}
+            name='AppLanguage'
+            ref={languageRef}
+            options={lang_options}
+            onChange={() => i18n.changeLanguage(languageRef.current.value)}
+          />
+          <BaseSelect
+            label={t('user.app_theme')}
+            name='ThemeSwitcher'
+            ref={themeRef}
+            options={app_theme_options}
+            onChange={() => toggleTheme(themeRef.current.value)}
           />
           <BaseSelect
             label={t('user.font_size')}
-            name='NotifyLevel'
+            name='FontSize'
             value={selectedFontSizeOption}
             options={font_size_options}
             onChange={handleSelectFontSizeChange}
           />
-          <BaseSelect
-            label={t('user.app_theme')}
-            name='NotifyLevel'
-            value={selectedAppThemeOption}
-            options={app_theme_options}
-            onChange={handleSelectAppThemeChange}
-          />
         </div>
-        <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-4' />
       </div>
     </motion.div>
   );

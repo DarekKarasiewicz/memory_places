@@ -91,7 +91,7 @@ const AdvancedInfoBox = (props) => {
           </div>
         </div>
         <div className='flex justify-center pt-3 mt-1'>
-          <BaseButton name={t('common.close')} btnBg='red' onClick={props.closeInfo}></BaseButton>
+          <BaseButton name={t('common.close')} btnBg='red' onClick={props.closeInfo} />
         </div>
       </BaseModal>
     </>

@@ -11,6 +11,7 @@ const initialState = {
   isContactFormOpen: false,
   isTrailFormOpen: false,
   isTrailUpdateFormOpen: false,
+  isFoundationInfoOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -46,6 +47,9 @@ export const modalsSlice = createSlice({
     },
     changeIsTrailUpdateFormOpen: (state) => {
       state.isTrailUpdateFormOpen = !state.isTrailUpdateFormOpen;
+    },
+    changeIsFoundationInfoOpen: (state) => {
+      state.isFoundationInfoOpen = !state.isFoundationInfoOpen;
     },
   },
 });

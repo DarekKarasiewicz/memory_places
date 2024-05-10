@@ -34,12 +34,12 @@ function RoleSettings() {
         <span>{t('user.role')}</span>
       </div>
       <div className='flex flex-col items-center py-4 gap-4'>
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center text-2xl'>
           {t('user.current_role')}
           <span className='capitalize font-medium'>{currentRole}</span>
         </div>
         {!user.admin && (
-          <span className='text-center italic text-lg'>{t('user.promo_role_info')}</span>
+          <span className='text-center italic text-xl'>{t('user.promo_role_info')}</span>
         )}
       </div>
     </motion.div>

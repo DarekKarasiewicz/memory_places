@@ -60,7 +60,8 @@
         "place_delete_warning": "Czy na pewno chcesz usunąć to miejsce?",
         "trail_change_warning": "Twój obecny szlak zostanie zastąpiony nowym. Czy na pewno chcesz to zrobić?",
         "detailed_info": "Szczegółowe informacje",
-        "no_image_error": "Brak zdjęcia"
+        "no_image_error": "Brak zdjęcia",
+        "foundation_info": "utworzona w 2024 roku, wraz we współpracy z zewnętrznym zespołem deweloperskim w skład, którego wchodzili (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) wytworzyła zintegrowany system zawierający aplikację internetową oraz mobilną, mającą na celu proste i intuicyjne upamiętnianie powoli zanikających obiektów i tras historycznych. Dzięki tej wspólnej platformie pasjonaci historii, podróżnicy czy po prostu osoby poszukujące wiedzy historycznej razem przyczynią się do dokumentowania i zachowania dziedzictwa kulturowego."
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -111,6 +112,7 @@
         "world_war_II": "II Wojna Światowa (1939 – 1945)",
         "stalinist_period": "Okres Stalinowski (1945 – 1953)",
         "filled_box_error": "Wszystkie pole muszą być uzupełnione",
+        "data_not_changed": "Żadne dane nie zostały zmienione",
 
         "okresstalinowski": "Okres Stalinowski (1945 – 1953)",
         "istniejace": "Istniejące",

@@ -33,11 +33,7 @@ function FAQ(props) {
             ))}
           </div>
           <div className='flex justify-center gap-2'>
-            <BaseButton
-              name={t('common.close')}
-              btnBg='red'
-              onClick={props.closeModal}
-            ></BaseButton>
+            <BaseButton name={t('common.close')} btnBg='red' onClick={props.closeModal} />
           </div>
         </div>
       </BaseModal>
