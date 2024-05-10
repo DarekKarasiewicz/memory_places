@@ -20,8 +20,8 @@ function CookiesInfo(props) {
             </span>
           </div>
           <div className='flex justify-center gap-2 mb-3'>
-            <BaseButton name='Required only' btnBg='blue' onClick={props.closeModal}></BaseButton>
-            <BaseButton name='Accept all' btnBg='blue' onClick={props.closeModal}></BaseButton>
+            <BaseButton name='Required only' btnBg='blue' onClick={props.closeModal} />
+            <BaseButton name='Accept all' btnBg='blue' onClick={props.closeModal} />
           </div>
           <div className='flex justify-center'>
             <a href='#' className='font-medium text-blue-600 dark:text-blue-500 hover:underline'>

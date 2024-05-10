@@ -215,7 +215,7 @@ const GoogleMap = ({ adminVersion }) => {
                     type='submit'
                     name={t('common.confirm')}
                     btnBg='blue'
-                  ></BaseButton>
+                  />
                 </div>
               </InfoWindow>
             )}

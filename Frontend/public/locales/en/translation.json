@@ -60,7 +60,8 @@
         "place_delete_warning": "Are you sure you want to delete this place?",
         "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?",
         "detailed_info": "Detailed information",
-        "no_image_error": "No image"
+        "no_image_error": "No image",
+        "foundation_info": "established in 2024, together with the cooperation of an external development team consisting of. included (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) produced an an integrated system including a web and mobile application aimed at simple and intuitive commemoration of slowly disappearing historical objects and routes. Thanks to this common platform, history enthusiasts, travelers or simply people seeking historical knowledge will together contribute to documenting and preserving cultural heritage."
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -111,6 +112,7 @@
         "world_war_II": "World War II (1939-1945)",
         "stalinist_period": "Stalinist period (1945-1953)",
         "filled_box_error": "All boxes need to be filled",
+        "data_not_changed": "No data has been changed",
 
         "okresstalinowski": "Stalinist period (1945-1953)",
         "istniejace": "Existing",

@@ -97,7 +97,7 @@ function AdminModal({ closeModal }) {
             </div>
           )}
           <div className='flex justify-center gap-8'>
-            <BaseButton name={t('common.cancel')} btnBg='red' onClick={closeModal}></BaseButton>
+            <BaseButton name={t('common.cancel')} btnBg='red' onClick={closeModal} />
             {current_action === 'place_delete' && (
               <BaseButton
                 name={t('common.confirm')}
@@ -106,7 +106,7 @@ function AdminModal({ closeModal }) {
                   dispatch(deletePlaceItem(place_id));
                   registerAppChanges('admin.changes_messages.place_delete', cookies.user, place_id);
                 }}
-              ></BaseButton>
+              />
             )}
             {current_action === 'user_block' && (
               <BaseButton
@@ -116,7 +116,7 @@ function AdminModal({ closeModal }) {
                   dispatch(blockUser(user_id));
                   registerAppChanges('admin.changes_messages.blocked', cookies.user, user_id);
                 }}
-              ></BaseButton>
+              />
             )}
             {current_action === 'user_role' && (
               <BaseButton
@@ -126,7 +126,7 @@ function AdminModal({ closeModal }) {
                   dispatch(changeUserRole(user_id, roleRef.current.value));
                   registerAppChanges('admin.changes_messages.user_role', cookies.user, user_id);
                 }}
-              ></BaseButton>
+              />
             )}
             {current_action === 'user_pass_reset' && (
               <BaseButton
@@ -136,7 +136,7 @@ function AdminModal({ closeModal }) {
                   dispatch(resetUserPassword(user_id));
                   registerAppChanges('admin.changes_messages.reset_pass', cookies.user, user_id);
                 }}
-              ></BaseButton>
+              />
             )}
             {current_action === 'user_unlock' && (
               <BaseButton
@@ -146,7 +146,7 @@ function AdminModal({ closeModal }) {
                   dispatch(unlockUser(user_id));
                   registerAppChanges('admin.changes_messages.unlocked', cookies.user, user_id);
                 }}
-              ></BaseButton>
+              />
             )}
           </div>
         </div>

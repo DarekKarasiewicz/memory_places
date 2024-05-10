@@ -191,7 +191,7 @@ function PlaceVariableManagementSection() {
           name={t('admin.content.save_changes')}
           btnBg='blue'
           onClick={() => saveAllChanges()}
-        ></BaseButton>
+        />
       </div>
     </>
   );

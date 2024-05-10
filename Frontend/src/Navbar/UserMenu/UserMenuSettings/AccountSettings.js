@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useCookies } from 'react-cookie';
 import BaseButton from 'Base/BaseButton';
@@ -6,61 +7,86 @@ import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import UserIcon from 'icons/UserIcon';
 import AccountIcon from 'icons/AccountIcon';
+import AlertIcon from 'icons/AlertIcon';
+import { useDispatch } from 'react-redux';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 function AccountSettings() {
-  const [isValidName, setIsValidName] = useState(null);
-  const [isValidSurname, setIsValidSurname] = useState(null);
+  const [isValidUsername, setIsValidUsername] = useState(null);
   const [isValidEmail, setIsValidEmail] = useState(null);
   const [cookies] = useCookies(['user']);
-  const nameRef = useRef(null);
-  const surnameRef = useRef(null);
+  const usernameRef = useRef(null);
   const emailRef = useRef(null);
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
   const user = cookies.user;
 
   useEffect(() => {
     if (user) {
-      if (nameRef.current) nameRef.current.value = user.username;
-      if (surnameRef.current) surnameRef.current.value = user.username;
+      if (usernameRef.current) usernameRef.current.value = user.username;
       if (emailRef.current) emailRef.current.value = user.email;
     }
   }, []);
 
-  const handleBlurName = () => {
-    const nameRegex = /^[A-Za-z]+$/;
-    setIsValidName(nameRegex.test(nameRef.current.value));
+  const handleUserNameChange = () => {
+    setIsValidUsername(usernameRef.current.value.length > 0);
   };
 
-  const handleBlurSurnName = () => {
-    const surnameRegex = /^[A-Za-z]+$/;
-    setIsValidSurname(surnameRegex.test(surnameRef.current.value));
-  };
-
-  const handleBlurEmail = () => {
+  const handleEmailChange = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(emailRef.current.value));
   };
 
-  const checkIsNotSameData = () => {
-    if (
-      user.username === nameRef.current.value &&
-      user.username === surnameRef.current.value &&
-      user.email === emailRef.current.value
-    ) {
-      return true;
+  const checkIsUsernameChanged = () => {
+    const newUsername = usernameRef.current.value;
+    if (user.username !== newUsername) {
+      return newUsername;
     } else {
-      return false;
+      return null;
     }
+  };
+
+  const checkIsEmailChanged = () => {
+    const newEmail = emailRef.current.value;
+    if (user.email !== newEmail) {
+      return newEmail;
+    } else {
+      return null;
+    }
+  };
+
+  const checkIsDataChanged = () => {
+    return checkIsEmailChanged() !== null || checkIsUsernameChanged() !== null;
   };
 
   const handleSumbit = (e) => {
     e.preventDefault();
-    if (checkIsNotSameData() === false) {
-      {
-        /*TODO HERE will be axios request to change data */
+    if (checkIsDataChanged()) {
+      const changedEmail = checkIsEmailChanged();
+      const changedUsername = checkIsUsernameChanged();
+
+      const newData = {};
+      if (changedEmail !== null) {
+        newData.email = changedEmail;
       }
-      // console.log('account data changed!');
+      if (changedUsername !== null) {
+        newData.username = changedUsername;
+      }
+
+      axios
+        .put(`http://localhost:8000/memo_places/users/pk=${user.user_id}/`, newData, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(() => {
+          //TO DO
+          //When refresh token function will be avaiable add it here + when eamil will be changed send verification mail
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('success'));
+        })
+        .catch(() => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('error'));
+        });
     }
   };
 
@@ -82,52 +108,58 @@ function AccountSettings() {
         <AccountIcon />
         <span>{t('user.account')}</span>
       </div>
-      <div className='flex gap-4 h-14 items-center my-4 mx-4'>
+      <div className='flex flex-col justify-center gap-2 my-4 items-center'>
         <div className='relative'>
           {/*TODO In future on click possibility to change user avatar */}
           <motion.div whileHover={{ scale: 1.05 }} className='rounded-full p-1 cursor-pointer'>
             <UserIcon className='h-10 w-10' />
           </motion.div>
         </div>
-
-        <div className='flex flex-col leading-5'>
-          <span className='text-lg'>{user.username}</span>
-          <span className='text-sm uppercase italic'>
-            {user.admin ? t('user.admin') : t('user.user')}
+        <div className='flex flex-col justify-center items-center leading-5'>
+          <span className='text-xl'>{user.username}</span>
+          <span className='text-lg normal-case'>
+            Account type: {user.admin ? t('user.admin') : t('user.user')}
           </span>
         </div>
       </div>
-      <div className='border-textColor border-t-2 py-2 pt-4 gap-4 flex flex-col items-center'>
-        <BaseInput
-          type='text'
-          placeholder={t('user.name')}
-          name='nameInput'
-          label={t('user.name')}
-          ref={nameRef}
-          onBlur={handleBlurName}
-        ></BaseInput>
-        {isValidName === false && <p className='text-red-500 text-xs'>{t('user.name_error')}</p>}
-        <BaseInput
-          type='text'
-          placeholder={t('user.surname')}
-          name='surnameInput'
-          label={t('user.surname')}
-          ref={surnameRef}
-          onBlur={handleBlurSurnName}
-        ></BaseInput>
-        {isValidSurname === false && (
-          <p className='text-red-500 text-xs'>{t('user.surname_error')}</p>
-        )}
-        <BaseInput
-          type='text'
-          placeholder='Email'
-          name='emailInput'
-          label='Email'
-          ref={emailRef}
-          onBlur={handleBlurEmail}
-        ></BaseInput>
-        {isValidEmail === false && <p className='text-red-500 text-xs'>{t('user.email_error')}</p>}
-        {isValidName || isValidSurname || isValidEmail ? (
+      <div className='flex flex-col items-center gap-4 px-4'>
+        <div className='w-full flex flex-col gap-2'>
+          <BaseInput
+            type='text'
+            placeholder={t('common.username')}
+            name='nameInput'
+            label={t('common.username')}
+            isValid={isValidUsername}
+            ref={usernameRef}
+            onBlur={handleUserNameChange}
+            onChange={handleUserNameChange}
+          />
+          {isValidUsername === false && (
+            <span className='text-red-500 flex items-center gap-2'>
+              <AlertIcon className='h-6 w-6' color='#ef4444' />
+              <p className='text-base'>{t('user.name_error')}</p>
+            </span>
+          )}
+        </div>
+        <div className='w-full flex flex-col gap-2'>
+          <BaseInput
+            type='text'
+            placeholder='Email'
+            name='emailInput'
+            label='Email'
+            isValid={isValidEmail}
+            ref={emailRef}
+            onBlur={handleEmailChange}
+            onChange={handleEmailChange}
+          />
+          {isValidEmail === false && (
+            <span className='text-red-500 flex items-center gap-2'>
+              <AlertIcon className='h-6 w-6' color='#ef4444' />
+              <p className='text-base'>{t('user.email_error')}</p>
+            </span>
+          )}
+        </div>
+        {isValidUsername || isValidEmail ? (
           <BaseButton
             name={t('user.confirm')}
             className='mt-4'

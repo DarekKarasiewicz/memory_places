@@ -31,6 +31,7 @@ import { updateTrailActions } from './Redux/updateTrailSlice.jsx';
 import ConfirmationModal from 'Modals/ConfirmationModal.js';
 import { selectConfirmationModal } from 'Redux/confirmationModalSlice';
 import { selectNotificationModal } from 'Redux/notificationModalSlice';
+import FoundationInfo from 'Modals/FoundationInfo';
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +85,10 @@ function App() {
 
   const handleContactFormVisability = () => {
     dispatch(modalsActions.changeIsContactFormOpen());
+  };
+
+  const handleFoundationInfoVisability = () => {
+    dispatch(modalsActions.changeIsFoundationInfoOpen());
   };
 
   const handleTrailFormModalVisability = () => {
@@ -171,6 +176,10 @@ function App() {
         {modalData.isFAQOpen && <FAQ closeModal={handleFAQVisability} />}
 
         {modalData.isContactFormOpen && <ContactForm closeModal={handleContactFormVisability} />}
+
+        {modalData.isFoundationInfoOpen && (
+          <FoundationInfo closeModal={handleFoundationInfoVisability} />
+        )}
 
         {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <Footer /> : null}
 

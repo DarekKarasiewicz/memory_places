@@ -49,7 +49,7 @@ function NotificationModal() {
             name={t('common.close')}
             btnBg='red'
             onClick={handleNotificationModalVisibility}
-          ></BaseButton>
+          />
         </div>
       </motion.div>
     </>
