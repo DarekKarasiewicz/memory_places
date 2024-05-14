@@ -423,23 +423,13 @@ class User_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        try:
-            print(isinstance(int(kwargs["pk"]), int))
-            user_object = self.model.objects.get(id=kwargs["pk"])
-        except:
-            key, value = re.match("(\w+)=(\d+)", kwargs["pk"]).groups()
-            user_object = self.model.objects.get(id=value)
+        user_object = self.model.objects.get(id=kwargs["pk"])
 
         data = request.data
-        if key == "password_reset":
-            user_object.set_password(data["password"])
-        else:
-            # we should consider updating email
-            if "email" in data and "username" in data:
-                user_object.email = data["email"]
-                user_object.username = data["username"]
-            else:
-                user_object.username = data["username"]
+        for i in data.keys():
+            match i:
+                case "username":
+                    user_object.username = data["username"]
 
         user_object.save()
 
