@@ -12,6 +12,7 @@ const initialState = {
   user_name: '',
   isAdminActionsModalOpen: false,
   current_action: '',
+  adminMapExtended: false,
 };
 
 export const adminActionSlice = createSlice({
@@ -41,6 +42,9 @@ export const adminActionSlice = createSlice({
     },
     changeIsAdminActionsModalOpen: (state) => {
       state.isAdminActionsModalOpen = !state.isAdminActionsModalOpen;
+    },
+    changeAdminGoogleMapExtension: (state, action) => {
+      state.adminMapExtended = action.payload;
     },
   },
 });

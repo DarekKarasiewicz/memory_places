@@ -92,13 +92,14 @@ function AdminDropdown() {
             animate='visible'
           >
             <li className='capitalize text-xl'>{user.username}</li>
-            <li className='uppercase text-sm'>
+            <li className='uppercase italic text-sm'>
               {user.admin ? t('user.admin') : user.master ? t('user.master_user') : t('user.user')}
             </li>
+            <hr className='border-t-1 mt-2 border-textColor' />
 
             {menuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
-                {index === menuItems.length - 1 && <hr className='mb-2' />}
+                {index === menuItems.length - 1 && <hr className='mb-2 border-textColor' />}
                 <AdminDropdownItem
                   index={index}
                   icon={item.icon}

@@ -89,7 +89,7 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className='flex flex-col items-center gap-2'>
+    <div className='flex flex-col items-center gap-2 w-3/4'>
       <LoginForm
         emailRef={emailRef}
         passwordRef={passwordRef}

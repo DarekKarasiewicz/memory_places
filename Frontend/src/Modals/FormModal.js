@@ -20,6 +20,7 @@ import WikiIcon from 'icons/WikiIcon';
 import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import AlertIcon from 'icons/AlertIcon';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -45,6 +46,8 @@ function FormModal(props) {
   const [sortOf, setSortOf] = useState([]);
   const [type, setType] = useState([]);
   const [period, setPeriod] = useState([]);
+  const [inputLength, setInputLength] = useState(0);
+  const [descLength, setDescLength] = useState(0);
 
   const fetchSortOfItems = async () => {
     try {
@@ -158,9 +161,9 @@ function FormModal(props) {
       dispatch(formValidationActions.changeIsValidDate(isNaN(updatePlaceData.place.found_date)));
       validateLat(updatePlaceData.place.lat);
       validateLng(updatePlaceData.place.lng);
-      dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== 0));
-      dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== 0));
-      dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== 0));
+      dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== '0'));
+      dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== '0'));
+      dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== '0'));
       dispatch(updatePlaceActions.dataIsLoaded());
     }
   }, []);
@@ -202,6 +205,20 @@ function FormModal(props) {
       dispatch(formValidationActions.changeIsValidDescription(true));
     } else {
       dispatch(formValidationActions.changeIsValidDescription(false));
+    }
+  };
+
+  const handleNameChange = () => {
+    if (nameRef.current) {
+      const length = nameRef.current.value.length;
+      setInputLength(length);
+    }
+  };
+
+  const handleDescChange = () => {
+    if (descriptionRef.current) {
+      const length = descriptionRef.current.value.length;
+      setDescLength(length);
     }
   };
 
@@ -290,40 +307,56 @@ function FormModal(props) {
       <BaseModal title={props.title} closeModal={props.closeModal}>
         <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4'>
           <div className='flex flex-col gap-2 w-2/5'>
-            <BaseInput
-              type='number'
-              name='lat'
-              label={t('common.latitude')}
-              value={lat}
-              ref={latRef}
-              onBlur={() => {
-                setLat(latRef.current.value);
-                validateLat(lat);
-              }}
-              onChange={() => {
-                setLat(latRef.current.value);
-                validateLat(lat);
-              }}
-              isValid={formValidation.isValidLat}
-            />
-            <BaseInput
-              type='number'
-              name='lng'
-              label={t('common.longitude')}
-              value={lng}
-              ref={lngRef}
-              onBlur={() => {
-                setLng(lngRef.current.value);
-                validateLng(lng);
-              }}
-              onChange={() => {
-                setLng(lngRef.current.value);
-                validateLng(lngRef);
-              }}
-              isValid={formValidation.isValidLng}
-            />
+            <div className='flex flex-col gap-2'>
+              <BaseInput
+                type='number'
+                name='lat'
+                label={t('common.latitude')}
+                value={lat}
+                ref={latRef}
+                onBlur={() => {
+                  setLat(latRef.current.value);
+                  validateLat(lat);
+                }}
+                onChange={() => {
+                  setLat(latRef.current.value);
+                  validateLat(lat);
+                }}
+                isValid={formValidation.isValidLat}
+              />
+              {formValidation.isValidLat === false && (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              )}
+            </div>
+            <div className='flex flex-col gap-2'>
+              <BaseInput
+                type='number'
+                name='lng'
+                label={t('common.longitude')}
+                value={lng}
+                ref={lngRef}
+                onBlur={() => {
+                  setLng(lngRef.current.value);
+                  validateLng(lng);
+                }}
+                onChange={() => {
+                  setLng(lngRef.current.value);
+                  validateLng(lngRef);
+                }}
+                isValid={formValidation.isValidLng}
+              />
+              {formValidation.isValidLng === false && (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              )}
+            </div>
             <div className='px-2 pb-2 flex flex-col justify-center items-center mt-2 gap-2'>
-              <span>lub</span>
+              <span>{t('common.or2')}</span>
               <BaseButton
                 breakWidth={true}
                 name={t('common.location_select')}
@@ -332,82 +365,124 @@ function FormModal(props) {
               />
             </div>
             <hr className='border-textColor' />
-            <BaseInput
-              type='date'
-              name='dateInput'
-              label={t('common.date')}
-              blockFuture={true}
-              ref={dateRef}
-              value={addPlaceData.found_date}
-              onBlur={() => {
-                dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
-                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-              }}
-              onChange={() => {
-                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-              }}
-              isValid={formValidation.isValidDate}
-            />
-            <BaseSelect
-              label={t('common.type_of')}
-              name={t('common.type_of')}
-              value={
-                props.type === 'update' && !updatePlaceData.isDataLoaded
-                  ? updatePlaceData.place.sortof
-                  : addPlaceData.sortof
-              }
-              options={sortOf}
-              ref={sortofRef}
-              onBlur={() => {
-                dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
-                dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
-              }}
-              onChange={() => {
-                dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
-                dispatch(formValidationActions.changeIsValidSortof(sortofRef.current.value !== 0));
-              }}
-              isValid={formValidationActions.isValidSortof}
-            />
-            <BaseSelect
-              label={t('common.type')}
-              name={t('common.type')}
-              value={
-                props.type === 'update' && !updatePlaceData.isDataLoaded
-                  ? updatePlaceData.place.type
-                  : addPlaceData.type
-              }
-              options={type}
-              ref={typeRef}
-              onBlur={() => {
-                dispatch(addPlaceActions.changeType(typeRef.current.value));
-                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 0));
-              }}
-              onChange={() => {
-                dispatch(addPlaceActions.changeType(typeRef.current.value));
-                dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== 0));
-              }}
-              isValid={formValidation.isValidType}
-            />
-            <BaseSelect
-              label={t('common.period')}
-              name={t('common.period')}
-              value={
-                props.type === 'update' && !updatePlaceData.isDataLoaded
-                  ? updatePlaceData.place.period
-                  : addPlaceData.period
-              }
-              options={period}
-              ref={periodRef}
-              onBlur={() => {
-                dispatch(addPlaceActions.changePeriod(periodRef.current.value));
-                dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
-              }}
-              onChange={() => {
-                dispatch(addPlaceActions.changePeriod(periodRef.current.value));
-                dispatch(formValidationActions.changeIsValidPeriod(periodRef.current.value !== 0));
-              }}
-              isValid={formValidation.isValidPeriod}
-            />
+            <div className='flex flex-col gap-2'>
+              <BaseInput
+                type='date'
+                name='dateInput'
+                label={t('common.date')}
+                blockFuture={true}
+                ref={dateRef}
+                value={addPlaceData.found_date}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
+                  dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+                }}
+                onChange={() => {
+                  dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
+                }}
+                isValid={formValidation.isValidDate}
+              />
+              {formValidation.isValidDate === false && (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              )}
+            </div>
+            <div className='flex flex-col gap-2'>
+              <BaseSelect
+                label={t('common.type_of')}
+                name={t('common.type_of')}
+                value={
+                  props.type === 'update' && !updatePlaceData.isDataLoaded
+                    ? updatePlaceData.place.sortof
+                    : addPlaceData.sortof
+                }
+                options={sortOf}
+                ref={sortofRef}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
+                  dispatch(
+                    formValidationActions.changeIsValidSortof(sortofRef.current.value !== '0'),
+                  );
+                }}
+                onChange={() => {
+                  dispatch(addPlaceActions.changeSortOf(sortofRef.current.value));
+                  dispatch(
+                    formValidationActions.changeIsValidSortof(sortofRef.current.value !== '0'),
+                  );
+                }}
+                isValid={formValidation.isValidSortof}
+              />
+              {formValidation.isValidSortof === false && (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              )}
+            </div>
+            <div className='flex flex-col gap-2'>
+              <BaseSelect
+                label={t('common.type')}
+                name={t('common.type')}
+                value={
+                  props.type === 'update' && !updatePlaceData.isDataLoaded
+                    ? updatePlaceData.place.type
+                    : addPlaceData.type
+                }
+                options={type}
+                ref={typeRef}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeType(typeRef.current.value));
+                  dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== '0'));
+                }}
+                onChange={() => {
+                  dispatch(addPlaceActions.changeType(typeRef.current.value));
+                  dispatch(formValidationActions.changeIsValidType(typeRef.current.value !== '0'));
+                }}
+                isValid={formValidation.isValidType}
+              />
+              {formValidation.isValidType === false && (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              )}
+            </div>
+            <div className='flex flex-col gap-2'>
+              <BaseSelect
+                label={t('common.period')}
+                name={t('common.period')}
+                value={
+                  props.type === 'update' && !updatePlaceData.isDataLoaded
+                    ? updatePlaceData.place.period
+                    : addPlaceData.period
+                }
+                options={period}
+                ref={periodRef}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changePeriod(periodRef.current.value));
+                  dispatch(
+                    formValidationActions.changeIsValidPeriod(periodRef.current.value !== '0'),
+                  );
+                }}
+                onChange={() => {
+                  dispatch(addPlaceActions.changePeriod(periodRef.current.value));
+                  dispatch(
+                    formValidationActions.changeIsValidPeriod(periodRef.current.value !== '0'),
+                  );
+                }}
+                isValid={formValidation.isValidPeriod}
+              />
+              {formValidation.isValidPeriod === false ? (
+                <span className='text-red-500 flex items-center gap-2'>
+                  <AlertIcon className='h-6 w-6' color='#ef4444' />
+                  <span>{t('admin.common.field_required')}</span>
+                </span>
+              ) : (
+                <span></span>
+              )}
+            </div>
             <div className='mt-1 flex flex-col gap-1'>
               <p>{t('common.useful_links')}</p>
               <div className='flex justify-center items-center gap-2'>
@@ -437,41 +512,66 @@ function FormModal(props) {
             </div>
           </div>
           <div className='flex flex-col gap-2 w-3/5'>
-            <BaseInput
-              type='text'
-              name='nameInput'
-              label={t('common.name')}
-              value={addPlaceData.place_name}
-              onBlur={() => {
-                dispatch(addPlaceActions.changeName(nameRef.current.value));
-                validateName(nameRef.current.value);
-              }}
-              onChange={() => {
-                validateName(nameRef.current.value);
-              }}
-              ref={nameRef}
-              isValid={formValidation.isValidName}
-            />
-            {formValidation.isValidName === false && (
-              <p className='text-red-500 text-sm'>{t('common.illegal_characters')}</p>
-            )}
+            <div className='flex flex-col gap-2'>
+              <BaseInput
+                type='text'
+                name='nameInput'
+                label={t('common.name')}
+                value={addPlaceData.place_name}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeName(nameRef.current.value));
+                  validateName(nameRef.current.value);
+                }}
+                onChange={() => {
+                  validateName(nameRef.current.value);
+                  handleNameChange();
+                }}
+                ref={nameRef}
+                isValid={formValidation.isValidName}
+              />
+              <div className='flex justify-between px-2'>
+                {formValidation.isValidName === false ? (
+                  <span className='text-red-500 flex items-center gap-2'>
+                    <AlertIcon className='h-6 w-6' color='#ef4444' />
+                    <span>{t('admin.common.field_required')}</span>
+                  </span>
+                ) : (
+                  <span></span>
+                )}
+                <span>{inputLength} / 50</span>
+              </div>
+            </div>
             <BaseImageUpload fileSize={5} />
-            <BaseTextarea
-              rows='12'
-              label={t('common.description')}
-              secondLabel={t('common.description-max')}
-              maxLength={1000}
-              ref={descriptionRef}
-              value={addPlaceData.description}
-              onBlur={() => {
-                dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
-                validateDescription(descriptionRef.current.value);
-              }}
-              onChange={() => {
-                validateDescription(descriptionRef.current.value);
-              }}
-              isValid={formValidation.isValidDescription}
-            />
+            <div className='flex flex-col gap-2'>
+              <BaseTextarea
+                rows='12'
+                label={t('common.description')}
+                secondLabel={t('common.description-max')}
+                maxLength={1000}
+                ref={descriptionRef}
+                value={addPlaceData.description}
+                onBlur={() => {
+                  dispatch(addPlaceActions.changeDescription(descriptionRef.current.value));
+                  validateDescription(descriptionRef.current.value);
+                }}
+                onChange={() => {
+                  validateDescription(descriptionRef.current.value);
+                  handleDescChange();
+                }}
+                isValid={formValidation.isValidDescription}
+              />
+              <div className='flex justify-between px-2'>
+                {formValidation.isValidDescription === false ? (
+                  <span className='text-red-500 flex items-center gap-2'>
+                    <AlertIcon className='h-6 w-6' color='#ef4444' />
+                    <span>{t('admin.common.field_required')}</span>
+                  </span>
+                ) : (
+                  <span></span>
+                )}
+                <span>{descLength} / 1000</span>
+              </div>
+            </div>
           </div>
         </div>
         <div className='p-2 flex gap-4 justify-center'>

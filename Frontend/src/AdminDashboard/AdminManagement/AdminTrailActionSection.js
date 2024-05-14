@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addTrailActions } from 'Redux/addTrailSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import { adminActions } from 'Redux/adminActionSlice';
 import { useCookies } from 'react-cookie';
+import { modalsActions } from 'Redux/modalsSlice';
 import axios from 'axios';
 import PinIcon from 'icons/PinIcon';
 import BaseInput from 'Base/BaseInput';
@@ -14,7 +16,7 @@ import BaseSelect from 'Base/BaseSelect';
 import BaseRadioGroup from 'Base/BaseRadioGroup';
 import WebIcon from 'icons/WebIcon';
 import WikiIcon from 'icons/WikiIcon';
-import GoogleMap from 'GoogleMap/GoogleMap';
+import AdminGoogleMap from './AdminGoogleMap';
 import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
 import { registerAppChanges } from 'utils';
 import AlertIcon from 'icons/AlertIcon';
@@ -46,6 +48,7 @@ function AdminTrailActionSection({ action, trailId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_trail_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [currentAction, setCurrentAction] = useState('add');
 
   const fetchTypeItems = async () => {
     try {
@@ -101,7 +104,7 @@ function AdminTrailActionSection({ action, trailId }) {
 
   useEffect(() => {
     if (action === 'edit' || action === 'view') {
-      const getPlaceItems = async (trailId) => {
+      const getTrailItems = async (trailId) => {
         try {
           const response = await axios.get(
             `http://127.0.0.1:8000/admin_dashboard/path/pk=${trailId}`,
@@ -130,14 +133,16 @@ function AdminTrailActionSection({ action, trailId }) {
 
       if (action === 'edit') {
         setActionTitle(t('admin.common.memo_trail_edit'));
+        setCurrentAction(action);
       }
 
       if (action === 'view') {
         setActionTitle(t('admin.common.memo_trail_view'));
         setIsReadOnly(true);
+        setCurrentAction(action);
       }
 
-      getPlaceItems(trailId);
+      getTrailItems(trailId);
     }
   }, []);
 
@@ -181,14 +186,15 @@ function AdminTrailActionSection({ action, trailId }) {
   };
 
   const validateType = (type) => {
-    if (type !== 0) {
+    console.log(typeof type);
+    if (type !== '0') {
       return setIsValidType(true);
     }
     return setIsValidType(false);
   };
 
   const validatePeriod = (period) => {
-    if (period !== 0) {
+    if (period !== '0') {
       return setIsValidPeriod(true);
     }
     return setIsValidPeriod(false);
@@ -206,6 +212,18 @@ function AdminTrailActionSection({ action, trailId }) {
     }
 
     return false;
+  };
+
+  const handleSelectTrail = () => {
+    if (action === 'edit' && confirm(t('common.trail_change_warning'))) {
+      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+      dispatch(addTrailActions.changeIsSelecting(true));
+      dispatch(adminActions.changeAdminGoogleMapExtension(true));
+      return;
+    }
+    dispatch(modalsActions.changeIsTrailFormOpen());
+    dispatch(adminActions.changeAdminGoogleMapExtension(true));
+    dispatch(addTrailActions.changeIsSelecting(true));
   };
 
   const handleConfirm = () => {
@@ -276,7 +294,7 @@ function AdminTrailActionSection({ action, trailId }) {
 
   return (
     <>
-      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full'>
+      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
         <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
           <PinIcon />
           <span>{actionTitle}</span>
@@ -367,6 +385,7 @@ function AdminTrailActionSection({ action, trailId }) {
                 className='w-fit'
                 name={t('common.location_select')}
                 btnBg='blue'
+                onClick={handleSelectTrail}
                 disabled={isReadOnly}
               />
             </div>
@@ -460,7 +479,7 @@ function AdminTrailActionSection({ action, trailId }) {
             </div>
           </div>
           <div className='w-1/2 h-3/4 flex flex-col gap-4'>
-            <GoogleMap adminVersion={true} />
+            <AdminGoogleMap action={currentAction} />
             <BaseImageUpload fileSize={5} />
           </div>
         </div>

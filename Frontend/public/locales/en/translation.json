@@ -30,6 +30,7 @@
         "create_account": "Just create one!",
         "sign_account": "Sign in to your account!",
         "or": "-------- or use --------",
+        "or2": "or",
         "pass": "Password",
         "username": "Username",
         "cancel": "Cancel",

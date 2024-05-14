@@ -94,7 +94,7 @@ const AddPlaceButton = (props) => {
           animate='visible'
         >
           <div className='flex flex-col justify-center items-center gap-2'>
-            <p className='pb-2 text-lg'>{t('user.add_place_login_req')}</p>
+            <p className='pb-2 text-lg text-textColor'>{t('user.add_place_login_req')}</p>
             <BaseButton name='Log in' btnBg='blue' onClick={handleLoginRedirect} />
           </div>
           <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>

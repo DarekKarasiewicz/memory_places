@@ -31,9 +31,7 @@ import { Polyline } from './MapOverlay/Polyline.jsx';
 import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 
-// TO DO
-// When frontend will be rewrited this prop will be deleted with functionality to it
-const GoogleMap = ({ adminVersion }) => {
+const GoogleMap = () => {
   const dispatch = useDispatch();
   const location = useSelector(selectLocation);
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -145,6 +143,7 @@ const GoogleMap = ({ adminVersion }) => {
     }
     dispatch(modalsActions.changeIsFormModalOpen());
   };
+
   const fetchSelectedPlaceInfo = async () => {
     if (!currentPlace) return;
     try {
@@ -165,13 +164,9 @@ const GoogleMap = ({ adminVersion }) => {
   };
   return isLoaded && isPositionLoaded ? (
     <div
-      className={
-        !adminVersion
-          ? `absolute bottom-0 h-screen transition-transform delay-150 ${
-              userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
-            }`
-          : `h-1/2`
-      }
+      className={`absolute bottom-0 h-screen transition-transform delay-150 ${
+        userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
+      }`}
     >
       <Map
         center={position}

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
 import { addPlaceActions } from 'Redux/addPlaceSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import { adminActions } from 'Redux/adminActionSlice';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import PinIcon from 'icons/PinIcon';
@@ -15,7 +16,7 @@ import BaseSelect from 'Base/BaseSelect';
 import BaseRadioGroup from 'Base/BaseRadioGroup';
 import WebIcon from 'icons/WebIcon';
 import WikiIcon from 'icons/WikiIcon';
-import GoogleMap from 'GoogleMap/GoogleMap';
+import AdminGoogleMap from './AdminGoogleMap';
 import BaseImageUpload from 'Base/BaseImageUpload/BaseImageUpload';
 import { registerAppChanges } from 'utils';
 import AlertIcon from 'icons/AlertIcon';
@@ -57,6 +58,8 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [currentAction, setCurrentAction] = useState('add');
+  const [placePosition, setPlacePosition] = useState(null);
 
   const fetchSortOfItems = async () => {
     try {
@@ -137,15 +140,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   useEffect(() => {
-    if (addPlaceLocation.lat || addPlaceLocation.lng) {
-      validateLat(addPlaceLocation.lat);
-      validateLng(addPlaceLocation.lng);
-    }
-    setLat(addPlaceLocation.lat);
-    setLng(addPlaceLocation.lng);
-  }, [addPlaceLocation]);
-
-  useEffect(() => {
     if (action === 'edit' || action === 'view') {
       const getPlaceItems = async (placeId) => {
         try {
@@ -165,6 +159,8 @@ function AdminPlaceActionSection({ action, placeId }) {
           webLinkRef.current.value = response.data.topic_link;
           setToVerification(response.data.verified === true ? 'false' : 'true');
 
+          setPlacePosition({ lat: response.data.lat, lng: response.data.lng });
+
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
           validateLng(lngRef.current.value);
@@ -182,11 +178,13 @@ function AdminPlaceActionSection({ action, placeId }) {
 
       if (action === 'edit') {
         setActionTitle(t('admin.common.memo_place_edit'));
+        setCurrentAction(action);
       }
 
       if (action === 'view') {
         setActionTitle(t('admin.common.memo_place_view'));
         setIsReadOnly(true);
+        setCurrentAction(action);
       }
 
       getPlaceItems(placeId);
@@ -243,21 +241,22 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   const validateSortof = (sortof) => {
-    if (sortof !== 0) {
+    if (sortof !== '0') {
       return setIsValidSortof(true);
     }
     return setIsValidSortof(false);
   };
 
   const validateType = (type) => {
-    if (type !== 0) {
+    if (type !== '0') {
       return setIsValidType(true);
     }
     return setIsValidType(false);
   };
 
   const validatePeriod = (period) => {
-    if (period !== 0) {
+    console.log(period);
+    if (period !== '0') {
       return setIsValidPeriod(true);
     }
     return setIsValidPeriod(false);
@@ -280,7 +279,17 @@ function AdminPlaceActionSection({ action, placeId }) {
     return false;
   };
 
+  useEffect(() => {
+    if (addPlaceLocation.lat || addPlaceLocation.lng) {
+      validateLat(addPlaceLocation.lat);
+      validateLng(addPlaceLocation.lng);
+    }
+    setLat(addPlaceLocation.lat);
+    setLng(addPlaceLocation.lng);
+  }, [addPlaceLocation]);
+
   const handleSelectLocationBtn = () => {
+    dispatch(adminActions.changeAdminGoogleMapExtension(true));
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
   };
 
@@ -361,7 +370,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   return (
     <>
-      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full'>
+      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
         <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
           <PinIcon />
           <span>{actionTitle}</span>
@@ -619,7 +628,7 @@ function AdminPlaceActionSection({ action, placeId }) {
             </div>
           </div>
           <div className='w-1/2 h-3/4 flex flex-col gap-4'>
-            <GoogleMap adminVersion={true} />
+            <AdminGoogleMap action={currentAction} placePosition={placePosition} />
             <BaseImageUpload fileSize={5} />
           </div>
         </div>
