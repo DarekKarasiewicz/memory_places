@@ -387,7 +387,7 @@ class User_view(viewsets.ModelViewSet):
             password=request.data["password"],
         )
 
-        # new_user.save()
+        new_user.save()
         serializer = self.serializer_class(new_user)
 
         html_message = render_to_string(
@@ -476,7 +476,7 @@ class Contact_us(viewsets.ModelViewSet):
         new_question = self.model(
             user=user_object,
             title=request.data["title"],
-            description=request.data["desc"],
+            description=request.data["description"],
             done=False,
         )
         new_question.save()
@@ -484,13 +484,14 @@ class Contact_us(viewsets.ModelViewSet):
 
         html_message = render_to_string('contact.html')
 
-        send_mail(
-            subject="Thanks for contact",
-            message="",
-            from_email=os.getenv('EMAIL_HOST_USER'),
-            recipient_list=[serializer["email"].value],
-            fail_silently=False,
-            html_message=html_message)
+        if user_object:
+            send_mail(
+                subject="Thanks for contact",
+                message="",
+                from_email=os.getenv('EMAIL_HOST_USER'),
+                recipient_list=[user_object.email],
+                fail_silently=False,
+                html_message=html_message)
 
         return Response(serializer.data)
 
@@ -532,7 +533,7 @@ class Reset_password(viewsets.ModelViewSet):
                 )
 
         html_message = render_to_string(
-            'verification_mail.html',
+            'reset_password.html',
             {"link": f"SEBA HERE LINK"}
         )
 
