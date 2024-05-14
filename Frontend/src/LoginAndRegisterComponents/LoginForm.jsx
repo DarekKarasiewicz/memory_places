@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BaseInput from 'Base/BaseInput';
 import { useTranslation } from 'react-i18next';
 import ShowPassword from './ShowPassword';
+import AlertIcon from 'icons/AlertIcon';
 
 const LoginForm = ({
   emailRef,
@@ -26,11 +27,14 @@ const LoginForm = ({
         name='email'
         placeholder={t('log_reg_form.example_mail')}
         ref={emailRef}
-        className={isValidEmail === false ? 'bg-red-300' : ''}
+        className={isValidEmail === false ? 'bg-red-500' : ''}
         onBlur={handleBlurEmail}
       />
       {isValidEmail === false && (
-        <p className='text-red-500 text-xs'>{t('log_reg_form.mail_warning')}</p>
+        <div className='flex items-center gap-2'>
+          <AlertIcon className='h-6 w-6' color='#ef4444' />
+          <p className='text-red-500 text-base'>{t('log_reg_form.mail_warning')}</p>
+        </div>
       )}
       <BaseInput
         type={!isVisible ? 'password' : 'text'}
@@ -39,15 +43,20 @@ const LoginForm = ({
         placeholder={t('log_reg_form.your_password')}
         ref={passwordRef}
         onBlur={handleBlurPassword}
-        className={isValidPassword === false ? 'bg-red-300' : ''}
+        className={isValidPassword === false ? 'bg-red-400' : ''}
       />
       {isValidPassword === false && (
-        <ul role='list' className='text-red-500 text-xs'>
-          {t('log_reg_form.pass_title')}
-          <li>{t('log_reg_form.pass_info1')}</li>
-          <li>{t('log_reg_form.pass_info2')}</li>
-          <li>{t('log_reg_form.pass_info3')}</li>
-        </ul>
+        <div className='text-red-500 flex items-start gap-2'>
+          <AlertIcon className='h-6 w-6' color='#ef4444' />
+          <div>
+            <span className='text-base'>{t('log_reg_form.pass_title')}</span>
+            <ul className='text-red-500 text-xs leading-5 list-disc ml-5'>
+              <li>{t('log_reg_form.pass_info1')}</li>
+              <li>{t('log_reg_form.pass_info2')}</li>
+              <li>{t('log_reg_form.pass_info3')}</li>
+            </ul>
+          </div>
+        </div>
       )}
       <ShowPassword isVisible={isVisible} handlePasswordVisability={handlePasswordVisability} />
     </div>

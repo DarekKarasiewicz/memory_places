@@ -5,7 +5,7 @@ import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { registerAppChanges } from 'utils';
@@ -21,8 +21,15 @@ function ContactForm(props) {
   const user = cookies.user;
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (cookies) {
+      nameRef.current.value = user.username;
+      emailRef.current.value = user.email;
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     const contact_form_req = {
       email: emailRef.current.value,
@@ -53,17 +60,15 @@ function ContactForm(props) {
         <div className='flex flex-col px-2 py-4 gap-2'>
           <div>{t('user.contact_info')}</div>
           <div className='flex gap-4'>
-            <BaseInput
-              type='text'
-              label={t('common.name')}
-              value={user.username ? user.username : ''}
-            />
-            <BaseInput type='text' label='Email' value={user.email ? user.email : ''} />
+            <BaseInput type='text' label={t('common.name')} ref={nameRef} />
+            <BaseInput type='text' label='Email' ref={emailRef} />
           </div>
+          <BaseInput type='text' label={t('forum.title')} ref={titleRef} />
           <div className='overflow-auto'>
             <BaseTextarea
               rows='10'
               label={t('common.description')}
+              ref={descRef}
               secondLabel={t('common.description-max')}
             />
           </div>
