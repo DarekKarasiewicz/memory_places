@@ -347,15 +347,15 @@ class Outside_user_view(viewsets.ModelViewSet):
         password = "".join(secrets.choice(alphabet) for _ in range(42))
 
         new_user = self.model.objects.create_user(
-            email=user_data["email"], username=user_data["username"], password=password
+            email = user_data["email"],
+            username = user_data["username"],
+            password = password
         )
 
         new_user.outside = True
         new_user.save()
 
-        serializer = self.serializer_class(new_user)
-
-        return Response(serializer.data)
+        return MyTokenObtainPairSerializer.get_token(user=new_user)
 
 
 class VerificationMail(viewsets.ModelViewSet):
