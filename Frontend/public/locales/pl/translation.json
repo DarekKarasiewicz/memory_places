@@ -121,7 +121,7 @@
         "zabytek": "Zabytek",
         "miejsce": "Miejsce bitwy, potyczki",
         "iiwojnaswiatowa": "II Wojna Światowa (1939 – 1945)",
-        "no_translation_given": "Brak tłumaczeń"
+        "no_data": "Brak danych"
     },
     "user":{
         "general": "Ogólne",
@@ -200,8 +200,8 @@
             "user_manage_title": "Zarządzanie użytkownikami",
             "place_manage_title": "Zarządzanie istniejącymi miejscami",
             "trail_manage_title": "Zarządzanie szlakiem",
-            "var_manage_title": "Zarządzanie zmiennymi miejsc",
-            "verification_title": "Weryfikacja miejsc",
+            "var_manage_title": "Zarządzanie zmiennymi obiektów",
+            "verification_title": "Weryfikacja obiektów pamięci",
             "history_title": "Historia zmian na stronie",
             "january": "Styczeń",
             "february": "Luty",
@@ -299,7 +299,7 @@
             "all_trails": "Wszystkie szlaki",
             "previous_trails": "Szlaki z poprzedniego miesiąca",
             "current_trails": "Szlaki bieżącego miesiąca",
-            "variable_info": "Wylistowane informacje każdej obieralnej opcji przy tworzeniu miejsca pamięci",
+            "variable_info": "Wylistowane informacje każdej obieralnej opcji przy tworzeniu obiektów pamięci",
             "sortof": "Rodzaj",
             "type": "Typ",
             "period": "Okres",
@@ -307,8 +307,8 @@
             "no_options": "Brak opcji",
             "add_element": "Dodaj element",
             "save_changes": "Zapisz zmiany",
-            "verification_info": "Sprawdzanie poprawności informacji zawartych w utworzonych przez użytkowników miejsc",
-            "all_verification": "Wszystkie miejsca oczekujące na weryfikację",
+            "verification_info": "Sprawdzanie poprawności informacji zawartych w utworzonych przez użytkowników obiektów pamięci",
+            "all_verification": "Wszystkie obiekty oczekujące na weryfikację",
             "previous_verified": "Zweryfikowane z poprzedniego miesiąca",
             "current_verified": "Zweryfikowane z bieżącego miesiąca",
             "history_info": "Udokumentowane i opisane zmiany wprowadzone w aplikacji",
@@ -318,7 +318,9 @@
             "alert_success": "Akcja została wykonana pomyślnie!",
             "alert_error": "Coś poszło nie tak. Spróbuj jeszcze raz!",
             "place_var_info": "Po jakiejkolwiek zmianie w tej sekcji należy skontaktować się z developerem w celu zmiany tłumaczeń w aplikacji",
-            "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:"
+            "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:",
+            "lp": "Lp.",
+            "kind": "Rodzaj"
         },
         "changes_messages": {
             "blocked": "Zablokowany użytkownik o ID {{element_id}}",

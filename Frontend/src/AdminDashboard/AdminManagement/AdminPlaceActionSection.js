@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
+import { addTrailActions } from 'Redux/addTrailSlice';
 import { addPlaceActions } from 'Redux/addPlaceSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { adminActions } from 'Redux/adminActionSlice';
@@ -35,7 +36,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   const descRef = useRef(null);
   const latRef = useRef(null);
   const lngRef = useRef(null);
-  const dateRef = useRef(null);
   const sortOfRef = useRef(null);
   const typeRef = useRef(null);
   const periodRef = useRef(null);
@@ -47,7 +47,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [isValidDesc, setIsValidDesc] = useState(null);
   const [isValidLat, setIsValidLat] = useState(null);
   const [isValidLng, setIsValidLng] = useState(null);
-  const [isValidDate, setIsValidDate] = useState(null);
   const [isValidSortof, setIsValidSortof] = useState(null);
   const [isValidType, setIsValidType] = useState(null);
   const [isValidPeriod, setIsValidPeriod] = useState(null);
@@ -151,7 +150,6 @@ function AdminPlaceActionSection({ action, placeId }) {
           descRef.current.value = response.data.description;
           latRef.current.value = response.data.lat;
           lngRef.current.value = response.data.lng;
-          dateRef.current.value = response.data.found_date;
           sortOfRef.current.value = response.data.sortof;
           typeRef.current.value = response.data.type;
           periodRef.current.value = response.data.period;
@@ -165,7 +163,6 @@ function AdminPlaceActionSection({ action, placeId }) {
           validateLat(latRef.current.value);
           validateLng(lngRef.current.value);
           validateDescription(descRef.current.value);
-          validateDate(dateRef.current.value);
           validateSortof(sortOfRef.current.value);
           validateType(typeRef.current.value);
           validatePeriod(periodRef.current.value);
@@ -189,7 +186,9 @@ function AdminPlaceActionSection({ action, placeId }) {
 
       getPlaceItems(placeId);
     }
-  }, []);
+    dispatch(addPlacelocationActions.clearLocation());
+    dispatch(addTrailActions.reset());
+  }, [action]);
 
   const handleNameChange = () => {
     if (nameRef.current) {
@@ -236,10 +235,6 @@ function AdminPlaceActionSection({ action, placeId }) {
     return setIsValidDesc(false);
   };
 
-  const validateDate = (date) => {
-    return setIsValidDate(isNaN(date));
-  };
-
   const validateSortof = (sortof) => {
     if (sortof !== '0') {
       return setIsValidSortof(true);
@@ -255,7 +250,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   const validatePeriod = (period) => {
-    console.log(period);
     if (period !== '0') {
       return setIsValidPeriod(true);
     }
@@ -265,7 +259,6 @@ function AdminPlaceActionSection({ action, placeId }) {
   const validateForm = () => {
     if (
       isValidName === true &&
-      isValidDate === true &&
       isValidLat === true &&
       isValidLng === true &&
       isValidDesc === true &&
@@ -289,6 +282,12 @@ function AdminPlaceActionSection({ action, placeId }) {
   }, [addPlaceLocation]);
 
   const handleSelectLocationBtn = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+
     dispatch(adminActions.changeAdminGoogleMapExtension(true));
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
   };
@@ -303,7 +302,6 @@ function AdminPlaceActionSection({ action, placeId }) {
           .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
             place_name: nameRef.current.value,
             description: descRef.current.value,
-            found_date: dateRef.current.value,
             lat: latRef.current.value,
             lng: lngRef.current.value,
             sortof: sortOfRef.current.value,
@@ -330,7 +328,6 @@ function AdminPlaceActionSection({ action, placeId }) {
             user: user.user_id,
             place_name: nameRef.current.value,
             description: descRef.current.value,
-            found_date: dateRef.current.value,
             lat: latRef.current.value,
             lng: lngRef.current.value,
             sortof: sortOfRef.current.value,
@@ -538,31 +535,6 @@ function AdminPlaceActionSection({ action, placeId }) {
                 disabled={isReadOnly}
               />
             </div>
-            <div className='bg-thirdBgColor p-10'>
-              <div className='flex flex-col gap-2'>
-                <BaseInput
-                  type='date'
-                  name='dateInput'
-                  label={t('common.date')}
-                  blockFuture={true}
-                  ref={dateRef}
-                  isValid={isValidDate}
-                  onChange={() => validateDate(nameRef.current.value)}
-                  onBlur={() => validateDate(nameRef.current.value)}
-                  readOnly={isReadOnly}
-                />
-                <div className='flex px-2'>
-                  {!isValidDate ? (
-                    <span className='text-red-500 flex items-center gap-2'>
-                      <AlertIcon className='h-6 w-6' color='#ef4444' />
-                      <span>{t('admin.common.field_required')}</span>
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
-                </div>
-              </div>
-            </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
               <p className='text-xl'>{t('admin.common.desc_info')}</p>
               <div className='flex flex-col gap-2'>
@@ -628,7 +600,7 @@ function AdminPlaceActionSection({ action, placeId }) {
             </div>
           </div>
           <div className='w-1/2 h-3/4 flex flex-col gap-4'>
-            <AdminGoogleMap action={currentAction} placePosition={placePosition} />
+            <AdminGoogleMap action={currentAction} placePosition={placePosition} kind='place' />
             <BaseImageUpload fileSize={5} />
           </div>
         </div>

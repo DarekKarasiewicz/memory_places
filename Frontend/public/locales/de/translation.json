@@ -121,7 +121,7 @@
         "zabytek": "Historisches Denkmal",
         "miejsce": "Schlachtfeld",
         "iiwojnaswiatowa": "Zweiter Weltkrieg (1939 – 1945)",
-        "no_translation_given": "Fehlende Übersetzungen"
+        "no_data": "Keine Daten"
     },
     "user": {
         "general": "Allgemein",
@@ -200,8 +200,8 @@
             "user_manage_title": "Benutzerverwaltung",
             "place_manage_title": "Ortsverwaltung",
             "trail_manage_title": "Wanderweg-Management",
-            "var_manage_title": "Variablenverwaltung",
-            "verification_title": "Ortsverifizierung",
+            "var_manage_title": "Verwaltung von Variablenobjekten",
+            "verification_title": "Überprüfung von Speicherobjekten",
             "history_title": "App-Änderungsverlauf",
             "january": "Januar",
             "february": "Februar",
@@ -299,7 +299,7 @@
             "all_trails": "Alle Wege",
             "previous_trails": "Wege des letzten Monats",
             "current_trails": "Wege des aktuellen Monats",
-            "variable_info": "Aufgelistete Informationen zu jeder wählbaren Option beim Erstellen eines Gedächtnisortes",
+            "variable_info": "Aufgelistete Informationen für jede auswählbare Option beim Erstellen von Speicherobjekten",
             "sortof": "Art von",
             "type": "Typ",
             "period": "Zeitraum",
@@ -307,8 +307,8 @@
             "no_options": "Keine Optionen",
             "add_element": "Element hinzufügen",
             "save_changes": "Änderungen speichern",
-            "verification_info": "Informationen in von Benutzern erstellten Orten validieren",
-            "all_verification": "Alle Orte warten auf Verifizierung",
+            "verification_info": "Überprüfung der Richtigkeit von Informationen in vom Benutzer erstellten Speicherobjekten",
+            "all_verification": "Alle Objekte warten auf Überprüfung",
             "previous_verified": "Verifiziert aus dem Vormonat",
             "current_verified": "Verifiziert aus diesem Monat",
             "history_info": "Dokumentierte und beschriebene Änderungen, die an der Anwendung vorgenommen wurden",
@@ -318,7 +318,9 @@
             "alert_success": "Aktion erfolgreich ausgeführt!",
             "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!",
             "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
-            "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:"
+            "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:",
+            "lp": "Nr.",
+            "kind": "Art"
         },
         "changes_messages": {
             "blocked": "Benutzer mit ID {{element_id}} gesperrt",

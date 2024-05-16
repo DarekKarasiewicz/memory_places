@@ -10,7 +10,7 @@ import EditIcon from 'icons/EditIcon';
 import Trash2Icon from 'icons/Trash2Icon';
 import PlusIcon from 'icons/PlusIcon';
 
-const PlaceVariableItem = forwardRef(function PlaceVariableItem(
+const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   { itemsName, items, itemsBase, error },
   ref,
 ) {
@@ -293,4 +293,4 @@ const PlaceVariableItem = forwardRef(function PlaceVariableItem(
   );
 });
 
-export default PlaceVariableItem;
+export default ObjectVariableItem;

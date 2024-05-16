@@ -2,14 +2,14 @@ import AdminTileStat from '../Charts/AdminTileStat';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import PlaceVerificationTable from '../Tables/PlaceVerificationTable';
+import ObjectVerificationTable from '../Tables/ObjectVerificationTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
-function PlaceVerificationSection() {
+function ObjectVerificationSection() {
   const { t } = useTranslation();
-  const [places, setPlaces] = useState([]);
+  const [verificationData, setVerificationData] = useState([]);
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
@@ -17,7 +17,31 @@ function PlaceVerificationSection() {
 
   const fetchVerificationItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/not_verified_places`);
+      const verificationPlaces = await axios.get(
+        `http://127.0.0.1:8000/admin_dashboard/not_verified_places`,
+      );
+
+      //TO DO
+      //When endpoint will be created edit this code
+      const verificationTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path/`);
+
+      //TO DO 
+      //Calculate verifiated objects from this and previous month
+
+      const modifiedTrailsData = verificationTrails.data.filter((item) => item.verified === false);
+
+      const rawCombinedData = [...verificationPlaces.data, ...modifiedTrailsData];
+
+      const combinedData = rawCombinedData
+        .sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date))
+        .map((obj, index) => ({
+          ...obj,
+          lp: index + 1,
+          place_name: Object.prototype.hasOwnProperty.call(obj, 'path_name')
+            ? obj.path_name
+            : obj.place_name,
+          kind: Object.prototype.hasOwnProperty.call(obj, 'coordinates') ? 'T' : 'P',
+        }));
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -29,16 +53,19 @@ function PlaceVerificationSection() {
         return currentDate.getMonth();
       };
 
-      const sumOfCurrentMonthPlaces = response.data.filter(
-        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
+      const sumOfCurrentMonthPlaces = combinedData.filter(
+        (item) => getItemDate(item.verified_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthPlaces = response.data.filter(
+      const sumOfPreviousMonthPlaces = combinedData.filter(
         (item) => getItemDate(item.creation_date) === previousMonthDate,
       );
 
-      setPlaces(response.data);
-      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: response.data.length }));
+      setVerificationData(combinedData);
+      setStatistics((statistics) => ({
+        ...statistics,
+        ['allPlaces']: combinedData.length,
+      }));
       setStatistics((statistics) => ({
         ...statistics,
         ['sumOfCurrentMonthPlaces']: sumOfCurrentMonthPlaces.length,
@@ -56,15 +83,24 @@ function PlaceVerificationSection() {
   };
 
   useEffect(() => {
-    if (isVerificationsChanged || places.length === 0) {
+    if (isVerificationsChanged || verificationData.length === 0) {
       fetchVerificationItems();
     }
   }, [isVerificationsChanged]);
 
   const placeVerificationColumns = [
     {
+      header: t('admin.content.lp'),
+      accessorKey: 'lp',
+    },
+    {
+      header: t('admin.content.kind'),
+      accessorKey: 'kind',
+    },
+    {
       header: 'ID',
       accessorKey: 'id',
+      show: false,
     },
     {
       header: t('admin.content.name'),
@@ -77,7 +113,7 @@ function PlaceVerificationSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -88,7 +124,7 @@ function PlaceVerificationSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -99,7 +135,7 @@ function PlaceVerificationSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -109,7 +145,7 @@ function PlaceVerificationSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'found_date',
+      accessorKey: 'creation_date',
     },
   ];
 
@@ -139,11 +175,11 @@ function PlaceVerificationSection() {
         </div>
         <hr />
         <div className='w-full flex flex-col gap-3'>
-          <PlaceVerificationTable data={places} columns={placeVerificationColumns} />
+          <ObjectVerificationTable data={verificationData} columns={placeVerificationColumns} />
         </div>
       </div>
     </>
   );
 }
 
-export default PlaceVerificationSection;
+export default ObjectVerificationSection;

@@ -75,7 +75,7 @@ const UserPlaceItem = (props) => {
       </div>
       <div className='w-7/12 flex flex-col mx-2'>
         <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
-        <p className='text-sm'>{props.place.found_date}</p>
+        <p className='text-sm'>{props.place.creation_date}</p>
       </div>
       <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>
         <motion.div

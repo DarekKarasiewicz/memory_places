@@ -263,7 +263,7 @@ const GoogleMap = () => {
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
-                  {currentPlace.found_date}
+                  {currentPlace.creation_date}
                 </span>
                 <span>
                   <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}

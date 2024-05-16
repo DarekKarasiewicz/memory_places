@@ -17,9 +17,10 @@ function ChangesHistorySection() {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
       const changesItems = response.data
-        .map((obj) => {
+        .map((obj, index) => {
           const target = obj.changes_json.target ? obj.changes_json.target : '';
           return {
+            lp: index + 1,
             id: obj.id,
             name: t(obj.changes_json.name, { element_id: target }),
             change_date: obj.creation_date,
@@ -39,8 +40,13 @@ function ChangesHistorySection() {
 
   const changesColumns = [
     {
+      header: t('admin.content.lp'),
+      accessorKey: 'lp',
+    },
+    {
       header: 'ID',
       accessorKey: 'id',
+      show: false,
     },
     {
       header: t('admin.content.name'),

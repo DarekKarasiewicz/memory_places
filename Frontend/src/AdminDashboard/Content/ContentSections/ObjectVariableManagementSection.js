@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import PlaceVariableItem from './PlaceVariableManagementSectionItems/PlaceVariableItem';
+import ObjectVariableItem from './ObjectVariableManagementSectionItems/ObjectVariableItem';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import BaseButton from 'Base/BaseButton';
 import HelpIcon from 'icons/HelpIcon';
@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 
-function PlaceVariableManagementSection() {
+function ObjectVariableManagementSection() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [sortOf, setSortOf] = useState([]);
@@ -163,21 +163,21 @@ function PlaceVariableManagementSection() {
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full'>
-          <PlaceVariableItem
+          <ObjectVariableItem
             itemsName='sortof'
             items={sortOf}
             itemsBase={sortOfBase}
             ref={sortofRef}
             error={handleDataError}
           />
-          <PlaceVariableItem
+          <ObjectVariableItem
             itemsName='type'
             items={type}
             itemsBase={typeBase}
             ref={typeRef}
             error={handleDataError}
           />
-          <PlaceVariableItem
+          <ObjectVariableItem
             itemsName='period'
             items={period}
             itemsBase={periodBase}
@@ -197,4 +197,4 @@ function PlaceVariableManagementSection() {
   );
 }
 
-export default PlaceVariableManagementSection;
+export default ObjectVariableManagementSection;

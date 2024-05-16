@@ -18,9 +18,12 @@ function TrailManagementSection() {
   const fetchTrailItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
-      console.log(response.data);
-
-      // const modifiedTrailsData = response.data.filter((item) => item.verified === true);
+      const modifiedTrailsData = response.data
+        .map((obj, index) => ({
+          ...obj,
+          lp: index + 1,
+        }))
+        .filter((item) => item.verified === true);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -32,26 +35,16 @@ function TrailManagementSection() {
         return currentDate.getMonth();
       };
 
-      const sumOfCurrentMonthTrails = response.data.filter(
-        (item) => getItemDate(item.found_date) === new Date().getMonth(),
+      const sumOfCurrentMonthTrails = modifiedTrailsData.filter(
+        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthTrails = response.data.filter(
-        (item) => getItemDate(item.found_date) === previousMonthDate,
+      const sumOfPreviousMonthTrails = modifiedTrailsData.filter(
+        (item) => getItemDate(item.creation_date) === previousMonthDate,
       );
 
-      // const sumOfCurrentMonthTrails = modifiedTrailsData.filter(
-      //   (item) => getItemDate(item.found_date) === new Date().getMonth(),
-      // );
-
-      // const sumOfPreviousMonthTrails = modifiedTrailsData.filter(
-      //   (item) => getItemDate(item.found_date) === previousMonthDate,
-      // );
-
-      // setTrails(modifiedTrailsData);
-      setTrails(response.data);
-      // setStatistics((statistics) => ({ ...statistics, ['allTrails']: modifiedPlaceData.length }));
-      setStatistics((statistics) => ({ ...statistics, ['allTrails']: response.data.length }));
+      setTrails(modifiedTrailsData);
+      setStatistics((statistics) => ({ ...statistics, ['allTrails']: modifiedTrailsData.length }));
       setStatistics((statistics) => ({
         ...statistics,
         ['previousMonthTrails']: sumOfPreviousMonthTrails.length,
@@ -76,12 +69,17 @@ function TrailManagementSection() {
 
   const trailsColumns = [
     {
+      header: t('admin.content.lp'),
+      accessorKey: 'lp',
+    },
+    {
       header: 'ID',
       accessorKey: 'id',
+      show: false,
     },
     {
       header: t('admin.content.name'),
-      accessorKey: 'trail_name',
+      accessorKey: 'path_name',
     },
     {
       header: t('admin.content.type'),
@@ -90,7 +88,7 @@ function TrailManagementSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -101,7 +99,7 @@ function TrailManagementSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -111,7 +109,7 @@ function TrailManagementSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'found_date',
+      accessorKey: 'creation_date',
     },
   ];
 

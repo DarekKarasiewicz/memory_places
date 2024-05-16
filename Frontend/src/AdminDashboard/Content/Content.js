@@ -3,17 +3,17 @@ import StatisticsSection from './ContentSections/StatisticsSection';
 import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
 import TrailManagementSection from './ContentSections/TrailManagementSection';
-import PlaceVariableManagementSection from './ContentSections/PlaceVariableManagementSection';
+import ObjectVariableManagementSection from './ContentSections/ObjectVariableManagementSection';
 import ChangesHistorySection from './ContentSections/ChangesHistorySection';
-import PlaceVerificationSection from './ContentSections/PlaceVerificationSection';
+import ObjectVerificationSection from './ContentSections/ObjectVerificationSection';
 
 const contentSectionMap = {
   StatisticsSection,
   UserManagementSection,
   PlaceManagementSection,
   TrailManagementSection,
-  PlaceVariableManagementSection,
-  PlaceVerificationSection,
+  ObjectVariableManagementSection,
+  ObjectVerificationSection,
   ChangesHistorySection,
 };
 

@@ -19,7 +19,12 @@ function PlaceManagementSection() {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
 
-      const modifiedPlaceData = response.data.filter((item) => item.verified === true);
+      const modifiedPlaceData = response.data
+        .map((obj, index) => ({
+          ...obj,
+          lp: index + 1,
+        }))
+        .filter((item) => item.verified === true);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
@@ -32,11 +37,11 @@ function PlaceManagementSection() {
       };
 
       const sumOfCurrentMonthPlaces = modifiedPlaceData.filter(
-        (item) => getItemDate(item.found_date) === new Date().getMonth(),
+        (item) => getItemDate(item.creation_date) === new Date().getMonth(),
       );
 
       const sumOfPreviousMonthPlaces = modifiedPlaceData.filter(
-        (item) => getItemDate(item.found_date) === previousMonthDate,
+        (item) => getItemDate(item.creation_date) === previousMonthDate,
       );
 
       setPlaces(modifiedPlaceData);
@@ -65,8 +70,13 @@ function PlaceManagementSection() {
 
   const placesColumns = [
     {
+      header: t('admin.content.lp'),
+      accessorKey: 'lp',
+    },
+    {
       header: 'ID',
       accessorKey: 'id',
+      show: false,
     },
     {
       header: t('admin.content.name'),
@@ -79,7 +89,7 @@ function PlaceManagementSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -90,7 +100,7 @@ function PlaceManagementSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -101,7 +111,7 @@ function PlaceManagementSection() {
         if (props.getValue()) {
           return <span>{t(`modal.${props.getValue()}`)}</span>;
         } else {
-          return <span>{t('modal.no_translation_given')}</span>;
+          return <span>{t('modal.no_data')}</span>;
         }
       },
     },
@@ -111,7 +121,7 @@ function PlaceManagementSection() {
     },
     {
       header: t('admin.content.created'),
-      accessorKey: 'found_date',
+      accessorKey: 'creation_date',
     },
   ];
 

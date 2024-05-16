@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { addTrailActions } from 'Redux/addTrailSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTrailActions, selectAddTrail } from 'Redux/addTrailSlice';
+import { addPlacelocationActions } from 'Redux/addPlaceLocationSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { adminActions } from 'Redux/adminActionSlice';
 import { useCookies } from 'react-cookie';
@@ -31,14 +32,12 @@ function AdminTrailActionSection({ action, trailId }) {
   const [period, setPeriod] = useState([]);
   const nameRef = useRef(null);
   const descRef = useRef(null);
-  const dateRef = useRef(null);
   const typeRef = useRef(null);
   const periodRef = useRef(null);
   const wikiLinkRef = useRef(null);
   const webLinkRef = useRef(null);
   const [isValidName, setIsValidName] = useState(null);
   const [isValidDesc, setIsValidDesc] = useState(null);
-  const [isValidDate, setIsValidDate] = useState(null);
   const [isValidType, setIsValidType] = useState(null);
   const [isValidPeriod, setIsValidPeriod] = useState(null);
   const [inputLength, setInputLength] = useState(0);
@@ -49,6 +48,8 @@ function AdminTrailActionSection({ action, trailId }) {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const [currentAction, setCurrentAction] = useState('add');
+  const addTrailData = useSelector(selectAddTrail);
+  const [cordsPosition, setCordsPosition] = useState(null);
 
   const fetchTypeItems = async () => {
     try {
@@ -110,18 +111,17 @@ function AdminTrailActionSection({ action, trailId }) {
             `http://127.0.0.1:8000/admin_dashboard/path/pk=${trailId}`,
           );
 
-          nameRef.current.value = response.data.place_name;
+          nameRef.current.value = response.data.path_name;
           descRef.current.value = response.data.description;
-          dateRef.current.value = response.data.found_date;
           typeRef.current.value = response.data.type;
           periodRef.current.value = response.data.period;
           wikiLinkRef.current.value = response.data.wiki_link;
           webLinkRef.current.value = response.data.topic_link;
           setToVerification(response.data.verified === true ? 'false' : 'true');
+          setCordsPosition(response.data.coordinates);
 
           validateName(nameRef.current.value);
           validateDescription(descRef.current.value);
-          validateDate(dateRef.current.value);
           validateType(typeRef.current.value);
           validatePeriod(periodRef.current.value);
         } catch (error) {
@@ -144,6 +144,8 @@ function AdminTrailActionSection({ action, trailId }) {
 
       getTrailItems(trailId);
     }
+    dispatch(addPlacelocationActions.clearLocation());
+    dispatch(addTrailActions.reset());
   }, []);
 
   const handleNameChange = () => {
@@ -181,12 +183,7 @@ function AdminTrailActionSection({ action, trailId }) {
     return setIsValidDesc(false);
   };
 
-  const validateDate = (date) => {
-    return setIsValidDate(isNaN(date));
-  };
-
   const validateType = (type) => {
-    console.log(typeof type);
     if (type !== '0') {
       return setIsValidType(true);
     }
@@ -203,10 +200,10 @@ function AdminTrailActionSection({ action, trailId }) {
   const validateForm = () => {
     if (
       isValidName === true &&
-      isValidDate === true &&
       isValidDesc === true &&
       isValidType === true &&
-      isValidPeriod === true
+      isValidPeriod === true &&
+      addTrailData.coordinates.length > 0
     ) {
       return true;
     }
@@ -215,6 +212,12 @@ function AdminTrailActionSection({ action, trailId }) {
   };
 
   const handleSelectTrail = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+
     if (action === 'edit' && confirm(t('common.trail_change_warning'))) {
       dispatch(modalsActions.changeIsTrailUpdateFormOpen());
       dispatch(addTrailActions.changeIsSelecting(true));
@@ -234,9 +237,8 @@ function AdminTrailActionSection({ action, trailId }) {
       if (action === 'edit') {
         axios
           .put(`http://127.0.0.1:8000/admin_dashboard/path/${trailId}/`, {
-            place_name: nameRef.current.value,
+            path_name: nameRef.current.value,
             description: descRef.current.value,
-            found_date: dateRef.current.value,
             type: typeRef.current.value,
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
@@ -258,9 +260,9 @@ function AdminTrailActionSection({ action, trailId }) {
         axios
           .post(`http://127.0.0.1:8000/admin_dashboard/path/`, {
             user: user.user_id,
-            place_name: nameRef.current.value,
+            path_name: nameRef.current.value,
+            coordinates: JSON.stringify(addTrailData.coordinates),
             description: descRef.current.value,
-            found_date: dateRef.current.value,
             type: typeRef.current.value,
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
@@ -389,31 +391,6 @@ function AdminTrailActionSection({ action, trailId }) {
                 disabled={isReadOnly}
               />
             </div>
-            <div className='bg-thirdBgColor p-10'>
-              <div className='flex flex-col gap-2'>
-                <BaseInput
-                  type='date'
-                  name='dateInput'
-                  label={t('common.date')}
-                  blockFuture={true}
-                  ref={dateRef}
-                  isValid={isValidDate}
-                  onChange={() => validateDate(nameRef.current.value)}
-                  onBlur={() => validateDate(nameRef.current.value)}
-                  readOnly={isReadOnly}
-                />
-                <div className='flex px-2'>
-                  {!isValidDate ? (
-                    <span className='text-red-500 flex items-center gap-2'>
-                      <AlertIcon className='h-6 w-6' color='#ef4444' />
-                      <span>{t('admin.common.field_required')}</span>
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
-                </div>
-              </div>
-            </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
               <p className='text-xl'>{t('admin.common.desc_info')}</p>
               <div className='flex flex-col gap-2'>
@@ -479,7 +456,7 @@ function AdminTrailActionSection({ action, trailId }) {
             </div>
           </div>
           <div className='w-1/2 h-3/4 flex flex-col gap-4'>
-            <AdminGoogleMap action={currentAction} />
+            <AdminGoogleMap action={currentAction} kind='trail' cordsPosition={cordsPosition} />
             <BaseImageUpload fileSize={5} />
           </div>
         </div>

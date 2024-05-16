@@ -21,13 +21,14 @@ import { registerAppChanges } from 'utils';
 import SearchIcon from 'icons/SearchIcon';
 import { adminDataActions } from 'Redux/adminDataSlice';
 
-function PlaceVerificationTable({ data, columns }) {
+function ObjectVerificationTable({ data, columns }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
+  const [columnVisibility, setColumnVisibility] = useState({ id: false });
 
   const table = useReactTable({
     data,
@@ -40,6 +41,7 @@ function PlaceVerificationTable({ data, columns }) {
     state: {
       sorting: sorting,
       globalFilter: filtering,
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
@@ -49,10 +51,14 @@ function PlaceVerificationTable({ data, columns }) {
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
 
-  const handlePlaceConfirmation = (placeId) => {
+  const handlePlaceConfirmation = (placeId, kind) => {
+    const checkKind = kind === 'P' ? 'places' : 'path';
+    let currentDate = new Date();
+
     axios
-      .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
+      .put(`http://127.0.0.1:8000/admin_dashboard/${checkKind}/${placeId}/`, {
         verified: true,
+        verified_date: currentDate.toISOString().slice(0, 10),
       })
       .then(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -66,14 +72,21 @@ function PlaceVerificationTable({ data, columns }) {
       });
   };
 
-  const handlePlaceDismiss = (placeId) => {
-    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-    dispatch(confirmationModalActions.changeType('error'));
-    dispatch(adminDataActions.updateIsVerificationsChanged(true));
-    registerAppChanges('admin.changes_messages.place_unverified', cookies.user, placeId);
+  const handlePlaceDismiss = (placeId, kind) => {
+    const checkKind = kind === 'P' ? 'places' : 'path';
 
-    //TO DO
-    //On dismiss should element will be wiped out or what?
+    axios
+      .delete(`http://127.0.0.1:8000/admin_dashboard/${checkKind}/${placeId}/`)
+      .then(() => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('success'));
+        dispatch(adminDataActions.updateIsVerificationsChanged(true));
+        registerAppChanges('admin.changes_messages.place_unverified', cookies.user, placeId);
+      })
+      .catch(() => {
+        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+        dispatch(confirmationModalActions.changeType('error'));
+      });
   };
 
   return (
@@ -133,31 +146,41 @@ function PlaceVerificationTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-2'>
+              <td className='flex my-2 mx-2 gap-2'>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handlePlaceConfirmation(row.original.id)}
+                  onClick={() => handlePlaceConfirmation(row.original.id, row.original.kind)}
                 >
                   <CheckIcon className='h-5 w-5' />
                   <span>{t('admin.common.confirm')}</span>
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handlePlaceDismiss(row.original.id)}
+                  onClick={() => handlePlaceDismiss(row.original.id, row.original.kind)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.common.dismiss')}</span>
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
+                  onClick={() =>
+                    navigate(
+                      `/adminDashboard/${row.original.kind === 'P' ? 'place' : 'trail'}View/` +
+                        row.original.id,
+                    )
+                  }
                 >
                   <SettingsIcon className='h-5 w-5' />
-                  <span>{t('admin.content.more_info')}</span>
+                  <span className='w-min'>{t('admin.content.more_info')}</span>
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
+                  onClick={() =>
+                    navigate(
+                      `/adminDashboard/${row.original.kind === 'P' ? 'place' : 'trail'}Edit/` +
+                        row.original.id,
+                    )
+                  }
                 >
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>
@@ -228,4 +251,4 @@ function PlaceVerificationTable({ data, columns }) {
   );
 }
 
-export default PlaceVerificationTable;
+export default ObjectVerificationTable;

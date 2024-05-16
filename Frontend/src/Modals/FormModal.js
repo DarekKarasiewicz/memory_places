@@ -27,7 +27,6 @@ function FormModal(props) {
   const formValidation = useSelector(selectFormValidation);
   const dispatch = useDispatch();
   const nameRef = useRef();
-  const dateRef = useRef();
   const latRef = useRef();
   const lngRef = useRef();
   const descriptionRef = useRef();
@@ -56,7 +55,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.value,
+          value: obj.id,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -82,7 +81,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.value,
+          value: obj.id,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -108,7 +107,7 @@ function FormModal(props) {
         .map((obj) => ({
           id: obj.id,
           label: t(`modal.${obj.value}`),
-          value: obj.value,
+          value: obj.id,
           order: obj.order,
         }))
         .sort((a, b) => (a.order > b.order ? 1 : -1));
@@ -148,7 +147,6 @@ function FormModal(props) {
     if (props.type === 'update' && updatePlaceData.isDataLoaded === false) {
       dispatch(addPlaceActions.changeName(updatePlaceData.place.place_name));
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
-      dispatch(addPlaceActions.changeFoundDate(updatePlaceData.place.found_date));
       setLat(updatePlaceData.place.lat);
       setLng(updatePlaceData.place.lng);
       dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof_value));
@@ -158,7 +156,6 @@ function FormModal(props) {
       dispatch(addPlaceActions.changeTopicLink(updatePlaceData.place.topic_link));
       validateName(updatePlaceData.place.place_name);
       validateDescription(updatePlaceData.place.description);
-      dispatch(formValidationActions.changeIsValidDate(isNaN(updatePlaceData.place.found_date)));
       validateLat(updatePlaceData.place.lat);
       validateLng(updatePlaceData.place.lng);
       dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== '0'));
@@ -231,7 +228,6 @@ function FormModal(props) {
           .put(`http://localhost:8000/memo_places/places/${updatePlaceData.place.id}/`, {
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
-            found_date: addPlaceData.found_date,
             lat: lat,
             lng: lng,
             sortof: addPlaceData.sortof,
@@ -262,12 +258,11 @@ function FormModal(props) {
             user: user.user_id,
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
-            found_date: addPlaceData.found_date,
             lat: lat,
             lng: lng,
-            sortof: addPlaceData.sortof,
-            type: addPlaceData.type,
-            period: addPlaceData.period,
+            sortof: parseInt(addPlaceData.sortof),
+            type: parseInt(addPlaceData.type),
+            period: parseInt(addPlaceData.period),
             wiki_link: addPlaceData.wiki_link,
             topic_link: addPlaceData.topic_link,
           })
@@ -365,30 +360,6 @@ function FormModal(props) {
               />
             </div>
             <hr className='border-textColor' />
-            <div className='flex flex-col gap-2'>
-              <BaseInput
-                type='date'
-                name='dateInput'
-                label={t('common.date')}
-                blockFuture={true}
-                ref={dateRef}
-                value={addPlaceData.found_date}
-                onBlur={() => {
-                  dispatch(addPlaceActions.changeFoundDate(dateRef.current.value));
-                  dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-                }}
-                onChange={() => {
-                  dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-                }}
-                isValid={formValidation.isValidDate}
-              />
-              {formValidation.isValidDate === false && (
-                <span className='text-red-500 flex items-center gap-2'>
-                  <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
-                </span>
-              )}
-            </div>
             <div className='flex flex-col gap-2'>
               <BaseSelect
                 label={t('common.type_of')}

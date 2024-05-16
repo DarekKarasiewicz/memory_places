@@ -23,6 +23,7 @@ function TrailTable({ data, columns }) {
   const { t } = useTranslation();
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
+  const [columnVisibility, setColumnVisibility] = useState({ id: false });
 
   const table = useReactTable({
     data,
@@ -35,6 +36,7 @@ function TrailTable({ data, columns }) {
     state: {
       sorting: sorting,
       globalFilter: filtering,
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,

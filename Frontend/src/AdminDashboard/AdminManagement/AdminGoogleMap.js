@@ -25,7 +25,7 @@ import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import Infobar from 'Navbar/Infobar';
 
-const AdminGoogleMap = ({ action, placePosition }) => {
+const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition }) => {
   const dispatch = useDispatch();
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const updatePlaceData = useSelector(selectUpdatePlace);
@@ -34,6 +34,7 @@ const AdminGoogleMap = ({ action, placePosition }) => {
   const adminActionData = useSelector(selectAdminAction);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [cords, setCords] = useState(null);
   const isLoaded = useApiIsLoaded();
   const [isPositionLoaded, setIsPositionLoaded] = useState(false);
   const position = useMemo(() => ({ lat: latitude, lng: longitude }), [latitude, longitude]);
@@ -45,36 +46,57 @@ const AdminGoogleMap = ({ action, placePosition }) => {
 
   useEffect(() => {
     if (action !== 'edit' && action !== 'view') {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (error) => {
-          if (error.code === 1) {
-            dispatch(notificationModalActions.changeType('alert'));
-            dispatch(notificationModalActions.changeTitle(t('google_maps.error1_info')));
-          } else if (error.code === 2) {
-            dispatch(notificationModalActions.changeType('alert'));
-            dispatch(notificationModalActions.changeTitle(t('google_maps.error2_info')));
-          } else {
-            dispatch(notificationModalActions.changeType('alert'));
-            dispatch(notificationModalActions.changeTitle(t('google_maps.error3_info')));
-          }
-          dispatch(notificationModalActions.changeIsNotificationModalOpen());
-        },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-      );
-    } else {
       if (addPlaceLocation.lat && addPlaceLocation.lng) {
         position.lat = addPlaceLocation.lat;
         position.lng = addPlaceLocation.lng;
       } else {
-        position.lat = placePosition.lat;
-        position.lng = placePosition.lng;
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+          },
+          (error) => {
+            if (error.code === 1) {
+              dispatch(notificationModalActions.changeType('alert'));
+              dispatch(notificationModalActions.changeTitle(t('google_maps.error1_info')));
+            } else if (error.code === 2) {
+              dispatch(notificationModalActions.changeType('alert'));
+              dispatch(notificationModalActions.changeTitle(t('google_maps.error2_info')));
+            } else {
+              dispatch(notificationModalActions.changeType('alert'));
+              dispatch(notificationModalActions.changeTitle(t('google_maps.error3_info')));
+            }
+            dispatch(notificationModalActions.changeIsNotificationModalOpen());
+          },
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+      }
+    } else {
+      if (placePosition) {
+        setLatitude(placePosition.lat);
+        setLongitude(placePosition.lng);
+      }
+
+      if (cordsPosition) {
+        const positions = JSON.parse(cordsPosition);
+        setCords(positions);
+        setLatitude(positions[0].lat);
+        setLongitude(positions[0].lng);
       }
     }
-  }, [action]);
+  }, [action, placePosition, position, cordsPosition]);
+
+  useEffect(() => {
+    if (addTrailData && addTrailData.coordinates && kind === 'trail') {
+      setCords(addTrailData.coordinates);
+    }
+  }, [addTrailData]);
+
+  useEffect(() => {
+    if (position.lat !== null && position.lng !== null) {
+      setIsPositionLoaded(true);
+    }
+  }, [position]);
 
   const handleLocationMarker = (event) => {
     if (addPlaceLocation.isSelecting) {
@@ -106,12 +128,6 @@ const AdminGoogleMap = ({ action, placePosition }) => {
       dispatch(modalsActions.changeIsFormModalOpen());
     }
   };
-
-  useEffect(() => {
-    if (position.lat !== null && position.lng !== null) {
-      setIsPositionLoaded(true);
-    }
-  }, [position]);
 
   return isLoaded && isPositionLoaded ? (
     <div
@@ -178,31 +194,31 @@ const AdminGoogleMap = ({ action, placePosition }) => {
           </AdvancedMarker>
         )}
 
-        {/* {filterItems && filterItems.length > 0 ? (
-          filterItems.map((place) => (
-            <AdvancedMarker
-              key={place.id}
-              position={{ lat: place.lat, lng: place.lng }}
-            >
-              <GoogleMapPin iconPath={`../../assets/places_icons/${place.type}_icon.svg`} />
-            </AdvancedMarker>
-          ))
-        ) : (
-          <p>{t('google_maps.no_items')}</p>
+        {placePosition && !addPlaceLocation.isSelecting && (
+          <AdvancedMarker key={2} position={{ lat: latitude, lng: longitude }}>
+            <GoogleMapPin iconPath={`../../assets/places_icons/test_icon.svg`} />
+          </AdvancedMarker>
         )}
-        {filteredTrails && filteredTrails.length > 0 ? (
-          filteredTrails.map((trail) => (
-            <Polyline
-              key={trail.id}
-              strokeColor={'#00FF00'}
-              strokeOpacity={0.3}
-              strokeWeight={10}
-              path={JSON.parse(trail.coordinates)}
-            />
-          ))
-        ) : (
-          <p>{t('google_maps.no_items')}</p>
-        )} */}
+
+        {kind === 'trail' && addTrailData.coordinates && !addPlaceLocation.isSelecting && (
+          <Polyline
+            key={3}
+            strokeColor={'#00FF00'}
+            strokeOpacity={0.3}
+            strokeWeight={10}
+            path={cords}
+          />
+        )}
+
+        {kind === 'trail' && cordsPosition && !addPlaceLocation.isSelecting && (
+          <Polyline
+            key={4}
+            strokeColor={'#00FF00'}
+            strokeOpacity={0.3}
+            strokeWeight={10}
+            path={cords}
+          />
+        )}
       </Map>
     </div>
   ) : (
