@@ -19,6 +19,7 @@ function HistoryTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const dispatch = useDispatch();
+  const [columnVisibility, setColumnVisibility] = useState({ id: false });
 
   const table = useReactTable({
     data,
@@ -31,6 +32,7 @@ function HistoryTable({ data, columns }) {
     state: {
       sorting: sorting,
       globalFilter: filtering,
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,

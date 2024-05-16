@@ -60,7 +60,7 @@ const UserTrailItem = (props) => {
       </div>
       <div className='w-7/12 flex flex-col mx-2'>
         <h2 className='truncate font-semibold h-full'>{props.trail.path_name}</h2>
-        <p className='text-sm'>{props.trail.found_date}</p>
+        <p className='text-sm'>{props.trail.creation_date}</p>
       </div>
       <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>
         <motion.div

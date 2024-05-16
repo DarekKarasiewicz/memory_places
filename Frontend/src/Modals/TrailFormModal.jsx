@@ -32,7 +32,6 @@ const TrailFormModal = (props) => {
   const drawingEvents = useSelector(selectDrawingEvents);
   const formValidation = useSelector(selectFormValidation);
   const nameRef = useRef();
-  const dateRef = useRef();
   const descriptionRef = useRef();
   const typeRef = useRef();
   const periodRef = useRef();
@@ -101,7 +100,6 @@ const TrailFormModal = (props) => {
     if (props.type === 'update' && updateTrailData.isDataLoaded === false) {
       dispatch(addTrailActions.changeName(updateTrailData.trail.path_name));
       dispatch(addTrailActions.changeDescription(updateTrailData.trail.description));
-      dispatch(addTrailActions.changeFoundDate(updateTrailData.trail.found_date));
       dispatch(addTrailActions.changeType(updateTrailData.trail.type));
       dispatch(addTrailActions.changePeriod(updateTrailData.trail.period));
       dispatch(addTrailActions.changeWikiLink(updateTrailData.trail.wiki_link));
@@ -109,7 +107,6 @@ const TrailFormModal = (props) => {
       dispatch(addTrailActions.setTrailCoords(JSON.parse(updateTrailData.trail.coordinates)));
       validateName(updateTrailData.trail.path_name);
       validateDescription(updateTrailData.trail.description);
-      dispatch(formValidationActions.changeIsValidDate(isNaN(updateTrailData.trail.found_date)));
       dispatch(formValidationActions.changeIsValidType(updateTrailData.trail.type !== '0'));
       dispatch(formValidationActions.changeIsValidPeriod(updateTrailData.trail.period !== '0'));
       dispatch(updateTrailActions.dataIsLoaded());
@@ -169,7 +166,6 @@ const TrailFormModal = (props) => {
             user: user.user_id,
             path_name: addTrailData.path_name,
             description: addTrailData.description,
-            found_date: addTrailData.found_date,
             type: addTrailData.type,
             period: addTrailData.period,
             wiki_link: addTrailData.wiki_link,
@@ -207,7 +203,6 @@ const TrailFormModal = (props) => {
             user: user.user_id,
             path_name: addTrailData.path_name,
             description: addTrailData.description,
-            found_date: addTrailData.found_date,
             type: addTrailData.type,
             period: addTrailData.period,
             wiki_link: addTrailData.wiki_link,
@@ -254,30 +249,6 @@ const TrailFormModal = (props) => {
     <BaseModal title={props.title} closeModal={props.closeModal}>
       <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4'>
         <div className='flex flex-col gap-2 w-2/5'>
-          <div className='flex flex-col gap-2'>
-            <BaseInput
-              type='date'
-              name='dateInput'
-              label={t('common.date')}
-              blockFuture={true}
-              ref={dateRef}
-              value={addTrailData.found_date}
-              onBlur={() => {
-                dispatch(addTrailActions.changeFoundDate(dateRef.current.value));
-                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-              }}
-              onChange={() => {
-                dispatch(formValidationActions.changeIsValidDate(isNaN(dateRef.current.value)));
-              }}
-              isValid={formValidation.isValidDate}
-            />
-            {formValidation.isValidDate === false && (
-              <span className='text-red-500 flex items-center gap-2'>
-                <AlertIcon className='h-6 w-6' color='#ef4444' />
-                <span>{t('admin.common.field_required')}</span>
-              </span>
-            )}
-          </div>
           <div className='flex flex-col gap-2'>
             <BaseSelect
               label={t('common.type')}

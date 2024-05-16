@@ -38,7 +38,7 @@ const AdvancedInfoBox = (props) => {
             </section>
             <section className='flex flex-col'>
               <span className='italic font-medium'>{t('common.founded')}</span>{' '}
-              <span>{receivedData.found_date}</span>
+              <span>{receivedData.creation_date}</span>
             </section>
             <section className='flex flex-col'>
               <span className='italic font-medium'>{t('common.type_of')}</span>{' '}

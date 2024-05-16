@@ -24,6 +24,7 @@ function UsersTable({ data, columns }) {
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [columnVisibility, setColumnVisibility] = useState({ id: false });
 
   const table = useReactTable({
     data,
@@ -36,6 +37,7 @@ function UsersTable({ data, columns }) {
     state: {
       sorting: sorting,
       globalFilter: filtering,
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,

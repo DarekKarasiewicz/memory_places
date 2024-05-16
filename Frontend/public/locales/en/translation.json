@@ -121,7 +121,7 @@
         "zabytek": "Historical monument",
         "miejsce": "Battlefield",
         "iiwojnaswiatowa": "World War II (1939-1945)",
-        "no_translation_given": "No translations"
+        "no_data": "No data"
     },
     "user":{
         "general": "General",
@@ -200,8 +200,8 @@
             "user_manage_title": "User management",
             "place_manage_title": "Place management",
             "trail_manage_title": "Trail management",
-            "var_manage_title": "Variables management",
-            "verification_title": "Place verification",
+            "var_manage_title": "Variable object management",
+            "verification_title": "Memory objects verification",
             "history_title": "App changes history",
             "january": "January",
             "february": "February",
@@ -299,7 +299,7 @@
             "all_trails": "All trails",
             "previous_trails": "Previous month's trails",
             "current_trails": "This month's trails",
-            "variable_info": "Listed information of each elective option when creating memory place",
+            "variable_info": "Listed information for each selectable option when creating memory objects",
             "sortof": "Sort of",
             "type": "Type",
             "period": "Period",
@@ -307,8 +307,8 @@
             "no_options": "No options",
             "add_element": "Add element",
             "save_changes": "Save changes",
-            "verification_info": "Validate information contained in user-created places",
-            "all_verification": "All places awaiting verification",
+            "verification_info": "Verifying the accuracy of information contained in user-created memory objects",
+            "all_verification": "All objects awaiting verification",
             "previous_verified": "Verified from the previous month",
             "current_verified": "Verified from this month",
             "history_info": "Documented and described changes made to the application",
@@ -318,7 +318,9 @@
             "alert_success": "Action executed successfully!",
             "alert_error": "Something went wrong. Please try again!",
             "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
-            "place_var_info2": "Current values to assign translations to:"
+            "place_var_info2": "Current values to assign translations to:",
+            "lp": "No.",
+            "kind": "Kind"
         },
         "changes_messages": {
             "blocked": "Blocked user with ID {{element_id}}",

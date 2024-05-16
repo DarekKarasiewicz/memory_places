@@ -24,11 +24,12 @@ function UserManagementSection() {
 
       const modifiedUserData = response.data
         .filter((item) => !user.master || (user.master && !item.admin))
-        .map((item) => {
+        .map((item, index) => {
           const role = item.admin ? 'admin' : item.master ? 'master_user' : 'user';
 
           return {
             ...item,
+            lp: index + 1,
             role,
           };
         });
@@ -73,8 +74,13 @@ function UserManagementSection() {
 
   const usersColumns = [
     {
+      header: t('admin.content.lp'),
+      accessorKey: 'lp',
+    },
+    {
       header: 'ID',
       accessorKey: 'id',
+      show: false,
     },
     {
       header: t('admin.content.name'),

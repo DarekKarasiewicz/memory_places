@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   path_name: '',
   description: '',
-  found_date: null,
   sortof: '',
   type: '',
   period: '',
@@ -23,9 +22,6 @@ export const addTrailSlice = createSlice({
     },
     changeDescription: (state, action) => {
       state.description = action.payload;
-    },
-    changeFoundDate: (state, action) => {
-      state.found_date = action.payload;
     },
     changeType: (state, action) => {
       state.type = action.payload;

@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   place_name: '',
   description: '',
-  found_date: null,
   sortof: '',
   type: '',
   period: '',
@@ -21,9 +20,6 @@ export const addPlaceSlice = createSlice({
     },
     changeDescription: (state, action) => {
       state.description = action.payload;
-    },
-    changeFoundDate: (state, action) => {
-      state.found_date = action.payload;
     },
     changeSortOf: (state, action) => {
       state.sortof = action.payload;

@@ -37,13 +37,13 @@ function AdminMenu() {
     {
       icon: 'varChanges',
       name: t('admin.common.var_manage_title'),
-      section: 'PlaceVariableManagementSection',
+      section: 'ObjectVariableManagementSection',
       isAdmin: true,
     },
     {
       icon: 'verification',
       name: t('admin.common.verification_title'),
-      section: 'PlaceVerificationSection',
+      section: 'ObjectVerificationSection',
     },
     {
       icon: 'webChanges',
