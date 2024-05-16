@@ -90,7 +90,7 @@ class Short_Places_serailizer(serializers.ModelSerializer):
         fields = (
             "id",
             "place_name",
-            "verified_date",
+            "creation_date",
             "lng",
             "lat",
             "user",
@@ -99,6 +99,24 @@ class Short_Places_serailizer(serializers.ModelSerializer):
             "type",
             "period",
         )
+
+class Short_Path_serailizer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
+
+    class Meta:
+        model = Place
+        fields = (
+            "id",
+            "path_name",
+            "creation_date",
+            "coordinates"
+            "user",
+            "username",
+            "sortof",
+            "type",
+            "period",
+        )
+
 
 class Questions_serializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)
