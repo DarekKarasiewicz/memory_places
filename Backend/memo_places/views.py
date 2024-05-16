@@ -11,6 +11,7 @@ from .serializers import (
     Places_serailizer,
     User_serializer,
     Short_Places_serailizer,
+    Short_Path_serailizer,
     Questions_serializer,
     Changes_serializer,
     Path_serailizer,
@@ -326,14 +327,22 @@ class Path_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Short_place_view(viewsets.ModelViewSet):
-    model = Place
+class ShortBaseView(viewsets.ModelViewSet):
+
+    model =None 
+    serializer_class = None 
     http_method_names = ["get"]
-    serializer_class = Short_Places_serailizer
 
     def get_queryset(self):
         return self.model.objects.all()
 
+class ShortPlaceView(ShortBaseView):
+    model = Place
+    serializer_class = Short_Places_serailizer
+
+class ShortPathView(ShortBaseView):
+    model = Path 
+    serializer_class = Short_Path_serailizer
 
 class Outside_user_view(viewsets.ModelViewSet):
     model = User
