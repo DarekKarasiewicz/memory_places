@@ -69,6 +69,7 @@ class Path_serailizer(serializers.ModelSerializer):
             "path_name",
             "description",
             "creation_date",
+            "verified",
             "verified_date",
             "coordinates",
             "user",

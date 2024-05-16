@@ -133,7 +133,6 @@ class Place(models.Model):
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
     verified_date = models.DateField(default=None, null=True)
-    creation_date = models.DateField(default=None, null=True)
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
@@ -151,7 +150,6 @@ class Path(models.Model):
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
     verified_date = models.DateField(default=None, null=True)
-    creation_date = models.DateField(default=None, null=True)
 
 class PathImage(models.Model):
     path = models.ForeignKey(Path, on_delete=models.CASCADE)
