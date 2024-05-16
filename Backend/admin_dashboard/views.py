@@ -494,13 +494,21 @@ class User_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class None_Verified_Places_view(viewsets.ModelViewSet):
-    model = Place
-    serializer_class = Places_serailizer
+class NoneVerifiedBaseView(viewsets.ModelViewSet):
+    model = None 
+    serializer_class = None 
+    http_method_names = ["get"]
 
     def get_queryset(self):
         return self.model.objects.filter(verified=False)
 
+class NoneVerifiedPlacesView(NoneVerifiedBaseView):
+    model = Place
+    serializer_class = Places_serailizer
+
+class NoneVerifiedPathView(NoneVerifiedBaseView):
+    model = Path 
+    serializer_class = Path_serailizer
 
 class Questions_view(viewsets.ModelViewSet):
     model = Question
