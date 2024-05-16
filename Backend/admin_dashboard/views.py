@@ -301,6 +301,8 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.wiki_link = data["wiki_link"]
                 case "topic_link":
                     path_object.topic_link = data["topic_link"]
+                case "verified":
+                    path_object.verified = data["verified"]
                 case _:
                     pass
 
