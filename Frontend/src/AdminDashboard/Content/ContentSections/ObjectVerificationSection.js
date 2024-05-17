@@ -17,22 +17,24 @@ function ObjectVerificationSection() {
 
   const fetchVerificationItems = async () => {
     try {
-      const verificationPlaces = await axios.get(
-        `http://127.0.0.1:8000/admin_dashboard/not_verified_places`,
-      );
-
       //TO DO
-      //When endpoint will be created edit this code
-      const verificationTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path/`);
+      //Maybe it will be better to remove this endpoints not_verified_... bcs i still need to get all places and trails for statistics purpouses
+      const verificationPlaces = await axios.get(
+        `http://127.0.0.1:8000/admin_dashboard/not_verified_places/`,
+      );
+      const verificationTrails = await axios.get(
+        `http://127.0.0.1:8000/admin_dashboard/not_verified_path/`,
+      );
+      const allPlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places/`);
+      const allTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path/`);
 
-      //TO DO 
-      //Calculate verifiated objects from this and previous month
+      const modifiedPlaceData = allPlaces.data.filter((item) => item.verified === true);
+      const modifiedTrailData = allTrails.data.filter((item) => item.verified === true);
 
-      const modifiedTrailsData = verificationTrails.data.filter((item) => item.verified === false);
+      const rawCombinedVerificationData = [...verificationPlaces.data, ...verificationTrails.data];
+      const rawCombinedAllData = [...modifiedPlaceData, ...modifiedTrailData];
 
-      const rawCombinedData = [...verificationPlaces.data, ...modifiedTrailsData];
-
-      const combinedData = rawCombinedData
+      const combinedAllData = rawCombinedVerificationData
         .sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date))
         .map((obj, index) => ({
           ...obj,
@@ -40,7 +42,10 @@ function ObjectVerificationSection() {
           place_name: Object.prototype.hasOwnProperty.call(obj, 'path_name')
             ? obj.path_name
             : obj.place_name,
-          kind: Object.prototype.hasOwnProperty.call(obj, 'coordinates') ? 'T' : 'P',
+          kind: Object.prototype.hasOwnProperty.call(obj, 'coordinates')
+            ? t('admin.common.trail')
+            : t('admin.common.places'),
+          kind_value: Object.prototype.hasOwnProperty.call(obj, 'coordinates') ? 'T' : 'P',
         }));
 
       const getItemDate = (date) => {
@@ -53,18 +58,18 @@ function ObjectVerificationSection() {
         return currentDate.getMonth();
       };
 
-      const sumOfCurrentMonthPlaces = combinedData.filter(
+      const sumOfCurrentMonthPlaces = rawCombinedAllData.filter(
         (item) => getItemDate(item.verified_date) === new Date().getMonth(),
       );
 
-      const sumOfPreviousMonthPlaces = combinedData.filter(
+      const sumOfPreviousMonthPlaces = rawCombinedAllData.filter(
         (item) => getItemDate(item.creation_date) === previousMonthDate,
       );
 
-      setVerificationData(combinedData);
+      setVerificationData(combinedAllData);
       setStatistics((statistics) => ({
         ...statistics,
-        ['allPlaces']: combinedData.length,
+        ['allPlaces']: combinedAllData.length,
       }));
       setStatistics((statistics) => ({
         ...statistics,
@@ -96,6 +101,11 @@ function ObjectVerificationSection() {
     {
       header: t('admin.content.kind'),
       accessorKey: 'kind',
+    },
+    {
+      header: t('admin.content.kind'),
+      accessorKey: 'kind_value',
+      show: false,
     },
     {
       header: 'ID',

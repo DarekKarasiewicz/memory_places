@@ -234,6 +234,7 @@
             "dismiss": "Odrzuć",
             "users": "Użytkownicy",
             "places": "Miejsca",
+            "trails": "Trasy",
             "new_element": "Nowy element",
             "memo_place_add": "Dodawanie miejsca pamięci",
             "memo_place_edit": "Edytowanie miejsca pamięci",
@@ -268,9 +269,11 @@
             "month_all_users": "Liczba użytkowników w danym miesiącu",
             "all_places_count": "Całkowita liczba miejsc",
             "month_all_places": "Liczba miejsc w danym miesiącu",
+            "all_trails_count": "Całkowita liczba tras",
             "new_month_users": "Użytkownicy w bieżącym miesiącu",
             "new_month_places": "Miejsca w bieżącym miesiącu",
             "all_users_info": "Wszystkie informacje dotyczące użytkowników",
+            "all_object_graph": "Dynamika rozwoju użytkowników, miejsc i tras w ciągu roku",
             "users": "Użytkownicy",
             "master_user": "Super użytkownicy",
             "admin": "Administratorzy",
@@ -320,7 +323,8 @@
             "place_var_info": "Po jakiejkolwiek zmianie w tej sekcji należy skontaktować się z developerem w celu zmiany tłumaczeń w aplikacji",
             "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:",
             "lp": "Lp.",
-            "kind": "Rodzaj"
+            "kind": "Rodzaj",
+            "cannot_change_info": "Twoje dane nie mogą zostać zmienione"
         },
         "changes_messages": {
             "blocked": "Zablokowany użytkownik o ID {{element_id}}",

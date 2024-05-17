@@ -232,7 +232,9 @@ function AdminTrailActionSection({ action, trailId }) {
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
+      let currentDate = new Date();
       var isValidated = toVerification === 'true' ? false : true;
+      var setValidationDate = !isValidated ? currentDate.toISOString().slice(0, 10) : null;
 
       if (action === 'edit') {
         axios
@@ -244,6 +246,7 @@ function AdminTrailActionSection({ action, trailId }) {
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
             verified: isValidated,
+            verified_date: setValidationDate,
           })
           .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -268,6 +271,7 @@ function AdminTrailActionSection({ action, trailId }) {
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
             verified: isValidated,
+            verified_date: setValidationDate,
           })
           .then(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());

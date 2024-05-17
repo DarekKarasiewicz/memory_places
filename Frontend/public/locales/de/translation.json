@@ -234,6 +234,7 @@
             "dismiss": "Abbrechen",
             "users": "Benutzer",
             "places": "Orte",
+            "trails": "Routen",
             "new_element": "Neues Element",
             "memo_place_add": "Hinzufügen eines Erinnerungsortes",
             "memo_place_edit": "Bearbeitung des Speicherorts",
@@ -268,9 +269,11 @@
             "month_all_users": "Anzahl der Benutzer in einem bestimmten Monat",
             "all_places_count": "Gesamtzahl der Orte",
             "month_all_places": "Anzahl der Orte pro Monat",
+            "all_trails_count": "Gesamtanzahl der Routen",
             "new_month_users": "Benutzer im aktuellen Monat",
             "new_month_places": "Orte im aktuellen Monat",
             "all_users_info": "Alle Benutzerinformationen",
+            "all_object_graph": "Dynamik der Entwicklung von Benutzern, Orten und Routen im Laufe des Jahres",
             "users": "Benutzer",
             "master_user": "Hauptbenutzer",
             "admin": "Administratoren",
@@ -320,7 +323,8 @@
             "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
             "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:",
             "lp": "Nr.",
-            "kind": "Art"
+            "kind": "Art",
+            "cannot_change_info": "Ihre Daten können nicht geändert werden!"
         },
         "changes_messages": {
             "blocked": "Benutzer mit ID {{element_id}} gesperrt",

@@ -118,10 +118,10 @@ function TrailTable({ data, columns }) {
               <td className='flex my-1 gap-2'>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
+                  onClick={() => navigate('/adminDashboard/trailView/' + row.original.id)}
                 >
                   <SettingsIcon className='h-5 w-5' />
-                  <span>{t('admin.content.more_info')}</span>
+                  <span className='w-min'>{t('admin.content.more_info')}</span>
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
@@ -132,7 +132,7 @@ function TrailTable({ data, columns }) {
                 </span>
                 <span
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
+                  onClick={() => navigate('/adminDashboard/trailEdit/' + row.original.id)}
                 >
                   <EditIcon className='h-5 w-5' />
                   <span>{t('admin.content.edit')}</span>

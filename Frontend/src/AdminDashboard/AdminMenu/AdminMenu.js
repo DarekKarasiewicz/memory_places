@@ -77,7 +77,11 @@ function AdminMenu() {
     <>
       <div className='flex flex-col gap-6 items-center'>
         <section className='w-32 h-32 flex justify-center items-center'>
-          <img src='./assets/memorial_places_logo.png' alt='memorial place logo'></img>
+          <img
+            src='./assets/memory_places_logo.png'
+            alt='memorial place logo'
+            className='h-full w-auto'
+          ></img>
         </section>
         <section className='flex flex-col gap-6'>
           {filteredMenuItems.map((item, index) => (

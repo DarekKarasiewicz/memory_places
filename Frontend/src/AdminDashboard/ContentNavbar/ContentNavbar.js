@@ -37,9 +37,9 @@ function ContentNavbar({ showLogo }) {
     <>
       <div className='flex justify-between items-center w-full p-4 shadow-lg bg-mainBgColor text-textColor h-20'>
         {showLogo ? (
-          <div className='flex items-center gap-3'>
-            <section className='w-16 h-16 flex justify-center items-center'>
-              <img src='../../assets/memorial_places_logo.png' alt='memorial place logo'></img>
+          <div className='flex items-center gap-3 ml-4'>
+            <section className='w-8 h-8 flex justify-center items-center'>
+              <img src='../../assets/memory_places_logo.png' alt='memorial place logo'></img>
             </section>
             <div className='text-3xl ml-4'>
               {t('admin.common.welcome', { user: user.username })}
