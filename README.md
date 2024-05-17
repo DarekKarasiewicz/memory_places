@@ -105,7 +105,9 @@ PS C:\PATH_TO_YOUR_PROJECT\memory_places\Backend> pip install django-smtp-ssl
 ```console
 PS C:\PATH_TO_YOUR_PROJECT\memory_places\Backend> pip install python-dotenv
 ```
-
+```console
+PS C:\PATH_TO_YOUR_PROJECT\memory_places\Backend> pip install pillow
+```
 ## Used API's / materials
 - Google Maps API: https://developers.google.com/maps
 - SVG icons: https://tablericons.com
