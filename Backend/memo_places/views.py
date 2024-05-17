@@ -372,7 +372,7 @@ class Outside_user_view(viewsets.ModelViewSet):
         new_user.outside = True
         new_user.save()
 
-        return MyTokenObtainPairSerializer.get_token(user=new_user)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=new_user)))
 
 
 class VerificationMail(viewsets.ModelViewSet):
@@ -437,7 +437,7 @@ class User_view(viewsets.ModelViewSet):
                 return Response(
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
-        return Response(serializer.data)
+        return MyTokenObtainPairSerializer.get_token(user=user)
 
     def update(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
