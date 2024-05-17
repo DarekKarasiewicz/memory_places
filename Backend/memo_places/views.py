@@ -148,6 +148,10 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.period = period_obj
                 case "verified":
                     place_object.verified = data["verified"].lower() == "true"
+                case "wiki_link":
+                    place_object.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    place_object.topic_link = data["topic_link"]
                 case _:
                     pass
 
@@ -311,6 +315,10 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.period = period_obj
                 case "verified":
                     path_object.verified = data["verified"].lower() == "true"
+                case "wiki_link":
+                    path_object.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    path_object.topic_link = data["topic_link"]
                 case _:
                     pass
 
