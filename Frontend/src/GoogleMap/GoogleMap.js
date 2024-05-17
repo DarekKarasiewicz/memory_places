@@ -48,13 +48,17 @@ const GoogleMap = () => {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infowindowShown, setInfowindowShown] = useState(false);
   const [placeInfoBoxVisibility, setPlaceInfoBoxVisibility] = useState(false);
+  const [trailInfoBoxVisibility, setTrailInfoBoxVisibility] = useState(false);
   const [currentPlace, setCurrentPlace] = useState([]);
+  const [currentTrail, setCurrentTrail] = useState([]);
   const [currentPlaceData, setCurrentPlaceData] = useState([]);
+  const [currentTrailData, setCurrentTrailData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
+  const [kind, setKind] = useState(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -120,7 +124,14 @@ const GoogleMap = () => {
     setPlaceInfoBoxVisibility((previousState) => !previousState);
   };
 
+  const toggleTrailInfoBox = (trail) => {
+    setCurrentTrail(trail);
+    setTrailInfoBoxVisibility((previousState) => !previousState);
+  };
+
   const closePlaceInfoBox = () => setPlaceInfoBoxVisibility(false);
+
+  const closeTrailInfoBox = () => setTrailInfoBoxVisibility(false);
 
   const handleConfirm = () => {
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: false }));
@@ -151,6 +162,21 @@ const GoogleMap = () => {
         `http://localhost:8000/memo_places/places/pk=${currentPlace.id}`,
       );
       setCurrentPlaceData(response.data);
+      dispatch(modalsActions.changeIsAdvancedInfoOpen());
+    } catch (error) {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
+  };
+
+  const fetchSelectedTrailInfo = async () => {
+    if (!currentTrail) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/memo_places/path/pk=${currentTrail.id}`,
+      );
+      setCurrentTrailData(response.data);
       dispatch(modalsActions.changeIsAdvancedInfoOpen());
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -238,6 +264,7 @@ const GoogleMap = () => {
               strokeOpacity={0.3}
               strokeWeight={10}
               path={JSON.parse(trail.coordinates)}
+              onClick={() => toggleTrailInfoBox(trail)}
             />
           ))
         ) : (
@@ -274,14 +301,66 @@ const GoogleMap = () => {
                 className='text-sm my-1'
                 btnBg='blue'
                 name={t('common.more_info')}
-                onClick={fetchSelectedPlaceInfo}
+                onClick={() => {
+                  closePlaceInfoBox();
+                  setKind('place');
+                  fetchSelectedPlaceInfo();
+                }}
+              />
+            </div>
+          </InfoWindow>
+        )}
+
+        {trailInfoBoxVisibility && (
+          <InfoWindow
+            position={{
+              lat: JSON.parse(currentTrail.coordinates)[0].lat,
+              lng: JSON.parse(currentTrail.coordinates)[0].lng,
+            }}
+            onCloseClick={closeTrailInfoBox}
+            options={{ pixelOffset: { width: 0, height: -30 } }}
+          >
+            <div className='flex flex-col items-center'>
+              {/* TODO when from backend will be array of images get first one and put it here */}
+              <section className='w-72 h-52 overflow-hidden'>
+                <img
+                  src='https://placehold.co/300x300'
+                  alt='placeholder-image'
+                  className='w-full h-full object-cover'
+                ></img>
+              </section>
+              <section className='flex flex-col gap-1 my-1 justify-center items-center text-sm'>
+                <span className='text-center font-bold'>{currentTrail.path_name}</span>
+                <span>
+                  <span className='italic font-medium'>{t('common.created')}</span>{' '}
+                  {currentTrail.creation_date}
+                </span>
+                <span>
+                  <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
+                  {currentTrail.username}
+                </span>
+              </section>
+              <BaseButton
+                className='text-sm my-1'
+                btnBg='blue'
+                name={t('common.more_info')}
+                onClick={() => {
+                  closeTrailInfoBox();
+                  setKind('trail');
+                  fetchSelectedTrailInfo();
+                }}
               />
             </div>
           </InfoWindow>
         )}
 
         {modalsData.isAdvancedInfoOpen && (
-          <AdvancedInfoBox data={currentPlaceData} closeInfo={handleAdvancedInfoBoxVisability} />
+          <AdvancedInfoBox
+            placeData={currentPlaceData}
+            trailData={currentTrailData}
+            kind={kind}
+            closeInfo={handleAdvancedInfoBoxVisability}
+          />
         )}
       </Map>
     </div>

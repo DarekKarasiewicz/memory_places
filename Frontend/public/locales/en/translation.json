@@ -234,6 +234,7 @@
             "dismiss": "Dismiss",
             "users": "Users",
             "places": "Places",
+            "trails": "Trails",
             "new_element": "New element",
             "memo_place_add": "Adding a memory place",
             "memo_place_edit": "Editing memory place",
@@ -268,9 +269,11 @@
             "month_all_users": "Number of users per month",
             "all_places_count": "Total number of places", 
             "month_all_places": "Number of places per month",
+            "all_trails_count": "Total number of trails",
             "new_month_users": "Users in current month",
             "new_month_places": "Places in current month",
             "all_users_info": "All user information",
+            "all_object_graph": "Dynamics of users, places, and routes development over the year",
             "users": "Users",
             "master_user": "Master users",
             "admin": "Administrators",
@@ -320,7 +323,8 @@
             "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
             "place_var_info2": "Current values to assign translations to:",
             "lp": "No.",
-            "kind": "Kind"
+            "kind": "Kind",
+            "cannot_change_info": "Your data cannot be changed!"
         },
         "changes_messages": {
             "blocked": "Blocked user with ID {{element_id}}",

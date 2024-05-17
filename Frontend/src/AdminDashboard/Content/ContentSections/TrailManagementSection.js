@@ -123,17 +123,17 @@ function TrailManagementSection() {
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>
           <AdminTileStat
             title={t('admin.content.all_trails')}
-            value={statistics.allPlaces}
+            value={statistics.allTrails}
             icon='places'
           />
           <AdminTileStat
             title={t('admin.content.previous_trails')}
-            value={statistics.previousMonthPlaces}
+            value={statistics.previousMonthTrails}
             icon='mapPin'
           />
           <AdminTileStat
             title={t('admin.content.current_trails')}
-            value={statistics.currentMonthPlaces}
+            value={statistics.currentMonthTrails}
             icon='mapPin'
           />
         </div>

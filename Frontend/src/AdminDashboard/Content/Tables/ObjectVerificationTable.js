@@ -28,7 +28,7 @@ function ObjectVerificationTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
-  const [columnVisibility, setColumnVisibility] = useState({ id: false });
+  const [columnVisibility, setColumnVisibility] = useState({ id: false, kind_value: false });
 
   const table = useReactTable({
     data,
@@ -51,8 +51,8 @@ function ObjectVerificationTable({ data, columns }) {
   const rowCount = table.getFilteredRowModel().rows.length;
   const numPages = Math.ceil(rowCount / pageSize);
 
-  const handlePlaceConfirmation = (placeId, kind) => {
-    const checkKind = kind === 'P' ? 'places' : 'path';
+  const handlePlaceConfirmation = (placeId, kind_value) => {
+    const checkKind = kind_value === 'P' ? 'places' : 'path';
     let currentDate = new Date();
 
     axios
@@ -72,8 +72,8 @@ function ObjectVerificationTable({ data, columns }) {
       });
   };
 
-  const handlePlaceDismiss = (placeId, kind) => {
-    const checkKind = kind === 'P' ? 'places' : 'path';
+  const handlePlaceDismiss = (placeId, kind_value) => {
+    const checkKind = kind_value === 'P' ? 'places' : 'path';
 
     axios
       .delete(`http://127.0.0.1:8000/admin_dashboard/${checkKind}/${placeId}/`)

@@ -74,7 +74,6 @@ function UsersTable({ data, columns }) {
     dispatch(adminActions.changeUserId(id));
     dispatch(adminActions.changeUserName(name));
   };
-
   return (
     <>
       <div className='flex justify-between items-center'>
@@ -125,48 +124,60 @@ function UsersTable({ data, columns }) {
           {table.getRowModel().rows.map((row, index) => (
             <tr
               key={row.id}
-              className={`${index % 2 === 0 ? 'bg-mainBgColor' : 'bg-thirdBgColor'}`}
+              className={`${
+                row.original.id === cookies.user.user_id
+                  ? 'bg-contrastColor'
+                  : index % 2 === 0
+                    ? 'bg-mainBgColor'
+                    : 'bg-thirdBgColor'
+              }`}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className='p-2'>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-2'>
-                {user.admin && (
-                  <span
-                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                    onClick={() => handleUserRole(row.original.id, row.original.place_name)}
-                  >
-                    <SettingsIcon className='h-5 w-5' />
-                    <span>{t('admin.content.change_role')}</span>
-                  </span>
-                )}
+              <td className='flex my-1 gap-2 p-2'>
+                {row.original.id !== cookies.user.user_id ? (
+                  <>
+                    {user.admin && (
+                      <span
+                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        onClick={() => handleUserRole(row.original.id, row.original.place_name)}
+                      >
+                        <SettingsIcon className='h-5 w-5' />
+                        <span>{t('admin.content.change_role')}</span>
+                      </span>
+                    )}
 
-                <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                  onClick={() => handlePasswordReset(row.original.id, row.original.place_name)}
-                >
-                  <PassIcon className='h-5 w-5' />
-                  <span>{t('admin.content.pass_reset')}</span>
-                </span>
+                    <span
+                      className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                      onClick={() => handlePasswordReset(row.original.id, row.original.place_name)}
+                    >
+                      <PassIcon className='h-5 w-5' />
+                      <span>{t('admin.content.pass_reset')}</span>
+                    </span>
 
-                {row.original.active ? (
-                  <span
-                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                    onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
-                  >
-                    <BlockIcon className='h-5 w-5' />
-                    <span>{t('admin.content.block')}</span>
-                  </span>
+                    {row.original.active ? (
+                      <span
+                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
+                      >
+                        <BlockIcon className='h-5 w-5' />
+                        <span>{t('admin.content.block')}</span>
+                      </span>
+                    ) : (
+                      <span
+                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        onClick={() => handleUserUnlock(row.original.id, row.original.place_name)}
+                      >
+                        <UnlockIcon className='h-5 w-5' />
+                        <span>{t('admin.content.unlock')}</span>
+                      </span>
+                    )}
+                  </>
                 ) : (
-                  <span
-                    className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                    onClick={() => handleUserUnlock(row.original.id, row.original.place_name)}
-                  >
-                    <UnlockIcon className='h-5 w-5' />
-                    <span>{t('admin.content.unlock')}</span>
-                  </span>
+                  <span>{t('admin.content.cannot_change_info')}</span>
                 )}
               </td>
             </tr>
