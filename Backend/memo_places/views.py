@@ -223,7 +223,7 @@ class Path_image_view(viewsets.ModelViewSet):
                 return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request, *args, **kwargs):
-        path_object = get_object_or_404(Path, id=request.data["place"])
+        path_object = get_object_or_404(Path, id=request.data["path"])
         pathimage_object = self.model(
             path = path_object,
             img = request.data["img"] 
@@ -437,7 +437,7 @@ class User_view(viewsets.ModelViewSet):
                 return Response(
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
-        return MyTokenObtainPairSerializer.get_token(user=user)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
 
     def update(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
