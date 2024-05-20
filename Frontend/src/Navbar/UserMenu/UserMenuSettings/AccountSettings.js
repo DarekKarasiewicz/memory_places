@@ -74,7 +74,7 @@ function AccountSettings() {
       }
 
       axios
-        .put(`http://localhost:8000/memo_places/users/pk=${user.user_id}/`, newData, {
+        .put(`http://localhost:8000/memo_places/users/${user.user_id}/`, newData, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(() => {
