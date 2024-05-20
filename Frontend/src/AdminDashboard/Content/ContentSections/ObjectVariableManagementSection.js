@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import HelpIcon from 'icons/HelpIcon';
 import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 function ObjectVariableManagementSection() {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ function ObjectVariableManagementSection() {
   const infoRef = useRef(null);
   const [translateValue, setTranslateValue] = useState([]);
   const [cookies] = useCookies(['user']);
+  const modalData = useSelector(selectAdminData);
+  const { isVariablesChanged } = modalData;
 
   const pushValuesToTranslate = (...elements) => {
     setTranslateValue((prevValues) => [...new Set([...prevValues, ...elements])]);
@@ -39,6 +42,7 @@ function ObjectVariableManagementSection() {
       setSortOf(responseSort.data);
       setSortOfBase(responseSort.data);
       pushValuesToTranslate(...responseSort.data.map((item) => item.value));
+      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -52,6 +56,7 @@ function ObjectVariableManagementSection() {
       setType(responseType.data);
       setTypeBase(responseType.data);
       pushValuesToTranslate(...responseType.data.map((item) => item.value));
+      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -65,6 +70,7 @@ function ObjectVariableManagementSection() {
       setPeriod(responsePeriod.data);
       setPeriodBase(responsePeriod.data);
       pushValuesToTranslate(...responsePeriod.data.map((item) => item.value));
+      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -102,6 +108,7 @@ function ObjectVariableManagementSection() {
     if (error) {
       dispatch(confirmationModalActions.changeType('error'));
     } else {
+      dispatch(adminDataActions.updateIsVariablesChanged(true));
       dispatch(confirmationModalActions.changeType('success'));
       registerAppChanges('admin.changes_messages.variables_changed', cookies.user);
     }
@@ -121,10 +128,12 @@ function ObjectVariableManagementSection() {
   }, [infoRef]);
 
   useEffect(() => {
-    fetchSortOfItems();
-    fetchTypeItems();
-    fetchPeriodItems();
-  }, []);
+    if (isVariablesChanged || sortOf.length === 0 || type.length === 0 || period.length === 0) {
+      fetchSortOfItems();
+      fetchTypeItems();
+      fetchPeriodItems();
+    }
+  }, [isVariablesChanged]);
 
   return (
     <>

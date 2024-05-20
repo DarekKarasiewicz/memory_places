@@ -168,7 +168,6 @@ function FormModal(props) {
   const validateForm = () => {
     if (
       formValidation.isValidName === true &&
-      formValidation.isValidDate === true &&
       formValidation.isValidLat === true &&
       formValidation.isValidLng === true &&
       formValidation.isValidType === true &&
