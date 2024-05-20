@@ -451,7 +451,7 @@ class User_view(viewsets.ModelViewSet):
         user_object.save()
 
         serializer = self.serializer_class(user_object)
-        return Response(serializer.data)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
 
     def destroy(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
