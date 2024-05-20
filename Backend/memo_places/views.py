@@ -148,6 +148,10 @@ class Place_view(viewsets.ModelViewSet):
                     place_object.period = period_obj
                 case "verified":
                     place_object.verified = data["verified"].lower() == "true"
+                case "wiki_link":
+                    place_object.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    place_object.topic_link = data["topic_link"]
                 case _:
                     pass
 
@@ -219,7 +223,7 @@ class Path_image_view(viewsets.ModelViewSet):
                 return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request, *args, **kwargs):
-        path_object = get_object_or_404(Path, id=request.data["place"])
+        path_object = get_object_or_404(Path, id=request.data["path"])
         pathimage_object = self.model(
             path = path_object,
             img = request.data["img"] 
@@ -311,6 +315,10 @@ class Path_view(viewsets.ModelViewSet):
                     path_object.period = period_obj
                 case "verified":
                     path_object.verified = data["verified"].lower() == "true"
+                case "wiki_link":
+                    path_object.wiki_link = data["wiki_link"]
+                case "topic_link":
+                    path_object.topic_link = data["topic_link"]
                 case _:
                     pass
 
@@ -364,7 +372,7 @@ class Outside_user_view(viewsets.ModelViewSet):
         new_user.outside = True
         new_user.save()
 
-        return MyTokenObtainPairSerializer.get_token(user=new_user)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=new_user)))
 
 
 class VerificationMail(viewsets.ModelViewSet):
@@ -429,7 +437,7 @@ class User_view(viewsets.ModelViewSet):
                 return Response(
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
-        return Response(serializer.data)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
 
     def update(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
@@ -443,7 +451,7 @@ class User_view(viewsets.ModelViewSet):
         user_object.save()
 
         serializer = self.serializer_class(user_object)
-        return Response(serializer.data)
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
 
     def destroy(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
