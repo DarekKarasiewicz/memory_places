@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isValidName: null,
-  isValidDate: null,
   isValidLat: null,
   isValidLng: null,
   isValidType: null,
@@ -17,9 +16,6 @@ export const formValidationSlice = createSlice({
   reducers: {
     changeIsValidName: (state, action) => {
       state.isValidName = action.payload;
-    },
-    changeIsValidDate: (state, action) => {
-      state.isValidDate = action.payload;
     },
     changeIsValidLat: (state, action) => {
       state.isValidLat = action.payload;

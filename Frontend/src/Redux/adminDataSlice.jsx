@@ -5,6 +5,7 @@ const initialState = {
   isPlacesChanged: true,
   isTrailsChanged: true,
   isVerificationsChanged: true,
+  isVariablesChanged: true,
   isStatisticsChanged: true,
   isHistoryChanged: true,
 };
@@ -24,6 +25,9 @@ export const adminDataSlice = createSlice({
     },
     updateIsVerificationsChanged: (state, action) => {
       state.isVerificationsChanged = action.payload;
+    },
+    updateIsVariablesChanged: (state, action) => {
+      state.isVariablesChanged = action.payload;
     },
     updateIsStatisticsChanged: (state, action) => {
       state.isStatisticsChanged = action.payload;

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from './Redux/store.js';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import App from './App';
-import ForumMain from './Forum/ForumMain.js';
+import ForumMainPage from './Forum/ForumMainPage.js';
 import './index.css';
 import SubForum from './Forum/SubForum.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -32,7 +32,7 @@ export default function AppUrls() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />} />
-        <Route path='/forum' element={<ForumMain />} />
+        <Route path='/forum' element={<ForumMainPage />} />
         <Route path='/forum/:id' element={<SubForum />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
         <Route
