@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from .serializers import Comments_Serailizer, Posts_Serailizer, Subforums_Serailizer
-from .models import Comment, Subforum, Post
-from memo_places.models import User
+from .serializers import Comments_Serailizer, Posts_Serailizer, UserPostLike_Serailizer, UserCommentLike_Serailizer
+from .models import Comment, Post, UserCommentLike, UserPostLike
+from memo_places.models import User, Type, Period, Place
 from rest_framework.response import Response
 
 import re
@@ -32,31 +32,36 @@ class CommentView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        if 'desc_liked' in kwargs["pk"] or 'asc_liked' in kwargs["pk"]:
+            key = kwargs['pk']
+        else: 
+            key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
+
+        page = int(request.query_params.get("page", 1))
+        page_size = 15
+        start = (page - 1) * page_size
+        end = start + page_size
+        
         match key:
             case "pk":
                 comment = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(comment, many=False)
                 return Response(serializer.data)
             case "user":
-                comments = self.model.objects.filter(user=value)
-                serializer = self.serializer_class(comments, many=True)
-                return Response(serializer.data)
-            case "content":
-                comments = self.model.objects.filter(content=value)
+                comments = self.model.objects.filter(user=value)[start:end]
                 serializer = self.serializer_class(comments, many=True)
                 return Response(serializer.data)
             case "post":
-                comments = self.model.objects.filter(post=value)
+                comments = self.model.objects.filter(post=value)[start:end]
                 serializer = self.serializer_class(comments, many=True)
                 return Response(serializer.data)
-            case "like":
-                comments = self.model.objects.filter(like=value)
-                serializer = self.serializer_class(comments, many=True)
+            case "desc_liked":
+                posts = self.model.objects.all().order_by('-like')[start:end]
+                serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
-            case "dislike":
-                comments = self.model.objects.filter(dislike=value)
-                serializer = self.serializer_class(comments, many=True)
+            case "asc_liked":
+                posts = self.model.objects.all().order_by('like')[start:end]
+                serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
 
         return Response(serializer.data)
@@ -67,16 +72,24 @@ class CommentView(viewsets.ModelViewSet):
         data = request.data
         for i in data.keys():
             match i:
-                case "user":
-                    comment_object.user = data["user"]
                 case "content":
                     comment_object.content = data["content"]
                 case "like":
-                    comment_object.like = data["like"]
+                    user = get_object_or_404(User, id=data["user"])
+                    if UserCommentLike.objects.filter(user=user, comment=comment_object).exists():
+                        return Response({'error': 'User already liked this post'}, status=404)                    
+                    UserCommentLike(
+                        user = user,
+                        comment = comment_object
+                    ).save()
+                    comment_object.like = comment_object.like + 1 
                 case "dislike":
-                    comment_object.dislike = data["dislike"]
-                case "created_at":
-                    comment_object.created_at = data["created_at"]
+                    user = get_object_or_404(User, id=data["user"])
+                    if UserCommentLike.objects.filter(user=user, comment=comment_object).exists():
+                        UserCommentLike.objects.filter(user=user, comment=comment_object).delete()
+                        comment_object.like = comment_object.like - 1
+                    else:
+                        return Response({'error': "User don't liked this post"}, status=404)                    
                 case _:
                     pass
 
@@ -92,78 +105,6 @@ class CommentView(viewsets.ModelViewSet):
         serializer = self.serializer_class(comment_object)
         return Response(serializer.data)
 
-
-class SubforumView(viewsets.ModelViewSet):
-    model = Subforum
-    serializer_class = Subforums_Serailizer
-
-    def get_queryset(self):
-        return self.model.objects.all()
-
-    def create(self, request, *args, **kwargs):
-        creator = get_object_or_404(User, id=request.data["user"])
-
-        data = request.data
-        new_subforum = self.model(
-            name=data["name"], description=data["description"], user=creator
-        )
-        new_subforum.save()
-
-        serializer = self.serializer_class(new_subforum)
-
-        return Response(serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
-        match key:
-            case "pk":
-                subforum = get_object_or_404(self.model, id=value)
-                serializer = self.serializer_class(subforum, many=False)
-                return Response(serializer.data)
-            case "user":
-                subforums = self.model.objects.filter(user=value)
-                serializer = self.serializer_class(subforums, many=True)
-                return Response(serializer.data)
-            case "name":
-                subforum = self.model.objects.filter(name=value)
-                serializer = self.serializer_class(subforum, many=False)
-                return Response(serializer.data)
-            case "description":
-                subforums = self.model.objects.filter(subforums=value)
-                serializer = self.serializer_class(subforums, many=True)
-                return Response(serializer.data)
-            case _:
-                subforum = None
-                return Response({"detail": "Invalid key"})
-
-    def update(self, request, *args, **kwargs):
-        subforum_object = self.model.objects.get(id=kwargs["pk"])
-
-        data = request.data
-        for i in data.keys():
-            match i:
-                case "user":
-                    subforum_object.user = data["user"]
-                case "name":
-                    subforum_object.name = data["name"]
-                case "description":
-                    subforum_object.description = data["description"]
-                case _:
-                    pass
-
-        subforum_object.save()
-
-        serializer = self.serializer_class(subforum_object)
-        return Response(serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        subforum_object = self.model.objects.get(id=kwargs["pk"])
-
-        subforum_object.delete()
-        serializer = self.serializer_class(subforum_object)
-        return Response(serializer.data)
-
-
 class PostView(viewsets.ModelViewSet):
     model = Post
     serializer_class = Posts_Serailizer
@@ -172,15 +113,19 @@ class PostView(viewsets.ModelViewSet):
         return Post.objects.all()
 
     def create(self, request, *args, **kwargs):
-        creator = get_object_or_404(User, id=request.data["user"])
-        subforum = get_object_or_404(Subforum, id=request.data["subforum"])
-
         data = request.data
+        creator = get_object_or_404(User, id=data["user"])
+        type = get_object_or_404(Type, id=data["type"])
+        period = get_object_or_404(Period, id=data["period"])
+        place = get_object_or_404(Place, id=data["period"])
+
         new_post = self.model(
             user=creator,
-            subforum=subforum,
             title=data["title"],
             content=data["content"],
+            place = place,
+            type = type,
+            period = period,
         )
         new_post.save()
 
@@ -189,30 +134,42 @@ class PostView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        if 'desc_liked' in kwargs["pk"] or 'asc_liked' in kwargs["pk"]:
+            key = kwargs['pk']
+        else: 
+            key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
+        page = int(request.query_params.get("page", 1))
+        page_size = 15
+        start = (page - 1) * page_size
+        end = start + page_size
+        
         match key:
+            case "page":
+                Post.objects.all()[start:end]
+                serializer = self.serializer_class(post, many=False)
+                return Response(serializer.data)
             case "pk":
                 post = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(post, many=False)
                 return Response(serializer.data)
             case "user":
-                posts = self.model.objects.filter(user=value)
+                posts = self.model.objects.filter(user=value)[start:end]
                 serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
-            case "content":
-                posts = self.model.objects.filter(content=value)
+            case "place":
+                posts = self.model.objects.filter(place=value)[start:end]
                 serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
-            case "post":
-                posts = self.model.objects.filter(post=value)
+            case "title":
+                posts = self.model.objects.filter(title=value)[start:end]
                 serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
-            case "like":
-                posts = self.model.objects.filter(like=value)
+            case "desc_liked":
+                posts = self.model.objects.all().order_by('-like')[start:end]
                 serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
-            case "dislike":
-                posts = self.model.objects.filter(dislike=value)
+            case "asc_liked":
+                posts = self.model.objects.all().order_by('like')[start:end]
                 serializer = self.serializer_class(posts, many=True)
                 return Response(serializer.data)
 
@@ -224,18 +181,26 @@ class PostView(viewsets.ModelViewSet):
         data = request.data
         for i in data.keys():
             match i:
-                case "user":
-                    post_object.user = data["user"]
                 case "title":
-                    post_object.user = data["user"]
+                    post_object.title = data["title"]
                 case "content":
                     post_object.content = data["content"]
                 case "like":
-                    post_object.like = data["like"]
+                    user = get_object_or_404(User, id=data["user"])
+                    if UserPostLike.objects.filter(user=user, post_id=post_object.id).exists():
+                        return Response({'error': 'User already liked this post'}, status=404)                    
+                    UserPostLike(
+                        user = user,
+                        post = post_object
+                    ).save()
+                    post_object.like = post_object.like + 1 
                 case "dislike":
-                    post_object.dislike = data["dislike"]
-                case "created_at":
-                    post_object.created_at = data["created_at"]
+                    user = get_object_or_404(User, id=data["user"])
+                    if UserPostLike.objects.filter(user=user, post_id=post_object.id).exists():
+                        UserPostLike.objects.filter(user=user, post_id=post_object.id).delete()
+                        post_object.like = post_object.like - 1
+                    else:
+                        return Response({'error': "User don't liked this post"}, status=404)                    
                 case _:
                     pass
 

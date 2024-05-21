@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Comment, Subforum, Post
+from .models import Comment, Post
 
 admin.site.register(Comment)
-admin.site.register(Subforum)
 admin.site.register(Post)
