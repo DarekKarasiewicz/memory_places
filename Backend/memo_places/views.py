@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core.mail import send_mail
 from rest_framework.renderers import JSONRenderer
@@ -17,8 +16,21 @@ from .serializers import (
     Path_serailizer,
     PlaceImage_serializer,
     PathImage_serializer,
+    MyTokenObtainPairSerializer
 )
-from .models import Place, User, Question, Change, Path, Type, Sortof, Period, PlaceImage, PathImage
+from .models import (
+    Place,
+    User,
+    Question, 
+    Change, 
+    Path, 
+    Type, 
+    Sortof, 
+    Period, 
+    PlaceImage, 
+    PathImage
+    )
+from memo_places_forum.models import Post, Comment
 from admin_dashboard.serializers import (
     Types_serializer,
     Sortof_serializer,
@@ -34,22 +46,23 @@ import string
 
 load_dotenv()
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        token["pk"] = user.id
-        token["username"] = user.username
-        token["admin"] = user.admin
-        token["master"] = user.master
-        token["email"] = user.email
-
-        return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(User,email=request.data['email'])
+        if not user.confirmed:
+            return Response({"detail": "User not verified."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return super().post(request, *args, **kwargs)
 
 
 class Place_view(viewsets.ModelViewSet):
@@ -162,7 +175,11 @@ class Place_view(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
+        
+        if place_object.verified:
+            return Response({"detail": "Verified place cannot be delete"}, status=status.HTTP_400_BAD_REQUEST)
 
+        Post.objects.filter(place=place_object).delete()
         place_object.delete()
         serializer = self.serializer_class(place_object)
         return Response(serializer.data)
