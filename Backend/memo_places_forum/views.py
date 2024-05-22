@@ -16,10 +16,10 @@ class CommentView(viewsets.ModelViewSet):
         return self.model.objects.all()
 
     def create(self, request, *args, **kwargs):
-        creator = get_object_or_404(User, id=request.data["user"])
-        post = get_object_or_404(Post, id=request.data["post"])
-
         data = request.data
+        creator = get_object_or_404(User, id=data["user"])
+        post = get_object_or_404(Post, id=data["post"])
+
         new_comment = self.model(
             user=creator,
             post=post,
@@ -115,17 +115,13 @@ class PostView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         data = request.data
         creator = get_object_or_404(User, id=data["user"])
-        type = get_object_or_404(Type, id=data["type"])
-        period = get_object_or_404(Period, id=data["period"])
-        place = get_object_or_404(Place, id=data["period"])
+        place = get_object_or_404(Place, id=data["place"])
 
         new_post = self.model(
             user=creator,
             title=data["title"],
             content=data["content"],
             place = place,
-            type = type,
-            period = period,
         )
         new_post.save()
 

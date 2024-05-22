@@ -8,8 +8,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    type = models.ForeignKey(Type, on_delete=models.CASCADE, null=True)
-    period = models.ForeignKey(Period, on_delete=models.CASCADE, null=True)
     like = models.IntegerField(default=0)
 
     def __str__(self):
