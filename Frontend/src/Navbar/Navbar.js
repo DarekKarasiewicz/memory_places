@@ -95,11 +95,11 @@ function Navbar() {
           </div>
           <SearchBar />
         </div>
-        <div className='absolute top-0 left-1/2 transform -translate-x-1/2 w-24 bg-mainBgColor flex justify-center rounded-b-xl'>
+        <div className='absolute top-0 left-1/2 transform -translate-x-1/2 w-20 bg-mainBgColor flex justify-center rounded-b-xl shadow-itemShadowBottom'>
           <img
             src='assets/memory_places_logo.png'
             alt='memory_place_logo'
-            className='w-22 p-4 shadow-lg'
+            className='w-22 p-4'
           ></img>
         </div>
         <div className='flex gap-3 items-center'>

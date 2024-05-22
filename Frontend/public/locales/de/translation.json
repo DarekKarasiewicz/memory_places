@@ -62,7 +62,11 @@
         "trail_change_warning": "Ihr aktueller Pfad wird durch einen neuen überschrieben. Sind Sie sicher, dass Sie das tun möchten?",
         "detailed_info": "Ausführliche Informationen",
         "no_image_error": "Kein Bild",
-        "foundation_info": "im Jahr 2024 gegründet, zusammen mit einem externen Entwicklungsteam bestehend aus. (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) ein integriertes System, das eine Web- und eine mobile Anwendung umfasst, mit dem Ziel einfaches und intuitives Erinnern an langsam verschwindende historische Stätten und Routen. Dank dieser gemeinsamen Plattform können Geschichtsbegeisterte, Reisende oder einfach Menschen Geschichtsinteressierte, Reisende oder einfach Menschen, die historisches Wissen suchen, gemeinsam zur Dokumentation und Erhaltung des kulturellen Erbes beitragen. Kulturerbe."
+        "foundation_info": "im Jahr 2024 gegründet, zusammen mit einem externen Entwicklungsteam bestehend aus. (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) ein integriertes System, das eine Web- und eine mobile Anwendung umfasst, mit dem Ziel einfaches und intuitives Erinnern an langsam verschwindende historische Stätten und Routen. Dank dieser gemeinsamen Plattform können Geschichtsbegeisterte, Reisende oder einfach Menschen Geschichtsinteressierte, Reisende oder einfach Menschen, die historisches Wissen suchen, gemeinsam zur Dokumentation und Erhaltung des kulturellen Erbes beitragen. Kulturerbe.",
+        "cookie_title": "Möchtest du einen Keks?",
+        "cookie_info": "Wir verwenden Cookies, um unsere Website und Angebote an Ihre Interessen anzupassen und für Mess- und Analysezwecke. Durch die Nutzung unserer Website und unserer Produkte stimmen Sie der Verwendung von Cookies zu.",
+        "cookie_accept": "Alle akzeptieren",
+        "cookie_cancel": "Alle ablehnen"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",

@@ -42,6 +42,8 @@ const DrawingControl = ({ drawingManager }) => {
     }
     dispatch(adminActions.changeAdminGoogleMapExtension(false));
     dispatch(addTrailActions.changeIsSelecting(false));
+    dispatch(modalsActions.changeIsTrailFormOpen());
+    document.body.style.overflow = 'auto';
   };
 
   const closeDrawingManager = () => {
@@ -52,6 +54,8 @@ const DrawingControl = ({ drawingManager }) => {
     }
     dispatch(addTrailActions.changeIsSelecting(false));
     dispatch(adminActions.changeAdminGoogleMapExtension(false));
+    dispatch(modalsActions.changeIsTrailFormOpen());
+    document.body.style.overflow = 'auto';
   };
 
   return (

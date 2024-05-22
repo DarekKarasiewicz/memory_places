@@ -62,7 +62,11 @@
         "trail_change_warning": "Your current trail will be overriden by new one. Are you sure you want to do that?",
         "detailed_info": "Detailed information",
         "no_image_error": "No image",
-        "foundation_info": "established in 2024, together with the cooperation of an external development team consisting of. included (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) produced an an integrated system including a web and mobile application aimed at simple and intuitive commemoration of slowly disappearing historical objects and routes. Thanks to this common platform, history enthusiasts, travelers or simply people seeking historical knowledge will together contribute to documenting and preserving cultural heritage."
+        "foundation_info": "established in 2024, together with the cooperation of an external development team consisting of. included (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) produced an an integrated system including a web and mobile application aimed at simple and intuitive commemoration of slowly disappearing historical objects and routes. Thanks to this common platform, history enthusiasts, travelers or simply people seeking historical knowledge will together contribute to documenting and preserving cultural heritage.",
+        "cookie_title": "Want a cookie?",
+        "cookie_info": "We use cookies to personalize our website and offerings to your interests and for measurement and analytics purposes. By using our website and our products, you agree to our use of cookies.",
+        "cookie_accept": "Accept all",
+        "cookie_cancel": "Reject all"
     },
     "forum": {
         "comment_content": "Comment-Content",

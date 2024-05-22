@@ -6,7 +6,7 @@ import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceL
 import { addTrailActions } from 'Redux/addTrailSlice';
 import { addPlaceActions } from 'Redux/addPlaceSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
-import { adminActions } from 'Redux/adminActionSlice';
+import { adminActions, selectAdminAction } from 'Redux/adminActionSlice';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import PinIcon from 'icons/PinIcon';
@@ -26,6 +26,7 @@ import { adminDataActions } from 'Redux/adminDataSlice';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
+  const adminData = useSelector(selectAdminAction);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -290,6 +291,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
     dispatch(adminActions.changeAdminGoogleMapExtension(true));
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: true }));
+    document.body.style.overflow = 'hidden';
   };
 
   const handleConfirm = () => {
@@ -371,7 +373,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   return (
     <>
-      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
+      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative '>
         <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
           <PinIcon />
           <span>{actionTitle}</span>

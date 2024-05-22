@@ -10,7 +10,7 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
       <textarea
         className={`block w-${
           props.width ? props.width : 'full'
-        } rounded-l-lg rounded-r-lg p-2 text-black drop-shadow-sm shadow-itemShadow focus:outline-contrastColor ${
+        } rounded-l-lg rounded-r-lg p-2 text-black drop-shadow-sm shadow-itemShadow focus:outline-contrastColor resize-none ${
           props.isValid === false ? 'bg-red-400' : ''
         }`}
         placeholder={props.placeholder ? props.placeholder : ''}

@@ -15,6 +15,7 @@ import SiteMapIcon from 'icons/SiteMapIcon';
 
 function AdminMultiDataBarChart(props) {
   const { t } = useTranslation();
+
   const legendFormatter = (value) => {
     return t(`admin.common.${value}`);
   };

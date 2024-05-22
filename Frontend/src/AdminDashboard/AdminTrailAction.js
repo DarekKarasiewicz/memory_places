@@ -3,9 +3,13 @@ import ContentNavbar from './ContentNavbar/ContentNavbar.js';
 import AdminTrailActionSection from './AdminManagement/AdminTrailActionSection.js';
 import Loader from 'Loader/Loader.js';
 import { useParams } from 'react-router-dom';
+import { selectNotificationModal } from 'Redux/notificationModalSlice.jsx';
+import NotificationModal from 'Modals/NotificationModal';
+import { useSelector } from 'react-redux';
 
 function AdminTrailAction({ action }) {
   const params = useParams();
+  const notificationModal = useSelector(selectNotificationModal);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -17,6 +21,7 @@ function AdminTrailAction({ action }) {
           ) : (
             <AdminTrailActionSection />
           )}
+          {notificationModal.isNotificationModalOpen && <NotificationModal />}
         </div>
       </div>
     </Suspense>

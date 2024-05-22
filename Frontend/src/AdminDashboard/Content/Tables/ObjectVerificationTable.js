@@ -165,8 +165,9 @@ function ObjectVerificationTable({ data, columns }) {
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() =>
                     navigate(
-                      `/adminDashboard/${row.original.kind === 'P' ? 'place' : 'trail'}View/` +
-                        row.original.id,
+                      `/adminDashboard/${
+                        row.original.kind_value === 'P' ? 'place' : 'trail'
+                      }View/` + row.original.id,
                     )
                   }
                 >
@@ -177,8 +178,9 @@ function ObjectVerificationTable({ data, columns }) {
                   className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() =>
                     navigate(
-                      `/adminDashboard/${row.original.kind === 'P' ? 'place' : 'trail'}Edit/` +
-                        row.original.id,
+                      `/adminDashboard/${
+                        row.original.kind_value === 'P' ? 'place' : 'trail'
+                      }Edit/` + row.original.id,
                     )
                   }
                 >

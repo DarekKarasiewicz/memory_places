@@ -71,7 +71,7 @@ function AdminModal({ closeModal }) {
 
   return (
     <>
-      <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-40'>
+      <div className='absolute flex w-full h-full top-0 bg-black bg-opacity-80 z-40'>
         <div
           className={`m-auto w-[calc(35%)] h-[calc(40%)] rounded-[24px] p-6 bg-secondaryBgColor relative flex flex-col justify-around`}
         >

@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import BaseModal from 'Base/BaseModal';
 import { useTranslation } from 'react-i18next';
 import LoginComponent from 'LoginAndRegisterComponents/LoginComponent';
 import RegisterComponent from 'LoginAndRegisterComponents/RegisterComponent';
+import { modalsActions } from 'Redux/modalsSlice';
+import { useDispatch } from 'react-redux';
 
 const LoginAndRegisterModal = (props) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState();
   const [isLogging, setIsLogging] = useState(true);
   const { t } = useTranslation();
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     setTitle(t('common.sign_in'));
@@ -22,9 +26,22 @@ const LoginAndRegisterModal = (props) => {
     }
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <BaseModal title={title} closeModal={props.closeModal} width='1/3'>
-      <div className='flex flex-col p-2 items-center'>
+      <div className='flex flex-col p-2 items-center' ref={wrapperRef}>
         {isLogging ? <LoginComponent /> : <RegisterComponent setIsLogging={setIsLogging} />}
         {isLogging ? (
           <p>
