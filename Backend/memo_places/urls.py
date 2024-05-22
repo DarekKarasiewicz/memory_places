@@ -23,7 +23,6 @@ router.register(r"periods", views.Periods_view, "periods")
 router.register(r"changes", views.Changes, "changes")
 router.register(r"place_image", views.Place_image_view, "placeimage_place")
 router.register(r"path_image", views.Path_image_view, "pathimage_place")
-# router.register(r'token/', views.MyTokenObtainPairView,'token_obtain_pair'),
 
 urlpatterns = [
     path("token/", views.MyTokenObtainPairView.as_view(), name="token_obtain_pair"),

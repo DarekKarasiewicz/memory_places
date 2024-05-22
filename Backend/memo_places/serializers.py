@@ -1,6 +1,20 @@
 from rest_framework import serializers
 from .models import Place, User, Question, Path, PlaceImage, Change, PathImage
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token["pk"] = user.id
+        token["username"] = user.username
+        token["admin"] = user.admin
+        token["master"] = user.master
+        token["email"] = user.email
+
+        return token
 
 class User_serializer(serializers.ModelSerializer):
     class Meta:

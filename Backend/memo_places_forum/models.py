@@ -12,6 +12,9 @@ class Post(models.Model):
     period = models.ForeignKey(Period, on_delete=models.CASCADE, null=True)
     like = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.title
+
 
 class UserPostLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -25,6 +28,9 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     like = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.post.title
 
 class UserCommentLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

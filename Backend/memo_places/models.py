@@ -107,18 +107,25 @@ class Type(models.Model):
     value = models.CharField(max_length=64)
     order = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
 
 class Sortof(models.Model):
     name = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     order = models.IntegerField()
 
+    def __str__(self):
+        return self.name
 
 class Period(models.Model):
     name = models.CharField(max_length=64)
     value = models.CharField(max_length=64)
     order = models.IntegerField()
 
+    def __str__(self):
+        return self.name
 class Place(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     place_name = models.CharField(max_length=32, default=None)
@@ -133,6 +140,9 @@ class Place(models.Model):
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
     verified_date = models.DateField(default=None, null=True)
+
+    def __str__(self):
+        return self.place_name
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
@@ -150,6 +160,9 @@ class Path(models.Model):
     topic_link = models.CharField(max_length=64, default=None, null=True)
     verified = models.BooleanField(default=False)
     verified_date = models.DateField(default=None, null=True)
+    
+    def __str__(self):
+        return self.path_name
 
 class PathImage(models.Model):
     path = models.ForeignKey(Path, on_delete=models.CASCADE)
@@ -161,8 +174,13 @@ class Question(models.Model):
     description = models.CharField(max_length=360, default=None)
     done = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
 
 class Change(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     changes_json = models.JSONField() 
     creation_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user
