@@ -18,6 +18,7 @@ import drawingEventsReducer from './drawingEventsSlice';
 import allMapTrailsReducer from './allMapTrailsSlice';
 import updateTrailReducer from './updateTrailSlice';
 import adminDataReducer from './adminDataSlice';
+import forumDataReducer from './forumDataSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -44,6 +45,7 @@ export const store = configureStore({
     allMapTrails: allMapTrailsReducer,
     updateTrail: updateTrailReducer,
     adminData: adminDataReducer,
+    forumData: forumDataReducer,
   },
   middleware: customizedMiddleware,
 });
