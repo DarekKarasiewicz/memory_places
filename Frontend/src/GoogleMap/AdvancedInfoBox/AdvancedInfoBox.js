@@ -74,26 +74,32 @@ const AdvancedInfoBox = (props) => {
                 <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
                 <span>{receivedData.username}</span>
               </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.wiki-link')}</span>{' '}
-                <a
-                  href={receivedData.wiki_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.topic-link')}</span>{' '}
-                <a
-                  href={receivedData.topic_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
+              {receivedData.wiki_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.wiki-link')}</span>{' '}
+                  <a
+                    href={receivedData.wiki_link}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
+              {receivedData.topic_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.topic-link')}</span>{' '}
+                  <a
+                    href={receivedData.topic_link}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
             </div>
             <div className='flex flex-col w-3/5 gap-4'>
               <section className='flex justify-center items-center'>

@@ -7,7 +7,6 @@ import { APIProvider } from '@vis.gl/react-google-maps';
 import App from './App';
 import ForumMainPage from './Forum/ForumMainPage.js';
 import './index.css';
-import SubForum from './Forum/SubForum.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CookiesProvider } from 'react-cookie';
 import PageNotFound from './ErrorPage/PageNotFound.jsx';
@@ -33,7 +32,8 @@ export default function AppUrls() {
       <Routes>
         <Route path='/' element={<App />} />
         <Route path='/forum' element={<ForumMainPage />} />
-        <Route path='/forum/:id' element={<SubForum />} />
+        <Route path='/forum/:placeid' element={<ForumMainPage />} />
+        <Route path='/forum/:placeid/:postid' element={<ForumMainPage />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
         <Route
           path='/adminDashboard'

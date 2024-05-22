@@ -62,7 +62,11 @@
         "trail_change_warning": "Twój obecny szlak zostanie zastąpiony nowym. Czy na pewno chcesz to zrobić?",
         "detailed_info": "Szczegółowe informacje",
         "no_image_error": "Brak zdjęcia",
-        "foundation_info": "utworzona w 2024 roku, wraz we współpracy z zewnętrznym zespołem deweloperskim w skład, którego wchodzili (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) wytworzyła zintegrowany system zawierający aplikację internetową oraz mobilną, mającą na celu proste i intuicyjne upamiętnianie powoli zanikających obiektów i tras historycznych. Dzięki tej wspólnej platformie pasjonaci historii, podróżnicy czy po prostu osoby poszukujące wiedzy historycznej razem przyczynią się do dokumentowania i zachowania dziedzictwa kulturowego."
+        "foundation_info": "utworzona w 2024 roku, wraz we współpracy z zewnętrznym zespołem deweloperskim w skład, którego wchodzili (Dariusz Karasiewicz, Sebastian Mackiewicz, Mikołaj Kusiński) wytworzyła zintegrowany system zawierający aplikację internetową oraz mobilną, mającą na celu proste i intuicyjne upamiętnianie powoli zanikających obiektów i tras historycznych. Dzięki tej wspólnej platformie pasjonaci historii, podróżnicy czy po prostu osoby poszukujące wiedzy historycznej razem przyczynią się do dokumentowania i zachowania dziedzictwa kulturowego.",
+        "cookie_title": "Chcesz ciasteczko?",
+        "cookie_info": "Używamy plików cookie, aby spersonalizować naszą stronę internetową i oferty do Twoich zainteresowań oraz do celów pomiarowych i analitycznych. Korzystając z naszej strony internetowej i naszych produktów, zgadzasz się na używanie przez nas plików cookie.",
+        "cookie_accept": "Zaakceptuj wszystko",
+        "cookie_cancel": "Odrzuć wszystkie"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",

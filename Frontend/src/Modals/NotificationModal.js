@@ -32,7 +32,7 @@ function NotificationModal() {
   return (
     <>
       <motion.div
-        className='absolute left-0 right-0 mx-auto top-4 min-w-sm max-w-lg rounded-[24px] shadow-itemShadow h-auto p-4 bg-thirdBgColor break-all text-textColor z-50 flex flex-col gap-4'
+        className='fixed left-0 right-0 mx-auto top-4 min-w-sm max-w-lg rounded-[24px] shadow-itemShadow h-auto p-4 bg-thirdBgColor break-all text-textColor z-50 flex flex-col gap-4'
         initial={{ y: '50%', opacity: 0, scale: 0.5 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: '50%', opacity: 0, transition: { duration: 0.1 } }}

@@ -39,7 +39,7 @@ const UploadedImagesDisplay = () => {
               className='absolute w-6 h-6 top-0 right-0 bg-red-500 p-1 text-sm rounded-full border-black border'
               onClick={() => deleteImage(preview.name)}
             >
-              <CancelIcon />
+              <CancelIcon className='relative' />
             </button>
           </div>
         ))}

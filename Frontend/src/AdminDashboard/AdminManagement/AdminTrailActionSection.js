@@ -226,11 +226,13 @@ function AdminTrailActionSection({ action, trailId }) {
       dispatch(modalsActions.changeIsTrailUpdateFormOpen());
       dispatch(addTrailActions.changeIsSelecting(true));
       dispatch(adminActions.changeAdminGoogleMapExtension(true));
+      document.body.style.overflow = 'hidden';
       return;
     }
     dispatch(modalsActions.changeIsTrailFormOpen());
     dispatch(adminActions.changeAdminGoogleMapExtension(true));
     dispatch(addTrailActions.changeIsSelecting(true));
+    document.body.style.overflow = 'hidden';
   };
 
   const handleConfirm = () => {

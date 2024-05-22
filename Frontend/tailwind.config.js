@@ -14,6 +14,7 @@ module.exports = {
       },
       boxShadow: {
         itemShadow: 'var(--itemShadow)',
+        itemShadowBottom: 'var(--itemShadowBottom)'
       },
     },
   },

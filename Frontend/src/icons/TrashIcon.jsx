@@ -1,8 +1,8 @@
 import BaseIcon from './BaseIcon';
 
-const TrashIcon = ({ className, onClick }) => {
+const TrashIcon = ({ className, color, onClick }) => {
   return (
-    <BaseIcon className={className} onClick={onClick}>
+    <BaseIcon className={className} color={color} onClick={onClick}>
       <path stroke='none' d='M0 0h24v24H0z' fill='none' />
       <path d='M4 7l16 0' />
       <path d='M10 11l0 6' />

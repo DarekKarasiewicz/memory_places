@@ -246,7 +246,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
                           ref={inputRef}
                         ></input>
                       ) : (
-                        <span className='text-lg'>{item.name}</span>
+                        <span className='text-lg leading-5'>{item.name}</span>
                       )}
                     </div>
                     <div className='flex justify-center items-center gap-1 mr-2'>

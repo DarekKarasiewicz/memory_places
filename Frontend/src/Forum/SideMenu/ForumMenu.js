@@ -4,13 +4,15 @@ import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import TrendIcon from 'icons/TrendIcon';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 function ForumMenu() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [activeItem, setActiveItem] = useState(0);
   const [types, setTypes] = useState([]);
   const [periods, setPeriods] = useState([]);
+  const navigate = useNavigate();
 
   const fetchTypeItems = async () => {
     try {
@@ -48,10 +50,6 @@ function ForumMenu() {
     }
   };
 
-  const handleClick = (id) => {
-    setActiveItem(id);
-  };
-
   useEffect(() => {
     fetchTypeItems();
     fetchPeriodItems();
@@ -62,44 +60,32 @@ function ForumMenu() {
       <div className='flex flex-col gap-6 items-center'>
         <section className='w-28 flex justify-center items-center'>
           <img
-            src='./assets/memory_places_logo.png'
+            src='/assets/memory_places_logo.png'
             alt='memorial place logo'
             className='h-full w-auto'
           ></img>
         </section>
-        <hr className='border-t-1 w-full border-textColor' />
         <section className='flex flex-col items-center gap-6 w-full text-textColor'>
-          <div className='flex flex-col items-center gap-3 w-full'>
-            <div
-              className={`${
-                activeItem === 0 ? 'border-l-4 pl-2 border-cyan-600 text-cyan-600' : ''
-              } flex items-center gap-3 p-1 text-textColor hover:border-l-4 hover:pl-2 hover:border-cyan-600 hover:text-cyan-600 cursor-pointer transition`}
-              onClick={() => handleClick(0)}
-            >
-              <TrendIcon className='h-6 w-6' />
-              <span>Popular</span>
-            </div>
-            <div className='text-textColor text-xl'>Types</div>
-            <hr className='border-t-1 w-full border-textColor' />
-            <div className='flex flex-col justify-start gap-2'>
-              {types.length > 0 && (
-                <>
-                  {types.map((item, index) => (
-                    <div
-                      className={`${
-                        activeItem === item.id
-                          ? 'border-l-4 pl-2 border-cyan-600 text-cyan-600'
-                          : ''
-                      } flex items-center gap-3 p-1 text-textColor hover:border-l-4 hover:pl-2 hover:border-cyan-600 hover:text-cyan-600 cursor-pointer transition`}
-                      key={index}
-                      onClick={() => handleClick(item.id)}
-                    >
-                      <TrendIcon className='h-6 w-6' />
-                      <span>{item.name}</span>
-                    </div>
-                  ))}
-                </>
-              )}
+          <div className='flex flex-col items-start gap-3 w-full'>
+            <div className='flex flex-col items-center gap-3 w-full'>
+              <div className='text-textColor text-xl'>Types</div>
+              <hr className='border-t-1 w-full border-textColor' />
+              <div className='flex flex-col justify-start gap-2'>
+                {types.length > 0 && (
+                  <>
+                    {types.map((item, index) => (
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
+                        key={index}
+                      >
+                        <TrendIcon className='h-6 w-6' />
+                        <span>{item.name}</span>
+                      </motion.div>
+                    ))}
+                  </>
+                )}
+              </div>
             </div>
           </div>
           <div className='flex flex-col items-center gap-3 w-full'>
@@ -109,18 +95,14 @@ function ForumMenu() {
               {periods.length > 0 && (
                 <>
                   {periods.map((item, index) => (
-                    <div
-                      className={`${
-                        activeItem === item.id
-                          ? 'border-l-4 pl-2 border-cyan-600 text-cyan-600'
-                          : ''
-                      } flex items-center gap-3 p-1 text-textColor hover:border-l-4 hover:pl-2 hover:border-cyan-600 hover:text-cyan-600 cursor-pointer transition`}
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
                       key={index}
-                      onClick={() => handleClick(item.id)}
                     >
                       <TrendIcon className='h-6 w-6' />
                       <span>{item.name}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </>
               )}

@@ -43,7 +43,7 @@ function ObjectVerificationSection() {
             ? obj.path_name
             : obj.place_name,
           kind: Object.prototype.hasOwnProperty.call(obj, 'coordinates')
-            ? t('admin.common.trail')
+            ? t('admin.common.trails')
             : t('admin.common.places'),
           kind_value: Object.prototype.hasOwnProperty.call(obj, 'coordinates') ? 'T' : 'P',
         }));

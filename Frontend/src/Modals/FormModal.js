@@ -163,6 +163,9 @@ function FormModal(props) {
       dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== '0'));
       dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== '0'));
       dispatch(updatePlaceActions.dataIsLoaded());
+
+      setInputLength(updatePlaceData.place.place_name.length);
+      setDescLength(updatePlaceData.place.description.length);
     }
   }, []);
 
@@ -218,6 +221,13 @@ function FormModal(props) {
       setDescLength(length);
     }
   };
+
+  useEffect(() => {
+    if (props.type !== 'update') {
+      handleNameChange();
+      handleDescChange();
+    }
+  }, []);
 
   const handleConfirm = () => {
     const isFormValid = validateForm();
