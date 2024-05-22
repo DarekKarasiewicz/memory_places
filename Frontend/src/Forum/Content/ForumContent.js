@@ -15,7 +15,8 @@ function ForumContent() {
   const fetchPostItems = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/memo_places/places/`);
-      setPlaces(response.data);
+      const modifiedPlaceData = response.data.filter((item) => item.verified === true);
+      setPlaces(modifiedPlaceData);
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));

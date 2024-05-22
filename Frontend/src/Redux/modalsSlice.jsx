@@ -12,6 +12,7 @@ const initialState = {
   isTrailFormOpen: false,
   isTrailUpdateFormOpen: false,
   isFoundationInfoOpen: false,
+  isForumPostModalOpen: false,
 };
 
 export const modalsSlice = createSlice({
@@ -50,6 +51,9 @@ export const modalsSlice = createSlice({
     },
     changeIsFoundationInfoOpen: (state) => {
       state.isFoundationInfoOpen = !state.isFoundationInfoOpen;
+    },
+    changeIsForumPostModalOpen: (state) => {
+      state.isForumPostModalOpen = !state.isForumPostModalOpen;
     },
   },
 });
