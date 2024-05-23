@@ -111,6 +111,10 @@ class Place_view(viewsets.ModelViewSet):
                 place = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(place, many=False)
                 return Response(serializer.data)
+            case "place_name":
+                place = self.model.objects.filter(path_name=value)
+                serializer = self.serializer_class(place, many=True)
+                return Response(serializer.data)
             case "user":
                 places = self.model.objects.filter(user=value)
                 serializer = self.serializer_class(places, many=True)
@@ -284,6 +288,10 @@ class Path_view(viewsets.ModelViewSet):
             case "pk":
                 path = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(path, many=False)
+                return Response(serializer.data)
+            case "path_name":
+                paths = self.model.objects.filter(path_name=value)
+                serializer = self.serializer_class(paths, many=True)
                 return Response(serializer.data)
             case "user":
                 paths = self.model.objects.filter(user=value)
