@@ -32,38 +32,39 @@ class CommentView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-        if 'desc_liked' in kwargs["pk"] or 'asc_liked' in kwargs["pk"]:
-            key = kwargs['pk']
-        else: 
-            key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
-
+        key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
         page = int(request.query_params.get("page", 1))
         page_size = 15
         start = (page - 1) * page_size
         end = start + page_size
-        
+
+        sort_key = request.query_params.get("sort", None)
+        order = '-' if 'desc_' in kwargs["pk"] else ''
+
+        if 'asc_' in kwargs["pk"]:
+            order = ''
+        elif 'desc_' in kwargs["pk"]:
+            order = '-'
+
+        sort_order = f"{order}{sort_key}" if sort_key else None
+
         match key:
             case "pk":
                 comment = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(comment, many=False)
                 return Response(serializer.data)
             case "user":
-                comments = self.model.objects.filter(user=value)[start:end]
-                serializer = self.serializer_class(comments, many=True)
-                return Response(serializer.data)
+                comments = self.model.objects.filter(user=value)
             case "post":
-                comments = self.model.objects.filter(post=value)[start:end]
-                serializer = self.serializer_class(comments, many=True)
-                return Response(serializer.data)
-            case "desc_liked":
-                posts = self.model.objects.all().order_by('-like')[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
-            case "asc_liked":
-                posts = self.model.objects.all().order_by('like')[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
+                comments = self.model.objects.filter(post=value)
+            case _:
+                return Response({"error": "Invalid request"}, status=400)
 
+        if sort_order:
+            comments = comments.order_by(sort_order)
+
+        comments = comments[start:end]
+        serializer = self.serializer_class(comments, many=True)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
@@ -130,45 +131,43 @@ class PostView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-        if 'desc_liked' in kwargs["pk"] or 'asc_liked' in kwargs["pk"]:
-            key = kwargs['pk']
-        else: 
-            key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
+        key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
         page = int(request.query_params.get("page", 1))
         page_size = 15
         start = (page - 1) * page_size
         end = start + page_size
+
+        sort_key = request.query_params.get("sort", None)
+        order = '-' if 'desc_' in kwargs["pk"] else ''
         
+        if 'asc_' in kwargs["pk"]:
+            order = ''
+        elif 'desc_' in kwargs["pk"]:
+            order = '-'
+            
+        sort_order = f"{order}{sort_key}" if sort_key else None
+
         match key:
             case "page":
-                Post.objects.all()[start:end]
-                serializer = self.serializer_class(post, many=False)
-                return Response(serializer.data)
+                posts = Post.objects.all()
             case "pk":
                 post = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(post, many=False)
                 return Response(serializer.data)
             case "user":
-                posts = self.model.objects.filter(user=value)[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
+                posts = self.model.objects.filter(user=value)
             case "place":
-                posts = self.model.objects.filter(place=value)[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
+                posts = self.model.objects.filter(place=value)
             case "title":
-                posts = self.model.objects.filter(title=value)[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
-            case "desc_liked":
-                posts = self.model.objects.all().order_by('-like')[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
-            case "asc_liked":
-                posts = self.model.objects.all().order_by('like')[start:end]
-                serializer = self.serializer_class(posts, many=True)
-                return Response(serializer.data)
+                posts = self.model.objects.filter(title=value)
+            case _:
+                return Response({"error": "Invalid request"}, status=400)
 
+        if sort_order:
+            posts = posts.order_by(sort_order)
+        
+        posts = posts[start:end]
+        serializer = self.serializer_class(posts, many=True)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
