@@ -23,6 +23,8 @@ import { registerAppChanges } from 'utils';
 import AlertIcon from 'icons/AlertIcon';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
+import { selectDrawingTools, drawingToolsActions } from 'Redux/drawingToolsSlice';
+import { selectDrawingEvents, drawingEventsActions } from 'Redux/drawingEventsSlice';
 
 function AdminTrailActionSection({ action, trailId }) {
   const dispatch = useDispatch();
@@ -50,6 +52,8 @@ function AdminTrailActionSection({ action, trailId }) {
   const [currentAction, setCurrentAction] = useState('add');
   const addTrailData = useSelector(selectAddTrail);
   const [cordsPosition, setCordsPosition] = useState(null);
+  const drawingTools = useSelector(selectDrawingTools);
+  const drawingEvents = useSelector(selectDrawingEvents);
 
   const fetchTypeItems = async () => {
     try {
@@ -249,6 +253,13 @@ function AdminTrailActionSection({ action, trailId }) {
             verified_date: setValidationDate,
           })
           .then(() => {
+            if (drawingTools.now.length != 0) {
+              drawingTools.now[0].geometry.setMap(null);
+            }
+            drawingEvents.events.forEach((listener) =>
+              window.google.maps.event.removeListener(listener),
+            );
+            dispatch(addTrailActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges('admin.changes_messages.place_edit', user, trailId);
@@ -274,6 +285,11 @@ function AdminTrailActionSection({ action, trailId }) {
             verified_date: setValidationDate,
           })
           .then(() => {
+            drawingTools.now[0].geometry.setMap(null);
+            drawingEvents.events.forEach((listener) =>
+              window.google.maps.event.removeListener(listener),
+            );
+            dispatch(addTrailActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             dispatch(adminDataActions.updateIsTrailsChanged(true));
@@ -459,14 +475,30 @@ function AdminTrailActionSection({ action, trailId }) {
               />
             </div>
           </div>
-          <div className='w-1/2 h-3/4 flex flex-col gap-4'>
+          <div className=' w-1/2 h-3/4 flex flex-col gap-4'>
             <AdminGoogleMap action={currentAction} kind='trail' cordsPosition={cordsPosition} />
             <BaseImageUpload fileSize={5} />
           </div>
         </div>
         <hr />
         <div className='flex justify-end gap-4'>
-          <BaseButton name={t('admin.common.back')} btnBg='red' onClick={() => navigate(-1)} />
+          <BaseButton
+            name={t('admin.common.back')}
+            btnBg='red'
+            onClick={() => {
+              if (drawingTools.now.length != 0) {
+                drawingTools.now[0].geometry.setMap(null);
+              }
+              drawingEvents.events.forEach((listener) =>
+                window.google.maps.event.removeListener(listener),
+              );
+              dispatch(drawingEventsActions.reset());
+              dispatch(drawingToolsActions.reset());
+              dispatch(addTrailActions.reset());
+              console.log('test');
+              navigate(-1);
+            }}
+          />
           {action !== 'view' && (
             <BaseButton
               name={action === 'edit' ? t('admin.content.edit') : t('admin.common.add')}

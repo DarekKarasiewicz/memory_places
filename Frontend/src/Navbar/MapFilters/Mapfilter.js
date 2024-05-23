@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import FilterIcon from 'icons/FilterIcon';
 import CancelIcon from 'icons/CancelIcon';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { filterTrails } from 'Redux/allMapTrailsSlice';
 
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
@@ -22,7 +23,9 @@ function MapFilter() {
   const [selectedPeriodOption, setSelectedPeriodOption] = useState(0);
   const [textValue, setTextValue] = useState('');
   const dispatch = useDispatch();
-  const filterItemsLength = useSelector((state) => state.allMapPlaces.filterItemsLength);
+  const filterPlacesLength = useSelector((state) => state.allMapPlaces.filterItemsLength);
+  const filterTrailsLength = useSelector((state) => state.allMapTrails.filterItemsLength);
+  const filterItemsLength = filterPlacesLength + filterTrailsLength;
   const { t } = useTranslation();
 
   const fetchSortOfItems = async () => {
@@ -130,6 +133,14 @@ function MapFilter() {
         sortof: parseInt(selectedSortOfOption),
         type: parseInt(selectedTypeOption),
         period: parseInt(selectedPeriodOption),
+      }),
+    );
+    dispatch(
+      filterTrails({
+        name: textValue,
+        type: parseInt(selectedTypeOption),
+        period: parseInt(selectedPeriodOption),
+        sortof: parseInt(selectedSortOfOption),
       }),
     );
   };

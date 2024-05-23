@@ -9,7 +9,7 @@ import { deletePlace } from 'Redux/allMapPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
-
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 import ArchaeologicalSiteIcon from 'icons/places_icons/ArchaeologicalSiteIcon';
 import BattlefieldIcon from 'icons/places_icons/BattlefieldIcon';
 import BurialSiteIcon from 'icons/places_icons/BurialSiteIcon';
@@ -22,13 +22,13 @@ import EditIcon from 'icons/EditIcon';
 import TrashIcon from 'icons/TrashIcon';
 
 const UserPlaceItem = (props) => {
-  const [visability, setVisability] = useState('flex');
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
 
   const handleUpdateModalVisability = (e) => {
     e.stopPropagation();
+    dispatch(userPlacesActions.changeIsOpen());
     dispatch(updatePlaceActions.changeUpdatePlace(props.place));
     dispatch(modalsActions.changeIsUpdateModalOpen());
   };
@@ -42,7 +42,6 @@ const UserPlaceItem = (props) => {
     e.stopPropagation();
     if (confirm(t('common.place_delete_warning'))) {
       axios.delete(`http://localhost:8000/memo_places/places/${props.place.id}`).then(() => {
-        setVisability('hidden');
         dispatch(deletePlace(props.place.id));
         registerAppChanges('admin.changes_messages.place_delete', cookies.user, props.place.id);
       });
@@ -64,7 +63,7 @@ const UserPlaceItem = (props) => {
 
   return (
     <li
-      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
+      className={`flex h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
         props.clickedItem === props.place.id ? 'border-2 border-contrastColor' : ''
       }`}
       key={props.place.id}

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
+  isTrailActive: false,
 };
 
 export const userPlacesSlice = createSlice({
@@ -10,6 +11,9 @@ export const userPlacesSlice = createSlice({
   reducers: {
     changeIsOpen: (state) => {
       state.isOpen = !state.isOpen;
+    },
+    changeIsTrailActive: (state) => {
+      state.isTrailActive = !state.isTrailActive;
     },
   },
 });

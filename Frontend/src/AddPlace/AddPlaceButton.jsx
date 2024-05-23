@@ -3,11 +3,12 @@ import { useCookies } from 'react-cookie';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import BaseButton from 'Base/BaseButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import AddingOption from './AddingOpction';
 import PlusIcon from 'icons/PlusIcon';
 import CancelIcon from 'icons/CancelIcon';
+import { userPlacesActions,selectUserPlaces } from 'Redux/userPlacesSlice';
 
 const AddPlaceButton = (props) => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const AddPlaceButton = (props) => {
   const user = cookies.user;
   const popupRef = useRef(null);
   const { t } = useTranslation();
+  const isUserPlacesOpen = useSelector(selectUserPlaces).isOpen;
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -42,7 +44,8 @@ const AddPlaceButton = (props) => {
 
   const handleAddClick = (event) => {
     if (isLogged) {
-      // props.openModal();
+
+      if(isUserPlacesOpen === true) dispatch(userPlacesActions.changeIsOpen());
       setIsSelecting(!isSelecting);
     } else {
       setIsActive(!isActive);
@@ -88,13 +91,13 @@ const AddPlaceButton = (props) => {
     >
       {isActive && (
         <motion.div
-          className='absolute bg-mainBgColor w-96 px-4 py-6 rounded-lg bottom-20 shadow-itemShadow'
+          className='absolute bg-mainBgColor w-auto px-4 py-6 rounded-lg bottom-20 shadow-itemShadow'
           variants={childItem}
           initial='hidden'
           animate='visible'
         >
           <div className='flex flex-col justify-center items-center gap-2'>
-            <p className='pb-2 text-lg text-textColor'>{t('user.add_place_login_req')}</p>
+            <p className='pb-2 text-lg text-textColor whitespace-nowrap'>{t('user.add_place_login_req')}</p>
             <BaseButton name='Log in' btnBg='blue' onClick={handleLoginRedirect} />
           </div>
           <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>

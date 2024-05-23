@@ -10,7 +10,7 @@ import LoginAndRegisterModal from './Modals/LoginAndRegisterModal';
 import UserMenuSettings from './Modals/UserMenuSettingsModal';
 import NotificationModal from './Modals/NotificationModal';
 import UserPlacesMenu from './User/UserPlacesMenu';
-import { selectUserPlaces } from './Redux/userPlacesSlice';
+import { selectUserPlaces, userPlacesActions } from './Redux/userPlacesSlice';
 import { addPlaceActions } from './Redux/addPlaceSlice';
 import CookiesInfo from './Cookies/CookieInfo';
 import { useCookies } from 'react-cookie';
@@ -63,6 +63,7 @@ function App() {
       dispatch(updatePlaceActions.reset());
       dispatch(addPlacelocationActions.clearLocation());
       dispatch(formValidationActions.reset());
+      dispatch(userPlacesActions.changeIsOpen());
     }
     dispatch(modalsActions.changeIsUpdateModalOpen());
   };
@@ -103,15 +104,16 @@ function App() {
     dispatch(modalsActions.changeIsTrailFormOpen());
   };
   const handleTrailUpdateFormModalVisability = () => {
-    if (modalData.isUpdateTrailFormOpen === true) {
-      drawingTools.now[0] && drawingTools.now[0].geometry.setMap(null);
-      drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
-      dispatch(drawingEventsActions.reset());
-      dispatch(drawingToolsActions.reset());
-      dispatch(addTrailActions.reset());
-      dispatch(updateTrailActions.reset());
-      dispatch(formValidationActions.reset());
+    if (drawingTools.now.length != 0) {
+      drawingTools.now[0].geometry.setMap(null);
     }
+    drawingEvents.events.forEach((listener) => window.google.maps.event.removeListener(listener));
+    dispatch(drawingEventsActions.reset());
+    dispatch(drawingToolsActions.reset());
+    dispatch(addTrailActions.reset());
+    dispatch(updateTrailActions.reset());
+    dispatch(formValidationActions.reset());
+    dispatch(userPlacesActions.changeIsOpen());
     dispatch(modalsActions.changeIsTrailUpdateFormOpen());
   };
 

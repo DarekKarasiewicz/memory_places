@@ -12,15 +12,16 @@ import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
 import EditIcon from 'icons/EditIcon';
 import TrashIcon from 'icons/TrashIcon';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 
 const UserTrailItem = (props) => {
-  const [visability, setVisability] = useState('flex');
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
 
   const handleUpdateModalVisability = (e) => {
     e.stopPropagation();
+    dispatch(userPlacesActions.changeIsOpen());
     dispatch(updateTrailActions.changeUpdateTrail(props.trail));
     dispatch(modalsActions.changeIsTrailUpdateFormOpen());
   };
@@ -36,20 +37,15 @@ const UserTrailItem = (props) => {
     e.stopPropagation();
     if (confirm(t('common.trail_delete_warning'))) {
       axios.delete(`http://localhost:8000/memo_places/path/${props.trail.id}`).then(() => {
-        setVisability('hidden');
         dispatch(deleteTrail(props.trail.id));
-        registerAppChanges(
-          'admin.changes_messages.trail_delete',
-          cookies.user.user_id,
-          props.trail.id,
-        );
+        registerAppChanges('admin.changes_messages.trail_delete', cookies.user, props.trail.id);
       });
     }
   };
 
   return (
     <li
-      className={`h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg ${visability} flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
+      className={`flex h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
         props.clickedItem === props.trail.id ? 'border-2 border-contrastColor' : ''
       }`}
       key={props.trail.id}

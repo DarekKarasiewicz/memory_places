@@ -27,7 +27,7 @@ const LoginForm = ({
         name='email'
         placeholder={t('log_reg_form.example_mail')}
         ref={emailRef}
-        className={isValidEmail === false ? 'bg-red-500' : ''}
+        className={isValidEmail === false ? 'bg-red-400' : ''}
         onBlur={handleBlurEmail}
       />
       {isValidEmail === false && (

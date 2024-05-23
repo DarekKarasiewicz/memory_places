@@ -23,10 +23,6 @@ const LoginComponent = () => {
   const { t } = useTranslation();
   const refresh = useRefreshToken();
 
-  const responseFacebook = (response) => {
-    //console.log(response);
-  };
-
   const handleBlurEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(emailRef.current.value));
@@ -114,8 +110,22 @@ const LoginComponent = () => {
               },
             )
             .then((response) => {
-              decoded = { ...decoded, id: response.id };
-              setCookie('user', decoded);
+              const userDecoded = jwtDecode(response.data);
+              setCookie(
+                'user',
+                {
+                  user_id: userDecoded.user_id,
+                  username: userDecoded.username,
+                  email: userDecoded.email,
+                  admin: userDecoded.admin,
+                  master: userDecoded.master,
+                  refreshToken: userDecoded.jti,
+                },
+                {
+                  expires: new Date(userDecoded.exp * 1000),
+                },
+              );
+              dispatch(modalsActions.changeIsLoginAndRegisterOpen());
             })
             .catch((error) => {
               if (error.response.status === 404) {
@@ -132,9 +142,23 @@ const LoginComponent = () => {
                       },
                     },
                   )
-                  .then((response) => {
-                    decoded = { ...decoded, id: response.data.id };
-                    setCookie('user', decoded);
+                  .then((secondResponse) => {
+                    const userDecoded = jwtDecode(secondResponse.data);
+                    setCookie(
+                      'user',
+                      {
+                        user_id: userDecoded.user_id,
+                        username: userDecoded.username,
+                        email: userDecoded.email,
+                        admin: userDecoded.admin,
+                        master: userDecoded.master,
+                        refreshToken: userDecoded.jti,
+                      },
+                      {
+                        expires: new Date(userDecoded.exp * 1000),
+                      },
+                    );
+                    dispatch(modalsActions.changeIsLoginAndRegisterOpen());
                   })
                   .catch((error) => {
                     dispatch(notificationModalActions.changeType('alert'));
@@ -142,10 +166,11 @@ const LoginComponent = () => {
                     dispatch(notificationModalActions.changeIsNotificationModalOpen());
                   });
               } else {
-                // Handle other errors from GET request
+                dispatch(notificationModalActions.changeType('alert'));
+                dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+                dispatch(notificationModalActions.changeIsNotificationModalOpen());
               }
             });
-          setCookie('user', decoded);
         }}
         onError={() => {
           dispatch(notificationModalActions.changeType('alert'));

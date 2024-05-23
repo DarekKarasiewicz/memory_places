@@ -22,6 +22,7 @@ import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import AlertIcon from 'icons/AlertIcon';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -173,24 +174,24 @@ const TrailFormModal = (props) => {
             coordinates: JSON.stringify(addTrailData.coordinates),
           })
           .then((response) => {
-            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-            dispatch(confirmationModalActions.changeType('success'));
-            registerAppChanges(
-              'admin.changes_messages.trail_edit',
-              user.user_id,
-              updateTrailData.trail.id,
-            );
+            dispatch(modalsActions.changeIsTrailUpdateFormOpen());
             dispatch(deleteTrail(response.data.id));
             dispatch(addTrail(response.data));
-            drawingTools.now[0].geometry.setMap(null);
+            if (drawingTools.now.length != 0) {
+              drawingTools.now[0].geometry.setMap(null);
+            }
             drawingEvents.events.forEach((listener) =>
               window.google.maps.event.removeListener(listener),
             );
             dispatch(drawingEventsActions.reset());
             dispatch(drawingToolsActions.reset());
             dispatch(addTrailActions.reset());
-            dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+            dispatch(updateTrailActions.reset());
             dispatch(formValidationActions.reset());
+            dispatch(userPlacesActions.changeIsOpen());
+            registerAppChanges('admin.changes_messages.trail_edit', user, updateTrailData.trail.id);
+            dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+            dispatch(confirmationModalActions.changeType('success'));
           })
           .catch(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -212,11 +213,7 @@ const TrailFormModal = (props) => {
           .then((response) => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
-            registerAppChanges(
-              'admin.changes_messages.trail_add',
-              user.user_id,
-              addTrailData.path_name,
-            );
+            registerAppChanges('admin.changes_messages.trail_add', user, addTrailData.path_name);
             dispatch(addTrail(response.data));
             drawingTools.now[0].geometry.setMap(null);
             drawingEvents.events.forEach((listener) =>

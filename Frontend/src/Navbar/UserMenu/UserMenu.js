@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import UserMenuOption from './UserMenuOption/UserMenuOption';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
-import { userPlacesActions } from 'Redux/userPlacesSlice';
+import { userPlacesActions, selectUserPlaces } from 'Redux/userPlacesSlice';
 import BaseButton from 'Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +24,7 @@ function UserMenu() {
   const wrapperRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const isUserPlacesOpen = useSelector(selectUserPlaces).isOpen;
 
   useEffect(() => {
     if (!isLogged) {
@@ -57,6 +58,7 @@ function UserMenu() {
   const handleLogout = () => {
     setIsActive(false);
     removeCookie('user', { path: '/' });
+    if (isUserPlacesOpen === true) dispatch(userPlacesActions.changeIsOpen());
   };
 
   const handleAdminDashboardRedirect = () => {

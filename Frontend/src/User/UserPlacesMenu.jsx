@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
-import { userPlacesActions } from 'Redux/userPlacesSlice';
+import { selectUserPlaces, userPlacesActions } from 'Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import CancelIcon from 'icons/CancelIcon';
@@ -21,8 +21,7 @@ const UserMenu = () => {
   const user = cookies.user;
   const [userPlaces, setUserPlaces] = useState(null);
   const [userTrails, setUserTrails] = useState(null);
-  const [isPlaceActive, setIsPlaceActive] = useState(true);
-  const [isTrailActive, setIsTrailActive] = useState(false);
+  const isTrailActive = useSelector(selectUserPlaces).isTrailActive;
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -79,8 +78,7 @@ const UserMenu = () => {
   };
 
   const handleObjectChange = () => {
-    setIsPlaceActive(!isPlaceActive);
-    setIsTrailActive(!isTrailActive);
+    dispatch(userPlacesActions.changeIsTrailActive());
   };
 
   return (

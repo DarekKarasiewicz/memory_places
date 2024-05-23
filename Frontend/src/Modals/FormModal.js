@@ -21,6 +21,7 @@ import { registerAppChanges } from 'utils';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import AlertIcon from 'icons/AlertIcon';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -149,9 +150,9 @@ function FormModal(props) {
       dispatch(addPlaceActions.changeDescription(updatePlaceData.place.description));
       setLat(updatePlaceData.place.lat);
       setLng(updatePlaceData.place.lng);
-      dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof_value));
-      dispatch(addPlaceActions.changeType(updatePlaceData.place.type_value));
-      dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period_value));
+      dispatch(addPlaceActions.changeSortOf(updatePlaceData.place.sortof));
+      dispatch(addPlaceActions.changeType(updatePlaceData.place.type));
+      dispatch(addPlaceActions.changePeriod(updatePlaceData.place.period));
       dispatch(addPlaceActions.changeWikiLink(updatePlaceData.place.wiki_link));
       dispatch(addPlaceActions.changeTopicLink(updatePlaceData.place.topic_link));
       validateName(updatePlaceData.place.place_name);
@@ -246,6 +247,7 @@ function FormModal(props) {
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsUpdateModalOpen());
             dispatch(formValidationActions.reset());
+            dispatch(userPlacesActions.changeIsOpen());
           })
           .catch(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -363,11 +365,7 @@ function FormModal(props) {
               <BaseSelect
                 label={t('common.type_of')}
                 name={t('common.type_of')}
-                value={
-                  props.type === 'update' && !updatePlaceData.isDataLoaded
-                    ? updatePlaceData.place.sortof
-                    : addPlaceData.sortof
-                }
+                value={addPlaceData.sortof}
                 options={sortOf}
                 ref={sortofRef}
                 onBlur={() => {
@@ -395,11 +393,7 @@ function FormModal(props) {
               <BaseSelect
                 label={t('common.type')}
                 name={t('common.type')}
-                value={
-                  props.type === 'update' && !updatePlaceData.isDataLoaded
-                    ? updatePlaceData.place.type
-                    : addPlaceData.type
-                }
+                value={addPlaceData.type}
                 options={type}
                 ref={typeRef}
                 onBlur={() => {
@@ -423,11 +417,7 @@ function FormModal(props) {
               <BaseSelect
                 label={t('common.period')}
                 name={t('common.period')}
-                value={
-                  props.type === 'update' && !updatePlaceData.isDataLoaded
-                    ? updatePlaceData.place.period
-                    : addPlaceData.period
-                }
+                value={addPlaceData.period}
                 options={period}
                 ref={periodRef}
                 onBlur={() => {

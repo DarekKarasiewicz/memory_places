@@ -14,7 +14,7 @@ const UserPlacesList = ({ userPlaces, userTrails, isTrailActive }) => {
   const displayPlacesList = () => {
     if (userPlaces.length < 1) {
       return (
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor text-xl'>
+        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-xl'>
           {t('common.place_warning')}
         </div>
       );
@@ -35,7 +35,7 @@ const UserPlacesList = ({ userPlaces, userTrails, isTrailActive }) => {
   const displayTrailsList = () => {
     if (userTrails.length < 1) {
       return (
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor text-xl'>
+        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-xl'>
           {t('common.trail_warning')}
         </div>
       );

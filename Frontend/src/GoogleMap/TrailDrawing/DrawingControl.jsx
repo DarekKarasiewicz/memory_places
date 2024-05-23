@@ -37,17 +37,21 @@ const DrawingControl = ({ drawingManager }) => {
     }
     if (updateTrailData.isDataLoaded === true) {
       dispatch(modalsActions.changeIsTrailUpdateFormOpen());
-      return;
+    } else {
+      dispatch(modalsActions.changeIsTrailFormOpen());
     }
     dispatch(adminActions.changeAdminGoogleMapExtension(false));
     dispatch(addTrailActions.changeIsSelecting(false));
-    dispatch(modalsActions.changeIsTrailFormOpen());
   };
 
   const closeDrawingManager = () => {
+    if (updateTrailData.isDataLoaded === true) {
+      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+    } else {
+      dispatch(modalsActions.changeIsTrailFormOpen());
+    }
     dispatch(addTrailActions.changeIsSelecting(false));
     dispatch(adminActions.changeAdminGoogleMapExtension(false));
-    dispatch(modalsActions.changeIsTrailFormOpen());
   };
 
   return (
