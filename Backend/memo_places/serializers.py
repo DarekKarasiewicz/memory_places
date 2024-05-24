@@ -37,30 +37,7 @@ class Places_serailizer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
-        fields = (
-            "id",
-            "place_name",
-            "description",
-            "creation_date",
-            "lng",
-            "lat",
-            "user",
-            "username",
-            "sortof",
-            "sortof_value",
-            "type",
-            "type_value",
-            "period",
-            "period_value",
-            "topic_link",
-            "wiki_link",
-            "verified",
-            "verified_date",
-        )
-
-    # def get_place_image(self, obj):
-    #     images = PlaceImage.objects.filter(place=obj)
-    #     return [image.img.url for image in images]
+        fields = "__all__" 
 
 class PlaceImage_serializer(serializers.ModelSerializer):
     class Meta:
@@ -78,23 +55,7 @@ class Path_serailizer(serializers.ModelSerializer):
 
     class Meta:
         model = Path
-        fields = (
-            "id",
-            "path_name",
-            "description",
-            "creation_date",
-            "verified",
-            "verified_date",
-            "coordinates",
-            "user",
-            "username",
-            "type",
-            "type_value",
-            "period",
-            "period_value",
-            "topic_link",
-            "wiki_link",
-        )
+        fields = "__all__" 
 
 class Short_Places_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")

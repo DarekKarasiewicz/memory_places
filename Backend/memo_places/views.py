@@ -298,7 +298,7 @@ class Path_view(viewsets.ModelViewSet):
                 serializer = self.serializer_class(paths, many=True)
                 return Response(serializer.data)
             case "type":
-                paths = Place.objects.filter(type=value)
+                paths = self.model.objects.filter(type=value)
                 serializer = self.serializer_class(paths, many=True)
                 return Response(serializer.data)
             case "period":
