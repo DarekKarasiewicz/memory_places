@@ -80,33 +80,31 @@ class Place_view(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
-        match key:
-            case "pk":
-                place = get_object_or_404(self.model, id=value)
-                serializer = self.serializer_class(place, many=False)
-                return Response(serializer.data)
-            case "user":
-                places = self.model.objects.filter(user=value)
-                serializer = self.serializer_class(places, many=True)
-                return Response(serializer.data)
-            case "type":
-                places = self.model.objects.filter(type=value)
-                serializer = self.serializer_class(places, many=True)
-                return Response(serializer.data)
-            case "sortof":
-                places = self.model.objects.filter(sortof=value)
-                serializer = self.serializer_class(places, many=True)
-                return Response(serializer.data)
-            case "period":
-                places = self.model.objects.filter(period=value)
-                serializer = self.serializer_class(places, many=True)
-                return Response(serializer.data)
-            case "place_name":
-                places = self.model.objects.filter(place_name=value)
-                serializer = self.serializer_class(places, many=True)
-                return Response(serializer.data)
+        keys={key:[value]}
+        keys.update(request.query_params)
+        places = self.model.objects.all()
 
-        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+        for key, value in keys.items():
+            match key:
+                case "pk":
+                    place = get_object_or_404(self.model, id=value[0])
+                    serializer = self.serializer_class(place, many=False)
+                    return Response(serializer.data)
+                case "user":
+                    places = self.model.objects.filter(user=value[0])
+                case "type":
+                    places = self.model.objects.filter(type=value[0])
+                case "sortof":
+                    places = self.model.objects.filter(sortof=value[0])
+                case "period":
+                    places = self.model.objects.filter(period=value[0])
+                case "place_name":
+                    places = self.model.objects.filter(place_name=value[0])
+                case _:
+                    return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.serializer_class(places, many=True)
+        return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
@@ -232,6 +230,8 @@ class Path_view(viewsets.ModelViewSet):
         )
         for key in data.keys():
             match key:
+                case "verified":
+                    new_path.verified = data["verified"]
                 case "wiki_link":
                     new_path.wiki_link = data["wiki_link"]
                 case "topic_link":
@@ -249,29 +249,30 @@ class Path_view(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
-        match key:
-            case "pk":
-                path = get_object_or_404(self.model, id=value)
-                serializer = self.serializer_class(path, many=False)
-                return Response(serializer.data)
-            case "user":
-                paths = self.model.objects.filter(user=value)
-                serializer = self.serializer_class(paths, many=True)
-                return Response(serializer.data)
-            case "type":
-                paths = self.model.objects.filter(type=value)
-                serializer = self.serializer_class(paths, many=True)
-                return Response(serializer.data)
-            case "period":
-                paths = Place.objects.filter(period=value)
-                serializer = self.serializer_class(paths, many=True)
-                return Response(serializer.data)
-            case "path_name":
-                paths = self.model.objects.filter(path_name=value)
-                serializer = self.serializer_class(paths, many=True)
-                return Response(serializer.data)
+        keys={key:[value]}
+        keys.update(request.query_params)
+        paths = self.model.objects.all()
 
-        return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+        for key, value in keys.items():
+            match key:
+                case "pk":
+                    path = get_object_or_404(self.model, id=value[0])
+                    serializer = self.serializer_class(path, many=False)
+                    return Response(serializer.data)
+                case "user":
+                    paths = self.model.objects.filter(user=value[0])
+                case "type":
+                    paths = self.model.objects.filter(type=value[0])
+                case "period":
+                    paths = Place.objects.filter(period=value[0])
+                case "path_name":
+                    paths = self.model.objects.filter(path_name=value[0])
+                case _:
+                    return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.serializer_class(paths, many=True)
+        return Response(serializer.data)
+
 
     def update(self, request, *args, **kwargs):
         path_object = self.model.objects.get(id=kwargs["pk"])
