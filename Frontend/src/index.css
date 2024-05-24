@@ -27,3 +27,7 @@
   height: 40px;
   padding: 12px !important;
 }
+
+.break-anywhere {
+  overflow-wrap: anywhere;
+}

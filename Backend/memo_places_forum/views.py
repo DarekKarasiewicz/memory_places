@@ -78,7 +78,7 @@ class CommentView(viewsets.ModelViewSet):
                 case "like":
                     user = get_object_or_404(User, id=data["user"])
                     if UserCommentLike.objects.filter(user=user, comment=comment_object).exists():
-                        return Response({'error': 'User already liked this post'}, status=404)                    
+                        return Response({'error': 'User already liked this comment'}, status=404)                    
                     UserCommentLike(
                         user = user,
                         comment = comment_object
@@ -90,7 +90,7 @@ class CommentView(viewsets.ModelViewSet):
                         UserCommentLike.objects.filter(user=user, comment=comment_object).delete()
                         comment_object.like = comment_object.like - 1
                     else:
-                        return Response({'error': "User don't liked this post"}, status=404)                    
+                        return Response({'error': "User don't liked this comment"}, status=404)                    
                 case _:
                     pass
 

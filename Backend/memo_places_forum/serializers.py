@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from .models import Post, Comment, UserCommentLike, UserPostLike
 class Posts_Serailizer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
     class Meta:
         model = Post
         fields = "__all__"
 
-
 class Comments_Serailizer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
     class Meta:
         model = Comment
         fields = "__all__"
