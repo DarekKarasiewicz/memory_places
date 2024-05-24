@@ -5,7 +5,7 @@ import BaseButton from 'Base/BaseButton';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { registerAppChanges } from 'utils';
@@ -29,7 +29,7 @@ function ForumPostModal(props) {
   };
 
   const validateTitle = (title) => {
-    if (titleRef.current.length > 0) {
+    if (title.length > 0) {
       setIsValidTitle(true);
     } else {
       setIsValidTitle(false);
@@ -37,7 +37,7 @@ function ForumPostModal(props) {
   };
 
   const validateDescription = (desc) => {
-    if (descRef.current.length > 0) {
+    if (desc.length > 0) {
       setIsValidDesc(true);
     } else {
       setIsValidDesc(false);
@@ -51,35 +51,32 @@ function ForumPostModal(props) {
     return false;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const isFormValid = validateForm();
 
-    console.log(forumData.place_id);
-
-    // if (isFormValid) {
-    //   axios
-    //     .post(`http://127.0.0.1:8000/memo_places_forum/post/`, {
-    //       user: user.user_id,
-    //       place_id: forumData.place_id,
-    //       title: titleRef.current.value,
-    //       content: descRef.current.value
-    //     })
-    //     .then((response) => {
-    //       dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-    //       dispatch(confirmationModalActions.changeType('success'));
-    //       // registerAppChanges('Utworzono post o ID', user, addPlaceData.place_name);
-    //     })
-    //     .catch(() => {
-    //       dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-    //       dispatch(confirmationModalActions.changeType('error'));
-    //     });
-    // } else {
-    //   dispatch(notificationModalActions.changeType('alert'));
-    //   dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
-    //   dispatch(notificationModalActions.changeIsNotificationModalOpen());
-    // }
+    if (isFormValid) {
+      axios
+        .post(`http://127.0.0.1:8000/memo_places_forum/post/`, {
+          user: parseInt(user.user_id),
+          place: parseInt(forumData.place_id),
+          title: titleRef.current.value,
+          content: descRef.current.value,
+        })
+        .then((response) => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('success'));
+          closeModal();
+          registerAppChanges('Utworzono post o ID', user, titleRef.current.value);
+        })
+        .catch(() => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('error'));
+        });
+    } else {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('modal.filled_box_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
   };
 
   return (
@@ -89,15 +86,16 @@ function ForumPostModal(props) {
           <BaseInput
             type='text'
             label={t('forum.title')}
+            ref={titleRef}
             onChange={() => {
               validateTitle(titleRef.current.value);
             }}
             onBlur={() => validateTitle(titleRef.current.value)}
-            ref={titleRef}
           />
           <div className='overflow-auto'>
             <BaseTextarea
               rows='10'
+              width=''
               label={t('common.description')}
               ref={descRef}
               onChange={() => {
@@ -109,7 +107,7 @@ function ForumPostModal(props) {
           </div>
           <div className='flex justify-center mt-2 gap-4'>
             <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => closeModal()} />
-            {/* <BaseButton name={t('admin.common.add')} btnBg='blue' onClick={() => handleSubmit()} /> */}
+            <BaseButton name={t('admin.common.add')} btnBg='blue' onClick={() => handleSubmit()} />
           </div>
         </div>
       </BaseModal>

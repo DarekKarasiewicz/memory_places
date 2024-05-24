@@ -3,10 +3,13 @@ import { forwardRef } from 'react';
 const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
   return (
     <>
-      <div className='flex justify-between items-center'>
-        <label className='block pl-1 pb-1 text-base'>{props.label}</label>
-        <label className='block pr-1 text-sm'>{props.secondLabel}</label>
-      </div>
+      {props.label && (
+        <div className='flex justify-between items-center'>
+          <label className='block pl-1 pb-1 text-base'>{props.label}</label>
+          <label className='block pr-1 text-sm'>{props.secondLabel}</label>
+        </div>
+      )}
+
       <textarea
         className={`block w-${
           props.width ? props.width : 'full'
@@ -21,6 +24,7 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
         defaultValue={props.value}
         onBlur={props.onBlur}
         onChange={props.onChange}
+        onSelect={props.onSelect}
         readOnly={props.readOnly}
       />
     </>

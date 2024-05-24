@@ -4,6 +4,7 @@ const initialState = {
   place_id: null,
   trail_id: null,
   post_id: null,
+  refresh_places: false,
 };
 
 export const forumDataSlice = createSlice({
@@ -18,6 +19,9 @@ export const forumDataSlice = createSlice({
     },
     changePostId: (state, action) => {
       state.post_id = action.payload;
+    },
+    changeRefreshPlaces: (state, action) => {
+      state.refresh_places = action.payload;
     },
     clearLocation: (state) => {
       state.place_id = null;
