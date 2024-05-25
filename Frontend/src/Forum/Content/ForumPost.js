@@ -73,7 +73,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
             <div>
               - {currentData && currentData.created_at ? currentData.created_at.split('T')[0] : ''}
             </div>
-            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>NEW</div>}
+            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</div>}
           </div>
         </div>
         <div className='text-xl'>{currentData.title}</div>
@@ -97,7 +97,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
           <div className='rounded-lg bg-thirdBgColor py-1 px-2 flex gap-1 cursor-pointer hover:text-contrastColor'>
             <div className='flex gap-1 hover:scale-105 transition' onClick={handleShareClick}>
               <ShareIcon className='h-6 w-6' />
-              <span>Share</span>
+              <span>{t('forum.share')}</span>
             </div>
           </div>
         </div>

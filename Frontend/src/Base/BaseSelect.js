@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 const BaseSelect = forwardRef(function BaseSelect(props, ref) {
   return (
     <>
-      <div className='w-full'>
+      <div className={`${!props.disabledParentFull ? 'w-full' : ''}`}>
         {!props.disabledLabel && <label className='block pl-1 pb-1 text-base'>{props.label}</label>}
         <select
           className={`block w-${

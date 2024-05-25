@@ -5,6 +5,11 @@ const initialState = {
   trail_id: null,
   post_id: null,
   refresh_places: false,
+  type_id: null,
+  period_id: null,
+  header_name: null,
+  refresh_content_data: false,
+  isDataContentMounted: false,
 };
 
 export const forumDataSlice = createSlice({
@@ -22,6 +27,21 @@ export const forumDataSlice = createSlice({
     },
     changeRefreshPlaces: (state, action) => {
       state.refresh_places = action.payload;
+    },
+    changeTypeId: (state, action) => {
+      state.type_id = action.payload;
+    },
+    changePeriodId: (state, action) => {
+      state.period_id = action.payload;
+    },
+    changeHeaderName: (state, action) => {
+      state.header_name = action.payload;
+    },
+    changeRefreshContentData: (state, action) => {
+      state.refresh_content_data = action.payload;
+    },
+    changeisDataContentMounted: (state, action) => {
+      state.isDataContentMounted = action.payload;
     },
     clearLocation: (state) => {
       state.place_id = null;

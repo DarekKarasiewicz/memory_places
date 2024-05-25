@@ -38,7 +38,7 @@ function ConfirmationModal() {
     <>
       <AnimatePresence>
         <motion.div
-          className='absolute flex bottom-6 right-6 z-50'
+          className='fixed flex bottom-6 right-6 z-50'
           initial={{ x: '50%', opacity: 0, scale: 0.5 }}
           animate={{ x: 0, opacity: 1, scale: 1 }}
           exit={{ x: '50%', opacity: 0, transition: { duration: 0.1 } }}
