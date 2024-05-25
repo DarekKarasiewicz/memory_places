@@ -73,7 +73,21 @@
         "title": "Title",
         "post_title": "Post title",
         "content": "Content",
-        "welcome_id": "Hello from subforum id:"
+        "welcome_id": "Hello from subforum id:",
+        "choose_category": "To display objects on the page, select the category of your interest from the menu on your left.",
+        "more_places": "View more places",
+        "more_posts": "View more posts",
+        "more_comments": "View more comments",
+        "posts": "Posts",
+        "add_post": "Add post",
+        "add_comment": "Add comment",
+        "sort_by": "Sort by",
+        "share": "Share",
+        "new": "New",
+        "select_new": "Time - newest",
+        "select_old": "Time - oldest",
+        "select_like_desc": "Rating - most",
+        "select_like_asc": "Rating - least"
     },
     "google_maps":{
         "error1_info": "Permission Denied",
@@ -326,6 +340,7 @@
             "alert_error": "Something went wrong. Please try again!",
             "place_var_info": "After any change in this section, contact the developer to change the translations in the application",
             "place_var_info2": "Current values to assign translations to:",
+            "place_var_info3": "Make sure you have the latest data by clicking the refresh button next to this information.",
             "lp": "No.",
             "kind": "Kind",
             "cannot_change_info": "Your data cannot be changed!"

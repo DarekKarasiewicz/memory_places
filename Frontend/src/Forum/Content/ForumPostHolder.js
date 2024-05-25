@@ -30,6 +30,8 @@ function ForumPostHolder() {
   const forumData = useSelector(selectForumData);
   const contentRef = useRef();
   const [isActive, setIsActive] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [blockCommentFetching, setBlockCommentFetching] = useState(false);
 
   const fetchPostItem = async () => {
     try {
@@ -42,13 +44,57 @@ function ForumPostHolder() {
     }
   };
 
-  const fetchCommentItems = async (sortType) => {
+  const fetchCommentItems = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/memo_places_forum/comment/post=${postid}/`,
+        `http://localhost:8000/memo_places_forum/comment/post=${postid}`,
       );
       setComment(response.data);
-      console.log(response.data);
+    } catch (error) {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
+  };
+
+  const fetchCommentItemsAdvanced = async (sortType, page) => {
+    try {
+      let commentEndpointUrl = `http://localhost:8000/memo_places_forum/comment/post=${postid}`;
+
+      if (sortType === 'like_asc') {
+        commentEndpointUrl += `?sort=like`;
+      } else if (sortType === 'like_desc') {
+        commentEndpointUrl += `?sort=-like`;
+      } else if (sortType === 'old') {
+        commentEndpointUrl += `?sort=created_at`;
+      } else {
+        commentEndpointUrl += `?sort=-created_at`;
+      }
+
+      if (page !== undefined) {
+        if (commentEndpointUrl.includes('?')) {
+          commentEndpointUrl += `&page=${page}`;
+        } else {
+          commentEndpointUrl += `?page=${page}`;
+        }
+      }
+
+      const response = await axios.get(commentEndpointUrl);
+
+      if (response.data !== 0) {
+        setBlockCommentFetching(true);
+        return;
+      }
+
+      if (comment.length === 0) {
+        setComment(response.data);
+      } else {
+        if (commentEndpointUrl.includes('sort')) {
+          setComment(response.data);
+        } else {
+          setComment((prevComments) => [...prevComments, ...response.data]);
+        }
+      }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -57,10 +103,10 @@ function ForumPostHolder() {
   };
 
   const sort_options = [
-    { label: 'new', value: 'new' },
-    { label: 'old', value: 'old' },
-    { label: 'top', value: 'top' },
-    { label: 'best', value: 'best' },
+    { label: t('forum.select_new'), value: 'new' },
+    { label: t('forum.select_old'), value: 'old' },
+    { label: t('forum.select_like_asc'), value: 'like_asc' },
+    { label: t('forum.select_like_desc'), value: 'like_desc' },
   ];
 
   const locationShareLink = () => {
@@ -108,7 +154,7 @@ function ForumPostHolder() {
       .then((response) => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('success'));
-        registerAppChanges('Utworzono komntarz o ID', user);
+        registerAppChanges('Utworzono komentarz o ID', user);
         fetchCommentItems();
         handleCommentClose();
       })
@@ -117,10 +163,19 @@ function ForumPostHolder() {
       });
   };
 
+  const changeCommentSortOption = (sortType) => {
+    fetchCommentItemsAdvanced(sortType);
+  };
+
+  const loadNewComments = () => {
+    setCurrentPage(currentPage + 1);
+    fetchCommentItemsAdvanced(sortRef.current.value, currentPage + 1);
+  };
+
   const handleCommentClose = () => {
     setIsActive(false);
     contentRef.current.value = '';
-  }
+  };
 
   useEffect(() => {
     fetchPostItem();
@@ -136,20 +191,27 @@ function ForumPostHolder() {
     <>
       <div className='w-3/5 flex flex-col gap-6'>
         <div className='flex gap-2'>
-          <BaseButton name={t('admin.common.back')} btnBg='red' onClick={() => navigate(-1)} />
+          <BaseButton
+            name={t('admin.common.back')}
+            btnBg='red'
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
         </div>
         <div className='flex flex-col gap-4'>
           <ForumPost key={1} currentData={post} locationShare={locationShareLink()} />
-          <div className='flex items-center gap-4 p-2'>
-            <span className='w-fit'>Sortuj po: </span>
+          <div className='flex justify-start items-center gap-4 p-2'>
+            <span className='w-fit'>{t('forum.sort_by')}</span>
             <BaseSelect
               disabledLabel={true}
+              disabledParentFull={true}
               label='sortby'
               name='sortby'
-              width='20'
+              width='25'
               options={sort_options}
               ref={sortRef}
-              onChange={() => sortRef.current.value}
+              onChange={() => changeCommentSortOption(sortRef.current.value)}
             />
           </div>
           <div className={`flex ${isActive ? 'items-start' : 'items-center'} gap-3 pb-3`}>
@@ -161,7 +223,7 @@ function ForumPostHolder() {
                   name='contentInput'
                   rows={`${isActive ? '4' : '1'}`}
                   className={`${isActive ? 'max-h-32' : 'h-12'}`}
-                  placeholder='Dodaj komentarz'
+                  placeholder={t('forum.add_comment')}
                   onSelect={() => setIsActive(true)}
                   ref={contentRef}
                 />
@@ -206,6 +268,16 @@ function ForumPostHolder() {
                 </div>
               </div>
             ))}
+          {comment?.length > 0 && (
+            <div className='flex justify-center mt-2'>
+              <BaseButton
+                name={t('forum.more_comments')}
+                btnBg='blue'
+                onClick={() => loadNewComments()}
+                disabled={blockCommentFetching}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

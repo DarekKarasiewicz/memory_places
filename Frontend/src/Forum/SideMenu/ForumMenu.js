@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import TrendIcon from 'icons/TrendIcon';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { forumDataActions, selectForumData } from 'Redux/forumDataSlice';
 
 function ForumMenu() {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ function ForumMenu() {
         <section className='flex flex-col items-center gap-6 w-full text-textColor'>
           <div className='flex flex-col items-start gap-3 w-full'>
             <div className='flex flex-col items-center gap-3 w-full'>
-              <div className='text-textColor text-xl'>Types</div>
+              <div className='text-textColor text-xl'>{t('admin.content.type')}</div>
               <hr className='border-t-1 w-full border-textColor' />
               <div className='flex flex-col justify-start gap-2'>
                 {types.length > 0 && (
@@ -78,6 +79,17 @@ function ForumMenu() {
                         whileHover={{ scale: 1.05 }}
                         className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
                         key={index}
+                        onClick={() => {
+                          //TO DO
+                          //temp solution bcs backend can handle only one parameter at once
+                          dispatch(forumDataActions.changePeriodId(null));
+
+                          dispatch(forumDataActions.changeisDataContentMounted(true));
+                          dispatch(forumDataActions.changeTypeId(item.id));
+                          dispatch(forumDataActions.changeHeaderName(item.name));
+                          dispatch(forumDataActions.changeRefreshContentData(true));
+                          navigate('/forum');
+                        }}
                       >
                         <TrendIcon className='h-6 w-6' />
                         <span>{item.name}</span>
@@ -89,7 +101,7 @@ function ForumMenu() {
             </div>
           </div>
           <div className='flex flex-col items-center gap-3 w-full'>
-            <div className='text-textColor text-xl'>Periods</div>
+            <div className='text-textColor text-xl'>{t('admin.content.period')}</div>
             <hr className='border-t-1 w-full border-textColor' />
             <div className='flex flex-col justify-start gap-2'>
               {periods.length > 0 && (
@@ -99,6 +111,17 @@ function ForumMenu() {
                       whileHover={{ scale: 1.05 }}
                       className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
                       key={index}
+                      onClick={() => {
+                        //TO DO
+                        //temp solution bcs backend can handle only one parameter at once
+                        dispatch(forumDataActions.changeTypeId(null));
+
+                        dispatch(forumDataActions.changeisDataContentMounted(true));
+                        dispatch(forumDataActions.changePeriodId(item.id));
+                        dispatch(forumDataActions.changeHeaderName(item.name));
+                        dispatch(forumDataActions.changeRefreshContentData(true));
+                        navigate('/forum');
+                      }}
                     >
                       <TrendIcon className='h-6 w-6' />
                       <span>{item.name}</span>

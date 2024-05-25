@@ -173,7 +173,7 @@ class Place_view(viewsets.ModelViewSet):
         place_object = self.model.objects.get(id=kwargs["pk"])
         
         if place_object.verified:
-            return Response({"detail": "Verified place cannot be delete"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Verified place cannot be deleted"}, status=status.HTTP_400_BAD_REQUEST)
 
         Post.objects.filter(place=place_object).delete()
         place_object.delete()

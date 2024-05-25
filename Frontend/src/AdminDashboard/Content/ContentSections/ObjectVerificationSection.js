@@ -31,6 +31,8 @@ function ObjectVerificationSection() {
       const modifiedPlaceData = allPlaces.data.filter((item) => item.verified === true);
       const modifiedTrailData = allTrails.data.filter((item) => item.verified === true);
 
+      console.log(verificationTrails.data);
+
       const rawCombinedVerificationData = [...verificationPlaces.data, ...verificationTrails.data];
       const rawCombinedAllData = [...modifiedPlaceData, ...modifiedTrailData];
 
@@ -63,7 +65,7 @@ function ObjectVerificationSection() {
       );
 
       const sumOfPreviousMonthPlaces = rawCombinedAllData.filter(
-        (item) => getItemDate(item.creation_date) === previousMonthDate,
+        (item) => getItemDate(item.creation_date) === previousMonthDate(),
       );
 
       setVerificationData(combinedAllData);
@@ -174,12 +176,12 @@ function ObjectVerificationSection() {
           />
           <AdminTileStat
             title={t('admin.content.previous_verified')}
-            value={statistics.sumOfCurrentMonthPlaces}
+            value={statistics.sumOfPreviousMonthPlaces}
             icon='flagCheck'
           />
           <AdminTileStat
             title={t('admin.content.current_verified')}
-            value={statistics.sumOfPreviousMonthPlaces}
+            value={statistics.sumOfCurrentMonthPlaces}
             icon='flagCheck'
           />
         </div>

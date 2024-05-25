@@ -73,7 +73,21 @@
         "title": "Titel",
         "post_title": "Posttitel",
         "content": "Inhalt",
-        "welcome_id": "Willkommen vom Unterforum ID:"
+        "welcome_id": "Willkommen vom Unterforum ID:",
+        "choose_category": "Um Objekte auf der Seite anzuzeigen, wählen Sie die Kategorie Ihrer Wahl aus dem Menü auf Ihrer linken Seite.",
+        "more_places": "Mehr Orte anzeigen",
+        "more_posts": "Mehr Beiträge anzeigen",
+        "more_comments": "Mehr Kommentare anzeigen",
+        "posts": "Beiträge",
+        "add_post": "Beitrag hinzufügen",
+        "add_comment": "Kommentar hinzufügen",
+        "sort_by": "Sortieren nach",
+        "share": "Teilen",
+        "new": "Neu",
+        "select_new": "Zeit - neueste",
+        "select_old": "Zeit - älteste",
+        "select_like_desc": "Bewertung - am meisten",
+        "select_like_asc": "Bewertung - am wenigsten"
     },
     "google_maps":{
         "error1_info": "Zugriff verweigert",
@@ -326,6 +340,7 @@
             "alert_error": "Etwas ist schief gelaufen. Bitte versuche es erneut!",
             "place_var_info": "Wenden Sie sich nach jeder Änderung in diesem Abschnitt an den Entwickler, um die Übersetzungen in der Anwendung zu ändern",
             "place_var_info2": "Aktuelle Werte, denen Übersetzungen zugeordnet werden sollen:",
+            "place_var_info3": "Stellen Sie sicher, dass Sie die neuesten Daten haben, indem Sie auf die Aktualisierungsschaltfläche neben diesen Informationen klicken.",
             "lp": "Nr.",
             "kind": "Art",
             "cannot_change_info": "Ihre Daten können nicht geändert werden!"

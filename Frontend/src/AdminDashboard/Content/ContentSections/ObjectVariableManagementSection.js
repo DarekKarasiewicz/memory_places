@@ -11,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import { registerAppChanges } from 'utils';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
+import RefreshIcon from 'icons/RefreshIcon';
 
 function ObjectVariableManagementSection() {
   const dispatch = useDispatch();
@@ -42,7 +43,6 @@ function ObjectVariableManagementSection() {
       setSortOf(responseSort.data);
       setSortOfBase(responseSort.data);
       pushValuesToTranslate(...responseSort.data.map((item) => item.value));
-      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -56,7 +56,6 @@ function ObjectVariableManagementSection() {
       setType(responseType.data);
       setTypeBase(responseType.data);
       pushValuesToTranslate(...responseType.data.map((item) => item.value));
-      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -70,7 +69,6 @@ function ObjectVariableManagementSection() {
       setPeriod(responsePeriod.data);
       setPeriodBase(responsePeriod.data);
       pushValuesToTranslate(...responsePeriod.data.map((item) => item.value));
-      dispatch(adminDataActions.updateIsVariablesChanged(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('admin.content.alert_error')));
@@ -108,7 +106,6 @@ function ObjectVariableManagementSection() {
     if (error) {
       dispatch(confirmationModalActions.changeType('error'));
     } else {
-      dispatch(adminDataActions.updateIsVariablesChanged(true));
       dispatch(confirmationModalActions.changeType('success'));
       registerAppChanges('admin.changes_messages.variables_changed', cookies.user);
     }
@@ -129,9 +126,11 @@ function ObjectVariableManagementSection() {
 
   useEffect(() => {
     if (isVariablesChanged || sortOf.length === 0 || type.length === 0 || period.length === 0) {
+      setTranslateValue([]);
       fetchSortOfItems();
       fetchTypeItems();
       fetchPeriodItems();
+      dispatch(adminDataActions.updateIsVariablesChanged(false));
     }
   }, [isVariablesChanged]);
 
@@ -142,33 +141,43 @@ function ObjectVariableManagementSection() {
           <span className='text-3xl'>{t('admin.common.var_manage_title')}</span>
           <span className='text-md'>{t('admin.content.variable_info')}</span>
         </div>
-        <motion.div
-          whileHover={{ scale: infoBox ? 1 : 1.05 }}
-          className='cursor-pointer relative'
-          onClick={() => handleInfoBoxVisibility()}
-        >
-          <HelpIcon className='h-12 w-12 mr-4' />
-          {infoBox && (
-            <motion.div
-              ref={infoRef}
-              variants={parentItem}
-              initial='hidden'
-              animate='visible'
-              className='absolute w-96 top-12 p-4 right-0 bg-mainBgColor text-textColor shadow-itemShadow flex flex-col gap-2'
-            >
-              <span>{t('admin.content.place_var_info')}</span>
-              <span>{t('admin.content.place_var_info2')}</span>
-              <span>
-                {translateValue.map((value, index) => (
-                  <React.Fragment key={index}>
-                    {value}
-                    {index !== translateValue.length - 1 && ', '}
-                  </React.Fragment>
-                ))}
-              </span>
-            </motion.div>
-          )}
-        </motion.div>
+        <div className='flex items-center gap-4'>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className='cursor-pointer relative'
+            onClick={() => dispatch(adminDataActions.updateIsVariablesChanged(true))}
+          >
+            <RefreshIcon className='h-10 w-10' />
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: infoBox ? 1 : 1.05 }}
+            className='cursor-pointer relative'
+            onClick={() => handleInfoBoxVisibility()}
+          >
+            <HelpIcon className='h-10 w-10 mr-4' />
+            {infoBox && (
+              <motion.div
+                ref={infoRef}
+                variants={parentItem}
+                initial='hidden'
+                animate='visible'
+                className='absolute w-96 top-12 p-4 right-0 bg-mainBgColor text-textColor shadow-itemShadow flex flex-col gap-2'
+              >
+                <span>{t('admin.content.place_var_info')}</span>
+                <span>{t('admin.content.place_var_info2')}</span>
+                <span>
+                  {translateValue.map((value, index) => (
+                    <React.Fragment key={index}>
+                      {value}
+                      {index !== translateValue.length - 1 && ', '}
+                    </React.Fragment>
+                  ))}
+                </span>
+                <span className='text-red-500'>{t('admin.content.place_var_info3')}</span>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full'>

@@ -73,7 +73,21 @@
         "title": "Tytuł",
         "post_title": "Tytuł postu",
         "content": "Zawartość",
-        "welcome_id": "Witaj od subforum id:"
+        "welcome_id": "Witaj od subforum id:",
+        "choose_category": "Aby wyświetlić obiekty na stronie wybierz interesującą cię kategorie z menu po twojej lewej stronie.",
+        "more_places": "Zobacz więcej miejsc",
+        "more_posts": "Zobacz więcej postów",
+        "more_comments": "Zobacz więcej komentarzy",
+        "posts": "Posty",
+        "add_post": "Dodaj post",
+        "add_comment": "Dodaj komentarz",
+        "sort_by": "Sortuj po",
+        "share": "Udostępnij",
+        "new": "Nowy",
+        "select_new": "Czas - najnowsze",
+        "select_old": "Czas - najstarsze",
+        "select_like_desc": "Ocena - najwięcej",
+        "select_like_asc": "Ocena - najmniej"
     },
     "google_maps":{
         "error1_info": "Odmowa dostępu",
@@ -326,6 +340,7 @@
             "alert_error": "Coś poszło nie tak. Spróbuj jeszcze raz!",
             "place_var_info": "Po jakiejkolwiek zmianie w tej sekcji należy skontaktować się z developerem w celu zmiany tłumaczeń w aplikacji",
             "place_var_info2": "Obecne wartości do których należy przypisać tłumaczenia:",
+            "place_var_info3": "Upewnij się że masz najnowsze dane klikając w przycisk odświeżenia danych znajdującego się obok tych informacji.",
             "lp": "Lp.",
             "kind": "Rodzaj",
             "cannot_change_info": "Twoje dane nie mogą zostać zmienione"

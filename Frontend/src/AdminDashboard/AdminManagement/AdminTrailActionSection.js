@@ -238,9 +238,9 @@ function AdminTrailActionSection({ action, trailId }) {
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
-      let currentDate = new Date();
-      var isValidated = toVerification === 'true' ? false : true;
-      var setValidationDate = !isValidated ? currentDate.toISOString().slice(0, 10) : null;
+      const currentDate = new Date();
+      const shouldBeVerificated = toVerification === 'true';
+      const setValidationDate = shouldBeVerificated ? null : currentDate.toISOString().slice(0, 10);
 
       if (action === 'edit') {
         axios
@@ -251,7 +251,7 @@ function AdminTrailActionSection({ action, trailId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
-            verified: isValidated,
+            verified: !shouldBeVerificated,
             verified_date: setValidationDate,
           })
           .then(() => {
@@ -283,7 +283,7 @@ function AdminTrailActionSection({ action, trailId }) {
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
-            verified: isValidated,
+            verified: !shouldBeVerificated,
             verified_date: setValidationDate,
           })
           .then(() => {

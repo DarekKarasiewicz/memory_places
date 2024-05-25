@@ -23,7 +23,7 @@ function ForumPlace({ currentData, onClick }) {
             <UserIcon className='h-6 w-6' />
             <div>{currentData.username}</div>
             <div>- {currentData.creation_date.split('T')[0]}</div>
-            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>NEW</div>}
+            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</div>}
           </div>
         </div>
         <div className='flex gap-2'>
@@ -39,16 +39,19 @@ function ForumPlace({ currentData, onClick }) {
             <div>{currentData.description}</div>
           </div>
         </div>
-        <div className='flex gap-2 my-2'>
-          <div className='p-1 bg-red-600 text-xs rounded-lg'>
-            {t(`modal.${currentData.sortof_value}`)}
-          </div>
-          <div className='p-1 bg-green-600 text-xs rounded-lg'>
+        <div className='flex items-center gap-2 my-2'>
+          {/* <span>{currentData.kind} - </span> */}
+          {currentData.sortof_value && (
+            <span className='p-1 bg-red-600 text-xs rounded-lg'>
+              {t(`modal.${currentData.sortof_value}`)}
+            </span>
+          )}
+          <span className='p-1 bg-green-600 text-xs rounded-lg'>
             {t(`modal.${currentData.type_value}`)}
-          </div>
-          <div className='p-1 bg-yellow-600 text-xs rounded-lg'>
+          </span>
+          <span className='p-1 bg-yellow-600 text-xs rounded-lg'>
             {t(`modal.${currentData.period_value}`)}
-          </div>
+          </span>
         </div>
       </div>
     </>
