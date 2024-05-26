@@ -117,7 +117,7 @@ class Place_view(viewsets.ModelViewSet):
                     serializer = self.serializer_class(place, many=False)
                     return Response(serializer.data)
                 case "place_name":
-                    place = places.filter(path_name=value[0])
+                    places = [x for x in places if re.match(value[0].lower(),x.place_name.lower())]
                 case "user":
                     places = places.filter(user=value[0])
                 case "type":
@@ -293,7 +293,7 @@ class Path_view(viewsets.ModelViewSet):
                     serializer = self.serializer_class(path, many=False)
                     return Response(serializer.data)
                 case "path_name":
-                    paths = paths.filter(path_name=value[0])
+                    paths = [x for x in paths if re.match(value[0].lower(),x.path_name.lower())]
                 case "user":
                     paths = paths.filter(user=value[0])
                 case "type":
@@ -462,7 +462,7 @@ class User_view(viewsets.ModelViewSet):
         user_object.save()
 
         serializer = self.serializer_class(user_object)
-        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
+        return Response(str(MyTokenObtainPairSerializer.get_token(user=user_object)))
 
     def destroy(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
