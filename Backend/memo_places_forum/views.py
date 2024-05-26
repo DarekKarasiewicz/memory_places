@@ -34,7 +34,7 @@ class CommentView(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
         page = int(request.query_params.get("page", 1))
-        page_size = 15
+        page_size = 2 
         start = (page - 1) * page_size
         end = start + page_size
 
@@ -159,7 +159,7 @@ class PostView(viewsets.ModelViewSet):
             case "place":
                 posts = self.model.objects.filter(place=value)
             case "title":
-                posts = self.model.objects.filter(title=value)
+                posts = [x for x in posts if re.match(value.lower(), x.title.lower())]
             case _:
                 return Response({"error": "Invalid request"}, status=400)
 
