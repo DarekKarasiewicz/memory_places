@@ -46,6 +46,16 @@ function AdminMenu() {
       section: 'ObjectVerificationSection',
     },
     {
+      icon: 'post',
+      name: t('admin.common.post_manage_title'),
+      section: 'PostManagementSection',
+    },
+    {
+      icon: 'comment',
+      name: t('admin.common.comment_manage_title'),
+      section: 'CommentManagementSection',
+    },
+    {
       icon: 'webChanges',
       name: t('admin.common.history_title'),
       section: 'ChangesHistorySection',
@@ -75,8 +85,8 @@ function AdminMenu() {
 
   return (
     <>
-      <div className='flex flex-col gap-6 items-center'>
-        <section className='w-32 h-32 flex justify-center items-center'>
+      <div className='flex flex-col gap-8 items-center'>
+        <section className='w-32 h-32 mt-4 flex justify-center items-center'>
           <img
             src='./assets/memory_places_logo.png'
             alt='memorial place logo'

@@ -7,7 +7,6 @@ import { userPlacesActions, selectUserPlaces } from 'Redux/userPlacesSlice';
 import BaseButton from 'Base/BaseButton';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ArrowDownIcon from 'icons/ArrowDownIcon';
 import UserIcon from 'icons/UserIcon';
@@ -23,7 +22,6 @@ function UserMenu() {
   const popupRef = useRef(null);
   const wrapperRef = useRef(null);
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const isUserPlacesOpen = useSelector(selectUserPlaces).isOpen;
 
   useEffect(() => {
@@ -61,10 +59,6 @@ function UserMenu() {
     if (isUserPlacesOpen === true) dispatch(userPlacesActions.changeIsOpen());
   };
 
-  const handleAdminDashboardRedirect = () => {
-    navigate('/adminDashboard');
-  };
-
   const handleFAQVisability = () => {
     dispatch(modalsActions.changeIsFAQOpen());
   };
@@ -86,26 +80,11 @@ function UserMenu() {
   const menuItems = [
     // { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
-    {
-      icon: 'user',
-      name: t('user.admin_panel'),
-      func: handleAdminDashboardRedirect,
-      isAdministration: true,
-    },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
     { icon: 'help', name: t('user.help'), func: handleFAQVisability },
     { icon: 'contact', name: t('user.contact'), func: handleContactFormVisability },
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
-
-  const isAdminOrMaster = user && (user.admin || user.master);
-
-  const filteredMenuItems = menuItems.filter((item) => {
-    if (item.isAdministration) {
-      return isAdminOrMaster;
-    }
-    return true;
-  });
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -167,9 +146,9 @@ function UserMenu() {
             </li>
             <hr className='border-t-1 mt-2 border-textColor' />
 
-            {filteredMenuItems.map((item, index) => (
+            {menuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
-                {index === filteredMenuItems.length - 1 && <hr className='mb-2 border-textColor' />}
+                {index === menuItems.length - 1 && <hr className='mb-2 border-textColor' />}
                 <UserMenuOption
                   index={index}
                   icon={item.icon}

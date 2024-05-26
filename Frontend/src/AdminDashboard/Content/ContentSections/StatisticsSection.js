@@ -20,9 +20,6 @@ function StatisticsSection() {
       const responsePlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
       const responseTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
 
-      const modifiedPlaceData = responsePlaces.data.filter((item) => item.verified === true);
-      const modifiedTrailsData = responseTrails.data.filter((item) => item.verified === true);
-
       const getItemDate = (date) => {
         return new Date(date).getMonth();
       };
@@ -78,22 +75,22 @@ function StatisticsSection() {
       }
 
       if (responsePlaces.data !== 0) {
-        modifiedPlaceData.forEach((item) => {
+        responsePlaces.data.forEach((item) => {
           const itemMonth = getItemDate(item.creation_date);
           monthlyItemsCount[itemMonth].places += 1;
         });
       }
 
       if (responseTrails.data !== 0) {
-        modifiedTrailsData.forEach((item) => {
+        responseTrails.data.forEach((item) => {
           const itemMonth = getItemDate(item.creation_date);
           monthlyItemsCount[itemMonth].trails += 1;
         });
       }
 
       setStatistics((statistics) => ({ ...statistics, ['allUsers']: responseUsers.data.length }));
-      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: modifiedPlaceData.length }));
-      setStatistics((statistics) => ({ ...statistics, ['allTrails']: modifiedTrailsData.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allPlaces']: responsePlaces.data.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allTrails']: responseTrails.data.length }));
       setStatistics((statistics) => ({ ...statistics, ['objectsData']: monthlyItemsCount }));
 
       dispatch(adminDataActions.updateIsStatisticsChanged(false));

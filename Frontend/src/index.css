@@ -10,6 +10,8 @@
   --contrastColor: rgb(8 145 178);
   --itemShadow: 0 3px 15px rgb(0, 0, 0, 0.12);
   --itemShadowBottom: 0 5px 5px -5px rgb(0, 0, 0, 0.12);
+  --itemShadowWithoutTop: 0 5px 5px -5px rgb(0, 0, 0, 0.12), 5px 0 5px -5px rgb(0, 0, 0, 0.12),
+    -5px 0 5px -5px rgb(0, 0, 0, 0.12);
 }
 
 .dark {
@@ -20,6 +22,8 @@
   --contrastColor: rgb(8 145 178);
   --itemShadow: 0 3px 15px rgba(255, 255, 255, 0.12);
   --itemShadowBottom: none;
+  --itemShadowWithoutTop: 0 5px 5px -5px rgb(255, 255, 255, 0.12),
+    5px 0 5px -5px rgb(255, 255, 255, 0.12), -5px 0 5px -5px rgb(255, 255, 255, 0.12);
 }
 
 .gmnoprint button {

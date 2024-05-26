@@ -6,6 +6,8 @@ import {
   blockUser,
   resetUserPassword,
   unlockUser,
+  deletePostItem,
+  deleteCommentItem,
 } from 'Redux/adminActionSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -23,7 +25,6 @@ import { registerAppChanges } from 'utils';
 function AdminModal({ closeModal }) {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminAction);
-  const { place_id, place_name, user_id, user_name, current_action } = modalData;
   const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
@@ -38,34 +39,52 @@ function AdminModal({ closeModal }) {
   ];
 
   useEffect(() => {
-    if (current_action === 'place_delete') {
+    if (modalData.current_action === 'place_delete') {
       setTitle(t('admin.common.delete_title'));
-      setDesc(t('admin.common.delete_info', { id: place_id, name: place_name }));
+      setDesc(
+        t('admin.common.delete_info', { id: modalData.place_id, name: modalData.place_name }),
+      );
       setIconComponent(<TrashIcon className='h-20 w-20' />);
     }
 
-    if (current_action === 'user_block') {
+    if (modalData.current_action === 'user_block') {
       setTitle(t('admin.common.block_title'));
-      setDesc(t('admin.common.block_info', { id: user_id, name: user_name }));
+      setDesc(t('admin.common.block_info', { id: modalData.user_id, name: modalData.user_name }));
       setIconComponent(<BlockIcon className='h-20 w-20' />);
     }
 
-    if (current_action === 'user_role') {
+    if (modalData.current_action === 'user_role') {
       setTitle(t('admin.common.role_title'));
-      setDesc(t('admin.common.role_info', { id: user_id, name: user_name }));
+      setDesc(t('admin.common.role_info', { id: modalData.user_id, name: modalData.user_name }));
       setIconComponent(<SettingsIcon className='h-20 w-20' />);
     }
 
-    if (current_action === 'user_pass_reset') {
+    if (modalData.current_action === 'user_pass_reset') {
       setTitle(t('admin.common.pass_res_title'));
-      setDesc(t('admin.common.pass_res_info', { id: user_id, name: user_name }));
+      setDesc(
+        t('admin.common.pass_res_info', { id: modalData.user_id, name: modalData.user_name }),
+      );
       setIconComponent(<PassIcon className='h-20 w-20' />);
     }
 
-    if (current_action === 'user_unlock') {
+    if (modalData.current_action === 'user_unlock') {
       setTitle(t('admin.common.unlock_title'));
-      setDesc(t('admin.common.unlock_info', { id: user_id, name: user_name }));
+      setDesc(t('admin.common.unlock_info', { id: modalData.user_id, name: modalData.user_name }));
       setIconComponent(<UnlockIcon className='h-20 w-20' />);
+    }
+
+    if (modalData.current_action === 'post_delete') {
+      setTitle(t('admin.common.delete_post_title'));
+      setDesc(
+        t('admin.common.delete_post_info', { id: modalData.post_id, title: modalData.post_title }),
+      );
+      setIconComponent(<TrashIcon className='h-20 w-20' />);
+    }
+
+    if (modalData.current_action === 'comment_delete') {
+      setTitle(t('admin.common.comment_title'));
+      setDesc(t('admin.common.comment_info', { id: modalData.comment_id }));
+      setIconComponent(<TrashIcon className='h-20 w-20' />);
     }
   }, []);
 
@@ -82,7 +101,7 @@ function AdminModal({ closeModal }) {
           <div className='flex justify-center items-center my-4'>
             <span className='text-2xl text-center text-textColor'>{desc}</span>
           </div>
-          {current_action === 'user_role' && (
+          {modalData.current_action === 'user_role' && (
             <div className='flex justify-center items-center mb-8'>
               <div className='w-1/2'>
                 <BaseSelect
@@ -98,53 +117,101 @@ function AdminModal({ closeModal }) {
           )}
           <div className='flex justify-center gap-8'>
             <BaseButton name={t('common.cancel')} btnBg='red' onClick={closeModal} />
-            {current_action === 'place_delete' && (
+            {modalData.current_action === 'place_delete' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(deletePlaceItem(place_id));
-                  registerAppChanges('admin.changes_messages.place_delete', cookies.user, place_id);
+                  dispatch(deletePlaceItem(modalData.place_id));
+                  registerAppChanges(
+                    'admin.changes_messages.place_delete',
+                    cookies.user,
+                    modalData.place_id,
+                  );
                 }}
               />
             )}
-            {current_action === 'user_block' && (
+            {modalData.current_action === 'user_block' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(blockUser(user_id));
-                  registerAppChanges('admin.changes_messages.blocked', cookies.user, user_id);
+                  dispatch(blockUser(modalData.user_id));
+                  registerAppChanges(
+                    'admin.changes_messages.blocked',
+                    cookies.user,
+                    modalData.user_id,
+                  );
                 }}
               />
             )}
-            {current_action === 'user_role' && (
+            {modalData.current_action === 'user_role' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(changeUserRole(user_id, roleRef.current.value));
-                  registerAppChanges('admin.changes_messages.user_role', cookies.user, user_id);
+                  dispatch(changeUserRole(modalData.user_id, roleRef.current.value));
+                  registerAppChanges(
+                    'admin.changes_messages.user_role',
+                    cookies.user,
+                    modalData.user_id,
+                  );
                 }}
               />
             )}
-            {current_action === 'user_pass_reset' && (
+            {modalData.current_action === 'user_pass_reset' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(resetUserPassword(user_id));
-                  registerAppChanges('admin.changes_messages.reset_pass', cookies.user, user_id);
+                  dispatch(resetUserPassword(modalData.user_id));
+                  registerAppChanges(
+                    'admin.changes_messages.reset_pass',
+                    cookies.user,
+                    modalData.user_id,
+                  );
                 }}
               />
             )}
-            {current_action === 'user_unlock' && (
+            {modalData.current_action === 'user_unlock' && (
               <BaseButton
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(unlockUser(user_id));
-                  registerAppChanges('admin.changes_messages.unlocked', cookies.user, user_id);
+                  dispatch(unlockUser(modalData.user_id));
+                  registerAppChanges(
+                    'admin.changes_messages.unlocked',
+                    cookies.user,
+                    modalData.user_id,
+                  );
+                }}
+              />
+            )}
+            {modalData.current_action === 'post_delete' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => {
+                  dispatch(deletePostItem(modalData.post_id));
+                  registerAppChanges(
+                    'admin.changes_messages.post_deleted',
+                    cookies.user,
+                    modalData.post_id,
+                  );
+                }}
+              />
+            )}
+            {modalData.current_action === 'comment_delete' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => {
+                  dispatch(deleteCommentItem(modalData.comment_id));
+                  registerAppChanges(
+                    'admin.changes_messages.comment_deleted',
+                    cookies.user,
+                    modalData.comment_id,
+                  );
                 }}
               />
             )}

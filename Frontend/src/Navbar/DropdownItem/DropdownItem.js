@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import MapIcon from 'icons/MapIcon';
 import ForumIcon from 'icons/ForumIcon';
+import UserIcon from 'icons/UserIcon';
 
 function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);
@@ -11,6 +12,7 @@ function DropdownItem({ icon, name, onClick }) {
   const iconComponents = {
     map: <MapIcon className='h-8 w-8' />,
     forum: <ForumIcon className='h-8 w-8' />,
+    user: <UserIcon className='h-8 w-8' />,
   };
 
   const IconComponent = iconComponents[icon] || null;
@@ -44,9 +46,9 @@ function DropdownItem({ icon, name, onClick }) {
             animate='visible'
             variants={variantsToFade}
             transition={{ duration: 0.5 }}
-            className='h-12 w-24 absolute left-6 bg-mainBgColor text-textColor pointer-events-none z-0 pr-2 flex justify-end rounded-lg items-center leading-4'
+            className='h-12 w-auto absolute left-6 bg-mainBgColor text-textColor pointer-events-none z-0 px-2 flex justify-end rounded-lg items-center leading-4'
           >
-            <span className='ml-6 capitalize text-right'>
+            <span className='ml-6 capitalize text-left'>
               {name ? name : t('common.not_given_name')}
             </span>
           </motion.div>

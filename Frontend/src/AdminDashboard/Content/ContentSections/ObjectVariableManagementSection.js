@@ -40,7 +40,7 @@ function ObjectVariableManagementSection() {
   const fetchSortOfItems = async () => {
     try {
       const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
-      setSortOf(responseSort.data);
+      setSortOf(responseSort.data.sort((a, b) => (a.order > b.order ? 1 : -1)));
       setSortOfBase(responseSort.data);
       pushValuesToTranslate(...responseSort.data.map((item) => item.value));
     } catch (error) {

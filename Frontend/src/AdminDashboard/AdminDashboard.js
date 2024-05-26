@@ -10,6 +10,8 @@ import AdminModal from 'Modals/AdminModal.js';
 import ConfirmationModal from 'Modals/ConfirmationModal.js';
 import NotificationModal from 'Modals/NotificationModal';
 import { selectNotificationModal } from 'Redux/notificationModalSlice.jsx';
+import ScrollToTopButton from 'ScrollToTopButton/ScrollToTopButton.js';
+import AdminForumActionModal from './AdminManagement/AdminForumActionModal.js';
 
 function AdminDashboard() {
   const dispatch = useDispatch();
@@ -30,12 +32,14 @@ function AdminDashboard() {
         <div className='w-full flex flex-col'>
           <ContentNavbar />
           <Content />
+          <ScrollToTopButton />
         </div>
         {modalAdminAction.isAdminActionsModalOpen && (
           <AdminModal closeModal={handleAdminActionModal} />
         )}
         {confirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
         {notificationModal.isNotificationModalOpen && <NotificationModal />}
+        {modalAdminAction.isAdminForumModalOpen && <AdminForumActionModal />}
       </div>
     </Suspense>
   );

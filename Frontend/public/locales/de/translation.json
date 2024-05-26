@@ -87,7 +87,8 @@
         "select_new": "Zeit - neueste",
         "select_old": "Zeit - älteste",
         "select_like_desc": "Bewertung - am meisten",
-        "select_like_asc": "Bewertung - am wenigsten"
+        "select_like_asc": "Bewertung - am wenigsten",
+        "modal_add_post": "Beitrag hinzufügen"
     },
     "google_maps":{
         "error1_info": "Zugriff verweigert",
@@ -217,9 +218,11 @@
             "statistics_title": "App Statistiken",
             "user_manage_title": "Benutzerverwaltung",
             "place_manage_title": "Ortsverwaltung",
-            "trail_manage_title": "Wanderweg-Management",
+            "trail_manage_title": "Wegverwaltung",
             "var_manage_title": "Verwaltung von Variablenobjekten",
             "verification_title": "Überprüfung von Speicherobjekten",
+            "post_manage_title": "Beitragsverwaltung",
+            "comment_manage_title": "Kommentarverwaltung",
             "history_title": "App-Änderungsverlauf",
             "january": "Januar",
             "february": "Februar",
@@ -273,13 +276,21 @@
             "delete_title": "Löschen des Speicherorts",
             "delete_info": "Möchten Sie den Ort mit der ID: {{id}} und dem Namen: {{name}} wirklich löschen?",
             "block_title": "Benutzer blockieren",
-            "block_info": "Sind Sie sicher, dass Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} blockieren möchten",
+            "block_info": "Sind Sie sicher, dass Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} blockieren möchten?",
             "role_title": "Benutzerrolle ändern",
             "role_info": "Wählen Sie die Rolle für den Benutzer mit der ID: {{id}} und dem Namen: {{name}} aus und bestätigen Sie dann Ihre Entscheidung",
             "pass_res_title": "Benutzerpasswort zurücksetzen",
-            "pass_res_info": "Sind Sie sicher, dass Sie das Passwort des Benutzers mit der ID: {{id}} und dem Namen: {{name}} zurücksetzen möchten",
+            "pass_res_info": "Sind Sie sicher, dass Sie das Passwort des Benutzers mit der ID: {{id}} und dem Namen: {{name}} zurücksetzen möchten?",
             "unlock_title": "Benutzer freischalten",
-            "unlock_info": "Möchten Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} wirklich freischalten?"
+            "unlock_info": "Möchten Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} wirklich freischalten?",
+            "delete_post_title": "Beitrag löschen",
+            "delete_post_info": "Sind Sie sicher, dass Sie den Beitrag mit der ID: {{id}} und dem Titel: {{title}} löschen möchten?",
+            "delete_comment_title": "Kommentar löschen",
+            "delete_comment_info": "Sind Sie sicher, dass Sie den Kommentar mit der ID: {{id}} löschen möchten?",
+            "memo_post_edit": "Beitrag bearbeiten",
+            "memo_post_view": "Beitragsinformationen",
+            "memo_comment_edit": "Kommentar bearbeiten",
+            "memo_comment_view": "Kommentarinformationen"
         },
         "content": {
             "statistics_info": "Gesammelte Statistiken der Website an einem Ort!",
@@ -343,7 +354,20 @@
             "place_var_info3": "Stellen Sie sicher, dass Sie die neuesten Daten haben, indem Sie auf die Aktualisierungsschaltfläche neben diesen Informationen klicken.",
             "lp": "Nr.",
             "kind": "Art",
-            "cannot_change_info": "Ihre Daten können nicht geändert werden!"
+            "cannot_change_info": "Ihre Daten können nicht geändert werden!",
+            "title": "Titel",
+            "like": "Likes",
+            "id_place": "Orts-ID",
+            "all_post_info": "Alle Beiträge im Diskussionsforum",
+            "all_posts": "Alle Beiträge",
+            "previous_posts": "Beiträge vom Vormonat",
+            "current_posts": "Beiträge vom laufenden Monat",
+            "content": "Inhalt",
+            "id_post": "Post-ID",
+            "all_comment_info": "Alle Kommentare im Diskussionsforum",
+            "all_comments": "Alle Kommentare",
+            "previous_comments": "Kommentare vom Vormonat",
+            "current_comments": "Kommentare vom laufenden Monat"
         },
         "changes_messages": {
             "blocked": "Benutzer mit ID {{element_id}} gesperrt",
@@ -361,10 +385,13 @@
             "trail_verified": "Test mit ID {{element_id}} erfolgreich verifiziert",
             "trail_unverified": "Test mit ID {{element_id}} nicht verifiziert",
             "variables_changed": "Variablen geändert",
-            "comment_added": "Kommentar hinzugefügt",
-            "post_added": "Beitrag hinzugefügt",
-            "post_edit": "Beitrag mit ID {{element_id}} bearbeitet",
-            "contact_send": "Kontaktanfrage gesendet"
+            "post_added": "Beitrag mit der ID {{element_id}} hinzugefügt",
+            "post_edit": "Beitrag mit der ID {{element_id}} bearbeitet",
+            "post_deleted": "Beitrag mit der ID {{element_id}} gelöscht",
+            "contact_send": "Kontaktanfrage gesendet",
+            "comment_added": "Kommentar mit der ID {{element_id}} hinzugefügt",
+            "comment_edited": "Kommentar mit der ID {{element_id}} bearbeitet",
+            "comment_deleted": "Kommentar mit der ID {{element_id}} gelöscht"
         }
     }
 }

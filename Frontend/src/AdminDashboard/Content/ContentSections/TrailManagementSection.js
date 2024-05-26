@@ -18,12 +18,10 @@ function TrailManagementSection() {
   const fetchTrailItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
-      const modifiedTrailsData = response.data
-        .map((obj, index) => ({
-          ...obj,
-          lp: index + 1,
-        }))
-        .filter((item) => item.verified === true);
+      const modifiedTrailsData = response.data.map((obj, index) => ({
+        ...obj,
+        lp: index + 1,
+      }));
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();

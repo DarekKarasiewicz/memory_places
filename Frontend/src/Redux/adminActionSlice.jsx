@@ -10,8 +10,14 @@ const initialState = {
   trail_name: '',
   user_id: null,
   user_name: '',
+  post_id: null,
+  post_title: '',
+  comment_id: null,
   isAdminActionsModalOpen: false,
   current_action: '',
+  forum_kind_type: '',
+  forum_modal_action: '',
+  isAdminForumModalOpen: false,
   adminMapExtended: false,
 };
 
@@ -37,8 +43,26 @@ export const adminActionSlice = createSlice({
     changeUserName: (state, action) => {
       state.user_name = action.payload;
     },
+    changePostId: (state, action) => {
+      state.post_id = action.payload;
+    },
+    changePostTitle: (state, action) => {
+      state.post_title = action.payload;
+    },
+    changeCommentId: (state, action) => {
+      state.comment_id = action.payload;
+    },
     changeAction: (state, action) => {
       state.current_action = action.payload;
+    },
+    changeForumKindType: (state, action) => {
+      state.forum_kind_type = action.payload;
+    },
+    changeForumModalAction: (state, action) => {
+      state.forum_modal_action = action.payload;
+    },
+    changeIsAdminForumModalOpen: (state) => {
+      state.isAdminForumModalOpen = !state.isAdminForumModalOpen;
     },
     changeIsAdminActionsModalOpen: (state) => {
       state.isAdminActionsModalOpen = !state.isAdminActionsModalOpen;
@@ -157,6 +181,32 @@ export const unlockUser = (user_id) => async (dispatch) => {
     );
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsUsersChanged(true));
+  } catch (error) {
+    dispatch(confirmationModalActions.changeType('error'));
+  }
+};
+
+export const deletePostItem = (post_id) => async (dispatch) => {
+  dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+  dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+
+  try {
+    await axios.delete(`http://127.0.0.1:8000/memo_places_forum/post/${post_id}`);
+    dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsPostsChanged(true));
+  } catch (error) {
+    dispatch(confirmationModalActions.changeType('error'));
+  }
+};
+
+export const deleteCommentItem = (comment_id) => async (dispatch) => {
+  dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+  dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+
+  try {
+    await axios.delete(`http://127.0.0.1:8000/memo_places_forum/comment/${comment_id}`);
+    dispatch(confirmationModalActions.changeType('success'));
+    dispatch(adminDataActions.updateIsCommentsChanged(true));
   } catch (error) {
     dispatch(confirmationModalActions.changeType('error'));
   }

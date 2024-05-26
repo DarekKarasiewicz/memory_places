@@ -9,11 +9,11 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { registerAppChanges } from 'utils';
-import { forumDataActions, selectForumData } from 'Redux/forumDataSlice';
+import { selectForumData } from 'Redux/forumDataSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 
-function ForumPostModal(props) {
+function ForumPostModal() {
   const titleRef = useRef(null);
   const descRef = useRef(null);
   const { t } = useTranslation();
@@ -81,7 +81,7 @@ function ForumPostModal(props) {
 
   return (
     <>
-      <BaseModal title='Dodawanie postu' closeModal={closeModal}>
+      <BaseModal title={t('forum.modal_add_post')} closeModal={closeModal}>
         <div className='flex flex-col px-2 py-4 gap-2'>
           <BaseInput
             type='text'

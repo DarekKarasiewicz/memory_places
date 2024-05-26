@@ -373,7 +373,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   return (
     <>
-      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative '>
+      <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
         <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
           <PinIcon />
           <span>{actionTitle}</span>
