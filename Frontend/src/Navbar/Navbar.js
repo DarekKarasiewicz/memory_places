@@ -8,6 +8,7 @@ import MapFilter from './MapFilters/Mapfilter';
 import UserMenu from './UserMenu/UserMenu';
 import { selectUserPlaces } from 'Redux/userPlacesSlice';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import ThemeSwitcher from 'ThemeSwitcher/ThemeSwitcher';
 import MenuIcon from 'icons/MenuIcon';
 import CancelIcon from 'icons/CancelIcon';
@@ -17,6 +18,8 @@ function Navbar() {
   const userPlacesData = useSelector(selectUserPlaces);
   const wrapperRef = useRef(null);
   const { t } = useTranslation();
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
 
   const handleClick = () => {
     setIsActive((current) => !current);
@@ -25,6 +28,7 @@ function Navbar() {
   const dropdownItems = [
     { link: '/', icon: 'map', name: t('navbar.main_page') },
     { link: '/forum', icon: 'forum', name: t('navbar.forum') },
+    { link: '/adminDashboard', icon: 'user', name: t('user.admin_panel'), isAdministration: true },
   ];
 
   const parentItem = {
@@ -46,6 +50,15 @@ function Navbar() {
       opacity: 1,
     },
   };
+
+  const isAdminOrMaster = user && (user.admin || user.master);
+
+  const filteredMenuItems = dropdownItems.filter((item) => {
+    if (item.isAdministration) {
+      return isAdminOrMaster;
+    }
+    return true;
+  });
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -78,12 +91,12 @@ function Navbar() {
             </motion.div>
             {isActive && (
               <motion.ul
-                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-mainBgColor rounded-b-lg shadow-itemShadow'
+                className='flex flex-col gap-2 mt-1 p-2 left-0 absolute bg-mainBgColor rounded-b-lg shadow-shadow-itemShadowWithoutTop'
                 variants={parentItem}
                 initial='hidden'
                 animate='visible'
               >
-                {dropdownItems.map((item, index) => (
+                {filteredMenuItems.map((item, index) => (
                   <motion.li key={index} className='childItem' variants={childItem}>
                     <Link to={`${item.link}`}>
                       <DropdownItem icon={`${item.icon}`} name={`${item.name}`}></DropdownItem>

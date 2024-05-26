@@ -18,14 +18,11 @@ function PlaceManagementSection() {
   const fetchPlaceItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
-      console.log(response.data);
 
-      const modifiedPlaceData = response.data
-        .map((obj, index) => ({
-          ...obj,
-          lp: index + 1,
-        }))
-        .filter((item) => item.verified === true);
+      const modifiedPlaceData = response.data.map((obj, index) => ({
+        ...obj,
+        lp: index + 1,
+      }));
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();

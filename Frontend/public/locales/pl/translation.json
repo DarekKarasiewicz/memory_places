@@ -87,7 +87,8 @@
         "select_new": "Czas - najnowsze",
         "select_old": "Czas - najstarsze",
         "select_like_desc": "Ocena - najwięcej",
-        "select_like_asc": "Ocena - najmniej"
+        "select_like_asc": "Ocena - najmniej",
+        "modal_add_post": "Dodawanie postu"
     },
     "google_maps":{
         "error1_info": "Odmowa dostępu",
@@ -217,10 +218,12 @@
             "statistics_title": "Statystki strony",
             "user_manage_title": "Zarządzanie użytkownikami",
             "place_manage_title": "Zarządzanie istniejącymi miejscami",
-            "trail_manage_title": "Zarządzanie szlakiem",
+            "trail_manage_title": "Zarządzanie szlakami",
             "var_manage_title": "Zarządzanie zmiennymi obiektów",
-            "verification_title": "Weryfikacja obiektów pamięci",
+            "post_manage_title": "Zarządzanie postami",
+            "comment_manage_title": "Zarządzanie komentarzami",
             "history_title": "Historia zmian na stronie",
+            "verification_title": "Weryfikacja obiektów pamięci",
             "january": "Styczeń",
             "february": "Luty",
             "march": "Marzec",
@@ -271,15 +274,23 @@
             "memo_add": "Dodaj miejsce",
             "memo_trail": "Dodaj szlaki",
             "delete_title": "Usuwanie miejsca pamięci",
-            "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}",
+            "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}?",
             "block_title": "Blokowanie użytkownika",
-            "block_info": "Czy napewno chcesz zablokować użytkownika o ID: {{id}} i nazwie: {{name}}",
+            "block_info": "Czy napewno chcesz zablokować użytkownika o ID: {{id}} i nazwie: {{name}}?",
             "role_title": "Zmiana rolę użytkownika",
             "role_info": "Wybierz rolę użytkownika o ID: {{id}} i nazwie: {{name}} a następnie zatwierdź swoją decyzję",
             "pass_res_title": "Zresetowanie hasła użytkownika",
-            "pass_res_info": "Czy napewno chcesz zresetować hasło użytkownika o ID: {{id}} i nazwie: {{name}}",
+            "pass_res_info": "Czy napewno chcesz zresetować hasło użytkownika o ID: {{id}} i nazwie: {{name}}?",
             "unlock_title": "Odblokowanie użytkownika",
-            "unlock_info": "Czy napewno chcesz odblokować użytkownika o ID: {{id}} i nazwie: {{name}}"
+            "unlock_info": "Czy napewno chcesz odblokować użytkownika o ID: {{id}} i nazwie: {{name}}?",
+            "delete_post_title": "Usuwanie postu",
+            "delete_post_info": "Czy napewno chcesz usunąć post o ID: {{id}} i tytule: {{title}}?",
+            "delete_comment_title": "Usuwanie komentarza",
+            "delete_comment_info": "Czy napewno chcesz usunąć komentarz o ID: {{id}}?",
+            "memo_post_edit": "Edytowanie postu",
+            "memo_post_view": "Informacje o poście",
+            "memo_comment_edit": "Edytowanie komentarza",
+            "memo_comment_view": "Informacje o komentarzu"
         },
         "content": {
             "statistics_info": "Zebrane statystki strony w jednym miejscu!",
@@ -343,7 +354,20 @@
             "place_var_info3": "Upewnij się że masz najnowsze dane klikając w przycisk odświeżenia danych znajdującego się obok tych informacji.",
             "lp": "Lp.",
             "kind": "Rodzaj",
-            "cannot_change_info": "Twoje dane nie mogą zostać zmienione"
+            "cannot_change_info": "Twoje dane nie mogą zostać zmienione",
+            "title": "Tytuł",
+            "like": "Polubienia",
+            "id_place": "ID miejsca",
+            "all_post_info": "Wszystkie posty znajdujące się na forum dyskusyjnym",
+            "all_posts": "Wszystkie posty",
+            "previous_posts": "Posty z poprzedniego miesiąca",
+            "current_posts": "Posty z bieżącego miesiąca",
+            "content": "Zawartość",
+            "id_post": "ID posta",
+            "all_comment_info": "Wszystkie komentarze znajdujące się na forum dyskusyjnym",
+            "all_comments": "Wszystkie komentarze",
+            "previous_comments": "Komentarze z poprzedniego miesiąca",
+            "current_comments": "Komentarze z bieżącego miesiąca"
         },
         "changes_messages": {
             "blocked": "Zablokowany użytkownik o ID {{element_id}}",
@@ -361,10 +385,13 @@
             "trail_verified": "Trasa o ID {{element_id}} zweryfikowana pomyślnie",
             "trail_unverified": "Trasa o ID {{element_id}} niezweryfikowane",
             "variables_changed": "Zmieniono zmienne",
-            "comment_added": "Dodano komentarz",
-            "post_added": "Dodano wpis",
-            "post_edit": "Edytowano wpis o ID {{element_id}}",
-            "contact_send": "Wysłano żądanie kontaktu"
+            "post_added": "Dodano post o ID {{element_id}}",
+            "post_edit": "Edytowano post o ID {{element_id}}",
+            "post_deleted": "Usunięto post o ID {{element_id}}",
+            "contact_send": "Wysłano żądanie kontaktu",
+            "comment_added": "Dodano komentarz o ID {{element_id}}",
+            "comment_edited": "Edytowano komentarz o ID {{element_id}}",
+            "comment_deleted": "Usunięto komentarz o ID {{element_id}}"
         }
     }
 }

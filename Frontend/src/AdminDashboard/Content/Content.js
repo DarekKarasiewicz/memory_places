@@ -4,8 +4,10 @@ import UserManagementSection from './ContentSections/UserManagementSection';
 import PlaceManagementSection from './ContentSections/PlaceManagementSection';
 import TrailManagementSection from './ContentSections/TrailManagementSection';
 import ObjectVariableManagementSection from './ContentSections/ObjectVariableManagementSection';
-import ChangesHistorySection from './ContentSections/ChangesHistorySection';
 import ObjectVerificationSection from './ContentSections/ObjectVerificationSection';
+import PostManagementSection from './ContentSections/PostManagementSection';
+import CommentManagementSection from './ContentSections/CommentManagementSection';
+import ChangesHistorySection from './ContentSections/ChangesHistorySection';
 
 const contentSectionMap = {
   StatisticsSection,
@@ -14,6 +16,8 @@ const contentSectionMap = {
   TrailManagementSection,
   ObjectVariableManagementSection,
   ObjectVerificationSection,
+  PostManagementSection,
+  CommentManagementSection,
   ChangesHistorySection,
 };
 

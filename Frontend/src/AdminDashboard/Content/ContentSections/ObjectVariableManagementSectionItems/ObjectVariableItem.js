@@ -85,6 +85,10 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   };
 
   const changeOrder = (fromIndex, toIndex) => {
+    if (toIndex < 0 || toIndex >= data.length) {
+      return;
+    }
+
     let dataset = [...data];
 
     const movedItem = dataset[fromIndex];
@@ -92,7 +96,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     dataset.splice(toIndex, 0, movedItem);
 
     dataset.forEach((item, index) => {
-      item.order = index;
+      item.order = index + 1;
     });
 
     dataset.sort((a, b) => a.order - b.order);
@@ -112,10 +116,10 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
           if (indexInBase === -1) {
             result.createItems.push(element);
           } else {
-            const itemInBase = baseData[indexInBase];
-            const hasChanged = Object.keys(element).some(
-              (key) => key !== 'id' && itemInBase[key] !== element[key],
-            );
+            const currentIndex = data.findIndex((item) => item.id === element.id);
+            const itemInBase = baseData[currentIndex];
+            const hasChanged = itemInBase !== element;
+
             if (hasChanged) {
               result.updateItems.push(element);
             }
@@ -230,11 +234,11 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
                     <div className='flex flex-col justify-center items-center shadow'>
                       <ArrowUpIcon
                         className='h-8 w-8 cursor-pointer hover:scale-125 transition'
-                        onClick={() => changeOrder(index, index - 1, 'sortof')}
+                        onClick={() => changeOrder(index, index - 1)}
                       />
                       <ArrowDownIcon
                         className='h-8 w-8 cursor-pointer hover:scale-125 transition'
-                        onClick={() => changeOrder(index, index + 1, 'sortof')}
+                        onClick={() => changeOrder(index, index + 1)}
                       />
                     </div>
                     <div className='flex justify-center items-center'>

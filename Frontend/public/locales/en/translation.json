@@ -87,7 +87,8 @@
         "select_new": "Time - newest",
         "select_old": "Time - oldest",
         "select_like_desc": "Rating - most",
-        "select_like_asc": "Rating - least"
+        "select_like_asc": "Rating - least",
+        "modal_add_post": "Adding a post"
     },
     "google_maps":{
         "error1_info": "Permission Denied",
@@ -219,6 +220,8 @@
             "place_manage_title": "Place management",
             "trail_manage_title": "Trail management",
             "var_manage_title": "Variable object management",
+            "post_manage_title": "Post management",
+            "comment_manage_title": "Comment management",
             "verification_title": "Memory objects verification",
             "history_title": "App changes history",
             "january": "January",
@@ -271,15 +274,23 @@
             "memo_add": "Add place",
             "memo_trail": "Add trail",
             "delete_title": "Deleting Memory Place",
-            "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}",
+            "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}?",
             "block_title": "User Blocking",
-            "block_info": "Are you sure you want to block the user with ID: {{id}} and name: {{name}}",
+            "block_info": "Are you sure you want to block the user with ID: {{id}} and name: {{name}}?",
             "role_title": "Change User Role",
             "role_info": "Select the role for the user with ID: {{id}} and name: {{name}} and then confirm your decision",
             "pass_res_title": "Reset User Password",
-            "pass_res_info": "Are you sure you want to reset the password of the user with ID: {{id}} and name: {{name}}",
+            "pass_res_info": "Are you sure you want to reset the password of the user with ID: {{id}} and name: {{name}}?",
             "unlock_title": "Unlock User",
-            "unlock_info": "Are you sure you want to unlock the user with ID: {{id}} and name: {{name}}?"
+            "unlock_info": "Are you sure you want to unlock the user with ID: {{id}} and name: {{name}}?",
+            "delete_post_title": "Deleting a post",
+            "delete_post_info": "Are you sure you want to delete the post with ID: {{id}} and title: {{title}}?",
+            "delete_comment_title": "Deleting a comment",
+            "delete_comment_info": "Are you sure you want to delete the comment with ID: {{id}}?",
+            "memo_post_edit": "Editing a post",
+            "memo_post_view": "Post information",
+            "memo_comment_edit": "Editing a comment",
+            "memo_comment_view": "Comment information"
         },
         "content": {
             "statistics_info": "Collected statistics of the site in one place!",
@@ -343,7 +354,20 @@
             "place_var_info3": "Make sure you have the latest data by clicking the refresh button next to this information.",
             "lp": "No.",
             "kind": "Kind",
-            "cannot_change_info": "Your data cannot be changed!"
+            "cannot_change_info": "Your data cannot be changed!",
+            "title": "Likes",
+            "like": "Polubienia",
+            "id_place": "Place ID",
+            "all_post_info": "All posts on the discussion forum",
+            "all_posts": "All posts",
+            "previous_posts": "Posts from the previous month",
+            "current_posts": "Posts from the current month",
+            "content": "Content",
+            "id_post": "Post ID",
+            "all_comment_info": "All comments on the discussion forum",
+            "all_comments": "All comments",
+            "previous_comments": "Comments from the previous month",
+            "current_comments": "Comments from the current month"
         },
         "changes_messages": {
             "blocked": "Blocked user with ID {{element_id}}",
@@ -361,10 +385,13 @@
             "trail_verified": "Trial with ID {{element_id}} was verified successfully",
             "trail_unverified": "Trial with ID {{element_id}} was unverified",
             "variables_changed": "Vairables has been changed",
-            "comment_added": "Comment has been added",
-            "post_added": "Post has been added",
-            "post_edit": "Post with ID {{element_id}} has been added",
-            "contact_send": "Contact request has been send"
+            "post_added": "Post added with ID {{element_id}}",
+            "post_edit": "Post edited with ID {{element_id}}",
+            "post_deleted": "Post deleted with ID {{element_id}}",
+            "contact_send": "Contact request sent",
+            "comment_added": "Comment added with ID {{element_id}}",
+            "comment_edited": "Comment edited with ID {{element_id}}",
+            "comment_deleted": "Comment deleted with ID {{element_id}}"
         }
     }
 }

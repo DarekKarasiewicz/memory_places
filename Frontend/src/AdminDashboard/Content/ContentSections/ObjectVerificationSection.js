@@ -17,8 +17,6 @@ function ObjectVerificationSection() {
 
   const fetchVerificationItems = async () => {
     try {
-      //TO DO
-      //Maybe it will be better to remove this endpoints not_verified_... bcs i still need to get all places and trails for statistics purpouses
       const verificationPlaces = await axios.get(
         `http://127.0.0.1:8000/admin_dashboard/not_verified_places/`,
       );
@@ -28,13 +26,8 @@ function ObjectVerificationSection() {
       const allPlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places/`);
       const allTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path/`);
 
-      const modifiedPlaceData = allPlaces.data.filter((item) => item.verified === true);
-      const modifiedTrailData = allTrails.data.filter((item) => item.verified === true);
-
-      console.log(verificationTrails.data);
-
       const rawCombinedVerificationData = [...verificationPlaces.data, ...verificationTrails.data];
-      const rawCombinedAllData = [...modifiedPlaceData, ...modifiedTrailData];
+      const rawCombinedAllData = [...allPlaces.data, ...allTrails.data];
 
       const combinedAllData = rawCombinedVerificationData
         .sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date))

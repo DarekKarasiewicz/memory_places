@@ -40,7 +40,7 @@ class Place_view(viewsets.ModelViewSet):
     serializer_class = Places_serailizer
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.all().filter(verified=True)
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
@@ -212,7 +212,7 @@ class Path_view(viewsets.ModelViewSet):
     serializer_class = Path_serailizer
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.all().filter(verified=True)
 
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
@@ -651,9 +651,9 @@ class CategoryBaseView(viewsets.ModelViewSet):
                 case "name":
                     type_object.name = request.data["name"]
                 case "value":
-                    type_object.name = request.data["value"]
+                    type_object.value = request.data["value"]
                 case "order":
-                    type_object.name = request.data["order"]
+                    type_object.order = request.data["order"]
                 case _:
                     pass
 

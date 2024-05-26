@@ -9,6 +9,8 @@ import MapPinIcon from 'icons/admin/MapPinIcon';
 import ClipboardCheckIcon from 'icons/admin/ClipboardCheckIcon';
 import FlagCheckIcon from 'icons/admin/FlagCheckIcon';
 import TrailIcon from 'icons/TrailIcon';
+import PostIcon from 'icons/PostIcon';
+import CommentIcon from 'icons/CommentIcon';
 
 function AdminTileStat(props) {
   const iconComponents = {
@@ -22,6 +24,8 @@ function AdminTileStat(props) {
     clipboardCheck: <ClipboardCheckIcon />,
     flagCheck: <FlagCheckIcon />,
     trail: <TrailIcon />,
+    post: <PostIcon />,
+    comment: <CommentIcon />,
   };
 
   const IconComponent = iconComponents[props.icon] || null;

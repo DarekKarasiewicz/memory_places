@@ -80,8 +80,9 @@ function ForumPostHolder() {
       }
 
       const response = await axios.get(commentEndpointUrl);
+      console.log(response.data);
 
-      if (response.data !== 0) {
+      if (response.data === 0) {
         setBlockCommentFetching(true);
         return;
       }
@@ -103,8 +104,8 @@ function ForumPostHolder() {
   };
 
   const sort_options = [
-    { label: t('forum.select_new'), value: 'new' },
     { label: t('forum.select_old'), value: 'old' },
+    { label: t('forum.select_new'), value: 'new' },
     { label: t('forum.select_like_asc'), value: 'like_asc' },
     { label: t('forum.select_like_desc'), value: 'like_desc' },
   ];

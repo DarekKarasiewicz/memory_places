@@ -7,6 +7,8 @@ const initialState = {
   isVerificationsChanged: true,
   isVariablesChanged: true,
   isStatisticsChanged: true,
+  isPostsChanged: true,
+  isCommentsChanged: true,
   isHistoryChanged: true,
 };
 
@@ -31,6 +33,12 @@ export const adminDataSlice = createSlice({
     },
     updateIsStatisticsChanged: (state, action) => {
       state.isStatisticsChanged = action.payload;
+    },
+    updateIsPostsChanged: (state, action) => {
+      state.isPostsChanged = action.payload;
+    },
+    updateIsCommentsChanged: (state, action) => {
+      state.isCommentsChanged = action.payload;
     },
     updateIsHistoryChanged: (state, action) => {
       state.isHistoryChanged = action.payload;

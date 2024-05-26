@@ -31,9 +31,8 @@ function ForumContent() {
       }
 
       const allPlaces = await axios.get(placeEndpointUrl);
-      const modifiedPlaceData = allPlaces.data.filter((item) => item.verified === true);
 
-      setPlaces(modifiedPlaceData);
+      setPlaces(allPlaces.data);
       dispatch(forumDataActions.changeRefreshContentData(false));
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -44,7 +43,7 @@ function ForumContent() {
 
   const fetchPlaceItemsAdvanced = async (search = null, page) => {
     try {
-      let placesEndpointUrl = `http://localhost:8000/memo_places_forum/places/`;
+      let placesEndpointUrl = `http://localhost:8000/memo_places/places/`;
 
       if (search) {
         placesEndpointUrl += `?place_name=${search}`;
@@ -59,7 +58,7 @@ function ForumContent() {
       }
 
       const response = await axios.get(placesEndpointUrl);
-      if (response.data !== 0) {
+      if (response.data === 0) {
         setBlockPlaceFetching(true);
         return;
       }

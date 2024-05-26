@@ -4,6 +4,8 @@ import PlacesIcon from 'icons/admin/PlacesIcon';
 import TrailIcon from 'icons/TrailIcon';
 import VarChangesIcon from 'icons/admin/VarChangesIcon';
 import VerificationIcon from 'icons/admin/VerificationIcon';
+import PostIcon from 'icons/PostIcon';
+import CommentIcon from 'icons/CommentIcon';
 import WebChangesIcon from 'icons/admin/WebChangesIcon';
 
 function AdminMenuItem(props) {
@@ -14,6 +16,8 @@ function AdminMenuItem(props) {
     trails: <TrailIcon />,
     varChanges: <VarChangesIcon />,
     verification: <VerificationIcon />,
+    post: <PostIcon />,
+    comment: <CommentIcon />,
     webChanges: <WebChangesIcon />,
   };
 
