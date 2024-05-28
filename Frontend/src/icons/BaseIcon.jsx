@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTheme } from '../ThemeSwitcher/ThemeContext';
+import { useTheme } from '../Components/ThemeSwitcher/ThemeContext';
 
 const BaseIcon = (props) => {
   const theme = useTheme();

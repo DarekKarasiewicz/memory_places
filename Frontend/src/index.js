@@ -4,18 +4,20 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store.js';
 import { APIProvider } from '@vis.gl/react-google-maps';
-import App from './App';
-import ForumMainPage from './Forum/ForumMainPage.js';
-import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CookiesProvider } from 'react-cookie';
-import PageNotFound from './ErrorPage/PageNotFound.jsx';
-import VerifiactionPage from './VerificationPage/VerifiactionPage.jsx';
-import AdminDashboard from './AdminDashboard/AdminDashboard.js';
-import AdminPlaceAction from './AdminDashboard/AdminPlaceAction.js';
-import AdminTrailAction from 'AdminDashboard/AdminTrailAction.js';
-import { ThemeProvider } from './ThemeSwitcher/ThemeContext.js';
 import { useCookies } from 'react-cookie';
+
+import ForumMainPage from 'Pages/Forum/ForumMainPage';
+import PageNotFound from './Components/ErrorPage/PageNotFound.jsx';
+import VerifiactionPage from './Components/VerificationPage/VerifiactionPage.jsx';
+import AdminDashboard from './Pages/AdminDashboard/AdminDashboard.js';
+import AdminPlaceAction from './Pages/AdminDashboard/AdminPlaceAction.js';
+import AdminTrailAction from 'Pages/AdminDashboard/AdminTrailAction.js';
+import MemoryPlaces from 'Pages/MemoryPlaces/MemoryPlaces.js';
+
+import { ThemeProvider } from './Components/ThemeSwitcher/ThemeContext.js';
+import './index.css';
 
 function ProtectedRoute({ role, roles, element }) {
   return !roles.length || roles.includes(role) ? element : <Navigate to='/*' replace />;
@@ -30,7 +32,7 @@ export default function AppUrls() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App />} />
+        <Route path='/' element={<MemoryPlaces />} />
         <Route path='/forum' element={<ForumMainPage />} />
         <Route path='/forum/:placeid' element={<ForumMainPage />} />
         <Route path='/forum/:placeid/:postid' element={<ForumMainPage />} />

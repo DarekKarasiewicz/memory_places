@@ -4,7 +4,7 @@ import { initialize } from '@googlemaps/jest-mocks';
 import { APILoadingStatus, APIProviderContext } from '@vis.gl/react-google-maps';
 import '@testing-library/jest-dom';
 
-import GoogleMap from '../GoogleMap/GoogleMap';
+import GoogleMap from '../Pages/MemoryPlaces/GoogleMap/GoogleMap';
 
 let mockContextValue;
 let wrapper;

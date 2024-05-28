@@ -1,6 +1,7 @@
 import axios from 'axios';
-import useAuth from './useAuth';
 import { useCookies } from 'react-cookie';
+
+import useAuth from './useAuth';
 
 const useRefreshToken = () => {
   const { setUserCredentials } = useAuth();
