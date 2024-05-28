@@ -50,8 +50,10 @@ function ForumContentPosts({ placeId }) {
         postEndpointUrl += `?sort=-like`;
       } else if (sortType === 'old') {
         postEndpointUrl += `?sort=created_at`;
-      } else {
+      } else if (sortType === 'new') {
         postEndpointUrl += `?sort=-created_at`;
+      } else {
+        postEndpointUrl += '';
       }
 
       if (page !== undefined) {
@@ -64,19 +66,30 @@ function ForumContentPosts({ placeId }) {
 
       const response = await axios.get(postEndpointUrl);
 
-      if (response.data === 0) {
-        setBlockPostFetching(true);
+      console.log(response.data)
+
+      if (response.data.length === 0) {
+        if (postEndpointUrl.includes('title')) {
+          setPosts([]);
+        } else {
+          setBlockPostFetching(true);
+        }
         return;
       }
 
-      if (posts.length === 0) {
-        setPosts(response.data);
-      } else {
-        if (postEndpointUrl.includes('sort')) {
+      const isDataSame = response.data.every(newPost => 
+        posts.some(existingPost => existingPost.id === newPost.id)
+      );
+
+      
+      if (!isDataSame) {
+        if (posts.length === 0 || postEndpointUrl.includes('title')) {
           setPosts(response.data);
         } else {
-          setPosts((prevComments) => [...prevComments, ...response.data]);
+          setPosts((prevPosts) => [...prevPosts, ...response.data]);
         }
+      } else {
+        setBlockPostFetching(true);
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));

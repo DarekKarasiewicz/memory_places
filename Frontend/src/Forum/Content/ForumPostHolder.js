@@ -67,8 +67,10 @@ function ForumPostHolder() {
         commentEndpointUrl += `?sort=-like`;
       } else if (sortType === 'old') {
         commentEndpointUrl += `?sort=created_at`;
-      } else {
+      } else if (sortType === 'new') {
         commentEndpointUrl += `?sort=-created_at`;
+      } else {
+        commentEndpointUrl += '';
       }
 
       if (page !== undefined) {
@@ -80,9 +82,8 @@ function ForumPostHolder() {
       }
 
       const response = await axios.get(commentEndpointUrl);
-      console.log(response.data);
 
-      if (response.data === 0) {
+      if (response.data.length === 0) {
         setBlockCommentFetching(true);
         return;
       }

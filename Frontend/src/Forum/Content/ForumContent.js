@@ -41,36 +41,55 @@ function ForumContent() {
     }
   };
 
-  const fetchPlaceItemsAdvanced = async (search = null, page) => {
+  const fetchPlaceItemsAdvanced = async (search, page) => {
     try {
       let placesEndpointUrl = `http://localhost:8000/memo_places/places/`;
 
+      if (forumData.type_id) {
+        placesEndpointUrl += `type=${forumData.type_id}`;
+      }
+      if (forumData.period_id) {
+        placesEndpointUrl += `period=${forumData.period_id}`;
+      }
+
+      console.log(search);
       if (search) {
         placesEndpointUrl += `?place_name=${search}`;
       }
 
-      if (page !== undefined) {
-        if (placesEndpointUrl.includes('?')) {
-          placesEndpointUrl += `&page=${page}`;
-        } else {
-          placesEndpointUrl += `?page=${page}`;
-        }
-      }
+      //TO DO
+      //THERE IS NO PAGING TO PLACE OR TRAILS
+      // if (page !== undefined) {
+      //   if (placesEndpointUrl.includes('?')) {
+      //     placesEndpointUrl += `&page=${page}`;
+      //   } else {
+      //     placesEndpointUrl += `?page=${page}`;
+      //   }
+      // }
 
       const response = await axios.get(placesEndpointUrl);
-      if (response.data === 0) {
-        setBlockPlaceFetching(true);
+
+      if (response.data.length === 0) {
+        if (placesEndpointUrl.includes('place_name')) {
+            setPlaces([]);
+        } else {
+            setBlockPlaceFetching(true);
+        }
         return;
       }
 
-      if (places.length === 0) {
-        setPlaces(response.data);
-      } else {
-        if (placesEndpointUrl.includes('place_name')) {
-          setPlaces(response.data);
+      const isDataSame = response.data.every(newPlace => 
+        places.some(existingPlace => existingPlace.id === newPlace.id)
+      );
+
+      if (!isDataSame) {
+        if (places.length === 0 || placesEndpointUrl.includes('place_name')) {
+            setPlaces(response.data);
         } else {
-          setPlaces((prevComments) => [...prevComments, ...response.data]);
+            setPlaces((prevPlaces) => [...prevPlaces, ...response.data]);
         }
+      } else {
+        setBlockPlaceFetching(true);
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -81,7 +100,9 @@ function ForumContent() {
 
   const handleSearchPlaces = (value) => {
     setSearchedText(value);
-    fetchPlaceItemsAdvanced(value);
+    if(searchedText !== ''){
+      fetchPlaceItemsAdvanced(value);
+    }
   };
 
   const loadNewPlaces = () => {
