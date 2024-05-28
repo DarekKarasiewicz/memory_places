@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { confirmationModalActions } from './confirmationModalSlice';
 import axios from 'axios';
+import { confirmationModalActions } from './confirmationModalSlice';
 import { adminDataActions } from './adminDataSlice';
 
 const initialState = {
