@@ -11,6 +11,7 @@ import UndoIcon from 'icons/UndoIcon.jsx';
 import RedoIcon from 'icons/RedoIcon.jsx';
 import AcceptIcon from 'icons/AcceptIcon.jsx';
 import CancelIcon from 'icons/CancelIcon.jsx';
+import HelpIcon from 'icons/HelpIcon.jsx';
 import { useDrawingManagerEvents, useOverlaySnapshots } from './undoRedo.js';
 
 const DrawingControl = ({ drawingManager }) => {
@@ -86,6 +87,12 @@ const DrawingControl = ({ drawingManager }) => {
         className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center rounded-r-sm'
       >
         <CancelIcon className='h-5 w-5' color='#000000' />
+      </button>
+      <button
+        onClick={() => dispatch(modalsActions.changeIsTrailGuideModalOpen())}
+        className='bg-white h-10 w-10 relative text-left font-roboto font-normal text-xs hover:bg-gray-200 shadow cursor-pointer flex justify-center items-center rounded-r-sm'
+      >
+        <HelpIcon className='h-5 w-5' color='#000000' />
       </button>
     </div>
   );

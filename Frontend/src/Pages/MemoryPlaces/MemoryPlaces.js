@@ -23,6 +23,7 @@ import LanguageSwitcher from 'Components/LanguageSwitcher/LanguageSwitcher.js';
 import Footer from './Footer/Footer.js';
 import Infobar from 'Components/Navbar/Infobar.jsx';
 import TrailFormModal from 'Components/Modals/TrailFormModal.jsx';
+import TrailGuideModal from 'Components/Modals/TrailGuideModal.js';
 
 function MemoryPlaces() {
   const dispatch = useDispatch();
@@ -126,6 +127,8 @@ function MemoryPlaces() {
           closeModal={handleTrailUpdateFormModalVisability}
         />
       )}
+
+      {modalData.isTrailGuideModalOpen && addTrailData.isSelecting ? <TrailGuideModal /> : null}
 
       {!addPlaceData.isSelecting && !addTrailData.isSelecting ? <Footer /> : null}
 

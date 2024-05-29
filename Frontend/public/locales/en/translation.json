@@ -66,7 +66,9 @@
         "cookie_title": "Want a cookie?",
         "cookie_info": "We use cookies to personalize our website and offerings to your interests and for measurement and analytics purposes. By using our website and our products, you agree to our use of cookies.",
         "cookie_accept": "Accept all",
-        "cookie_cancel": "Reject all"
+        "cookie_cancel": "Reject all",
+        "not_verified_place": "Unverified place",
+        "not_verified_trail": "Unverified trail"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -133,6 +135,13 @@
         "stalinist_period": "Stalinist period (1945-1953)",
         "filled_box_error": "All boxes need to be filled",
         "data_not_changed": "No data has been changed",
+        "permission_error": "You must be logged in to do this.",
+        "how_use_trail": "How to use the route adding feature",
+        "how_use_trail1": "Click the add line button",
+        "how_use_trail2": "Set your route (If you are not satisfied or made a mistake at this stage, you can use the back button)",
+        "how_use_trail3": "To stop editing the route, click the last point on your route again or click the hand button",
+        "how_use_trail4": "If you are satisfied with the results, click the confirmation button",
+        "how_use_trail5": "If you want to cancel or exit route adding, click the exit button",
 
         "okresstalinowski": "Stalinist period (1945-1953)",
         "istniejace": "Existing",
@@ -256,6 +265,8 @@
             "users": "Users",
             "places": "Places",
             "trails": "Trails",
+            "posts": "Posts",
+            "comments": "Comments",
             "new_element": "New element",
             "memo_place_add": "Adding a memory place",
             "memo_place_edit": "Editing memory place",
@@ -303,6 +314,9 @@
             "new_month_places": "Places in current month",
             "all_users_info": "All user information",
             "all_object_graph": "Dynamics of users, places, and routes development over the year",
+            "all_posts_count": "Total number of posts",
+            "all_comments_count": "Total number of comments",
+            "forum_object_graph": "Dynamics of the development of posts and comments on the forum over the year",
             "users": "Users",
             "master_user": "Master users",
             "admin": "Administrators",

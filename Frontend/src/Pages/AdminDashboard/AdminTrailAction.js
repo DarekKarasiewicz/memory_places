@@ -8,7 +8,7 @@ function AdminTrailAction({ action }) {
   const params = useParams();
 
   return (
-    <App>
+    <App altVersion={true}>
       <div className='w-screen h-auto relative flex max-w-full overflow-x-hidden'>
         <div className='w-full flex flex-col'>
           <ContentNavbar showLogo={true} />

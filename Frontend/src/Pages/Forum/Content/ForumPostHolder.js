@@ -24,6 +24,7 @@ function ForumPostHolder() {
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState(null);
   const sortRef = useRef(null);
+  const [isSortChanged, setisSortChanged] = useState(false);
   const { placeid, postid } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,16 +64,18 @@ function ForumPostHolder() {
     try {
       let commentEndpointUrl = `http://localhost:8000/memo_places_forum/comment/post=${postid}`;
 
-      if (sortType === 'like_asc') {
-        commentEndpointUrl += `?sort=like`;
-      } else if (sortType === 'like_desc') {
-        commentEndpointUrl += `?sort=-like`;
-      } else if (sortType === 'old') {
-        commentEndpointUrl += `?sort=created_at`;
-      } else if (sortType === 'new') {
-        commentEndpointUrl += `?sort=-created_at`;
-      } else {
-        commentEndpointUrl += '';
+      if (isSortChanged) {
+        const sortMapping = {
+          like_asc: 'like',
+          like_desc: '-like',
+          old: 'created_at',
+          new: '-created_at',
+        };
+
+        const sortParam = sortMapping[sortType];
+        if (sortParam) {
+          commentEndpointUrl += `?sort=${sortParam}`;
+        }
       }
 
       if (page !== undefined) {
@@ -87,16 +90,20 @@ function ForumPostHolder() {
 
       if (response.data.length === 0) {
         setBlockCommentFetching(true);
+        console.log('here1');
         return;
       }
 
       if (comment.length === 0) {
         setComment(response.data);
+        console.log('here2');
       } else {
         if (commentEndpointUrl.includes('sort')) {
           setComment(response.data);
+          console.log('here3');
         } else {
           setComment((prevComments) => [...prevComments, ...response.data]);
+          console.log('here4');
         }
       }
     } catch (error) {
@@ -119,55 +126,67 @@ function ForumPostHolder() {
 
   const handleLikeClick = (event, commentId, itemLike) => {
     event.stopPropagation();
-    axios
-      .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
-        user: user.user_id,
-        like: itemLike + 1,
-      })
-      .then((response) => {
-        fetchCommentItems();
-      })
-      .catch((error) => {
-        if (error.response.data.error === 'User already liked this comment') {
-          handleDislikeClick(commentId, itemLike);
-        }
-      });
+
+    if (user.id) {
+      axios
+        .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
+          user: user.user_id,
+          like: itemLike + 1,
+        })
+        .then((response) => {
+          fetchCommentItems();
+        })
+        .catch((error) => {
+          if (error.response.data.error === 'User already liked this comment') {
+            handleDislikeClick(commentId, itemLike);
+          }
+        });
+    }
   };
 
   const handleDislikeClick = (commentId, itemLike) => {
-    axios
-      .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
-        user: user.user_id,
-        dislike: itemLike - 1,
-      })
-      .then((response) => {
-        fetchCommentItems();
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
+    if (user.id) {
+      axios
+        .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
+          user: user.user_id,
+          dislike: itemLike - 1,
+        })
+        .then((response) => {
+          fetchCommentItems();
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    }
   };
 
   const handleCommentAdd = (postId) => {
-    axios
-      .post(`http://127.0.0.1:8000/memo_places_forum/comment/`, {
-        user: user.user_id,
-        content: contentRef.current.value,
-        post: postId,
-      })
-      .then((response) => {
-        dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-        dispatch(confirmationModalActions.changeType('success'));
-        registerAppChanges('Utworzono komentarz o ID', user);
-        fetchCommentItems();
-        handleCommentClose();
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
+    if (user.id) {
+      axios
+        .post(`http://127.0.0.1:8000/memo_places_forum/comment/`, {
+          user: user.user_id,
+          content: contentRef.current.value,
+          post: postId,
+        })
+        .then((response) => {
+          dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+          dispatch(confirmationModalActions.changeType('success'));
+          registerAppChanges('Utworzono komentarz o ID', user);
+          fetchCommentItems();
+          handleCommentClose();
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    } else {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('modal.permission_error')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
   };
 
   const changeCommentSortOption = (sortType) => {
+    setisSortChanged(true);
     fetchCommentItemsAdvanced(sortType);
   };
 
@@ -180,6 +199,14 @@ function ForumPostHolder() {
     setIsActive(false);
     contentRef.current.value = '';
   };
+
+  function removeLastNumberFromUrl(url, lastItem) {
+    if (url.endsWith(`/${lastItem}`)) {
+      return url.slice(0, url.lastIndexOf(`/${lastItem}`));
+    } else {
+      return url;
+    }
+  }
 
   useEffect(() => {
     fetchPostItem();
@@ -199,7 +226,7 @@ function ForumPostHolder() {
             name={t('admin.common.back')}
             btnBg='red'
             onClick={() => {
-              navigate(-1);
+              navigate(removeLastNumberFromUrl(location.pathname, post.id));
             }}
           />
         </div>

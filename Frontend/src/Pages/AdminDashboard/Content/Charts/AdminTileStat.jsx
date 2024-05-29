@@ -33,10 +33,10 @@ function AdminTileStat(props) {
 
   return (
     <>
-      <div className='flex flex-col justify-between rounded-lg h-36 px-6 py-6 bg-mainBgColor'>
+      <div className='flex flex-col justify-between rounded-lg h-40 px-6 py-6 bg-mainBgColor'>
         <span className='flex justify-start items-center gap-2 text-2xl leading-6'>
           {IconComponent ? IconComponent : null}
-          <span>{props.title}</span>
+          <span className=''>{props.title}</span>
         </span>
         <div className='flex justify-between mx-4'>
           <span className='text-3xl font-semibold'>{props.value}</span>

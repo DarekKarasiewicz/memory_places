@@ -145,6 +145,30 @@ function ForumContent() {
                 />
               </>
             ))}
+          {places &&
+            places.map((item, index) => (
+              <>
+                {index !== 0 && <hr />}
+                <ForumPlace
+                  currentData={item}
+                  onClick={() => {
+                    navigate('/forum/' + item.id);
+                  }}
+                />
+              </>
+            ))}
+          {places &&
+            places.map((item, index) => (
+              <>
+                {index !== 0 && <hr />}
+                <ForumPlace
+                  currentData={item}
+                  onClick={() => {
+                    navigate('/forum/' + item.id);
+                  }}
+                />
+              </>
+            ))}
         </div>
         {!places && (
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-center'>

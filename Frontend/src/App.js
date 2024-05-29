@@ -14,8 +14,9 @@ import FAQ from './Components/FAQ/FAQ.js';
 import ContactForm from './Components/Modals/ContactForm.js';
 import ConfirmationModal from 'Components/Modals/ConfirmationModal.js';
 import FoundationInfo from 'Components/Modals/FoundationInfo';
+import ScrollToTopButton from 'Components/ScrollToTopButton/ScrollToTopButton';
 
-function App({ children }) {
+function App({ children, altVersion }) {
   const dispatch = useDispatch();
   const modalData = useSelector(selectModals);
   const [showCookiesInfo, setShowCookiesInfo] = useState(false);
@@ -49,7 +50,7 @@ function App({ children }) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user.id) {
       if (user.cookies === false) {
         setShowCookiesInfo(true);
       }
@@ -60,7 +61,11 @@ function App({ children }) {
 
   return (
     <Suspense fallback={<Loader />}>
-      <div className='w-screen h-screen relative'>
+      <div
+        className={`w-screen relative ${
+          altVersion ? 'h-auto flex max-w-full overflow-x-hidden' : 'h-screen'
+        }`}
+      >
         {children}
         {modalData.isLoginAndRegisterOpen && (
           <LoginAndRegisterModal closeModal={handleLoginModalVisability} />
@@ -83,6 +88,7 @@ function App({ children }) {
         )}
 
         {confirmationModal.isConfirmationModalOpen && <ConfirmationModal />}
+        <ScrollToTopButton />
       </div>
     </Suspense>
   );

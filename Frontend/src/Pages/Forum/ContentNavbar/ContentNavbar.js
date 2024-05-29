@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import DropdownItem from 'Components/Navbar/DropdownItem/DropdownItem';
 import LanguageSwitcher from 'Components/LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from 'Components/ThemeSwitcher/ThemeSwitcher';
-import AdminDropdown from './AdminDropdown/AdminDropdown';
+import UserMenu from 'Components/Navbar/UserMenu/UserMenu';
 import CancelIcon from 'icons/CancelIcon';
 import MenuIcon from 'icons/MenuIcon';
 
@@ -124,7 +124,7 @@ function ContentNavbar({ showLogo }) {
               <ThemeSwitcher />
             </div>
           </div>
-          <AdminDropdown />
+          <UserMenu altVersion={true} />
         </div>
       </div>
     </>

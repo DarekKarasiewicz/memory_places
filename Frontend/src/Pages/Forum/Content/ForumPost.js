@@ -25,33 +25,38 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
 
   const handleLikeClick = (event, commentId, itemLike) => {
     event.stopPropagation();
-    axios
-      .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
-        user: user.user_id,
-        like: itemLike + 1,
-      })
-      .then((response) => {
-        dispatch(forumDataActions.changeRefreshPlaces(true));
-      })
-      .catch((error) => {
-        if (error.response.data.error === 'User already liked this post') {
-          handleDislikeClick(commentId, itemLike);
-        }
-      });
+
+    if (user.id) {
+      axios
+        .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
+          user: user.user_id,
+          like: itemLike + 1,
+        })
+        .then((response) => {
+          dispatch(forumDataActions.changeRefreshPlaces(true));
+        })
+        .catch((error) => {
+          if (error.response.data.error === 'User already liked this post') {
+            handleDislikeClick(commentId, itemLike);
+          }
+        });
+    }
   };
 
   const handleDislikeClick = (commentId, itemLike) => {
-    axios
-      .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
-        user: user.user_id,
-        dislike: itemLike - 1,
-      })
-      .then((response) => {
-        dispatch(forumDataActions.changeRefreshPlaces(true));
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
+    if (user.id) {
+      axios
+        .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
+          user: user.user_id,
+          dislike: itemLike - 1,
+        })
+        .then((response) => {
+          dispatch(forumDataActions.changeRefreshPlaces(true));
+        })
+        .catch((error) => {
+          // console.log(error);
+        });
+    }
   };
 
   const handleShareClick = (e) => {
@@ -88,12 +93,6 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
               <span>{currentData.like}</span>
             </div>
           </div>
-          {/* <div className='rounded-lg bg-thirdBgColor py-1 px-2 flex gap-1'>
-            <div className='flex gap-1 hover:scale-105 transition' onClick={handleCommentClick}>
-              <CommentIcon className='h-6 w-6' />
-              <span>10</span>
-            </div>
-          </div> */}
           <div className='rounded-lg bg-thirdBgColor py-1 px-2 flex gap-1 cursor-pointer hover:text-contrastColor'>
             <div className='flex gap-1 hover:scale-105 transition' onClick={handleShareClick}>
               <ShareIcon className='h-6 w-6' />

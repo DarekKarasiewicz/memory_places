@@ -66,7 +66,9 @@
         "cookie_title": "Möchtest du einen Keks?",
         "cookie_info": "Wir verwenden Cookies, um unsere Website und Angebote an Ihre Interessen anzupassen und für Mess- und Analysezwecke. Durch die Nutzung unserer Website und unserer Produkte stimmen Sie der Verwendung von Cookies zu.",
         "cookie_accept": "Alle akzeptieren",
-        "cookie_cancel": "Alle ablehnen"
+        "cookie_cancel": "Alle ablehnen",
+        "not_verified_place": "Nicht verifizierter Ort",
+        "not_verified_trail": "Nicht verifizierte Strecke"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -133,6 +135,13 @@
         "stalinist_period": "Stalinistische Ära (1945 – 1953)",
         "filled_box_error": "Alle Felder müssen ausgefüllt sein",
         "data_not_changed": "Keine Daten wurden geändert",
+        "permission_error": "Sie müssen eingeloggt sein, um dies zu tun.",
+        "how_use_trail": "So verwenden Sie die Routen-Hinzufügungsfunktion",
+        "how_use_trail1": "Klicken Sie auf die Schaltfläche „Linie hinzufügen“",
+        "how_use_trail2": "Legen Sie Ihre Route fest (Wenn Sie an diesem Punkt nicht zufrieden sind oder einen Fehler gemacht haben, können Sie die Zurück-Taste verwenden)",
+        "how_use_trail3": "Um die Bearbeitung der Route zu beenden, klicken Sie erneut auf den letzten Punkt Ihrer Route oder klicken Sie auf die Handtaste",
+        "how_use_trail4": "Wenn Sie mit dem Ergebnis zufrieden sind, klicken Sie auf die Bestätigungsschaltfläche",
+        "how_use_trail5": "Wenn Sie die Routen-Hinzufügung abbrechen oder verlassen möchten, klicken Sie auf die Schaltfläche „Beenden“",
 
         "okresstalinowski": "Stalinistische Ära (1945 – 1953)",
         "istniejace": "Bestehende",
@@ -256,6 +265,8 @@
             "users": "Benutzer",
             "places": "Orte",
             "trails": "Routen",
+            "posts": "Beiträge",
+            "comments": "Kommentare",
             "new_element": "Neues Element",
             "memo_place_add": "Hinzufügen eines Erinnerungsortes",
             "memo_place_edit": "Bearbeitung des Speicherorts",
@@ -303,6 +314,9 @@
             "new_month_places": "Orte im aktuellen Monat",
             "all_users_info": "Alle Benutzerinformationen",
             "all_object_graph": "Dynamik der Entwicklung von Benutzern, Orten und Routen im Laufe des Jahres",
+            "all_posts_count": "Gesamtanzahl der Beiträge",
+            "all_comments_count": "Gesamtanzahl der Kommentare",
+            "forum_object_graph": "Dynamik der Entwicklung von Beiträgen und Kommentaren im Forum im Laufe des Jahres",
             "users": "Benutzer",
             "master_user": "Hauptbenutzer",
             "admin": "Administratoren",

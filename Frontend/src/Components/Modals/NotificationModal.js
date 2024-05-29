@@ -42,7 +42,7 @@ function NotificationModal() {
         <div className='flex justify-center items-center'>
           <div className='flex flex-col justify-center items-center gap-2 text-xl'>
             {iconComponent}
-            <span className='capitalize font-medium text-2xl'>{title}</span>
+            <span className='normal-case font-medium text-2xl'>{title}</span>
           </div>
         </div>
         <div className='flex justify-center gap-2 mb-2'>

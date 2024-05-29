@@ -251,7 +251,7 @@ const GoogleMap = () => {
               onClick={() => addPlaceLocation.isSelecting === false && togglePlaceInfoBox(place)}
               position={{ lat: place.lat, lng: place.lng }}
             >
-              <GoogleMapPin iconPath={`../../assets/places_icons/${place.type}_icon.svg`} />
+              <GoogleMapPin iconPath={place.type} isVerified={place.verified === true} />
             </AdvancedMarker>
           ))
         ) : (
@@ -278,7 +278,13 @@ const GoogleMap = () => {
             onCloseClick={closePlaceInfoBox}
             options={{ pixelOffset: { width: 0, height: -30 } }}
           >
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center gap-2'>
+              {currentPlace.verified !== true && (
+                <div className='flex justify-center items-end gap-2 bg-yellow-400 rounded-lg p-2'>
+                  <span>⚠️</span>
+                  <span>{t('common.not_verified_place')}</span>
+                </div>
+              )}
               {/* TODO when from backend will be array of images get first one and put it here */}
               <section className='w-72 h-52 overflow-hidden'>
                 <img
@@ -287,7 +293,7 @@ const GoogleMap = () => {
                   className='w-full h-full object-cover'
                 ></img>
               </section>
-              <section className='flex flex-col gap-1 my-1 justify-center items-center text-sm'>
+              <section className='flex flex-col gap-1 justify-center items-center text-sm'>
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
@@ -322,6 +328,12 @@ const GoogleMap = () => {
             options={{ pixelOffset: { width: 0, height: -30 } }}
           >
             <div className='flex flex-col items-center'>
+              {currentTrail.verified !== true && (
+                <div className='flex justify-center items-end gap-2 bg-yellow-400 rounded-lg p-2'>
+                  <span>⚠️</span>
+                  <span>{t('common.not_verified_trail')}</span>
+                </div>
+              )}
               {/* TODO when from backend will be array of images get first one and put it here */}
               <section className='w-72 h-52 overflow-hidden'>
                 <img
