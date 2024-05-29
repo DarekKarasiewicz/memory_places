@@ -25,8 +25,6 @@ function CommentManagementSection() {
         lp: index + 1,
       }));
 
-      console.log(modifiedCommentData);
-
       const getItemDate = (date) => {
         return new Date(date).getMonth();
       };

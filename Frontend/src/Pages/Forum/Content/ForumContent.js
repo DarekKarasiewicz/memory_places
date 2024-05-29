@@ -52,8 +52,6 @@ function ForumContent() {
       if (forumData.period_id) {
         placesEndpointUrl += `period=${forumData.period_id}`;
       }
-
-      console.log(search);
       if (search) {
         placesEndpointUrl += `?place_name=${search}`;
       }
@@ -133,30 +131,6 @@ function ForumContent() {
         )}
         <div className='text-3xl font-bold'>{forumData.header_name}</div>
         <div className='flex flex-col gap-4'>
-          {places &&
-            places.map((item, index) => (
-              <>
-                {index !== 0 && <hr />}
-                <ForumPlace
-                  currentData={item}
-                  onClick={() => {
-                    navigate('/forum/' + item.id);
-                  }}
-                />
-              </>
-            ))}
-          {places &&
-            places.map((item, index) => (
-              <>
-                {index !== 0 && <hr />}
-                <ForumPlace
-                  currentData={item}
-                  onClick={() => {
-                    navigate('/forum/' + item.id);
-                  }}
-                />
-              </>
-            ))}
           {places &&
             places.map((item, index) => (
               <>

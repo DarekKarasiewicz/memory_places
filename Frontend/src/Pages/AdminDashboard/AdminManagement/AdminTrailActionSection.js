@@ -499,7 +499,6 @@ function AdminTrailActionSection({ action, trailId }) {
               dispatch(drawingEventsActions.reset());
               dispatch(drawingToolsActions.reset());
               dispatch(addTrailActions.reset());
-              console.log('test');
               navigate(-1);
             }}
           />

@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsActions, selectModals } from 'Redux/modalsSlice';
@@ -31,9 +29,6 @@ function MemoryPlaces() {
   const addPlaceData = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
   const addTrailData = useSelector(selectAddTrail);
-  const [showCookiesInfo, setShowCookiesInfo] = useState(false);
-  const [cookies] = useCookies(['user']);
-  const user = cookies.user;
   const { t } = useTranslation();
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
@@ -82,16 +77,6 @@ function MemoryPlaces() {
     dispatch(userPlacesActions.changeIsOpen());
     dispatch(modalsActions.changeIsTrailUpdateFormOpen());
   };
-
-  useEffect(() => {
-    if (user) {
-      if (user.cookies === false) {
-        setShowCookiesInfo(true);
-      }
-    } else {
-      setShowCookiesInfo(true);
-    }
-  }, []);
 
   return (
     <App>

@@ -90,20 +90,16 @@ function ForumPostHolder() {
 
       if (response.data.length === 0) {
         setBlockCommentFetching(true);
-        console.log('here1');
         return;
       }
 
       if (comment.length === 0) {
         setComment(response.data);
-        console.log('here2');
       } else {
         if (commentEndpointUrl.includes('sort')) {
           setComment(response.data);
-          console.log('here3');
         } else {
           setComment((prevComments) => [...prevComments, ...response.data]);
-          console.log('here4');
         }
       }
     } catch (error) {

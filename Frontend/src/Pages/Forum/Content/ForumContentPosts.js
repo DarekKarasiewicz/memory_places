@@ -70,8 +70,6 @@ function ForumContentPosts({ placeId }) {
 
       const response = await axios.get(postEndpointUrl);
 
-      console.log(response.data);
-
       if (response.data.length === 0) {
         if (postEndpointUrl.includes('title')) {
           setPosts([]);
