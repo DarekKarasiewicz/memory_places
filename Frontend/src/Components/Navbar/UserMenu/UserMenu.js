@@ -5,6 +5,7 @@ import { modalsActions } from 'Redux/modalsSlice';
 import { userPlacesActions, selectUserPlaces } from 'Redux/userPlacesSlice';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import UserMenuOption from './UserMenuOption/UserMenuOption';
 import BaseButton from 'Components/Base/BaseButton';
@@ -12,7 +13,7 @@ import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ArrowDownIcon from 'icons/ArrowDownIcon';
 import UserIcon from 'icons/UserIcon';
 
-function UserMenu() {
+function UserMenu({ altVersion, isAdminPage }) {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,7 @@ function UserMenu() {
   const wrapperRef = useRef(null);
   const { t } = useTranslation();
   const isUserPlacesOpen = useSelector(selectUserPlaces).isOpen;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLogged) {
@@ -58,6 +60,7 @@ function UserMenu() {
     setIsActive(false);
     removeCookie('user', { path: '/' });
     if (isUserPlacesOpen === true) dispatch(userPlacesActions.changeIsOpen());
+    if (altVersion && isAdminPage) navigate('/');
   };
 
   const handleFAQVisability = () => {
@@ -86,6 +89,8 @@ function UserMenu() {
     { icon: 'contact', name: t('user.contact'), func: handleContactFormVisability },
     { icon: 'logout', name: t('user.logout'), func: handleLogout },
   ];
+
+  const filteredMenuItems = altVersion ? menuItems.filter((_, index) => index !== 0) : menuItems;
 
   useEffect(() => {
     setIsLogged(user?.refreshToken ? true : false);
@@ -127,7 +132,7 @@ function UserMenu() {
 
   return (
     <>
-      <div className='relative' ref={wrapperRef}>
+      <div className={`${altVersion ? 'flex items-center pl-4' : 'relative'}`} ref={wrapperRef}>
         <div className='flex items-center cursor-pointer' onClick={handleClick} ref={popupRef}>
           <div className='rounded-full h-9 w-9 flex justify-center items-center bg-slate-300 shadow-lg'>
             <UserIcon className='h-6 w-6' />
@@ -136,7 +141,9 @@ function UserMenu() {
         </div>
         {isActive && (
           <motion.ul
-            className='bg-mainBgColor text-textColor shadow-itemShadow rounded-lg flex flex-col gap-2 absolute top-12 right-0 w-52 p-4 z-10'
+            className={`bg-mainBgColor text-textColor shadow-itemShadow rounded-lg flex flex-col gap-2 absolute w-52 p-4 z-10 ${
+              filteredMenuItems ? 'mt-2 top-16 right-2' : 'top-12 right-0'
+            }`}
             variants={parentItem}
             initial='hidden'
             animate='visible'
@@ -147,9 +154,9 @@ function UserMenu() {
             </li>
             <hr className='border-t-1 mt-2 border-textColor' />
 
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <motion.li key={index} className='childItem' variants={childItem}>
-                {index === menuItems.length - 1 && <hr className='mb-2 border-textColor' />}
+                {index === filteredMenuItems.length - 1 && <hr className='mb-2 border-textColor' />}
                 <UserMenuOption
                   index={index}
                   icon={item.icon}

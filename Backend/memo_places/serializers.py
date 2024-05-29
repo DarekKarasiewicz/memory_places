@@ -73,6 +73,7 @@ class Short_Places_serailizer(serializers.ModelSerializer):
             "sortof",
             "type",
             "period",
+            "verified",
         )
 
 class Short_Path_serailizer(serializers.ModelSerializer):
@@ -90,6 +91,7 @@ class Short_Path_serailizer(serializers.ModelSerializer):
             "sortof",
             "type",
             "period",
+            "verified",
         )
 
 

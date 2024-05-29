@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
@@ -20,6 +21,8 @@ function ForumContentPosts({ placeId }) {
   const location = useLocation();
   const forumData = useSelector(selectForumData);
   const sortRef = useRef();
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
   const [searchedText, setSearchedText] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [blockPostFetching, setBlockPostFetching] = useState(false);
@@ -141,8 +144,14 @@ function ForumContentPosts({ placeId }) {
     <>
       <div className='w-3/5 flex flex-col gap-6'>
         <div className='flex justify-between gap-2'>
-          <BaseButton name={t('admin.common.back')} btnBg='red' onClick={() => navigate(-1)} />
-          <BaseButton name={t('forum.add_post')} btnBg='blue' onClick={() => handlePostAdd()} />
+          <BaseButton
+            name={t('admin.common.back')}
+            btnBg='red'
+            onClick={() => navigate('/forum')}
+          />
+          {user.id && (
+            <BaseButton name={t('forum.add_post')} btnBg='blue' onClick={() => handlePostAdd()} />
+          )}
         </div>
         <div>
           <SearchBar onSearchClick={handleSearchPost} />

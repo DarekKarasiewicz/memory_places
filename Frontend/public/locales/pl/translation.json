@@ -66,7 +66,9 @@
         "cookie_title": "Chcesz ciasteczko?",
         "cookie_info": "Używamy plików cookie, aby spersonalizować naszą stronę internetową i oferty do Twoich zainteresowań oraz do celów pomiarowych i analitycznych. Korzystając z naszej strony internetowej i naszych produktów, zgadzasz się na używanie przez nas plików cookie.",
         "cookie_accept": "Zaakceptuj wszystko",
-        "cookie_cancel": "Odrzuć wszystkie"
+        "cookie_cancel": "Odrzuć wszystkie",
+        "not_verified_place": "Niezweryfikowane miejsce",
+        "not_verified_trail": "Niezweryfikowana trasa"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -133,6 +135,13 @@
         "stalinist_period": "Okres Stalinowski (1945 – 1953)",
         "filled_box_error": "Wszystkie pole muszą być uzupełnione",
         "data_not_changed": "Żadne dane nie zostały zmienione",
+        "permission_error": "Musisz być zalogowany aby móc to zrobić.",
+        "how_use_trail": "Jak korzystać z dodawania tras",
+        "how_use_trail1": "Kliknij w przycisk dodawania linii",
+        "how_use_trail2": "Wyznacz swoją trasę (Jeśli na tym etapie nie jesteś zadowolony lub popełniłeś bład możesz użyć przycisku wstecz)",
+        "how_use_trail3": "Aby przestać edytować trasę kliknij ponownie w ostatni punkt na twojej trasie lub kliknij przycisk dłoni",
+        "how_use_trail4": "Jeśli jesteś zadowolony z efektów kliknij w przycisk potwierdzenia",
+        "how_use_trail5": "Jeśli chcesz anulować lub wyjść z dodawania trasy kliknij w przycisk wyjścia",
 
         "okresstalinowski": "Okres Stalinowski (1945 – 1953)",
         "istniejace": "Istniejące",
@@ -256,6 +265,8 @@
             "users": "Użytkownicy",
             "places": "Miejsca",
             "trails": "Trasy",
+            "posts": "Posty",
+            "comments": "Komentarze",
             "new_element": "Nowy element",
             "memo_place_add": "Dodawanie miejsca pamięci",
             "memo_place_edit": "Edytowanie miejsca pamięci",
@@ -303,6 +314,9 @@
             "new_month_places": "Miejsca w bieżącym miesiącu",
             "all_users_info": "Wszystkie informacje dotyczące użytkowników",
             "all_object_graph": "Dynamika rozwoju użytkowników, miejsc i tras w ciągu roku",
+            "all_posts_count": "Całkowita liczba postów",
+            "all_comments_count": "Całkowita liczba komentarzy",
+            "forum_object_graph": "Dynamika rozwoju postów i komentarzy na forum w ciągu roku",
             "users": "Użytkownicy",
             "master_user": "Super użytkownicy",
             "admin": "Administratorzy",

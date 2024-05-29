@@ -24,7 +24,7 @@ const ScrollToTopButton = () => {
       {isVisible && (
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className='fixed right-5 bottom-5 flex justify-center items-center w-12 h-12 bg-mainBgColor shadow-lg rounded-full cursor-pointer'
+          className='fixed right-5 bottom-5 flex justify-center items-center w-12 h-12 bg-mainBgColor shadow-itemShadow rounded-full cursor-pointer'
           onClick={() => {
             window.scrollTo({
               top: 0,

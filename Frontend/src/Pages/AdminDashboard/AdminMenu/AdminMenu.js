@@ -1,13 +1,15 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { changeSection } from 'Redux/contentSectionSlice';
+import { selectAdminData, adminDataActions } from 'Redux/adminDataSlice';
 
 import AdminMenuItem from './AdminMenuItem/AdminMenuItem';
 
 function AdminMenu() {
   const dispatch = useDispatch();
+  const adminData = useSelector(selectAdminData);
   const { t } = useTranslation();
   const [activeItem, setActiveItem] = useState(0);
   const [cookies, removeCookie] = useCookies(['user']);
@@ -81,8 +83,16 @@ function AdminMenu() {
 
   const handleSectionChange = (index, section) => {
     setActiveItem(index);
+    dispatch(adminDataActions.updateCurrentMenuOption(index));
     dispatch(changeSection(section));
   };
+
+  useEffect(() => {
+    if (adminData.currentMenuOption) {
+      setActiveItem(adminData.currentMenuOption);
+      dispatch(changeSection(menuItems[adminData.currentMenuOption].section));
+    }
+  }, []);
 
   return (
     <>

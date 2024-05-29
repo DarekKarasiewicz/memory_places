@@ -8,16 +8,14 @@ function AdminPlaceAction({ action }) {
   const params = useParams();
 
   return (
-    <App>
-      <div className='w-screen h-auto relative flex max-w-full overflow-x-hidden'>
-        <div className='w-full flex flex-col'>
-          <ContentNavbar showLogo={true} />
-          {action === 'edit' || action === 'view' ? (
-            <AdminPlaceActionSection action={action} placeId={params.id} />
-          ) : (
-            <AdminPlaceActionSection />
-          )}
-        </div>
+    <App altVersion={true}>
+      <div className='w-full flex flex-col relative'>
+        <ContentNavbar showLogo={true} />
+        {action === 'edit' || action === 'view' ? (
+          <AdminPlaceActionSection action={action} placeId={params.id} />
+        ) : (
+          <AdminPlaceActionSection />
+        )}
       </div>
     </App>
   );

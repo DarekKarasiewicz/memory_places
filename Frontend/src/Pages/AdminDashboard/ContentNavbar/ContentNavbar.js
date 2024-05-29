@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 
 import LanguageSwitcher from 'Components/LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from 'Components/ThemeSwitcher/ThemeSwitcher';
-import AdminDropdown from './AdminDropdown/AdminDropdown';
 import CancelIcon from 'icons/CancelIcon';
 import MenuIcon from 'icons/MenuIcon';
 import DropdownItem from 'Components/Navbar/DropdownItem/DropdownItem';
+import UserMenu from 'Components/Navbar/UserMenu/UserMenu';
 
 import i18n from 'i18n';
 import 'moment/locale/pl';
@@ -143,7 +143,7 @@ function ContentNavbar({ showLogo }) {
             <LanguageSwitcher variant='admin_dashboard' />
             <ThemeSwitcher />
           </div>
-          <AdminDropdown />
+          <UserMenu altVersion={true} isAdminPage={true} />
         </div>
       </div>
     </>

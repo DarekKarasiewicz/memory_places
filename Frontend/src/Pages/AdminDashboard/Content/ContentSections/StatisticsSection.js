@@ -20,12 +20,15 @@ function StatisticsSection() {
       const responseUsers = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
       const responsePlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
       const responseTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
+      const responsePosts = await axios.get(`http://127.0.0.1:8000/memo_places_forum/post/`);
+      const responseComments = await axios.get(`http://127.0.0.1:8000/memo_places_forum/comment/`);
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();
       };
 
       const monthlyItemsCount = [];
+      const monthlyForumCount = [];
 
       const months = [
         t('admin.common.january'),
@@ -66,6 +69,13 @@ function StatisticsSection() {
           places: 0,
           trails: 0,
         };
+
+        monthlyForumCount[monthNumber] = {
+          name: monthName,
+          sname: smonths[index],
+          posts: 0,
+          comments: 0,
+        };
       });
 
       if (responseUsers.data !== 0) {
@@ -89,10 +99,30 @@ function StatisticsSection() {
         });
       }
 
+      if (responsePosts.data !== 0) {
+        responsePosts.data.forEach((item) => {
+          const itemMonth = getItemDate(item.created_at);
+          monthlyForumCount[itemMonth].posts += 1;
+        });
+      }
+
+      if (responseComments.data !== 0) {
+        responseComments.data.forEach((item) => {
+          const itemMonth = getItemDate(item.created_at);
+          monthlyForumCount[itemMonth].comments += 1;
+        });
+      }
+
       setStatistics((statistics) => ({ ...statistics, ['allUsers']: responseUsers.data.length }));
       setStatistics((statistics) => ({ ...statistics, ['allPlaces']: responsePlaces.data.length }));
       setStatistics((statistics) => ({ ...statistics, ['allTrails']: responseTrails.data.length }));
+      setStatistics((statistics) => ({ ...statistics, ['allPosts']: responsePosts.data.length }));
+      setStatistics((statistics) => ({
+        ...statistics,
+        ['allComments']: responseComments.data.length,
+      }));
       setStatistics((statistics) => ({ ...statistics, ['objectsData']: monthlyItemsCount }));
+      setStatistics((statistics) => ({ ...statistics, ['forumData']: monthlyForumCount }));
 
       dispatch(adminDataActions.updateIsStatisticsChanged(false));
     } catch (error) {
@@ -114,7 +144,7 @@ function StatisticsSection() {
         <span className='text-3xl'>{t('admin.common.statistics_title')}</span>
         <span className='text-md'>{t('admin.content.statistics_info')}</span>
       </div>
-      <div className='grid grid-cols-3 grid-rows-4 gap-6'>
+      <div className='grid grid-cols-5 grid-rows-9 gap-6 h-screen'>
         <AdminTileStat
           title={t('admin.content.all_users_count')}
           value={statistics.allUsers}
@@ -130,10 +160,28 @@ function StatisticsSection() {
           value={statistics.allTrails}
           icon='trail'
         />
-        <div className='col-span-3 row-span-3 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
+        <AdminTileStat
+          title={t('admin.content.all_posts_count')}
+          value={statistics.allPosts}
+          icon='post'
+        />
+        <AdminTileStat
+          title={t('admin.content.all_comments_count')}
+          value={statistics.allComments}
+          icon='comment'
+        />
+        <div className='col-span-5 row-span-3 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminMultiDataBarChart
             title={t('admin.content.all_object_graph')}
             data={statistics.objectsData}
+            labels={['users', 'places', 'trails']}
+          />
+        </div>
+        <div className='col-span-5 row-span-3 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
+          <AdminMultiDataBarChart
+            title={t('admin.content.forum_object_graph')}
+            data={statistics.forumData}
+            labels={['posts', 'comments']}
           />
         </div>
       </div>
