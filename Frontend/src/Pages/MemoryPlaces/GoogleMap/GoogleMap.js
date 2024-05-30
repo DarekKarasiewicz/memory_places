@@ -95,11 +95,21 @@ const GoogleMap = () => {
 
   useEffect(() => {
     const fetchDataAndFilter = async () => {
-      await dispatch(fetchMapPlaces(user.user_id));
+      if(user && user.user_id){
+        await dispatch(fetchMapPlaces(user.user_id));
+      }else{
+        await dispatch(fetchMapPlaces());
+      }
+      
       dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
     const fetchTrailsAndFilter = async () => {
-      await dispatch(fetchMapTrails(user.user_id));
+      if(user && user.user_id){
+        await dispatch(fetchMapTrails(user.user_id));
+      }else{
+        await dispatch(fetchMapTrails());
+      }
+      
       dispatch(filterTrails({ type: 0, period: 0 }));
     };
 

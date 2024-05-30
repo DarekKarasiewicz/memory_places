@@ -26,7 +26,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
   const handleLikeClick = (event, commentId, itemLike) => {
     event.stopPropagation();
 
-    if (user.user_id) {
+    if (user && user.user_id) {
       axios
         .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
           user: user.user_id,
@@ -44,7 +44,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
   };
 
   const handleDislikeClick = (commentId, itemLike) => {
-    if (user.user_id) {
+    if (user && user.user_id) {
       axios
         .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
           user: user.user_id,
