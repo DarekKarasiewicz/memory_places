@@ -60,7 +60,11 @@ function UserMenu({ altVersion, isAdminPage }) {
     setIsActive(false);
     removeCookie('user', { path: '/' });
     if (isUserPlacesOpen === true) dispatch(userPlacesActions.changeIsOpen());
-    if (altVersion && isAdminPage) navigate('/');
+    if (altVersion && isAdminPage) {
+      navigate('/');
+    } else {
+      location.reload();
+    }
   };
 
   const handleFAQVisability = () => {

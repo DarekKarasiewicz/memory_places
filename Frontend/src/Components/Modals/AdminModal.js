@@ -9,8 +9,7 @@ import {
   deletePostItem,
   deleteCommentItem,
 } from 'Redux/adminActionSlice';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 

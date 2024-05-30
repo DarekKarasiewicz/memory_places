@@ -19,6 +19,7 @@ import allMapTrailsReducer from './allMapTrailsSlice';
 import updateTrailReducer from './updateTrailSlice';
 import adminDataReducer from './adminDataSlice';
 import forumDataReducer from './forumDataSlice';
+import approvalModalReducer from './approvalModalSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -46,6 +47,7 @@ export const store = configureStore({
     updateTrail: updateTrailReducer,
     adminData: adminDataReducer,
     forumData: forumDataReducer,
+    approvalModal: approvalModalReducer,
   },
   middleware: customizedMiddleware,
 });

@@ -6,8 +6,9 @@ import { useDispatch } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { updatePlaceActions } from 'Redux/updatePlaceSlice';
 import { locationActions } from 'Redux/locationSlice';
-import { deletePlace } from 'Redux/allMapPlacesSlice';
 import { userPlacesActions } from 'Redux/userPlacesSlice';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { approvalModalActions } from 'Redux/approvalModalSlice';
 
 import ArchaeologicalSiteIcon from 'icons/places_icons/ArchaeologicalSiteIcon';
 import BattlefieldIcon from 'icons/places_icons/BattlefieldIcon';
@@ -20,18 +21,26 @@ import WaysideShrineIcon from 'icons/places_icons/WaysideShrineIcon';
 import EditIcon from 'icons/EditIcon';
 import TrashIcon from 'icons/TrashIcon';
 
-import { registerAppChanges } from 'utils';
-
 const UserPlaceItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
 
-  const handleUpdateModalVisability = (e) => {
+  const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();
-    dispatch(userPlacesActions.changeIsOpen());
-    dispatch(updatePlaceActions.changeUpdatePlace(props.place));
-    dispatch(modalsActions.changeIsUpdateModalOpen());
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/memo_places/places/pk=${props.place.id}`,
+      );
+      dispatch(userPlacesActions.changeIsOpen());
+      dispatch(updatePlaceActions.changeUpdatePlace(response.data));
+      dispatch(modalsActions.changeIsUpdateModalOpen());
+    } catch (error) {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
   };
 
   const directToPlaceOnMap = () => {
@@ -41,30 +50,30 @@ const UserPlaceItem = (props) => {
 
   const handlePlaceDelete = (e) => {
     e.stopPropagation();
-    if (confirm(t('common.place_delete_warning'))) {
-      axios.delete(`http://localhost:8000/memo_places/places/${props.place.id}`).then(() => {
-        dispatch(deletePlace(props.place.id));
-        registerAppChanges('admin.changes_messages.place_delete', cookies.user, props.place.id);
-      });
-    }
+
+    dispatch(approvalModalActions.changeIsApprovalModalOpen());
+    dispatch(approvalModalActions.changeId(props.place.id));
+    dispatch(approvalModalActions.changeType('place'));
   };
 
   const iconComponents = {
-    archaeological: <ArchaeologicalSiteIcon className='min-w-max min-h-max' />,
-    battlefield: <BattlefieldIcon className='min-w-max min-h-max' />,
-    burial_site: <BurialSiteIcon className='min-w-max min-h-max' />,
-    civil_cemetery: <CivilCemeteryIcon className='min-w-max min-h-max' />,
-    execution_site: <ExecutionSiteIcon className='min-w-max min-h-max' />,
-    historical_monument: <HistoricalMonumentIcon className='min-w-max min-h-max' />,
-    war_cemetery: <WarCemeteryIcon className='min-w-max min-h-max' />,
-    wayside_shrine: <WaysideShrineIcon className='min-w-max min-h-max' />,
+    1: <ArchaeologicalSiteIcon className='w-1/2' />,
+    2: <BattlefieldIcon className='w-1/2' />,
+    3: <BurialSiteIcon className='w-1/2' />,
+    4: <CivilCemeteryIcon className='w-1/2' />,
+    5: <ExecutionSiteIcon className='w-1/2' />,
+    6: <HistoricalMonumentIcon className='w-1/2' />,
+    7: <WarCemeteryIcon className='w-1/2' />,
+    8: <WaysideShrineIcon className='w-1/2' />,
   };
 
   const IconComponent = iconComponents[props.place.type] || t('common.no_image_error');
 
   return (
     <li
-      className={`flex h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg flex-row bg-secondaryBgColor text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
+      className={`flex h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg flex-row ${
+        props.place.verified === true ? 'bg-secondaryBgColor' : 'bg-yellow-500'
+      } text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
         props.clickedItem === props.place.id ? 'border-2 border-contrastColor' : ''
       }`}
       key={props.place.id}
@@ -77,26 +86,28 @@ const UserPlaceItem = (props) => {
         <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
         <p className='text-sm'>{props.place.creation_date}</p>
       </div>
-      <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>
-        <motion.div
-          className='rounded-full bg-green-700 h-10 w-10 flex justify-center items-center hover:bg-green-900 cursor-pointer'
-          onClick={handleUpdateModalVisability}
-          whileHover={{
-            scale: 1.05,
-          }}
-        >
-          <EditIcon className='w-6 h-6' color='#ffffff' />
-        </motion.div>
-        <motion.div
-          className='rounded-full bg-red-700 h-10 w-10 flex justify-center items-center hover:bg-red-900 cursor-pointer'
-          whileHover={{
-            scale: 1.05,
-          }}
-          onClick={handlePlaceDelete}
-        >
-          <TrashIcon className='w-6 h-6' color='#ffffff' />
-        </motion.div>
-      </div>
+      {props.place.verified === false && (
+        <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>
+          <motion.div
+            className='rounded-full bg-green-700 h-10 w-10 flex justify-center items-center hover:bg-green-900 cursor-pointer'
+            onClick={handleUpdateModalVisability}
+            whileHover={{
+              scale: 1.05,
+            }}
+          >
+            <EditIcon className='w-6 h-6' color='#ffffff' />
+          </motion.div>
+          <motion.div
+            className='rounded-full bg-red-700 h-10 w-10 flex justify-center items-center hover:bg-red-900 cursor-pointer'
+            whileHover={{
+              scale: 1.05,
+            }}
+            onClick={handlePlaceDelete}
+          >
+            <TrashIcon className='w-6 h-6' color='#ffffff' />
+          </motion.div>
+        </div>
+      )}
     </li>
   );
 };

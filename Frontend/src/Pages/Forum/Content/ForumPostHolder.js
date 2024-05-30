@@ -123,7 +123,7 @@ function ForumPostHolder() {
   const handleLikeClick = (event, commentId, itemLike) => {
     event.stopPropagation();
 
-    if (user.id) {
+    if (user.user_id) {
       axios
         .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
           user: user.user_id,
@@ -141,7 +141,7 @@ function ForumPostHolder() {
   };
 
   const handleDislikeClick = (commentId, itemLike) => {
-    if (user.id) {
+    if (user.user_id) {
       axios
         .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
           user: user.user_id,
@@ -157,7 +157,7 @@ function ForumPostHolder() {
   };
 
   const handleCommentAdd = (postId) => {
-    if (user.id) {
+    if (user.user_id) {
       axios
         .post(`http://127.0.0.1:8000/memo_places_forum/comment/`, {
           user: user.user_id,

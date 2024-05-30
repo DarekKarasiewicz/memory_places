@@ -27,7 +27,7 @@ const UserMenu = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/memo_places/places/user=${user.user_id}`)
+      .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
       .then((response) => {
         setUserPlaces(response.data);
       })
@@ -37,7 +37,7 @@ const UserMenu = () => {
         dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
     axios
-      .get(`http://localhost:8000/memo_places/path/user=${user.user_id}`)
+      .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
       .then((response) => {
         setUserTrails(response.data);
       })
@@ -50,7 +50,7 @@ const UserMenu = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/memo_places/places/user=${user.user_id}`)
+      .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
       .then((response) => {
         setUserPlaces(response.data);
       })
@@ -63,7 +63,7 @@ const UserMenu = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/memo_places/path/user=${user.user_id}`)
+      .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
       .then((response) => {
         setUserTrails(response.data);
       })

@@ -11,6 +11,7 @@ import { selectAddTrail, addTrailActions } from 'Redux/addTrailSlice.jsx';
 import { drawingEventsActions, selectDrawingEvents } from 'Redux/drawingEventsSlice.jsx';
 import { drawingToolsActions, selectDrawingTools } from 'Redux/drawingToolsSlice.jsx';
 import { updateTrailActions } from 'Redux/updateTrailSlice.jsx';
+import { selectApprovalModal } from 'Redux/approvalModalSlice.jsx';
 
 import App from 'App';
 import UserPlacesMenu from 'Pages/MemoryPlaces/User/UserPlacesMenu.jsx';
@@ -22,6 +23,7 @@ import Footer from './Footer/Footer.js';
 import Infobar from 'Components/Navbar/Infobar.jsx';
 import TrailFormModal from 'Components/Modals/TrailFormModal.jsx';
 import TrailGuideModal from 'Components/Modals/TrailGuideModal.js';
+import ApprovalModal from 'Components/Modals/ApprovalModal.js';
 
 function MemoryPlaces() {
   const dispatch = useDispatch();
@@ -32,6 +34,9 @@ function MemoryPlaces() {
   const { t } = useTranslation();
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
+  const approvalModalData = useSelector(selectApprovalModal);
+
+  console.log(approvalModalData);
 
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
@@ -112,6 +117,8 @@ function MemoryPlaces() {
           closeModal={handleTrailUpdateFormModalVisability}
         />
       )}
+
+      {approvalModalData.isApprovalModalOpen && <ApprovalModal />}
 
       {modalData.isTrailGuideModalOpen && addTrailData.isSelecting ? <TrailGuideModal /> : null}
 

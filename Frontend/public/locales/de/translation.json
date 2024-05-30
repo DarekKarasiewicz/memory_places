@@ -214,7 +214,9 @@
         "contact_success": "Ihre Nachricht wurde erfolgreich gesendet!",
         "directly_email": "Sie können uns direkt per E-Mail erreichen unter",
         "FAQ_title": "Häufig gestellte Fragen",
-        "FAQ_subtitle": "Finden Sie Antworten auf häufig gestellte Fragen zu unserer Seite!"
+        "FAQ_subtitle": "Finden Sie Antworten auf häufig gestellte Fragen zu unserer Seite!",
+        "delete-title": "Löschen des ausgewählten Objekts",
+        "delete_info": "Sind Sie sicher, dass Sie dieses Objekt löschen möchten?"
     },
     "navbar": {
         "main_page": "Startseite",
