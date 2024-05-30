@@ -80,15 +80,14 @@ class Short_Path_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
 
     class Meta:
-        model = Place
+        model = Path
         fields = (
             "id",
             "path_name",
             "creation_date",
-            "coordinates"
+            "coordinates",
             "user",
             "username",
-            "sortof",
             "type",
             "period",
             "verified",
