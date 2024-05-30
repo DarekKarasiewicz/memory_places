@@ -61,12 +61,16 @@ export const allMapTrailsSlice = createSlice({
   },
 });
 
-export const fetchMapTrails = () => async (dispatch) => {
+export const fetchMapTrails = (userId) => async (dispatch) => {
   dispatch(allMapTrailsSlice.actions.fetchMapTrailsStart());
 
   try {
     const response = await axios.get('http://localhost:8000/memo_places/path/');
-    dispatch(allMapTrailsSlice.actions.fetchMapTrailsSuccess(response.data));
+    const filteredTrails = response.data.filter(
+      (item) => item.verified === true || item.user === userId,
+    );
+
+    dispatch(allMapTrailsSlice.actions.fetchMapTrailsSuccess(filteredTrails));
   } catch (error) {
     dispatch(allMapTrailsSlice.actions.fetchMapTrailsFailure());
   }

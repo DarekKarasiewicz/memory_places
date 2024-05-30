@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { selectLocation } from 'Redux/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceLocationSlice';
 import { modalsActions, selectModals } from 'Redux/modalsSlice';
 import { selectUserPlaces } from 'Redux/userPlacesSlice';
@@ -31,6 +32,7 @@ import GoogleMapPin from './GoogleMapPin.jsx';
 import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
+import AlertIcon from 'icons/AlertIcon.jsx';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -60,6 +62,8 @@ const GoogleMap = () => {
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
   const [kind, setKind] = useState(null);
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -91,11 +95,11 @@ const GoogleMap = () => {
 
   useEffect(() => {
     const fetchDataAndFilter = async () => {
-      await dispatch(fetchMapPlaces());
+      await dispatch(fetchMapPlaces(user.user_id));
       dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
     const fetchTrailsAndFilter = async () => {
-      await dispatch(fetchMapTrails());
+      await dispatch(fetchMapTrails(user.user_id));
       dispatch(filterTrails({ type: 0, period: 0 }));
     };
 
@@ -280,9 +284,9 @@ const GoogleMap = () => {
           >
             <div className='flex flex-col items-center gap-2'>
               {currentPlace.verified !== true && (
-                <div className='flex justify-center items-end gap-2 bg-yellow-400 rounded-lg p-2'>
-                  <span>⚠️</span>
-                  <span>{t('common.not_verified_place')}</span>
+                <div className='flex justify-center items-center gap-2 bg-yellow-500 rounded-lg p-2 w-full'>
+                  <AlertIcon color='#000' />
+                  <span className='text-base font-semibold'>{t('common.not_verified_place')}</span>
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}
@@ -329,8 +333,8 @@ const GoogleMap = () => {
           >
             <div className='flex flex-col items-center'>
               {currentTrail.verified !== true && (
-                <div className='flex justify-center items-end gap-2 bg-yellow-400 rounded-lg p-2'>
-                  <span>⚠️</span>
+                <div className='flex justify-center items-center gap-2 bg-yellow-500 rounded-lg p-2 w-full'>
+                  <AlertIcon color='#000' />
                   <span>{t('common.not_verified_trail')}</span>
                 </div>
               )}

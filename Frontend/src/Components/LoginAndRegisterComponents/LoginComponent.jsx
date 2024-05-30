@@ -68,6 +68,7 @@ const LoginComponent = () => {
             },
           );
           dispatch(modalsActions.changeIsLoginAndRegisterOpen());
+          location.reload();
         })
         .catch((error) => {
           if (!error.response) {
