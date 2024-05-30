@@ -147,7 +147,7 @@ function ForumContentPosts({ placeId }) {
             btnBg='red'
             onClick={() => navigate('/forum')}
           />
-          {user.user_id && (
+          {user && user.user_id && (
             <BaseButton name={t('forum.add_post')} btnBg='blue' onClick={() => handlePostAdd()} />
           )}
         </div>

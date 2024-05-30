@@ -50,7 +50,7 @@ function App({ children, altVersion }) {
   };
 
   useEffect(() => {
-    if (!user.user_id) {
+    if (!user || !user.user_id) {
       setShowCookiesInfo(true);
     }
   }, []);
