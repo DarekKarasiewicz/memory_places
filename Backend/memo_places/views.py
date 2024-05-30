@@ -355,6 +355,20 @@ class ShortBaseView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
 
+    def retrieve(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                base = get_object_or_404(self.model, id=value)
+                serializer = self.serializer_class(base, many=False)
+                return Response(serializer.data)
+            case "user":
+                base = self.model.objects.filter(user=value)
+                serializer = self.serializer_class(base, many=True)
+                return Response(serializer.data)
+            case _:
+                return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
+
 class ShortPlaceView(ShortBaseView):
     model = Place
     serializer_class = Short_Places_serailizer
