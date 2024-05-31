@@ -94,27 +94,28 @@ const GoogleMap = () => {
   }, [location]);
 
   useEffect(() => {
-    const fetchDataAndFilter = async () => {
-      if(user && user.user_id){
+    const fetchPlacesAndFilter = async () => {
+      if (user && user.user_id) {
         await dispatch(fetchMapPlaces(user.user_id));
-      }else{
+      } else {
         await dispatch(fetchMapPlaces());
       }
-      
+
       dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
+
     const fetchTrailsAndFilter = async () => {
-      if(user && user.user_id){
+      if (user && user.user_id) {
         await dispatch(fetchMapTrails(user.user_id));
-      }else{
+      } else {
         await dispatch(fetchMapTrails());
       }
-      
+
       dispatch(filterTrails({ type: 0, period: 0 }));
     };
 
+    fetchPlacesAndFilter();
     fetchTrailsAndFilter();
-    fetchDataAndFilter();
   }, [dispatch]);
 
   const handleLocationMarker = (event) => {
@@ -341,11 +342,11 @@ const GoogleMap = () => {
             onCloseClick={closeTrailInfoBox}
             options={{ pixelOffset: { width: 0, height: -30 } }}
           >
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center gap-2'>
               {currentTrail.verified !== true && (
                 <div className='flex justify-center items-center gap-2 bg-yellow-500 rounded-lg p-2 w-full'>
                   <AlertIcon color='#000' />
-                  <span>{t('common.not_verified_trail')}</span>
+                  <span className='text-base font-semibold'>{t('common.not_verified_trail')}</span>
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}

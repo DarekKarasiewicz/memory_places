@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { updateTrailActions } from 'Redux/updateTrailSlice';
@@ -17,14 +16,13 @@ import TrashIcon from 'icons/TrashIcon';
 const UserTrailItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [cookies] = useCookies(['user']);
 
   const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/memo_places/path/pk=${props.place.id}`,
+        `http://localhost:8000/memo_places/path/pk=${props.trail.id}`,
       );
       dispatch(userPlacesActions.changeIsOpen());
       dispatch(updateTrailActions.changeUpdateTrail(response.data));
@@ -54,7 +52,7 @@ const UserTrailItem = (props) => {
   return (
     <li
       className={`flex h-20 first:mt-0 mt-5 mx-5 p-2 rounded-lg flex-row ${
-        props.place.verified === true ? 'bg-secondaryBgColor' : 'bg-yellow-500'
+        props.trail.verified === true ? 'bg-secondaryBgColor' : 'bg-yellow-500'
       } text-textColor shadow-itemShadow hover:bg-thirdBgColor hover:cursor-pointer ${
         props.clickedItem === props.trail.id ? 'border-2 border-contrastColor' : ''
       }`}

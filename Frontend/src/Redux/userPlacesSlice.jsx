@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isOpen: false,
   isTrailActive: false,
+  shouldPlaceDataReload: false,
+  shouldTrailDataReload: false,
 };
 
 export const userPlacesSlice = createSlice({
@@ -14,6 +16,12 @@ export const userPlacesSlice = createSlice({
     },
     changeIsTrailActive: (state) => {
       state.isTrailActive = !state.isTrailActive;
+    },
+    changeIsPlaceDataShouldReload: (state, action) => {
+      state.shouldPlaceDataReload = action.payload;
+    },
+    changeIsTrailDataShouldReload: (state, action) => {
+      state.shouldTrailDataReload = action.payload;
     },
   },
 });

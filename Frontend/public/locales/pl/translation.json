@@ -68,7 +68,8 @@
         "cookie_accept": "Zaakceptuj wszystko",
         "cookie_cancel": "Odrzuć wszystkie",
         "not_verified_place": "Niezweryfikowane miejsce",
-        "not_verified_trail": "Niezweryfikowana trasa"
+        "not_verified_trail": "Niezweryfikowana trasa",
+        "reset_password_email": "Na Twój adres e-mail została wysłana wiadomość dotycząca resetowania hasła."
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -216,7 +217,12 @@
         "FAQ_title": "Najczęściej zadawane pytania",
         "FAQ_subtitle": "Znajdź odpowiedzi na Najczęściej zadawane pytania dotyczące naszej strony!",
         "delete-title": "Usuwanie wybranego obiektu",
-        "delete_info": "Czy napewno chcesz usunąć ten obiekt?"
+        "delete_info": "Czy napewno chcesz usunąć ten obiekt?",
+        "verification_info": "Twoje konto zostało zweryfikowane",
+        "verification_info2": "Teraz możesz cieszyć się pełnym doświadczeniem miejsc pamięci",
+        "go_to_mainpage": "Wróć do strony głównej",
+        "reset_pass_info": "Klikając poniższy przycisk, rozpoczniesz proces resetowania hasła. Na swoją skrzynkę pocztową otrzymasz wiadomość z dalszymi instrukcjami.",
+        "reset_pass_btn": "Zresetuj swoje hasło"
     },
     "navbar": {
         "main_page": "Strona główna",

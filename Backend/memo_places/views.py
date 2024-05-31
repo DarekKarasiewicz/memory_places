@@ -432,18 +432,21 @@ class User_view(viewsets.ModelViewSet):
         new_user.save()
         serializer = self.serializer_class(new_user)
 
-        html_message = render_to_string(
+        html_content = render_to_string(
             'verification_mail.html',
-            {"link": f"http://localhost:3000/userVerification/{serializer['id'].value}"}
+            {
+                "link": f"http://localhost:3000/userVerification/{serializer['id'].value}",
+                "username": serializer['username'].value,
+            }
         )
-        
+       
         send_mail(
             subject="Verifictation mail",
             message="",
             from_email=os.getenv('EMAIL_HOST_USER'),
             recipient_list=[serializer["email"].value],
             fail_silently=False,
-            html_message=html_message)
+            html_message=html_content)
 
         return Response(serializer.data)
 
@@ -566,7 +569,7 @@ class Reset_password(viewsets.ModelViewSet):
 
         html_message = render_to_string(
             'reset_password.html',
-            {"link": f"SEBA HERE LINK"}
+            {"link": f"http://localhost:3000/userPasswordReset/{serializer['id'].value}"}
         )
 
         send_mail(

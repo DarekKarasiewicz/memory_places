@@ -68,7 +68,8 @@
         "cookie_accept": "Alle akzeptieren",
         "cookie_cancel": "Alle ablehnen",
         "not_verified_place": "Nicht verifizierter Ort",
-        "not_verified_trail": "Nicht verifizierte Strecke"
+        "not_verified_trail": "Nicht verifizierte Strecke",
+        "reset_password_email": "Eine E-Mail bezüglich der Zurücksetzung Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet."
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -216,7 +217,12 @@
         "FAQ_title": "Häufig gestellte Fragen",
         "FAQ_subtitle": "Finden Sie Antworten auf häufig gestellte Fragen zu unserer Seite!",
         "delete-title": "Löschen des ausgewählten Objekts",
-        "delete_info": "Sind Sie sicher, dass Sie dieses Objekt löschen möchten?"
+        "delete_info": "Sind Sie sicher, dass Sie dieses Objekt löschen möchten?",
+        "verification_info": "Ihr Konto wurde verifiziert",
+        "verification_info2": "Jetzt können Sie das volle Erlebnis von Memorial Places genießen",
+        "go_to_mainpage": "Zurück zur Hauptseite",
+        "reset_pass_info": "Durch Klicken auf die Schaltfläche unten beginnen Sie den Prozess zum Zurücksetzen Ihres Passworts. Sie erhalten eine E-Mail mit weiteren Anweisungen.",
+        "reset_pass_btn": "Setze dein Passwort zurück"
     },
     "navbar": {
         "main_page": "Startseite",

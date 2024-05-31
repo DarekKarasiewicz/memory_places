@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
 import { selectUserPlaces, userPlacesActions } from 'Redux/userPlacesSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { deletePlace } from 'Redux/allMapPlacesSlice';
+import { deleteTrail } from 'Redux/allMapTrailsSlice';
 
 import UserObjectsList from './UserObjectsList';
 import CancelIcon from 'icons/CancelIcon';
@@ -22,7 +24,7 @@ const UserMenu = () => {
   const user = cookies.user;
   const [userPlaces, setUserPlaces] = useState(null);
   const [userTrails, setUserTrails] = useState(null);
-  const isTrailActive = useSelector(selectUserPlaces).isTrailActive;
+  const userPlaceData = useSelector(selectUserPlaces);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -30,16 +32,19 @@ const UserMenu = () => {
       .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
       .then((response) => {
         setUserPlaces(response.data);
+        dispatch(userPlacesActions.changeIsPlaceDataShouldReload(false));
       })
       .catch((error) => {
         dispatch(notificationModalActions.changeType('alert'));
         dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
         dispatch(notificationModalActions.changeIsNotificationModalOpen());
       });
+
     axios
       .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
       .then((response) => {
         setUserTrails(response.data);
+        dispatch(userPlacesActions.changeIsTrailDataShouldReload(false));
       })
       .catch((error) => {
         dispatch(notificationModalActions.changeType('alert'));
@@ -49,30 +54,36 @@ const UserMenu = () => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
-      .then((response) => {
-        setUserPlaces(response.data);
-      })
-      .catch((error) => {
-        dispatch(notificationModalActions.changeType('alert'));
-        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
-        dispatch(notificationModalActions.changeIsNotificationModalOpen());
-      });
-  }, [filterPlaces]);
+    if (userPlaceData.shouldPlaceDataReload === true) {
+      axios
+        .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
+        .then((response) => {
+          setUserPlaces(response.data);
+          dispatch(userPlacesActions.changeIsPlaceDataShouldReload(false));
+        })
+        .catch((error) => {
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
+        });
+    }
+  }, [userPlaceData.shouldPlaceDataReload]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
-      .then((response) => {
-        setUserTrails(response.data);
-      })
-      .catch((error) => {
-        dispatch(notificationModalActions.changeType('alert'));
-        dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
-        dispatch(notificationModalActions.changeIsNotificationModalOpen());
-      });
-  }, [filteredTrails]);
+    if (userPlaceData.shouldTrailDataReload === true) {
+      axios
+        .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
+        .then((response) => {
+          setUserTrails(response.data);
+          dispatch(userPlacesActions.changeIsTrailDataShouldReload(false));
+        })
+        .catch((error) => {
+          dispatch(notificationModalActions.changeType('alert'));
+          dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+          dispatch(notificationModalActions.changeIsNotificationModalOpen());
+        });
+    }
+  }, [userPlaceData.shouldTrailDataReload]);
 
   const handleUserPlacesClose = () => {
     dispatch(userPlacesActions.changeIsOpen());
@@ -95,7 +106,7 @@ const UserMenu = () => {
           <CancelIcon />
         </motion.div>
         <div className='w-full text-xl font-bold flex justify-center items-center normal-case text-textColor'>
-          {isTrailActive ? t('user.your_trails') : t('user.your_memory_places')}
+          {userPlaceData.isTrailActive ? t('user.your_trails') : t('user.your_memory_places')}
         </div>
         <div className='flex flex-row'>
           <motion.div
@@ -103,7 +114,7 @@ const UserMenu = () => {
             className='h-10 w-10 flex justify-center items-center cursor-pointer'
             onClick={() => handleObjectChange()}
           >
-            {isTrailActive ? <TrailIcon /> : <PlaceIcon />}
+            {userPlaceData.isTrailActive ? <TrailIcon /> : <PlaceIcon />}
           </motion.div>
         </div>
       </div>
@@ -111,7 +122,7 @@ const UserMenu = () => {
         <UserObjectsList
           userPlaces={userPlaces}
           userTrails={userTrails}
-          isTrailActive={isTrailActive}
+          isTrailActive={userPlaceData.isTrailActive}
         />
       )}
     </div>

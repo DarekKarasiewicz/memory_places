@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import { approvalModalActions, selectApprovalModal } from 'Redux/approvalModalSlice';
+import { userPlacesActions } from 'Redux/userPlacesSlice';
 import axios from 'axios';
 import { deletePlace } from 'Redux/allMapPlacesSlice';
 import { deleteTrail } from 'Redux/allMapTrailsSlice';
@@ -23,12 +24,14 @@ function ApprovalModal() {
     const setProperInfoValue = approvalData.type === 'place' ? 'place' : 'trail';
 
     axios
-      .delete(`http://localhost:8000/memo_places/${objectToDelete}/pk${approvalData.id}/`)
+      .delete(`http://localhost:8000/memo_places/${objectToDelete}/${approvalData.id}/`)
       .then(() => {
-        if (objectToDelete === 'place') {
+        if (approvalData.type === 'place') {
           dispatch(deletePlace(approvalData.id));
+          dispatch(userPlacesActions.changeIsPlaceDataShouldReload(true));
         } else {
           dispatch(deleteTrail(approvalData.id));
+          dispatch(userPlacesActions.changeIsTrailDataShouldReload(true));
         }
 
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -38,6 +41,7 @@ function ApprovalModal() {
           cookies.user,
           approvalData.id,
         );
+        dispatch(approvalModalActions.changeIsApprovalModalOpen());
         dispatch(approvalModalActions.clearData());
       })
       .catch(() => {
