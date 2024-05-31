@@ -551,9 +551,9 @@ class Changes(viewsets.ModelViewSet):
 class Reset_password(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
-    http_method_names = ["put"]
+    http_method_names = ["put","get"]
 
-    def update(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
             case "pk":
@@ -581,6 +581,26 @@ class Reset_password(viewsets.ModelViewSet):
             html_message=html_message)
 
         return Response({"detail": "Succes"})
+
+    def update(self, request, *args, **kwargs):
+        key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        match key:
+            case "pk":
+                user = get_object_or_404(self.model, id=value)
+            case "email":
+                value = str(value).replace("&", ".")
+                user = get_object_or_404(self.model, email=value)
+            case _:
+                user = None
+                return Response(
+                    {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
+                )
+
+        print(user.password)
+        user.set_password(request.data["password"])
+        user.save()
+        print(user.password)
+        return Response({"detail": "Succes, new password is set"})
 
 
 class CategoryBaseView(viewsets.ModelViewSet):
