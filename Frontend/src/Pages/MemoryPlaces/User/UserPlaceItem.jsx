@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { modalsActions } from 'Redux/modalsSlice';
 import { updatePlaceActions } from 'Redux/updatePlaceSlice';
@@ -24,7 +23,6 @@ import TrashIcon from 'icons/TrashIcon';
 const UserPlaceItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [cookies] = useCookies(['user']);
 
   const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();

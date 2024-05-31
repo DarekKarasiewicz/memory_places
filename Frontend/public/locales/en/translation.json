@@ -68,7 +68,8 @@
         "cookie_accept": "Accept all",
         "cookie_cancel": "Reject all",
         "not_verified_place": "Unverified place",
-        "not_verified_trail": "Unverified trail"
+        "not_verified_trail": "Unverified trail",
+        "reset_password_email": "An email regarding password reset has been sent to your email address."
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -216,7 +217,12 @@
         "FAQ_title": "Frequently asked questions",
         "FAQ_subtitle": "Find answers to commonly asked questions about our page!",
         "delete-title": "Deleting the selected object",
-        "delete_info": "Are you sure you want to delete this object?"
+        "delete_info": "Are you sure you want to delete this object?",
+        "verification_info": "Your account has been verified",
+        "verification_info2": "Now you can enjoy the full experience of Memorial Places",
+        "go_to_mainpage": "Go back to main page",
+        "reset_pass_info": "By clicking the button below, you will start the process of resetting your password. You will receive an email with further instructions.",
+        "reset_pass_btn": "Reset your password"
     },
     "navbar": {
         "main_page": "Main page",

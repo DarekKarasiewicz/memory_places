@@ -1,51 +1,30 @@
-import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { confirmationModalActions } from 'Redux/confirmationModalSlice';
+import { useCookies } from 'react-cookie';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
 
-import BaseButton from 'Components/Base/BaseButton';
-import BaseInput from 'Components/Base/BaseInput';
 import ShieldLockIcon from 'icons/ShieldLockIcon';
-import AlertIcon from 'icons/AlertIcon';
+import BaseButton from 'Components/Base/BaseButton';
 
 function SecuritySettings() {
-  const [isValidPassword, setIsValidPassword] = useState(null);
-  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(null);
-  const passwordRef = useRef(null);
-  const confirmPasswordRef = useRef(null);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const [cookies] = useCookies(['user']);
+  const user = cookies.user;
 
-  const handlePasswordChange = () => {
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-    setIsValidPassword(passwordRegex.test(passwordRef.current.value));
-  };
-
-  const handleConfirmPasswordChange = () => {
-    setIsValidConfirmPassword(confirmPasswordRef.current.value === passwordRef.current.value);
-  };
-
-  const handleSumbit = (e) => {
-    e.preventDefault();
-
-    if (isValidPassword && isValidConfirmPassword) {
-      const newData = { password: passwordRef.current.value };
-      // axios
-      //   .put(`http://localhost:8000/memo_places/users/pk=${user.user_id}/`, newData, {
-      //     headers: { 'Content-Type': 'application/json' },
-      //   })
-      //   .then(() => {
-      //     //TO DO
-      //     //When refresh token function will be avaiable add it here + when eamil will be changed send verification mail
-      //     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-      //     dispatch(confirmationModalActions.changeType('success'));
-      //   })
-      //   .catch(() => {
-      //     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-      //     dispatch(confirmationModalActions.changeType('error'));
-      //   });
+  const handlePasswordReset = async () => {
+    try {
+      await axios.put(`http://localhost:8000/memo_places/reset_password/pk=${user.user_id}`);
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.verify_account')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    } catch (error) {
+      dispatch(notificationModalActions.changeType('error'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
-    // Before axios request should check if password is not the same as previous one
   };
 
   const parentItem = {
@@ -66,65 +45,19 @@ function SecuritySettings() {
         <ShieldLockIcon />
         <span>{t('user.security')}</span>
       </div>
-      <div className='flex flex-col items-center py-4 gap-4 px-4'>
-        <div className='w-full flex flex-col gap-2'>
-          <BaseInput
-            type='password'
-            label={t('common.pass')}
-            name='password'
-            placeholder={t('log_reg_form.your_password')}
-            isValid={isValidPassword}
-            ref={passwordRef}
-            onBlur={handlePasswordChange}
-            onChange={handlePasswordChange}
-          />
-          {isValidPassword === false && (
-            <div className='text-red-500 flex items-start gap-2'>
-              <AlertIcon className='h-6 w-6 my-1' color='#ef4444' />
-              <div>
-                <span className='text-lg'>{t('log_reg_form.pass_title')}</span>
-                <ul className='text-red-500 text-base leading-5 list-disc ml-5'>
-                  <li>{t('log_reg_form.pass_info1')}</li>
-                  <li>{t('log_reg_form.pass_info2')}</li>
-                  <li>{t('log_reg_form.pass_info3')}</li>
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='w-full flex flex-col gap-2'>
-          <BaseInput
-            type='password'
-            label={t('log_reg_form.confirm_pass')}
-            name='confPassword'
-            placeholder={t('log_reg_form.confirm_pass')}
-            isValid={isValidConfirmPassword}
-            ref={confirmPasswordRef}
-            onBlur={handleConfirmPasswordChange}
-            onChange={handleConfirmPasswordChange}
-          />
-          {isValidConfirmPassword === false && (
-            <span className='text-red-500 flex items-center gap-2'>
-              <AlertIcon className='h-6 w-6' color='#ef4444' />
-              <p className='text-lg'>{t('log_reg_form.pass_similar')}</p>
-            </span>
-          )}
-        </div>
-        {isValidPassword && isValidConfirmPassword ? (
+      <div className='p-4'>
+        <div className='flex flex-col items-center gap-2'>
+          <p className='text-center'>
+            {t('user.reset_pass_info')}
+          </p>
           <BaseButton
-            name={t('common.confirm')}
-            className='mt-4'
+            name={t('user.reset_pass_btn')}
+            breakWidth={true}
+            className='mt-4 px-4 py-3'
             btnBg='blue'
-            onClick={handleSumbit}
+            onClick={() => handlePasswordReset()}
           />
-        ) : (
-          <BaseButton
-            name={t('common.confirm')}
-            className='mt-4 cursor-not-allowed'
-            btnBg='blue'
-            disabled={true}
-          />
-        )}
+        </div>
       </div>
     </motion.div>
   );

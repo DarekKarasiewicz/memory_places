@@ -7,6 +7,7 @@ import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 import BaseButton from 'Components/Base/BaseButton';
 import Loader from 'Components/Loader/Loader';
+import CheckIcon from 'icons/CheckIcon';
 
 const VerifiactionPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,13 +35,18 @@ const VerifiactionPage = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='bg-slate-300 p-10 rounded-lg'>
-          <p className='text-3xl mb-3'>Your account has been verified</p>
-          <p className='text-lg mb-2'>Now you can enjoy the full experience of Memorial Places</p>
-          <Link to='/' className='flex justify-center items-center'>
-            <BaseButton name='Go back to main page' className={'w-56'} btnBg='blue' />
-          </Link>
-        </div>
+        <>
+          <div className='bg-mainBgColor text-textColor flex justify-center items-center w-screen h-screen font-sans'>
+            <div className='flex flex-col items-center gap-6 -mt-20'>
+              <CheckIcon className='w-40' />
+              <p className='text-6xl mb-3'>{t('user.verification_info')}</p>
+              <p className='text-2xl mb-2'>{t('user.verification_info2')}</p>
+              <Link to='/' className='flex justify-center items-center'>
+                <BaseButton name={t('user.go_to_mainpage')} className={'w-56'} btnBg='blue' />
+              </Link>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

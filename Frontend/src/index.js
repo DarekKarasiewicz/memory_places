@@ -15,6 +15,7 @@ import AdminDashboard from './Pages/AdminDashboard/AdminDashboard.js';
 import AdminPlaceAction from './Pages/AdminDashboard/AdminPlaceAction.js';
 import AdminTrailAction from 'Pages/AdminDashboard/AdminTrailAction.js';
 import MemoryPlaces from 'Pages/MemoryPlaces/MemoryPlaces.js';
+import PasswordResetPage from 'Components/PasswordResetPage/PasswordResetPage.js';
 
 import { ThemeProvider } from './Components/ThemeSwitcher/ThemeContext.js';
 import './index.css';
@@ -37,6 +38,7 @@ export default function AppUrls() {
         <Route path='/forum/:placeid' element={<ForumMainPage />} />
         <Route path='/forum/:placeid/:postid' element={<ForumMainPage />} />
         <Route path='/userVerification/:id' element={<VerifiactionPage />} />
+        <Route path='/userPasswordReset/:id' element={<PasswordResetPage />} />
         <Route
           path='/adminDashboard'
           element={

@@ -65,7 +65,7 @@ export const fetchMapTrails = (userId) => async (dispatch) => {
   dispatch(allMapTrailsSlice.actions.fetchMapTrailsStart());
 
   try {
-    const response = await axios.get('http://localhost:8000/memo_places/path/');
+    const response = await axios.get('http://localhost:8000/memo_places/short_path/');
     const filteredTrails = response.data.filter(
       (item) => item.verified === true || item.user === userId,
     );

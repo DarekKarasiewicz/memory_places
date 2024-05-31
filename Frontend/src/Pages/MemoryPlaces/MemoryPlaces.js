@@ -36,8 +36,6 @@ function MemoryPlaces() {
   const drawingEvents = useSelector(selectDrawingEvents);
   const approvalModalData = useSelector(selectApprovalModal);
 
-  console.log(approvalModalData);
-
   const handleFormModalVisability = () => {
     if (modalData.isFormModalOpen === true) {
       dispatch(addPlaceActions.reset());
