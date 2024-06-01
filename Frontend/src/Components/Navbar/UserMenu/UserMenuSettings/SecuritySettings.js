@@ -16,9 +16,9 @@ function SecuritySettings() {
 
   const handlePasswordReset = async () => {
     try {
-      await axios.put(`http://localhost:8000/memo_places/reset_password/pk=${user.user_id}`);
+      await axios.get(`http://localhost:8000/memo_places/reset_password/pk=${user.user_id}`);
       dispatch(notificationModalActions.changeType('alert'));
-      dispatch(notificationModalActions.changeTitle(t('common.verify_account')));
+      dispatch(notificationModalActions.changeTitle(t('common.reset_password_email')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
     } catch (error) {
       dispatch(notificationModalActions.changeType('error'));
@@ -47,9 +47,7 @@ function SecuritySettings() {
       </div>
       <div className='p-4'>
         <div className='flex flex-col items-center gap-2'>
-          <p className='text-center'>
-            {t('user.reset_pass_info')}
-          </p>
+          <p className='text-center'>{t('user.reset_pass_info')}</p>
           <BaseButton
             name={t('user.reset_pass_btn')}
             breakWidth={true}

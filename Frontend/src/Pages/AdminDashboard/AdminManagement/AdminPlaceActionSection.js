@@ -11,6 +11,7 @@ import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 import { adminActions, selectAdminAction } from 'Redux/adminActionSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
+import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
 
 import PinIcon from 'icons/PinIcon';
 import BaseInput from 'Components/Base/BaseInput';
@@ -23,12 +24,12 @@ import WikiIcon from 'icons/WikiIcon';
 import AdminGoogleMap from './AdminGoogleMap';
 import BaseImageUpload from 'Components/Base/BaseImageUpload/BaseImageUpload';
 import AlertIcon from 'icons/AlertIcon';
+import ImageSlider from 'Components/ImageSlider/ImageSlider';
 
 import { registerAppChanges } from 'utils';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
-  const adminData = useSelector(selectAdminAction);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -62,6 +63,8 @@ function AdminPlaceActionSection({ action, placeId }) {
   const user = cookies.user;
   const [currentAction, setCurrentAction] = useState('add');
   const [placePosition, setPlacePosition] = useState(null);
+  const addObjectImageData = useSelector(selectAddObjectImage);
+  const [baseImages, setBaseImages] = useState([]);
 
   const fetchSortOfItems = async () => {
     try {
@@ -161,6 +164,20 @@ function AdminPlaceActionSection({ action, placeId }) {
           setToVerification(response.data.verified === true ? 'false' : 'true');
 
           setPlacePosition({ lat: response.data.lat, lng: response.data.lng });
+
+          getPlaceImages(placeId)
+            .then((imageData) => {
+              const modifiedImageData = imageData.map((image) => ({
+                ...image,
+                name: image.img.split('/').pop(),
+              }));
+
+              setBaseImages(modifiedImageData);
+              dispatch(addObjectImageActions.setImages(modifiedImageData));
+            })
+            .catch((error) => {
+              console.error('Error fetching place images:', error);
+            });
 
           validateName(nameRef.current.value);
           validateLat(latRef.current.value);
@@ -296,6 +313,57 @@ function AdminPlaceActionSection({ action, placeId }) {
     document.body.style.overflow = 'hidden';
   };
 
+  const handleModalClose = () => {
+    dispatch(addObjectImageActions.reset());
+    navigate(-1);
+  };
+
+  const sendPlaceImages = (placeId, image) => {
+    const formData = new FormData();
+    formData.append('place', placeId);
+    formData.append('img', image);
+
+    axios
+      .post(`http://localhost:8000/memo_places/place_image/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        console.log('image send');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deletePlaceImages = (imageId) => {
+    axios
+      .delete(`http://localhost:8000/memo_places/place_image/pk=${imageId}/`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getPlaceImages = async (placeId) => {
+    const response = await axios.get(
+      `http://127.0.0.1:8000/memo_places/place_image/place=${placeId}`,
+    );
+
+    return response.data;
+  };
+
+  const findImageChanges = (oldItems, newItems) => {
+    return oldItems.filter((item) => !newItems.includes(item));
+  };
+
+  const findImagesWithoutId = (newArray) => {
+    return newArray.filter((newItem) => !newItem.id);
+  };
+
   const handleConfirm = () => {
     const isFormValid = validateForm();
     if (isFormValid) {
@@ -304,6 +372,17 @@ function AdminPlaceActionSection({ action, placeId }) {
       const setValidationDate = shouldBeVerificated ? null : currentDate.toISOString().slice(0, 10);
 
       if (action === 'edit') {
+        const itemsToDelete = findImageChanges(baseImages, addObjectImageData.images);
+        const itemsToAdd = findImagesWithoutId(addObjectImageData.images);
+
+        itemsToDelete.forEach((image) => {
+          deletePlaceImages(image.id);
+        });
+
+        itemsToAdd.forEach((image) => {
+          sendPlaceImages(placeId, image);
+        });
+
         axios
           .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
             place_name: nameRef.current.value,
@@ -319,6 +398,7 @@ function AdminPlaceActionSection({ action, placeId }) {
             verified_date: setValidationDate,
           })
           .then(() => {
+            dispatch(addObjectImageActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges('admin.changes_messages.place_edit', user, placeId);
@@ -345,7 +425,12 @@ function AdminPlaceActionSection({ action, placeId }) {
             verified: !shouldBeVerificated,
             verified_date: setValidationDate,
           })
-          .then(() => {
+          .then((response) => {
+            addObjectImageData.images.forEach((image) => {
+              sendPlaceImages(response.data.id, image);
+            });
+
+            dispatch(addObjectImageActions.reset());
             dispatch(addPlaceActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
@@ -609,12 +694,22 @@ function AdminPlaceActionSection({ action, placeId }) {
           </div>
           <div className='w-1/2 h-3/4 flex flex-col gap-4'>
             <AdminGoogleMap action={currentAction} placePosition={placePosition} kind='place' />
-            <BaseImageUpload fileSize={5} />
+            {action !== 'view' ? (
+              <BaseImageUpload fileSize={5} />
+            ) : (
+              <div className='h-1/2'>
+                <ImageSlider slides={baseImages} />
+              </div>
+            )}
           </div>
         </div>
         <hr />
         <div className='flex justify-end gap-4'>
-          <BaseButton name={t('admin.common.back')} btnBg='red' onClick={() => navigate(-1)} />
+          <BaseButton
+            name={t('admin.common.back')}
+            btnBg='red'
+            onClick={() => handleModalClose()}
+          />
           {action !== 'view' && (
             <BaseButton
               name={action === 'edit' ? t('admin.content.edit') : t('admin.common.add')}

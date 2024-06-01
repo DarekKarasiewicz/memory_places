@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTrailActions, selectAddTrail } from 'Redux/addTrailSlice';
+import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
 import { modalsActions } from 'Redux/modalsSlice';
 import { drawingToolsActions, selectDrawingTools } from 'Redux/drawingToolsSlice';
 import { drawingEventsActions, selectDrawingEvents } from 'Redux/drawingEventsSlice';
@@ -30,6 +31,7 @@ const TrailFormModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const addTrailData = useSelector(selectAddTrail);
+  const addObjectImageData = useSelector(selectAddObjectImage);
   const updateTrailData = useSelector(selectUpdateTrail);
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
@@ -40,6 +42,7 @@ const TrailFormModal = (props) => {
   const periodRef = useRef();
   const wikiLinkRef = useRef();
   const topicLinkRef = useRef();
+  const [baseImages, setBaseImages] = useState([]);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const [type, setType] = useState([]);
@@ -108,8 +111,23 @@ const TrailFormModal = (props) => {
       dispatch(addTrailActions.changeWikiLink(updateTrailData.trail.wiki_link));
       dispatch(addTrailActions.changeTopicLink(updateTrailData.trail.topic_link));
       dispatch(addTrailActions.setTrailCoords(JSON.parse(updateTrailData.trail.coordinates)));
+
       validateName(updateTrailData.trail.path_name);
       validateDescription(updateTrailData.trail.description);
+
+      getTrailImages(updateTrailData.trail.id)
+        .then((imageData) => {
+          const modifiedImageData = imageData.map((image) => ({
+            ...image,
+            name: image.img.split('/').pop(),
+          }));
+          setBaseImages(modifiedImageData);
+          dispatch(addObjectImageActions.setImages(modifiedImageData));
+        })
+        .catch((error) => {
+          console.error('Error fetching path images:', error);
+        });
+
       dispatch(formValidationActions.changeIsValidType(updateTrailData.trail.type !== '0'));
       dispatch(formValidationActions.changeIsValidPeriod(updateTrailData.trail.period !== '0'));
       dispatch(updateTrailActions.dataIsLoaded());
@@ -161,9 +179,71 @@ const TrailFormModal = (props) => {
     }
   };
 
+  const handleModalClose = () => {
+    dispatch(addObjectImageActions.reset());
+    props.closeModal();
+  };
+
+  const sendTrailImages = (placeId, image) => {
+    const formData = new FormData();
+    formData.append('place', placeId);
+    formData.append('img', image);
+
+    axios
+      .post(`http://localhost:8000/memo_places/path_image/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        console.log('image send');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteTrailImages = (imageId) => {
+    axios
+      .delete(`http://localhost:8000/memo_places/path_image/pk=${imageId}/`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getTrailImages = async (trailId) => {
+    const response = await axios.get(
+      `http://127.0.0.1:8000/memo_places/path_image/path=${trailId}`,
+    );
+
+    return response.data;
+  };
+
+  const findImageChanges = (oldItems, newItems) => {
+    return oldItems.filter((item) => !newItems.includes(item));
+  };
+
+  const findImagesWithoutId = (newArray) => {
+    return newArray.filter((newItem) => !newItem.id);
+  };
+
   const handleSubmit = () => {
     if (validateForm()) {
       if (props.type === 'update') {
+        const itemsToDelete = findImageChanges(baseImages, addObjectImageData.images);
+        const itemsToAdd = findImagesWithoutId(addObjectImageData.images);
+
+        itemsToDelete.forEach((image) => {
+          deleteTrailImages(image.id);
+        });
+
+        itemsToAdd.forEach((image) => {
+          sendTrailImages(updateTrailData.trail.id, image);
+        });
+
         axios
           .put(`http://localhost:8000/memo_places/path/${updateTrailData.trail.id}/`, {
             user: user.user_id,
@@ -403,7 +483,7 @@ const TrailFormModal = (props) => {
         </div>
       </div>
       <div className='p-2 flex gap-4 justify-center'>
-        <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal} />
+        <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => handleModalClose()} />
         <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleSubmit} />
       </div>
     </BaseModal>

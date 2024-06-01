@@ -134,9 +134,7 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
   try {
-    await axios.post(`http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`, null, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    await axios.get(`http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`);
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {

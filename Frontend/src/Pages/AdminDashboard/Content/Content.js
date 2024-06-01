@@ -8,6 +8,7 @@ import ObjectVariableManagementSection from './ContentSections/ObjectVariableMan
 import ObjectVerificationSection from './ContentSections/ObjectVerificationSection';
 import PostManagementSection from './ContentSections/PostManagementSection';
 import CommentManagementSection from './ContentSections/CommentManagementSection';
+import ContactSection from './ContentSections/ContactSection';
 import ChangesHistorySection from './ContentSections/ChangesHistorySection';
 
 const contentSectionMap = {
@@ -19,6 +20,7 @@ const contentSectionMap = {
   ObjectVerificationSection,
   PostManagementSection,
   CommentManagementSection,
+  ContactSection,
   ChangesHistorySection,
 };
 

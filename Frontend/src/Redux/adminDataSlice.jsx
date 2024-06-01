@@ -9,6 +9,7 @@ const initialState = {
   isStatisticsChanged: true,
   isPostsChanged: true,
   isCommentsChanged: true,
+  isContactChanged: true,
   isHistoryChanged: true,
   currentMenuOption: null,
 };
@@ -40,6 +41,9 @@ export const adminDataSlice = createSlice({
     },
     updateIsCommentsChanged: (state, action) => {
       state.isCommentsChanged = action.payload;
+    },
+    updateIsContactChanged: (state, action) => {
+      state.isContactChanged = action.payload;
     },
     updateIsHistoryChanged: (state, action) => {
       state.isHistoryChanged = action.payload;

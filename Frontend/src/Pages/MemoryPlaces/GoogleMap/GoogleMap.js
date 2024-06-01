@@ -64,6 +64,7 @@ const GoogleMap = () => {
   const [kind, setKind] = useState(null);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const [loadingObject, setLoadingObject] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -173,6 +174,9 @@ const GoogleMap = () => {
 
   const fetchSelectedPlaceInfo = async () => {
     if (!currentPlace) return;
+
+    setLoadingObject(true);
+
     try {
       const response = await axios.get(
         `http://localhost:8000/memo_places/places/pk=${currentPlace.id}`,
@@ -183,11 +187,16 @@ const GoogleMap = () => {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    } finally {
+      setLoadingObject(false);
     }
   };
 
   const fetchSelectedTrailInfo = async () => {
     if (!currentTrail) return;
+
+    setLoadingObject(true);
+
     try {
       const response = await axios.get(
         `http://localhost:8000/memo_places/path/pk=${currentTrail.id}`,
@@ -198,6 +207,8 @@ const GoogleMap = () => {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    } finally {
+      setLoadingObject(false);
     }
   };
 
@@ -382,7 +393,7 @@ const GoogleMap = () => {
           </InfoWindow>
         )}
 
-        {modalsData.isAdvancedInfoOpen && (
+        {modalsData.isAdvancedInfoOpen && !loadingObject && (
           <AdvancedInfoBox
             placeData={currentPlaceData}
             trailData={currentTrailData}

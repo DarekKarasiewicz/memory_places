@@ -6,6 +6,7 @@ import VarChangesIcon from 'icons/admin/VarChangesIcon';
 import VerificationIcon from 'icons/admin/VerificationIcon';
 import PostIcon from 'icons/PostIcon';
 import CommentIcon from 'icons/CommentIcon';
+import ContactIcon from 'icons/ContactIcon';
 import WebChangesIcon from 'icons/admin/WebChangesIcon';
 
 function AdminMenuItem(props) {
@@ -18,6 +19,7 @@ function AdminMenuItem(props) {
     verification: <VerificationIcon />,
     post: <PostIcon />,
     comment: <CommentIcon />,
+    contact: <ContactIcon />,
     webChanges: <WebChangesIcon />,
   };
 

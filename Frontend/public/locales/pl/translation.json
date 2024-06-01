@@ -69,7 +69,8 @@
         "cookie_cancel": "Odrzuć wszystkie",
         "not_verified_place": "Niezweryfikowane miejsce",
         "not_verified_trail": "Niezweryfikowana trasa",
-        "reset_password_email": "Na Twój adres e-mail została wysłana wiadomość dotycząca resetowania hasła."
+        "reset_password_email": "Na Twój adres e-mail została wysłana wiadomość dotycząca resetowania hasła.",
+        "pass_changed_success": "Twoje hasło zostało pomyślnie zmienione"
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -222,7 +223,8 @@
         "verification_info2": "Teraz możesz cieszyć się pełnym doświadczeniem miejsc pamięci",
         "go_to_mainpage": "Wróć do strony głównej",
         "reset_pass_info": "Klikając poniższy przycisk, rozpoczniesz proces resetowania hasła. Na swoją skrzynkę pocztową otrzymasz wiadomość z dalszymi instrukcjami.",
-        "reset_pass_btn": "Zresetuj swoje hasło"
+        "reset_pass_btn": "Zresetuj swoje hasło",
+        "reset_pass_title": "Ustaw swoje nowe hasło"
     },
     "navbar": {
         "main_page": "Strona główna",
@@ -239,6 +241,7 @@
             "var_manage_title": "Zarządzanie zmiennymi obiektów",
             "post_manage_title": "Zarządzanie postami",
             "comment_manage_title": "Zarządzanie komentarzami",
+            "contact_title": "Kontakt z użytkownikami",
             "history_title": "Historia zmian na stronie",
             "verification_title": "Weryfikacja obiektów pamięci",
             "january": "Styczeń",
@@ -389,7 +392,10 @@
             "all_comment_info": "Wszystkie komentarze znajdujące się na forum dyskusyjnym",
             "all_comments": "Wszystkie komentarze",
             "previous_comments": "Komentarze z poprzedniego miesiąca",
-            "current_comments": "Komentarze z bieżącego miesiąca"
+            "current_comments": "Komentarze z bieżącego miesiąca",
+            "contact_info": "Zebrane zapytania od użytkowników w jednym miejscu!",
+            "send_by": "Nadesłane przez",
+            "all_contact": "Wszystkie pytania"
         },
         "changes_messages": {
             "blocked": "Zablokowany użytkownik o ID {{element_id}}",
