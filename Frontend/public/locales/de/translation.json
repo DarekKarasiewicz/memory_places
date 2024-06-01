@@ -69,7 +69,8 @@
         "cookie_cancel": "Alle ablehnen",
         "not_verified_place": "Nicht verifizierter Ort",
         "not_verified_trail": "Nicht verifizierte Strecke",
-        "reset_password_email": "Eine E-Mail bezüglich der Zurücksetzung Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet."
+        "reset_password_email": "Eine E-Mail bezüglich der Zurücksetzung Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet.",
+        "pass_changed_success": "Ihr Passwort wurde erfolgreich geändert"
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -222,7 +223,8 @@
         "verification_info2": "Jetzt können Sie das volle Erlebnis von Memorial Places genießen",
         "go_to_mainpage": "Zurück zur Hauptseite",
         "reset_pass_info": "Durch Klicken auf die Schaltfläche unten beginnen Sie den Prozess zum Zurücksetzen Ihres Passworts. Sie erhalten eine E-Mail mit weiteren Anweisungen.",
-        "reset_pass_btn": "Setze dein Passwort zurück"
+        "reset_pass_btn": "Setze dein Passwort zurück",
+        "reset_pass_title": "Legen Sie Ihr neues Passwort fest"
     },
     "navbar": {
         "main_page": "Startseite",
@@ -239,6 +241,7 @@
             "var_manage_title": "Verwaltung von Variablenobjekten",
             "verification_title": "Überprüfung von Speicherobjekten",
             "post_manage_title": "Beitragsverwaltung",
+            "contact_title": "Kontakt mit Benutzern",
             "comment_manage_title": "Kommentarverwaltung",
             "history_title": "App-Änderungsverlauf",
             "january": "Januar",
@@ -389,7 +392,10 @@
             "all_comment_info": "Alle Kommentare im Diskussionsforum",
             "all_comments": "Alle Kommentare",
             "previous_comments": "Kommentare vom Vormonat",
-            "current_comments": "Kommentare vom laufenden Monat"
+            "current_comments": "Kommentare vom laufenden Monat",
+            "contact_info": "Gesammelte Benutzeranfragen an einem Ort!",
+            "send_by": "Gesendet von",
+            "all_contact": "Alle Fragen"
         },
         "changes_messages": {
             "blocked": "Benutzer mit ID {{element_id}} gesperrt",

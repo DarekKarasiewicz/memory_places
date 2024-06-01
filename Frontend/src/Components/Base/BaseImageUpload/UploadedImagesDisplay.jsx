@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAddPlace, addPlaceActions } from 'Redux/addPlaceSlice';
+import { selectAddObjectImage, addObjectImageActions } from 'Redux/addObjectImageSlice';
 
 import CancelIcon from 'icons/CancelIcon';
 
 const UploadedImagesDisplay = () => {
   const dispatch = useDispatch();
-  const images = useSelector(selectAddPlace).images;
+  const images = useSelector(selectAddObjectImage).images;
   const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
     const readerPromises = images.map((image) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (event) => {
-          resolve({ url: event.target.result, name: image.name });
-        };
-        reader.readAsDataURL(image);
+        if (image instanceof Blob) {
+          reader.onload = (event) => {
+            resolve({ url: event.target.result, name: image.name });
+          };
+          reader.readAsDataURL(image);
+        } else if (typeof image === 'object' && image.img) {
+          resolve({ url: image.img, name: image.name, id: image.id });
+        } else {
+          resolve(null);
+        }
       });
     });
 
@@ -27,7 +33,7 @@ const UploadedImagesDisplay = () => {
 
   const deleteImage = (name) => {
     const updatedImages = images.filter((image) => image.name !== name);
-    dispatch(addPlaceActions.setImages(updatedImages));
+    dispatch(addObjectImageActions.setImages(updatedImages));
   };
 
   return (
@@ -37,7 +43,7 @@ const UploadedImagesDisplay = () => {
           <div key={index} className='flex-shrink-0 relative p-2'>
             <img src={preview.url} alt={preview.name} className='w-32 h-24' />
             <button
-              className='absolute w-6 h-6 top-0 right-0 bg-red-500 p-1 text-sm rounded-full border-black border'
+              className='absolute w-7 h-7 -top-1 -right-1 bg-red-500 p-1 text-sm rounded-full border-black border hover:scale-110'
               onClick={() => deleteImage(preview.name)}
             >
               <CancelIcon className='relative' />

@@ -7,6 +7,7 @@ import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceL
 import { modalsActions } from 'Redux/modalsSlice';
 import { selectUpdatePlace, updatePlaceActions } from 'Redux/updatePlaceSlice';
 import { addPlaceActions, selectAddPlace } from 'Redux/addPlaceSlice';
+import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
 import { formValidationActions, selectFormValidation } from 'Redux/formValidationSlice';
 import { addPlace, deletePlace } from 'Redux/allMapPlacesSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
@@ -40,6 +41,8 @@ function FormModal(props) {
   const topicLinkRef = useRef();
   const updatePlaceData = useSelector(selectUpdatePlace);
   const addPlaceData = useSelector(selectAddPlace);
+  const addObjectImageData = useSelector(selectAddObjectImage);
+  const [baseImages, setBaseImages] = useState([]);
   const [lat, setLat] = useState();
   const [lng, setLng] = useState();
   const [cookies] = useCookies(['user']);
@@ -164,12 +167,27 @@ function FormModal(props) {
       dispatch(formValidationActions.changeIsValidSortof(updatePlaceData.place.sortof !== '0'));
       dispatch(formValidationActions.changeIsValidType(updatePlaceData.place.type !== '0'));
       dispatch(formValidationActions.changeIsValidPeriod(updatePlaceData.place.period !== '0'));
+
+      getPlaceImages(updatePlaceData.place.id)
+        .then((imageData) => {
+          const modifiedImageData = imageData.map((image) => ({
+            ...image,
+            name: image.img.split('/').pop(),
+          }));
+
+          setBaseImages(modifiedImageData);
+          dispatch(addObjectImageActions.setImages(modifiedImageData));
+        })
+        .catch((error) => {
+          console.error('Error fetching place images:', error);
+        });
+
       dispatch(updatePlaceActions.dataIsLoaded());
 
       setInputLength(updatePlaceData.place.place_name.length);
       setDescLength(updatePlaceData.place.description.length);
     }
-  }, []);
+  }, [props.type, updatePlaceData.isDataLoaded]);
 
   const validateForm = () => {
     if (
@@ -231,11 +249,65 @@ function FormModal(props) {
     }
   }, []);
 
+  const handleModalClose = () => {
+    dispatch(addObjectImageActions.reset());
+    props.closeModal();
+  };
+
+  const sendPlaceImages = (placeId, image) => {
+    const formData = new FormData();
+    formData.append('place', placeId);
+    formData.append('img', image);
+
+    axios
+      .post(`http://localhost:8000/memo_places/place_image/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const deletePlaceImages = (imageId) => {
+    axios
+      .delete(`http://localhost:8000/memo_places/place_image/${imageId}/`)
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const getPlaceImages = async (placeId) => {
+    const response = await axios.get(
+      `http://127.0.0.1:8000/memo_places/place_image/place=${placeId}`,
+    );
+
+    return response.data;
+  };
+
+  const findImageChanges = (oldItems, newItems) => {
+    return oldItems.filter((item) => !newItems.includes(item));
+  };
+
+  const findImagesWithoutId = (newArray) => {
+    return newArray.filter((newItem) => !newItem.id);
+  };
+
   const handleConfirm = () => {
     const isFormValid = validateForm();
 
     if (isFormValid) {
       if (props.type === 'update') {
+        const itemsToDelete = findImageChanges(baseImages, addObjectImageData.images);
+        const itemsToAdd = findImagesWithoutId(addObjectImageData.images);
+
+        itemsToDelete.forEach((image) => {
+          deletePlaceImages(image.id);
+        });
+
+        itemsToAdd.forEach((image) => {
+          sendPlaceImages(updatePlaceData.place.id, image);
+        });
+
         axios
           .put(`http://localhost:8000/memo_places/places/${updatePlaceData.place.id}/`, {
             place_name: addPlaceData.place_name,
@@ -255,6 +327,7 @@ function FormModal(props) {
             dispatch(deletePlace(response.data.id));
             dispatch(addPlace(response.data));
             dispatch(addPlaceActions.reset());
+            dispatch(addObjectImageActions.reset());
             dispatch(updatePlaceActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsUpdateModalOpen());
@@ -284,7 +357,13 @@ function FormModal(props) {
             dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges('admin.changes_messages.place_add', user, addPlaceData.place_name);
             dispatch(addPlace(response.data));
+
+            addObjectImageData.images.forEach((image) => {
+              sendPlaceImages(response.data.id, image);
+            });
+
             dispatch(addPlaceActions.reset());
+            dispatch(addObjectImageActions.reset());
             dispatch(addPlacelocationActions.clearLocation());
             dispatch(modalsActions.changeIsFormModalOpen());
             dispatch(formValidationActions.reset());
@@ -547,7 +626,7 @@ function FormModal(props) {
           </div>
         </div>
         <div className='p-2 flex gap-4 justify-center'>
-          <BaseButton name={t('common.cancel')} btnBg='red' onClick={props.closeModal} />
+          <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => handleModalClose()} />
           <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleConfirm} />
         </div>
       </BaseModal>

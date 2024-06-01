@@ -1,5 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
+import { notificationModalActions } from 'Redux/notificationModalSlice';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import BaseModal from 'Components/Base/BaseModal';
 import BaseButton from 'Components/Base/BaseButton';
@@ -7,39 +10,46 @@ import ImageSlider from 'Components/ImageSlider/ImageSlider';
 
 const AdvancedInfoBox = (props) => {
   const [receivedData, setReceivedData] = useState([]);
+  const [currentImages, setCurrentImages] = useState([]);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const getAllItemsImages = async (kind, id) => {
+    const currentKind = kind === 'place' ? 'place_image' : 'path_image';
+    const currentKind2 = kind === 'place' ? 'place' : 'path';
+
+    try {
+      const responseItems = await axios.get(
+        `http://127.0.0.1:8000/memo_places/${currentKind}/${currentKind2}=${id}`,
+      );
+      if (responseItems.data && responseItems.data.length > 0) {
+        setCurrentImages(responseItems.data);
+      }
+    } catch (error) {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
+  };
 
   useEffect(() => {
     if (Object.keys(props.placeData).length !== 0) {
       setReceivedData(props.placeData);
+      getAllItemsImages('place', props.placeData.id);
     }
   }, [props.placeData]);
 
   useEffect(() => {
     if (Object.keys(props.trailData).length !== 0) {
       setReceivedData(props.trailData);
+      getAllItemsImages('trail', props.trailData.id);
     }
   }, [props.trailData]);
 
   const cleanData = () => {
     setReceivedData([]);
+    setCurrentImages([]);
   };
-
-  // temp solution when images not provide yet
-  const sliderData = [
-    {
-      image: 'https://placehold.co/300x200/000000/FFFFFF/png',
-      alt: 'Example alt 1',
-    },
-    {
-      image: 'https://placehold.co/400x400/000000/FF0000/png',
-      alt: 'Example alt 2',
-    },
-    {
-      image: 'https://placehold.co/500x400/000000/0000FF/png',
-      alt: 'Example alt 3',
-    },
-  ];
 
   return (
     <>
@@ -105,7 +115,7 @@ const AdvancedInfoBox = (props) => {
             <div className='flex flex-col w-3/5 gap-4'>
               <section className='flex justify-center items-center'>
                 <section className='flex flex-col mx-0 justify-center w-[32rem] h-[22rem]'>
-                  <ImageSlider slides={sliderData} />
+                  <ImageSlider slides={currentImages} />
                 </section>
               </section>
               <section className='text-center font-bold'>{receivedData.place_name}</section>
@@ -158,7 +168,7 @@ const AdvancedInfoBox = (props) => {
             <div className='flex flex-col w-3/5 gap-4'>
               <section className='flex justify-center items-center'>
                 <section className='flex flex-col mx-0 justify-center w-[32rem] h-[22rem]'>
-                  <ImageSlider slides={sliderData} />
+                  <ImageSlider slides={currentImages} />
                 </section>
               </section>
               <section className='text-center font-bold'>{receivedData.place_name}</section>

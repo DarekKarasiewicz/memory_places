@@ -20,6 +20,7 @@ import updateTrailReducer from './updateTrailSlice';
 import adminDataReducer from './adminDataSlice';
 import forumDataReducer from './forumDataSlice';
 import approvalModalReducer from './approvalModalSlice';
+import addObjectImageReducer from './addObjectImageSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -48,6 +49,7 @@ export const store = configureStore({
     adminData: adminDataReducer,
     forumData: forumDataReducer,
     approvalModal: approvalModalReducer,
+    addObjectImage: addObjectImageReducer,
   },
   middleware: customizedMiddleware,
 });

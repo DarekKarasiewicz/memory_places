@@ -59,6 +59,12 @@ function AdminMenu() {
       section: 'CommentManagementSection',
     },
     {
+      icon: 'contact',
+      name: t('admin.common.contact_title'),
+      section: 'ContactSection',
+      isAdmin: true,
+    },
+    {
       icon: 'webChanges',
       name: t('admin.common.history_title'),
       section: 'ChangesHistorySection',
@@ -104,7 +110,7 @@ function AdminMenu() {
             className='h-full w-auto'
           ></img>
         </section>
-        <section className='flex flex-col gap-6'>
+        <section className='flex flex-col gap-4'>
           {filteredMenuItems.map((item, index) => (
             <AdminMenuItem
               key={index}

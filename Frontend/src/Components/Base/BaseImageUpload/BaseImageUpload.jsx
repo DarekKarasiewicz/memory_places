@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAddPlace, addPlaceActions } from 'Redux/addPlaceSlice';
+import { selectAddObjectImage, addObjectImageActions } from 'Redux/addObjectImageSlice';
 import { motion } from 'framer-motion';
 
 import UploadIcon from 'icons/UploadIcon';
@@ -9,7 +9,7 @@ import UploadedImagesDisplay from './UploadedImagesDisplay';
 
 const BaseImageUpload = ({ fileSize }) => {
   const dispatch = useDispatch();
-  const images = useSelector(selectAddPlace).images;
+  const images = useSelector(selectAddObjectImage).images;
   const [errorMsg, setErrorMsg] = useState(null);
   const [showError, setShowError] = useState(null);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -22,6 +22,10 @@ const BaseImageUpload = ({ fileSize }) => {
   const handleClick = () => {
     fileInputRef.current.click();
   };
+
+  useEffect(() => {
+    console.log('Component re-rendered. Current images:', images);
+  }, [images]);
 
   const validateImagesQuantity = (uploadedImagesLength) => {
     const allFilesLenght = uploadedImagesLength + images.length;
@@ -92,13 +96,14 @@ const BaseImageUpload = ({ fileSize }) => {
 
     uploadedImages.forEach((uploadedImage) => {
       if (validateImage(uploadedImage, uploadedImages.length)) {
-        dispatch(addPlaceActions.addImage(uploadedImage));
+        dispatch(addObjectImageActions.addImage(uploadedImage));
         setShowError(false);
       }
       setShowError(true);
       return;
     });
   };
+
   return (
     <div
       className={`border-dashed border-2 my-2 border-textColor w-full p-4 flex flex-col items-center justify-center cursor-pointer ${

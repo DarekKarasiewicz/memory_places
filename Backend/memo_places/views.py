@@ -250,7 +250,7 @@ class Path_image_view(viewsets.ModelViewSet):
         path_object = get_object_or_404(Path, id=request.data["path"])
         pathimage_object = self.model(
             path = path_object,
-            img = request.data["img"] 
+            img = request.data["img"]
         )
         pathimage_object.save()
         serializer = self.serializer_class(pathimage_object)
@@ -591,7 +591,7 @@ class Reset_password(viewsets.ModelViewSet):
 
         html_message = render_to_string(
             'reset_password.html',
-            {"link": f"http://localhost:3000/userPasswordReset/{serializer['id'].value}"}
+            {"link": f"http://localhost:3000/userPasswordReset/{user.id}"}
         )
 
         send_mail(
@@ -618,10 +618,8 @@ class Reset_password(viewsets.ModelViewSet):
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
 
-        print(user.password)
         user.set_password(request.data["password"])
         user.save()
-        print(user.password)
         return Response({"detail": "Succes, new password is set"})
 
 

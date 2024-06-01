@@ -1,19 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
-import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 import BaseButton from 'Components/Base/BaseButton';
-import Loader from 'Components/Loader/Loader';
 import CheckIcon from 'icons/CheckIcon';
 import BaseInput from 'Components/Base/BaseInput';
 import AlertIcon from 'icons/AlertIcon';
+import App from 'App';
 
 const PasswordResetPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +19,7 @@ const PasswordResetPage = () => {
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handlePasswordChange = () => {
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -31,43 +30,34 @@ const PasswordResetPage = () => {
     setIsValidConfirmPassword(confirmPasswordRef.current.value === passwordRef.current.value);
   };
 
-  // const handlePasswordReset = async () => {
-  //   try {
-  //     await axios.put(`http://localhost:8000/memo_places/reset_password/pk=${user.user_id}`);
-  //     dispatch(notificationModalActions.changeType('alert'));
-  //     dispatch(notificationModalActions.changeTitle(t('common.verify_account')));
-  //     dispatch(notificationModalActions.changeIsNotificationModalOpen());
-  //   } catch (error) {
-  //     dispatch(notificationModalActions.changeType('error'));
-  //     dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
-  //     dispatch(notificationModalActions.changeIsNotificationModalOpen());
-  //   }
-  // };
-
-  useEffect(() => {
-    // decode id here
-
-    axios
-      .put(`http://localhost:8000/memo_places/user_verifi/${id}/`)
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        dispatch(notificationModalActions.changeType('alert'));
+  const handlePasswordReset = async () => {
+    if (isValidPassword && isValidConfirmPassword) {
+      try {
+        await axios.put(`http://localhost:8000/memo_places/reset_password/pk=${id}/`, {
+          password: passwordRef.current.value,
+        });
+        setIsSuccess(true);
+      } catch (error) {
+        setIsSuccess(false);
+        dispatch(notificationModalActions.changeType('error'));
         dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
         dispatch(notificationModalActions.changeIsNotificationModalOpen());
-      });
-  }, []);
+      }
+    } else {
+      dispatch(notificationModalActions.changeType('alert'));
+      dispatch(notificationModalActions.changeTitle(t('common.check_inputs')));
+      dispatch(notificationModalActions.changeIsNotificationModalOpen());
+    }
+  };
 
   return (
-    <div className='flex justify-center items-center w-screen h-screen'>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <div className='bg-mainBgColor text-textColor flex justify-center items-center w-screen h-screen font-sans'>
-            <div className='flex flex-col items-center gap-6 -mt-20'>
-              <div className='flex flex-col items-center py-4 gap-4 px-4'>
+    <App>
+      <div className='flex justify-center items-center w-screen h-screen'>
+        <div className='bg-mainBgColor text-textColor flex justify-center items-center w-screen h-screen font-sans'>
+          <div className={`flex flex-col items-center gap-6 ${!isSuccess ? 'w-1/4' : ''}`}>
+            {!isSuccess ? (
+              <div className='flex flex-col items-center gap-4 p-4'>
+                <p className='text-4xl mb-3 text-center'>{t('user.reset_pass_title')}</p>
                 <div className='w-full flex flex-col gap-2'>
                   <BaseInput
                     type='password'
@@ -116,7 +106,7 @@ const PasswordResetPage = () => {
                     name={t('common.confirm')}
                     className='mt-4'
                     btnBg='blue'
-                    // onClick={() => handlePasswordReset()}
+                    onClick={handlePasswordReset}
                   />
                 ) : (
                   <BaseButton
@@ -126,17 +116,23 @@ const PasswordResetPage = () => {
                     disabled={true}
                   />
                 )}
+                <Link to='/' className='flex justify-center items-center'>
+                  <BaseButton name={t('user.go_to_mainpage')} className={'w-56'} btnBg='blue' />
+                </Link>
               </div>
-              <p className='text-6xl mb-3'>{t('user.verification_info')}</p>
-              <p className='text-2xl mb-2'>{t('user.verification_info2')}</p>
-              <Link to='/' className='flex justify-center items-center'>
-                <BaseButton name={t('user.go_to_mainpage')} className={'w-56'} btnBg='blue' />
-              </Link>
-            </div>
+            ) : (
+              <div className='flex flex-col items-center gap-6'>
+                <CheckIcon className='w-40' />
+                <p className='text-6xl mb-3'>{t('common.pass_changed_success')}</p>
+                <Link to='/' className='flex justify-center items-center'>
+                  <BaseButton name={t('user.go_to_mainpage')} className={'w-56'} btnBg='blue' />
+                </Link>
+              </div>
+            )}
           </div>
-        </>
-      )}
-    </div>
+        </div>
+      </div>
+    </App>
   );
 };
 

@@ -69,7 +69,8 @@
         "cookie_cancel": "Reject all",
         "not_verified_place": "Unverified place",
         "not_verified_trail": "Unverified trail",
-        "reset_password_email": "An email regarding password reset has been sent to your email address."
+        "reset_password_email": "An email regarding password reset has been sent to your email address.",
+        "pass_changed_success": "Your password has been successfully changed"
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -222,7 +223,8 @@
         "verification_info2": "Now you can enjoy the full experience of Memorial Places",
         "go_to_mainpage": "Go back to main page",
         "reset_pass_info": "By clicking the button below, you will start the process of resetting your password. You will receive an email with further instructions.",
-        "reset_pass_btn": "Reset your password"
+        "reset_pass_btn": "Reset your password",
+        "reset_pass_title": "Set your new password"
     },
     "navbar": {
         "main_page": "Main page",
@@ -239,6 +241,7 @@
             "var_manage_title": "Variable object management",
             "post_manage_title": "Post management",
             "comment_manage_title": "Comment management",
+            "contact_title": "Contact with users",
             "verification_title": "Memory objects verification",
             "history_title": "App changes history",
             "january": "January",
@@ -389,7 +392,10 @@
             "all_comment_info": "All comments on the discussion forum",
             "all_comments": "All comments",
             "previous_comments": "Comments from the previous month",
-            "current_comments": "Comments from the current month"
+            "current_comments": "Comments from the current month",
+            "contact_info": "Collected user inquiries in one place!",
+            "send_by": "Sent by",
+            "all_contact": "All questions"
         },
         "changes_messages": {
             "blocked": "Blocked user with ID {{element_id}}",
