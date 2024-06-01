@@ -213,6 +213,17 @@ class Place_image_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(placeimage_object)
         return Response(serializer.data)
 
+    def destroy(self, request, *args, **kwargs):
+        place_image = get_object_or_404(self.model, id=kwargs["pk"])
+        path_to_img = os.path.join("./test_image/",f"{place_image.img}") 
+        if os.path.exists(path_to_img):
+            place_image.delete()
+            os.remove(path_to_img)
+        else:
+            return Response({"detail": "Can't find image"})
+
+        return Response({"detail": "Succes"})
+
 class Path_image_view(viewsets.ModelViewSet):
     model = PathImage
     serializer_class= PathImage_serializer 
@@ -244,6 +255,17 @@ class Path_image_view(viewsets.ModelViewSet):
         pathimage_object.save()
         serializer = self.serializer_class(pathimage_object)
         return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        path_image = get_object_or_404(self.model, id=kwargs["pk"])
+        path_to_img = os.path.join("./test_image/",f"{path_image.img}") 
+        if os.path.exists(path_to_img):
+            path_image.delete()
+            os.remove(path_to_img)
+        else:
+            return Response({"detail": "Can't find image"})
+
+        return Response({"detail": "Succes"})
 
 class Path_view(viewsets.ModelViewSet):
     model = Path
