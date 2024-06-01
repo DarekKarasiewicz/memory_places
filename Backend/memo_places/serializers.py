@@ -80,7 +80,7 @@ class Short_Path_serailizer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
 
     class Meta:
-        model = Path
+        model = Path 
         fields = (
             "id",
             "path_name",
