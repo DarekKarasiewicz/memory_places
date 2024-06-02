@@ -2,26 +2,32 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { advancedObjectActions, selectAdvancedObject } from 'Redux/advancedObjectSlice';
 
 import BaseModal from 'Components/Base/BaseModal';
 import BaseButton from 'Components/Base/BaseButton';
 import ImageSlider from 'Components/ImageSlider/ImageSlider';
 
-const AdvancedInfoBox = (props) => {
-  const [receivedData, setReceivedData] = useState([]);
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
+const AdvancedInfoBox = () => {
+  const [objectData, setObjectData] = useState([]);
   const [currentImages, setCurrentImages] = useState([]);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const advancedObject = useSelector(selectAdvancedObject);
+  const { fontSize } = useFontSize();
 
-  const getAllItemsImages = async (kind, id) => {
-    const currentKind = kind === 'place' ? 'place_image' : 'path_image';
-    const currentKind2 = kind === 'place' ? 'place' : 'path';
+  const getAllItemsImages = async (id) => {
+    const currentKind = advancedObject.kind === 'place' ? 'place_image' : 'path_image';
+    const currentKind2 = advancedObject.kind === 'place' ? 'place' : 'path';
 
     try {
       const responseItems = await axios.get(
         `http://127.0.0.1:8000/memo_places/${currentKind}/${currentKind2}=${id}`,
       );
+
       if (responseItems.data && responseItems.data.length > 0) {
         setCurrentImages(responseItems.data);
       }
@@ -33,63 +39,63 @@ const AdvancedInfoBox = (props) => {
   };
 
   useEffect(() => {
-    if (Object.keys(props.placeData).length !== 0) {
-      setReceivedData(props.placeData);
-      getAllItemsImages('place', props.placeData.id);
+    if (advancedObject.place.length !== 0) {
+      setObjectData(advancedObject.place);
+      getAllItemsImages(advancedObject.place.id);
     }
-  }, [props.placeData]);
+  }, [advancedObject.place]);
 
   useEffect(() => {
-    if (Object.keys(props.trailData).length !== 0) {
-      setReceivedData(props.trailData);
-      getAllItemsImages('trail', props.trailData.id);
+    if (advancedObject.trail.length !== 0) {
+      setObjectData(advancedObject.trail);
+      getAllItemsImages(advancedObject.trail.id);
     }
-  }, [props.trailData]);
+  }, [advancedObject.trail]);
 
   const cleanData = () => {
-    setReceivedData([]);
+    setObjectData([]);
     setCurrentImages([]);
   };
 
   return (
     <>
-      <BaseModal title={t('common.detailed_info')} closeModal={props.closeModal}>
-        {props.kind === 'place' ? (
-          <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4 text-xl'>
+      <BaseModal title={t('common.detailed_info')}>
+        {advancedObject.kind === 'place' ? (
+          <div className={`px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4 text-${fontSize}-xl`}>
             <div className='p-1 w-2/5 flex flex-col gap-2'>
               <section className='flex flex-col'>
                 <span className='italic font-medium text-wrap'>{t('common.latitude')}</span>
-                <span className='text-xl'>{receivedData.lng}</span>
+                <span>{objectData.lng}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium text-balance'>{t('common.longitude')}</span>{' '}
-                <span>{receivedData.lat}</span>
+                <span className='italic font-medium text-balance'>{t('common.longitude')}</span>
+                <span>{objectData.lat}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.founded')}</span>{' '}
-                <span>{receivedData.creation_date}</span>
+                <span className='italic font-medium'>{t('common.founded')}</span>
+                <span>{objectData.creation_date}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.type_of')}</span>{' '}
-                <span>{t(`modal.${receivedData.sortof_value}`)}</span>
+                <span className='italic font-medium'>{t('common.type_of')}</span>
+                <span>{t(`modal.${objectData.sortof_value}`)}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.type')}</span>{' '}
-                <span>{t(`modal.${receivedData.type_value}`)}</span>
+                <span className='italic font-medium'>{t('common.type')}</span>
+                <span>{t(`modal.${objectData.type_value}`)}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.period')}</span>{' '}
-                <span>{t(`modal.${receivedData.period_value}`)}</span>
+                <span className='italic font-medium'>{t('common.period')}</span>
+                <span>{t(`modal.${objectData.period_value}`)}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
-                <span>{receivedData.username}</span>
+                <span className='italic font-medium'>{t('common.founded_by')}</span>
+                <span>{objectData.username}</span>
               </section>
-              {receivedData.wiki_link && (
+              {objectData.wiki_link && (
                 <section className='flex flex-col'>
-                  <span className='italic font-medium'>{t('common.wiki-link')}</span>{' '}
+                  <span className='italic font-medium'>{t('common.wiki-link')}</span>
                   <a
-                    href={receivedData.wiki_link}
+                    href={objectData.wiki_link}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
@@ -98,11 +104,11 @@ const AdvancedInfoBox = (props) => {
                   </a>
                 </section>
               )}
-              {receivedData.topic_link && (
+              {objectData.topic_link && (
                 <section className='flex flex-col'>
-                  <span className='italic font-medium'>{t('common.topic-link')}</span>{' '}
+                  <span className='italic font-medium'>{t('common.topic-link')}</span>
                   <a
-                    href={receivedData.topic_link}
+                    href={objectData.topic_link}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
@@ -118,10 +124,10 @@ const AdvancedInfoBox = (props) => {
                   <ImageSlider slides={currentImages} />
                 </section>
               </section>
-              <section className='text-center font-bold'>{receivedData.place_name}</section>
+              <section className='text-center font-bold'>{objectData.place_name}</section>
               <section className='flex flex-col'>
                 <span className='italic font-medium'>{t('common.description')}</span>
-                <span className='max-h-48 overflow-auto'>{receivedData.description}</span>
+                <span className='max-h-48 overflow-auto'>{objectData.description}</span>
               </section>
             </div>
           </div>
@@ -129,25 +135,25 @@ const AdvancedInfoBox = (props) => {
           <div className='px-2 py-4 max-h-[80vh] overflow-y-auto flex gap-4 text-xl'>
             <div className='p-1 w-2/5 flex flex-col gap-2'>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.founded')}</span>{' '}
-                <span>{receivedData.creation_date}</span>
+                <span className='italic font-medium'>{t('common.founded')}</span>
+                <span>{objectData.creation_date}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.type')}</span>{' '}
-                <span>{t(`modal.${receivedData.type_value}`)}</span>
+                <span className='italic font-medium'>{t('common.type')}</span>
+                <span>{t(`modal.${objectData.type_value}`)}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.period')}</span>{' '}
-                <span>{t(`modal.${receivedData.period_value}`)}</span>
+                <span className='italic font-medium'>{t('common.period')}</span>
+                <span>{t(`modal.${objectData.period_value}`)}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.founded_by')}</span>{' '}
-                <span>{receivedData.username}</span>
+                <span className='italic font-medium'>{t('common.founded_by')}</span>
+                <span>{objectData.username}</span>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.wiki-link')}</span>{' '}
+                <span className='italic font-medium'>{t('common.wiki-link')}</span>
                 <a
-                  href={receivedData.wiki_link}
+                  href={objectData.wiki_link}
                   target='blank'
                   className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
                 >
@@ -155,9 +161,9 @@ const AdvancedInfoBox = (props) => {
                 </a>
               </section>
               <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.topic-link')}</span>{' '}
+                <span className='italic font-medium'>{t('common.topic-link')}</span>
                 <a
-                  href={receivedData.topic_link}
+                  href={objectData.topic_link}
                   target='blank'
                   className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
                 >
@@ -171,10 +177,10 @@ const AdvancedInfoBox = (props) => {
                   <ImageSlider slides={currentImages} />
                 </section>
               </section>
-              <section className='text-center font-bold'>{receivedData.place_name}</section>
+              <section className='text-center font-bold'>{objectData.place_name}</section>
               <section className='flex flex-col'>
                 <span className='italic font-medium'>{t('common.description')}</span>
-                <span className='max-h-48 overflow-auto'>{receivedData.description}</span>
+                <span className='max-h-48 overflow-auto'>{objectData.description}</span>
               </section>
             </div>
           </div>
@@ -185,7 +191,7 @@ const AdvancedInfoBox = (props) => {
             btnBg='red'
             onClick={() => {
               cleanData();
-              props.closeInfo();
+              dispatch(advancedObjectActions.changeIsAdvancedObjectOpen());
             }}
           />
         </div>

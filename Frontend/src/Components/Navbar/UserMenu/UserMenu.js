@@ -13,6 +13,8 @@ import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ArrowDownIcon from 'icons/ArrowDownIcon';
 import UserIcon from 'icons/UserIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function UserMenu({ altVersion, isAdminPage }) {
   const [isLogged, setIsLogged] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -26,6 +28,7 @@ function UserMenu({ altVersion, isAdminPage }) {
   const { t } = useTranslation();
   const isUserPlacesOpen = useSelector(selectUserPlaces).isOpen;
   const navigate = useNavigate();
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     if (!isLogged) {
@@ -152,8 +155,8 @@ function UserMenu({ altVersion, isAdminPage }) {
             initial='hidden'
             animate='visible'
           >
-            <li className='capitalize text-xl'>{user.username}</li>
-            <li className='uppercase text-sm italic'>
+            <li className={`capitalize text-${fontSize}-xl`}>{user.username}</li>
+            <li className={`uppercase text-${fontSize}-sm italic`}>
               {user.admin ? t('user.admin') : user.master ? t('user.master_user') : t('user.user')}
             </li>
             <hr className='border-t-1 mt-2 border-textColor' />
@@ -178,7 +181,7 @@ function UserMenu({ altVersion, isAdminPage }) {
             initial='hidden'
             animate='visible'
           >
-            <span className='text-center'>{t('user.login_info')}</span>
+            <span className={`text-center text-${fontSize}-base`}>{t('user.login_info')}</span>
             <BaseButton name={t('user.login')} btnBg='blue' onClick={handleLoginModalOpen} />
             <div className='absolute right-[8px] top-0 transform -translate-x-1/2 -translate-y-1/2 rotate-45 w-4 h-4 bg-mainBgColor'></div>
           </motion.div>

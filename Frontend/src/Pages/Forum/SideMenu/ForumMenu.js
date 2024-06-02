@@ -9,12 +9,15 @@ import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 import TrendIcon from 'icons/TrendIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ForumMenu() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [types, setTypes] = useState([]);
   const [periods, setPeriods] = useState([]);
   const navigate = useNavigate();
+  const { fontSize } = useFontSize();
 
   const fetchTypeItems = async () => {
     try {
@@ -70,7 +73,7 @@ function ForumMenu() {
         <section className='flex flex-col items-center gap-6 w-full text-textColor'>
           <div className='flex flex-col items-start gap-3 w-full'>
             <div className='flex flex-col items-center gap-3 w-full'>
-              <div className='text-textColor text-xl'>{t('admin.content.type')}</div>
+              <div className={`text-textColor text-${fontSize}-xl`}>{t('admin.content.type')}</div>
               <hr className='border-t-1 w-full border-textColor' />
               <div className='flex flex-col justify-start gap-2'>
                 {types.length > 0 && (
@@ -81,8 +84,6 @@ function ForumMenu() {
                         className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
                         key={index}
                         onClick={() => {
-                          //TO DO
-                          //temp solution bcs backend can handle only one parameter at once
                           dispatch(forumDataActions.changePeriodId(null));
 
                           dispatch(forumDataActions.changeisDataContentMounted(true));
@@ -93,7 +94,7 @@ function ForumMenu() {
                         }}
                       >
                         <TrendIcon className='h-6 w-6' />
-                        <span>{item.name}</span>
+                        <span className={`text-${fontSize}-base`}>{item.name}</span>
                       </motion.div>
                     ))}
                   </>
@@ -102,7 +103,7 @@ function ForumMenu() {
             </div>
           </div>
           <div className='flex flex-col items-center gap-3 w-full'>
-            <div className='text-textColor text-xl'>{t('admin.content.period')}</div>
+            <div className={`text-textColor text-${fontSize}-xl`}>{t('admin.content.period')}</div>
             <hr className='border-t-1 w-full border-textColor' />
             <div className='flex flex-col justify-start gap-2'>
               {periods.length > 0 && (
@@ -113,10 +114,7 @@ function ForumMenu() {
                       className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
                       key={index}
                       onClick={() => {
-                        //TO DO
-                        //temp solution bcs backend can handle only one parameter at once
                         dispatch(forumDataActions.changeTypeId(null));
-
                         dispatch(forumDataActions.changeisDataContentMounted(true));
                         dispatch(forumDataActions.changePeriodId(item.id));
                         dispatch(forumDataActions.changeHeaderName(item.name));
@@ -125,7 +123,7 @@ function ForumMenu() {
                       }}
                     >
                       <TrendIcon className='h-6 w-6' />
-                      <span>{item.name}</span>
+                      <span className={`text-${fontSize}-base`}>{item.name}</span>
                     </motion.div>
                   ))}
                 </>

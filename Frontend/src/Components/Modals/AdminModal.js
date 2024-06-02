@@ -22,6 +22,7 @@ import BlockIcon from 'icons/BlockIcon';
 import UnlockIcon from 'icons/UnlockIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function AdminModal({ closeModal }) {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function AdminModal({ closeModal }) {
   const [iconComponent, setIconComponent] = useState(null);
   const roleRef = useRef(null);
   const [cookies] = useCookies(['user']);
+  const { fontSize } = useFontSize();
 
   const role_options = [
     { label: t('admin.content.admin'), value: 'admin' },
@@ -97,10 +99,10 @@ function AdminModal({ closeModal }) {
         >
           <div className='flex flex-col gap-2 justify-center items-center text-textColor'>
             {iconComponent}
-            <span className='text-2xl font-bold'>{title}</span>
+            <span className={`text-${fontSize}-2xl font-bold`}>{title}</span>
           </div>
           <div className='flex justify-center items-center my-4'>
-            <span className='text-2xl text-center text-textColor'>{desc}</span>
+            <span className={`text-${fontSize}-2xl text-center text-textColor`}>{desc}</span>
           </div>
           {modalData.current_action === 'user_role' && (
             <div className='flex justify-center items-center mb-8'>

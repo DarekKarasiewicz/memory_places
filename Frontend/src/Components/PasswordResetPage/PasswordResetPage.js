@@ -11,6 +11,8 @@ import BaseInput from 'Components/Base/BaseInput';
 import AlertIcon from 'icons/AlertIcon';
 import App from 'App';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const PasswordResetPage = () => {
   const { t } = useTranslation();
   const { id } = useParams();
@@ -20,6 +22,7 @@ const PasswordResetPage = () => {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { fontSize } = useFontSize();
 
   const handlePasswordChange = () => {
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -57,7 +60,9 @@ const PasswordResetPage = () => {
           <div className={`flex flex-col items-center gap-6 ${!isSuccess ? 'w-1/4' : ''}`}>
             {!isSuccess ? (
               <div className='flex flex-col items-center gap-4 p-4'>
-                <p className='text-4xl mb-3 text-center'>{t('user.reset_pass_title')}</p>
+                <p className={`text-${fontSize}-4xl mb-3 text-center`}>
+                  {t('user.reset_pass_title')}
+                </p>
                 <div className='w-full flex flex-col gap-2'>
                   <BaseInput
                     type='password'
@@ -73,8 +78,12 @@ const PasswordResetPage = () => {
                     <div className='text-red-500 flex items-start gap-2'>
                       <AlertIcon className='h-6 w-6 my-1' color='#ef4444' />
                       <div>
-                        <span className='text-lg'>{t('log_reg_form.pass_title')}</span>
-                        <ul className='text-red-500 text-base leading-5 list-disc ml-5'>
+                        <span className={`text-${fontSize}-lg`}>
+                          {t('log_reg_form.pass_title')}
+                        </span>
+                        <ul
+                          className={`text-red-500 text-${fontSize}-base leading-5 list-disc ml-5`}
+                        >
                           <li>{t('log_reg_form.pass_info1')}</li>
                           <li>{t('log_reg_form.pass_info2')}</li>
                           <li>{t('log_reg_form.pass_info3')}</li>
@@ -97,7 +106,7 @@ const PasswordResetPage = () => {
                   {isValidConfirmPassword === false && (
                     <span className='text-red-500 flex items-center gap-2'>
                       <AlertIcon className='h-6 w-6' color='#ef4444' />
-                      <p className='text-lg'>{t('log_reg_form.pass_similar')}</p>
+                      <p className={`text-${fontSize}-lg`}>{t('log_reg_form.pass_similar')}</p>
                     </span>
                   )}
                 </div>

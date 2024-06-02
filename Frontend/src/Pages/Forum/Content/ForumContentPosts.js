@@ -13,6 +13,8 @@ import BaseButton from 'Components/Base/BaseButton';
 import SearchBar from './SearchBar/SearchBar';
 import BaseSelect from 'Components/Base/BaseSelect';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ForumContentPosts({ placeId }) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -26,6 +28,7 @@ function ForumContentPosts({ placeId }) {
   const [searchedText, setSearchedText] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [blockPostFetching, setBlockPostFetching] = useState(false);
+  const { fontSize } = useFontSize();
 
   const fetchPostItems = async () => {
     try {
@@ -154,9 +157,9 @@ function ForumContentPosts({ placeId }) {
         <div>
           <SearchBar onSearchClick={handleSearchPost} />
         </div>
-        <div className='text-3xl font-bold'>{forumData.header_name}</div>
+        <div className={`text-${fontSize}-3xl font-bold`}>{forumData.header_name}</div>
         <div className='flex justify-between items-center'>
-          <div className='text-2xl font-semibold'>{t('forum.posts')}</div>
+          <div className={`text-${fontSize}-2xl font-semibold`}>{t('forum.posts')}</div>
           <div className='flex justify-end items-center gap-4'>
             <span className='w-fit'>{t('forum.sort_by')}</span>
             <BaseSelect

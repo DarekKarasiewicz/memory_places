@@ -8,6 +8,8 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminTileStat from '../Charts/AdminTileStat';
 import PostsTable from '../Tables/PostsTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function PostManagementSection() {
   const { t } = useTranslation();
   const [posts, setPosts] = useState([]);
@@ -15,6 +17,7 @@ function PostManagementSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isPostsChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchPostItems = async () => {
     try {
@@ -109,8 +112,8 @@ function PostManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.post_manage_title')}</span>
-        <span className='text-md'>{t('admin.content.all_post_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.post_manage_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.all_post_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>

@@ -8,7 +8,7 @@ import { addPlacelocationActions, selectAddPlaceLocation } from 'Redux/addPlaceL
 import { addTrailActions } from 'Redux/addTrailSlice';
 import { addPlaceActions } from 'Redux/addPlaceSlice';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
-import { adminActions, selectAdminAction } from 'Redux/adminActionSlice';
+import { adminActions } from 'Redux/adminActionSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
 import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
@@ -27,6 +27,7 @@ import AlertIcon from 'icons/AlertIcon';
 import ImageSlider from 'Components/ImageSlider/ImageSlider';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function AdminPlaceActionSection({ action, placeId }) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -65,6 +66,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [placePosition, setPlacePosition] = useState(null);
   const addObjectImageData = useSelector(selectAddObjectImage);
   const [baseImages, setBaseImages] = useState([]);
+  const { fontSize } = useFontSize();
 
   const fetchSortOfItems = async () => {
     try {
@@ -329,23 +331,15 @@ function AdminPlaceActionSection({ action, placeId }) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((response) => {
-        console.log('image send');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(() => {})
+      .catch(() => {});
   };
 
   const deletePlaceImages = (imageId) => {
     axios
       .delete(`http://localhost:8000/memo_places/place_image/pk=${imageId}/`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(() => {})
+      .catch(() => {});
   };
 
   const getPlaceImages = async (placeId) => {
@@ -461,7 +455,9 @@ function AdminPlaceActionSection({ action, placeId }) {
   return (
     <>
       <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
-        <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
+        <div
+          className={`flex justify-start ml-6 items-center gap-4 text-${fontSize}-4xl font-bold`}
+        >
           <PinIcon />
           <span>{actionTitle}</span>
         </div>
@@ -484,7 +480,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     onBlur={() => validateName(nameRef.current.value)}
                     readOnly={isReadOnly}
                   />
-                  <div className='flex justify-between px-2'>
+                  <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                     {!isValidName ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -513,7 +509,9 @@ function AdminPlaceActionSection({ action, placeId }) {
                     {!isValidSortof ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.field_required')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -535,7 +533,9 @@ function AdminPlaceActionSection({ action, placeId }) {
                     {!isValidType ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.field_required')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -557,7 +557,9 @@ function AdminPlaceActionSection({ action, placeId }) {
                     {!isValidPeriod ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.field_required')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -567,7 +569,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.lat_lng_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.lat_lng_info')}</p>
               <div className='flex gap-2'>
                 <div className='w-1/2 flex flex-col gap-2'>
                   <BaseInput
@@ -586,7 +588,9 @@ function AdminPlaceActionSection({ action, placeId }) {
                     {!isValidLat ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.correct_info_data')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.correct_info_data')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -610,7 +614,9 @@ function AdminPlaceActionSection({ action, placeId }) {
                     {!isValidLng ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.correct_info_data')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.correct_info_data')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -618,7 +624,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   </div>
                 </div>
               </div>
-              <p className='text-xl'>{t('admin.common.lat_lng_info2')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.lat_lng_info2')}</p>
               <BaseButton
                 breakWidth={true}
                 className='w-fit'
@@ -629,7 +635,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               />
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.desc_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.desc_info')}</p>
               <div className='flex flex-col gap-2'>
                 <BaseTextarea
                   rows='12'
@@ -644,7 +650,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                   }}
                   readOnly={isReadOnly}
                 />
-                <div className='flex justify-between px-2'>
+                <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                   {!isValidDesc ? (
                     <span className='text-red-500 flex items-center gap-2'>
                       <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -658,7 +664,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('common.useful_links')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('common.useful_links')}</p>
               <div className='flex flex-col gap-2'>
                 <div className='flex justify-center items-center gap-2'>
                   <WikiIcon />
@@ -683,7 +689,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.verification_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.verification_info')}</p>
               <BaseRadioGroup
                 options={verificationOptions}
                 selectedValue={toVerification}

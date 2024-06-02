@@ -8,19 +8,20 @@ import BaseModal from 'Components/Base/BaseModal';
 import AccountSettings from 'Components/Navbar/UserMenu/UserMenuSettings/AccountSettings';
 import SecuritySettings from 'Components/Navbar/UserMenu/UserMenuSettings/SecuritySettings';
 import RoleSettings from 'Components/Navbar/UserMenu/UserMenuSettings/RoleSettings';
-import NotificiationsSettings from 'Components/Navbar/UserMenu/UserMenuSettings/NotificiationsSettings';
 import PreferencesSettings from 'Components/Navbar/UserMenu/UserMenuSettings/PreferencesSettings';
 import AccountIcon from 'icons/AccountIcon';
 import ShieldLockIcon from 'icons/ShieldLockIcon';
 import UserRoleIcon from 'icons/UserRoleIcon';
-import NotificationIcon from 'icons/NotificationIcon';
 import PreferencesIcon from 'icons/PreferencesIcon';
+
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function UserMenuSettingsModal(props) {
   const [currentOption, setCurrentOption] = useState('account');
   const { t } = useTranslation();
   const modalRef = useRef(null);
   const dispatch = useDispatch();
+  const { fontSize } = useFontSize();
 
   const handleCurrentOption = (option) => {
     setCurrentOption(option);
@@ -42,9 +43,6 @@ function UserMenuSettingsModal(props) {
     case 'role':
       contentComponent = <RoleSettings />;
       break;
-    // case 'notificiations':
-    //   contentComponent = <NotificiationsSettings />;
-    //   break;
     case 'preferences':
       contentComponent = <PreferencesSettings />;
       break;
@@ -70,8 +68,8 @@ function UserMenuSettingsModal(props) {
     <>
       <BaseModal closeModal={props.closeModal} minHeight='min-h-[calc(100vh/2)]'>
         <div ref={modalRef} className='flex p-2'>
-          <div className='w-2/6 text-xl flex flex-col gap-3 pr-4'>
-            <div className='text-2xl'>{t('user.general')}</div>
+          <div className={`w-2/6 text-${fontSize}-xl flex flex-col gap-3 pr-4`}>
+            <div className={`text-${fontSize}-2xl`}>{t('user.general')}</div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
                 currentOption === 'account'
@@ -106,19 +104,7 @@ function UserMenuSettingsModal(props) {
               <UserRoleIcon className='h-6 w-6' />
               {t('user.role')}
             </motion.div>
-            <div className='text-2xl'>{t('user.system')}</div>
-            {/* <motion.div
-              className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
-                currentOption === 'notificiations'
-                  ? 'text-contrastColor border-l-2 border-contrastColor'
-                  : ''
-              }`}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => handleCurrentOption('notificiations')}
-            >
-              <NotificationIcon className='h-6 w-6' />
-              {t('user.notifications')}
-            </motion.div> */}
+            <div className={`text-${fontSize}-2xl`}>{t('user.system')}</div>
             <motion.div
               className={`flex items-center gap-2 cursor-pointer text-xl pl-2 hover:text-contrastColor hover:border-l-2 hover:border-contrastColor ${
                 currentOption === 'preferences'
@@ -132,7 +118,7 @@ function UserMenuSettingsModal(props) {
               {t('user.preferences')}
             </motion.div>
           </div>
-          <div className='w-4/6 text-xl'>{contentComponent}</div>
+          <div className={`w-4/6 text-${fontSize}-xl`}>{contentComponent}</div>
         </div>
       </BaseModal>
     </>

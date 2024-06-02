@@ -8,11 +8,14 @@ import { notificationModalActions } from 'Redux/notificationModalSlice';
 import ShieldLockIcon from 'icons/ShieldLockIcon';
 import BaseButton from 'Components/Base/BaseButton';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function SecuritySettings() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const { fontSize } = useFontSize();
 
   const handlePasswordReset = async () => {
     try {
@@ -41,13 +44,13 @@ function SecuritySettings() {
 
   return (
     <motion.div variants={parentItem} initial='hidden' animate='visible'>
-      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+      <div className='flex items-center gap-2 border-b-2 border-textColor px-2 pb-2'>
         <ShieldLockIcon />
-        <span>{t('user.security')}</span>
+        <span className={`text-${fontSize}-2xl`}>{t('user.security')}</span>
       </div>
       <div className='p-4'>
         <div className='flex flex-col items-center gap-2'>
-          <p className='text-center'>{t('user.reset_pass_info')}</p>
+          <p className={`text-center text-${fontSize}-xl`}>{t('user.reset_pass_info')}</p>
           <BaseButton
             name={t('user.reset_pass_btn')}
             breakWidth={true}

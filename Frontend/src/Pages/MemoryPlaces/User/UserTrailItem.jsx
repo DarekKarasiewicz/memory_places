@@ -13,9 +13,12 @@ import TrailIcon from 'icons/TrailIcon';
 import EditIcon from 'icons/EditIcon';
 import TrashIcon from 'icons/TrashIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const UserTrailItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();
@@ -63,8 +66,10 @@ const UserTrailItem = (props) => {
         <TrailIcon />
       </div>
       <div className='w-7/12 flex flex-col mx-2'>
-        <h2 className='truncate font-semibold h-full'>{props.trail.path_name}</h2>
-        <p className='text-sm'>{props.trail.creation_date}</p>
+        <h2 className={`truncate font-semibold h-full text-${fontSize}-base`}>
+          {props.trail.path_name}
+        </h2>
+        <p className={`text-${fontSize}-sm`}>{props.trail.creation_date}</p>
       </div>
       {props.trail.verified === false && (
         <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>

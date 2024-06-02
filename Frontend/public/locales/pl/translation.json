@@ -70,7 +70,9 @@
         "not_verified_place": "Niezweryfikowane miejsce",
         "not_verified_trail": "Niezweryfikowana trasa",
         "reset_password_email": "Na Twój adres e-mail została wysłana wiadomość dotycząca resetowania hasła.",
-        "pass_changed_success": "Twoje hasło zostało pomyślnie zmienione"
+        "pass_changed_success": "Twoje hasło zostało pomyślnie zmienione",
+        "no_images": "Brak dostępnych obrazów dla tego elementu.",
+        "given_email_exists": "Istnieje już konto z tym adresem e-mail."
     },
     "forum": {
         "comment_content": "Zawartość komentarza",
@@ -182,9 +184,8 @@
         "none": "Brak",
         "notificiation_info": "Wszystkie - wszystkie powiadomienia będą wyświetlane w sekcji powiadomień użytkownika. \n Ważne - wyświetlane będą tylko ważne powiadomienia, takie jak (Uwzględnienie raportów punktów pamięci, ...). \n Brak - nie będzie wyświetlana żadna wiadomość.",
         "notificiation_level": "Poziom powiadomień",
-        "font1": "Duża",
-        "font2": "Średnia",
-        "font3": "Mała",
+        "font1": "Normalna",
+        "font2": "Duża",
         "color1": "Jasny motyw",
         "color2": "Ciemny motyw",
         "color3": "Kontrast",

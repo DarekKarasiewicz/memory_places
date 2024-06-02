@@ -15,10 +15,6 @@ export function registerAppChanges(action, cookies, action_target = null) {
       user: cookies.user_id,
       changes_json: json,
     })
-    .then((response) => {
-      //console.log(response);
-    })
-    .catch((error) => {
-      //console.log(error);
-    });
+    .then((response) => {})
+    .catch((error) => {});
 }

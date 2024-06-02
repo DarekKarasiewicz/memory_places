@@ -1,10 +1,16 @@
 import { forwardRef } from 'react';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const BaseSelect = forwardRef(function BaseSelect(props, ref) {
+  const { fontSize } = useFontSize();
+
   return (
     <>
       <div className={`${!props.disabledParentFull ? 'w-full' : ''}`}>
-        {!props.disabledLabel && <label className='block pl-1 pb-1 text-base'>{props.label}</label>}
+        {!props.disabledLabel && (
+          <label className={`block pl-1 pb-1 text-${fontSize}-base`}>{props.label}</label>
+        )}
         <select
           className={`block w-${
             props.width ? props.width : 'full'
@@ -21,7 +27,7 @@ const BaseSelect = forwardRef(function BaseSelect(props, ref) {
         >
           {props.options.map((option, index) => (
             <option key={index} value={option.value} data-id={option.id ? option.id : index}>
-              {option.label}
+              <span className={`text-${fontSize}-base`}>{option.label}</span>
             </option>
           ))}
         </select>

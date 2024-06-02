@@ -6,12 +6,14 @@ import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ArrowDownIcon from 'icons/ArrowDownIcon';
 
 import i18n from 'i18n';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function LanguageSwitcher(props) {
   const [language, setLanguage] = useState(i18n.language);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
+  const { fontSize } = useFontSize();
 
   const handleLanguageChange = (value) => {
     setLanguage(value);
@@ -107,13 +109,13 @@ function LanguageSwitcher(props) {
                     whileHover={{ scale: 1.05 }}
                     key={option.value}
                     onClick={() => handleLanguageChange(option.value)}
-                    className={`block hover:font-bold px-4 py-2 text-sm text-center cursor-pointer hover:text-contrastColor ${
+                    className={`flex flex-col items-center hover:font-bold px-4 py-2 text-sm text-center cursor-pointer hover:text-contrastColor ${
                       language === option.value ? 'text-contrastColor font-bold' : 'text-textColor'
                     }`}
                     role='menuitem'
                   >
                     <img src={option.image} alt={option.alt} className='shadow-itemShadow' />
-                    {option.label}
+                    <span className={`text-${fontSize}-sm`}>{option.label}</span>
                   </motion.div>
                 ))}
               </div>

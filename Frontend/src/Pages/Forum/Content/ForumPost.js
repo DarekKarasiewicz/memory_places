@@ -8,11 +8,14 @@ import UserIcon from 'icons/UserIcon';
 import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ShareIcon from 'icons/ShareIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ForumPost({ currentData, location, onClick, locationShare }) {
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const dispatch = useDispatch();
+  const { fontSize } = useFontSize();
 
   if (!currentData || currentData.length === 0) {
     return null;
@@ -53,9 +56,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
         .then((response) => {
           dispatch(forumDataActions.changeRefreshPlaces(true));
         })
-        .catch((error) => {
-          // console.log(error);
-        });
+        .catch((error) => {});
     }
   };
 
@@ -72,31 +73,36 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
         onClick={onClick}
       >
         <div className='flex justify-start'>
-          <div className='flex items-center gap-2'>
+          <div className={`flex items-center gap-2 text-${fontSize}-base`}>
             <UserIcon className='h-6 w-6' />
-            <div>{currentData.username}</div>
-            <div>
+            <span>{currentData.username}</span>
+            <span>
               - {currentData && currentData.created_at ? currentData.created_at.split('T')[0] : ''}
-            </div>
-            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</div>}
+            </span>
+            {isNew && (
+              <span className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</span>
+            )}
           </div>
         </div>
-        <div className='text-xl'>{currentData.title}</div>
-        <div>{currentData.content}</div>
+        <div className={`text-${fontSize}-xl`}>{currentData.title}</div>
+        <div className={`text-${fontSize}-base`}>{currentData.content}</div>
         <div className='flex gap-2'>
           <div className='rounded-lg bg-thirdBgColor py-1 px-2 cursor-pointer hover:text-contrastColor'>
             <div
-              className='flex gap-1 hover:scale-105 transition'
+              className='flex items-center gap-1 hover:scale-105 transition'
               onClick={(event) => handleLikeClick(event, currentData.id, currentData.like)}
             >
               <ArrowUpIcon className='h-6 w-6' />
-              <span>{currentData.like}</span>
+              <span className={`text-${fontSize}-base`}>{currentData.like}</span>
             </div>
           </div>
           <div className='rounded-lg bg-thirdBgColor py-1 px-2 flex gap-1 cursor-pointer hover:text-contrastColor'>
-            <div className='flex gap-1 hover:scale-105 transition' onClick={handleShareClick}>
+            <div
+              className='flex items-center gap-1 hover:scale-105 transition'
+              onClick={handleShareClick}
+            >
               <ShareIcon className='h-6 w-6' />
-              <span>{t('forum.share')}</span>
+              <span className={`text-${fontSize}-base`}>{t('forum.share')}</span>
             </div>
           </div>
         </div>

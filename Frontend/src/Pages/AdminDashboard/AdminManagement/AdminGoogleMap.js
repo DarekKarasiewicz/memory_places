@@ -26,7 +26,7 @@ import Infobar from 'Components/Navbar/Infobar';
 import { useDrawingManager } from 'Pages/MemoryPlaces/GoogleMap/TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from 'Pages/MemoryPlaces/GoogleMap/MapOverlay/Polyline.jsx';
 
-const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition }) => {
+const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) => {
   const dispatch = useDispatch();
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
   const updatePlaceData = useSelector(selectUpdatePlace);
@@ -192,13 +192,13 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition }) => {
             key={1}
             position={{ lat: addPlaceLocation.lat, lng: addPlaceLocation.lng }}
           >
-            <GoogleMapPin iconPath={`../../assets/places_icons/test_icon.svg`} />
+            <GoogleMapPin iconPath={`/assets/places_icons/test_icon.svg`} />
           </AdvancedMarker>
         )}
 
         {placePosition && !addPlaceLocation.isSelecting && (
           <AdvancedMarker key={2} position={{ lat: latitude, lng: longitude }}>
-            <GoogleMapPin iconPath={`../../assets/places_icons/test_icon.svg`} />
+            <GoogleMapPin iconPath={`/assets/places_icons/test_icon.svg`} />
           </AdvancedMarker>
         )}
 

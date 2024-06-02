@@ -14,7 +14,11 @@ import {
 import UserGroupIcon from 'icons/admin/UserGroupIcon';
 import PlacesIcon from 'icons/admin/PlacesIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function AdminBarChart(props) {
+  const { fontSize } = useFontSize();
+
   const iconComponents = {
     userGroup: <UserGroupIcon />,
     places: <PlacesIcon />,
@@ -26,9 +30,9 @@ function AdminBarChart(props) {
     <>
       <div className='flex justify-start items-center gap-2 absolute top-6 left-6'>
         {IconComponent ? IconComponent : null}
-        <span className='text-2xl'>{props.title}</span>
+        <span className={`text-${fontSize}-2xl`}>{props.title}</span>
       </div>
-      <ResponsiveContainer width='100%' height='100%' className={'text-black'}>
+      <ResponsiveContainer width='100%' height='100%' className={`text-black`}>
         <BarChart
           width={500}
           height={1000}
@@ -41,13 +45,28 @@ function AdminBarChart(props) {
           }}
         >
           <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='sname' tick={{ dy: 5 }} padding={{ left: 5, right: 5 }} interval={0} />
-          <YAxis domain={['auto', (dataMax) => dataMax * 2]} />
+          <XAxis
+            dataKey='sname'
+            tick={{ dy: 5, fontSize: fontSize === 'base' ? 16 : 20 }}
+            padding={{ left: 5, right: 5 }}
+            interval={0}
+          />
+          <YAxis
+            tick={{ fontSize: fontSize === 'base' ? 16 : 20 }}
+            domain={['auto', (dataMax) => dataMax * 2]}
+          />
           <Tooltip
             labelFormatter={(value) => props.data.find((item) => item.sname === value).name}
             formatter={(value, name) => [value, name]}
+            contentStyle={{ fontSize: fontSize === 'base' ? 16 : 20 }}
           />
-          <Legend wrapperStyle={{ position: 'relative', marginTop: '-15px' }} />
+          <Legend
+            wrapperStyle={{
+              position: 'relative',
+              marginTop: fontSize === 'base' ? '-15px' : '-20px',
+              fontSize: fontSize === 'base' ? 16 : 20,
+            }}
+          />
           <Bar
             dataKey={props.dataName}
             fill='#0891b2'

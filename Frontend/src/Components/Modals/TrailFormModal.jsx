@@ -26,6 +26,7 @@ import BaseSelect from 'Components/Base/BaseSelect';
 import BaseImageUpload from 'Components/Base/BaseImageUpload/BaseImageUpload';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 const TrailFormModal = (props) => {
   const { t } = useTranslation();
@@ -49,6 +50,7 @@ const TrailFormModal = (props) => {
   const [period, setPeriod] = useState([]);
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
+  const { fontSize } = useFontSize();
 
   const fetchTypeItems = async () => {
     try {
@@ -195,23 +197,15 @@ const TrailFormModal = (props) => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((response) => {
-        console.log('image send');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   const deleteTrailImages = (imageId) => {
     axios
       .delete(`http://localhost:8000/memo_places/path_image/pk=${imageId}/`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   const getTrailImages = async (trailId) => {
@@ -346,9 +340,9 @@ const TrailFormModal = (props) => {
               isValid={formValidation.isValidType}
             />
             {formValidation.isValidType === false && (
-              <span className='text-red-500 flex items-center gap-2'>
+              <span className='text-red-500 flex items-center gap-2 '>
                 <AlertIcon className='h-6 w-6' color='#ef4444' />
-                <span>{t('admin.common.field_required')}</span>
+                <span className={`text-${fontSize}-base`}>{t('admin.common.field_required')}</span>
               </span>
             )}
           </div>
@@ -376,7 +370,7 @@ const TrailFormModal = (props) => {
             {formValidation.isValidPeriod === false && (
               <span className='text-red-500 flex items-center gap-2'>
                 <AlertIcon className='h-6 w-6' color='#ef4444' />
-                <span>{t('admin.common.field_required')}</span>
+                <span className={`text-${fontSize}-base`}>{t('admin.common.field_required')}</span>
               </span>
             )}
           </div>
@@ -392,7 +386,7 @@ const TrailFormModal = (props) => {
             />
           </div>
           <div className='mt-1 flex flex-col gap-1'>
-            <p>{t('common.useful_links')}</p>
+            <p className={`text-${fontSize}-base`}>{t('common.useful_links')}</p>
             <div className='flex justify-center items-center gap-2'>
               <WikiIcon />
               <BaseInput
@@ -437,7 +431,7 @@ const TrailFormModal = (props) => {
               ref={nameRef}
               isValid={formValidation.isValidName}
             />
-            <div className='flex justify-between px-2'>
+            <div className={`flex justify-between px-2 text-${fontSize}-base`}>
               {formValidation.isValidName === false ? (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -468,7 +462,7 @@ const TrailFormModal = (props) => {
               }}
               isValid={formValidation.isValidDescription}
             />
-            <div className='flex justify-between px-2'>
+            <div className={`flex justify-between px-2 text-${fontSize}-base`}>
               {formValidation.isValidDescription === false ? (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -482,7 +476,7 @@ const TrailFormModal = (props) => {
           </div>
         </div>
       </div>
-      <div className='p-2 flex gap-4 justify-center'>
+      <div className='px-2 pb-2 flex gap-4 justify-center'>
         <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => handleModalClose()} />
         <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleSubmit} />
       </div>

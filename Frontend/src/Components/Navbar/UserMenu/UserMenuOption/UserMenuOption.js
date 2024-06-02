@@ -8,7 +8,11 @@ import HelpIcon from 'icons/HelpIcon';
 import ContactIcon from 'icons/ContactIcon';
 import LogoutIcon from 'icons/LogoutIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const UserMenuOption = (props) => {
+  const { fontSize } = useFontSize();
+
   const iconComponents = {
     notification: <NotificationIcon />,
     pin: <PinIcon />,
@@ -28,7 +32,7 @@ const UserMenuOption = (props) => {
         onClick={props.onClick ? props.onClick : undefined}
       >
         {IconComponent}
-        <div className='capitalize leading-5'>{props.name}</div>
+        <span className={`capitalize text-${fontSize}-base leading-5`}>{props.name}</span>
       </motion.div>
     </>
   );

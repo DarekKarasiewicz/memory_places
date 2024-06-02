@@ -10,6 +10,8 @@ import ForumPlace from './ForumPlace';
 import SearchBar from './SearchBar/SearchBar';
 import BaseButton from 'Components/Base/BaseButton';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ForumContent() {
   const dispatch = useDispatch();
   const forumData = useSelector(selectForumData);
@@ -19,6 +21,7 @@ function ForumContent() {
   const [searchedText, setSearchedText] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [blockPlaceFetching, setBlockPlaceFetching] = useState(false);
+  const { fontSize } = useFontSize();
 
   const fetchPlaceItems = async () => {
     try {
@@ -129,7 +132,7 @@ function ForumContent() {
             <SearchBar onSearchClick={handleSearchPlaces} />
           </div>
         )}
-        <div className='text-3xl font-bold'>{forumData.header_name}</div>
+        <div className={`text-${fontSize}-3xl font-bold`}>{forumData.header_name}</div>
         <div className='flex flex-col gap-4'>
           {places &&
             places.map((item, index) => (
@@ -145,7 +148,9 @@ function ForumContent() {
             ))}
         </div>
         {!places && (
-          <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-center'>
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-${fontSize}-4xl text-center`}
+          >
             {t('forum.choose_category')}
           </div>
         )}

@@ -14,8 +14,11 @@ import { useTranslation } from 'react-i18next';
 
 import SiteMapIcon from 'icons/SiteMapIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function AdminMultiDataBarChart({ title, data, labels }) {
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const legendFormatter = (value) => {
     return t(`admin.common.${value}`);
@@ -26,7 +29,7 @@ function AdminMultiDataBarChart({ title, data, labels }) {
       <div style={{ height: '100%' }}>
         <div className='flex justify-start items-center gap-2 absolute top-6 left-6'>
           <SiteMapIcon />
-          <span className='text-2xl'>{title}</span>
+          <span className={`text-${fontSize}-2xl`}>{title}</span>
         </div>
         <ResponsiveContainer width='100%' height='100%' className={'text-black'}>
           <BarChart
@@ -41,14 +44,27 @@ function AdminMultiDataBarChart({ title, data, labels }) {
             }}
           >
             <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='sname' tick={{ dy: 5 }} padding={{ left: 5, right: 5 }} interval={0} />
-            <YAxis domain={['auto', (dataMax) => dataMax * 2]} />
+            <XAxis
+              dataKey='sname'
+              tick={{ dy: 5, fontSize: fontSize === 'base' ? 16 : 20 }}
+              padding={{ left: 5, right: 5 }}
+              interval={0}
+            />
+            <YAxis
+              tick={{ fontSize: fontSize === 'base' ? 16 : 20 }}
+              domain={['auto', (dataMax) => dataMax * 2]}
+            />
             <Tooltip
               labelFormatter={(value) => data.find((item) => item.sname === value).name}
               formatter={(value, name) => [value, legendFormatter(name)]}
+              contentStyle={{ fontSize: fontSize === 'base' ? 16 : 20 }}
             />
             <Legend
-              wrapperStyle={{ position: 'relative', marginTop: '-15px' }}
+              wrapperStyle={{
+                position: 'relative',
+                marginTop: fontSize === 'base' ? '-15px' : '-20px',
+                fontSize: fontSize === 'base' ? 16 : 20,
+              }}
               formatter={legendFormatter}
             />
             {labels.map((item, key) => (

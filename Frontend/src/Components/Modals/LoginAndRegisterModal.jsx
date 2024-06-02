@@ -7,12 +7,15 @@ import BaseModal from 'Components/Base/BaseModal';
 import LoginComponent from 'Components/LoginAndRegisterComponents/LoginComponent';
 import RegisterComponent from 'Components/LoginAndRegisterComponents/RegisterComponent';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const LoginAndRegisterModal = (props) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState();
   const [isLogging, setIsLogging] = useState(true);
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     setTitle(t('common.sign_in'));
@@ -45,7 +48,7 @@ const LoginAndRegisterModal = (props) => {
       <div className='flex flex-col p-2 items-center' ref={wrapperRef}>
         {isLogging ? <LoginComponent /> : <RegisterComponent setIsLogging={setIsLogging} />}
         {isLogging ? (
-          <p>
+          <p className={`text-${fontSize}-base`}>
             {t('common.question_account')}{' '}
             <span
               onClick={handleIsLogging}
@@ -57,7 +60,7 @@ const LoginAndRegisterModal = (props) => {
         ) : (
           <p
             onClick={handleIsLogging}
-            className='cursor-pointer text-blue-400 hover:text-blue-600 hover:underline'
+            className={`cursor-pointer text-blue-400 hover:text-blue-600 hover:underline text-${fontSize}-3xl`}
           >
             {t('common.sign_account')}
           </p>

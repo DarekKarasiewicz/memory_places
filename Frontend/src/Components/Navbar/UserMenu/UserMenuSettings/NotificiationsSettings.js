@@ -6,9 +6,12 @@ import BaseButton from 'Components/Base/BaseButton';
 import BaseSelect from 'Components/Base/BaseSelect';
 import NotificationIcon from 'icons/NotificationIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function NotificiationsSettings() {
   const [selectedNotifyLevelOption, setSelectedNotifyLevelOption] = useState('');
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const handleSelectNotifyLevelChange = (value) => {
     setSelectedNotifyLevelOption(value);
@@ -36,9 +39,9 @@ function NotificiationsSettings() {
 
   return (
     <motion.div variants={parentItem} initial='hidden' animate='visible'>
-      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+      <div className='flex items-center gap-2 border-b-2 border-textColor px-2 pb-2'>
         <NotificationIcon />
-        <span>{t('user.notifications')}</span>
+        <span className={`text-${fontSize}-2xl`}>{t('user.notifications')}</span>
       </div>
       <div className='flex flex-col items-center py-4 gap-4'>
         <div className='flex flex-col items-center gap-2'>
@@ -50,7 +53,9 @@ function NotificiationsSettings() {
             onChange={handleSelectNotifyLevelChange}
           />
         </div>
-        <span className='text-center italic text-lg whitespace-pre-line'>{message}</span>
+        <span className={`text-center italic text-${fontSize}-lg whitespace-pre-line`}>
+          {message}
+        </span>
         <BaseButton name={t('user.confirm')} btnBg='blue' className='mt-2' />
       </div>
     </motion.div>

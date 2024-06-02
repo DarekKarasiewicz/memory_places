@@ -22,6 +22,7 @@ import CheckIcon from 'icons/CheckIcon';
 import SearchIcon from 'icons/SearchIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ObjectVerificationTable({ data, columns }) {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function ObjectVerificationTable({ data, columns }) {
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
   const [columnVisibility, setColumnVisibility] = useState({ id: false, kind_value: false });
+  const { fontSize } = useFontSize();
 
   const table = useReactTable({
     data,
@@ -94,14 +96,14 @@ function ObjectVerificationTable({ data, columns }) {
   return (
     <>
       <div className='flex justify-between items-center'>
-        <div className='text-xl font-semibold'>
+        <div className={`text-${fontSize}-xl font-semibold`}>
           {t('admin.content.all_verification')} ({rowCount})
         </div>
         <div className='flex gap-4'>
           <div className='relative flex items-center shadow-sm'>
             <SearchIcon className='h-5 w-5 absolute left-2' color='#000000' />
             <input
-              className='rounded-lg p-2 pl-8 text-black focus:outline-contrastColor'
+              className={`rounded-lg p-2 pl-8 text-black focus:outline-contrastColor text-${fontSize}-base`}
               type='text'
               placeholder={t('admin.content.search')}
               value={filtering}
@@ -116,7 +118,7 @@ function ObjectVerificationTable({ data, columns }) {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
               key={headerGroup.id}
-              className='font-semibold text-left text-normal bg-thirdBgColor'
+              className={`font-semibold text-left bg-thirdBgColor text-${fontSize}-base`}
             >
               {headerGroup.headers.map((header) => (
                 <th
@@ -141,7 +143,9 @@ function ObjectVerificationTable({ data, columns }) {
           {table.getRowModel().rows.map((row, index) => (
             <tr
               key={row.id}
-              className={`${index % 2 === 0 ? 'bg-mainBgColor' : 'bg-thirdBgColor'}`}
+              className={`${
+                index % 2 === 0 ? 'bg-mainBgColor' : 'bg-thirdBgColor'
+              } text-${fontSize}-base`}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className='p-2'>
@@ -194,7 +198,7 @@ function ObjectVerificationTable({ data, columns }) {
           ))}
         </tbody>
       </table>
-      <div className='flex justify-end items-center gap-1 mr-6'>
+      <div className={`flex justify-end items-center gap-1 mr-6 text-${fontSize}-base`}>
         <div className='mr-4'>
           {t('admin.content.table_items_info', {
             from: pageIndex + 1,

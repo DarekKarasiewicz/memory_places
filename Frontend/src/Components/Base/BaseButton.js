@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function BaseButton(props) {
   const [currentBg, setCurrentBg] = useState('');
   const [currentBgHover, setCurrentBgHover] = useState('');
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     if (props.btnBg === 'blue') {
@@ -26,7 +29,7 @@ function BaseButton(props) {
       <motion.button
         className={`rounded ${
           !props.breakWidth ? 'w-32' : ''
-        } normal-case ${currentBg} leading-6 p-2 shadow-lg text-white ${currentBgHover} font-medium rounded-lg ${
+        } normal-case ${currentBg} leading-6 p-2 shadow-lg text-white ${currentBgHover} font-medium rounded-lg text-${fontSize}-base ${
           props.className ? props.className : ''
         } ${props.disabled ? 'opacity-50' : ''}`}
         whileHover={!props.disabled ? { scale: 1.05 } : {}}

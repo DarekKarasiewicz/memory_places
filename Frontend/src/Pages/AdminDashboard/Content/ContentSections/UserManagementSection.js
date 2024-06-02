@@ -9,6 +9,8 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminTileStat from '../Charts/AdminTileStat';
 import UsersTable from '../Tables/UsersTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function UserManagementSection() {
   const [users, setUsers] = useState([]);
   const { t } = useTranslation();
@@ -18,6 +20,7 @@ function UserManagementSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isUsersChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchUserItems = useCallback(async () => {
     try {
@@ -143,8 +146,8 @@ function UserManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.user_manage_title')}</span>
-        <span className='text-md'>{t('admin.content.all_users_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.user_manage_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.all_users_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-4 gap-6 w-full p-6 bg-thirdBgColor'>

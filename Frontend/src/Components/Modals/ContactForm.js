@@ -12,6 +12,7 @@ import BaseTextarea from 'Components/Base/BaseTextarea';
 import BaseButton from 'Components/Base/BaseButton';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ContactForm(props) {
   const nameRef = useRef(null);
@@ -24,6 +25,7 @@ function ContactForm(props) {
   const dispatch = useDispatch();
   const [isValidTitle, setIsValidTitle] = useState(null);
   const [isValidDesc, setIsValidDesc] = useState(null);
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     if (cookies) {
@@ -92,7 +94,7 @@ function ContactForm(props) {
     <>
       <BaseModal title={t('user.contact_us')} closeModal={props.closeModal}>
         <div className='flex flex-col px-2 py-4 gap-2'>
-          <div>{t('user.contact_info')}</div>
+          <div className={`text-${fontSize}-base`}>{t('user.contact_info')}</div>
           <div className='flex gap-4'>
             <BaseInput type='text' label={t('common.name')} ref={nameRef} readOnly={true} />
             <BaseInput type='text' label='Email' ref={emailRef} readOnly={true} />
@@ -129,7 +131,7 @@ function ContactForm(props) {
             />
             <BaseButton name={t('common.send')} btnBg='blue' onClick={handleSubmit} />
           </div>
-          <div className='text-center mt-2'>
+          <div className={`text-center mt-2 text-${fontSize}-base`}>
             {t('user.directly_email')} <strong>info@miejscapamieci.org.pl</strong>
           </div>
         </div>

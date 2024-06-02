@@ -10,9 +10,12 @@ import HandGrabIcon from 'icons/HandGrabIcon';
 import AcceptIcon from 'icons/AcceptIcon';
 import CancelIcon from 'icons/CancelIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function TrailGuideModal() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { fontSize } = useFontSize();
 
   const parentItem = {
     hidden: { opacity: 1, scale: 0 },
@@ -36,8 +39,8 @@ function TrailGuideModal() {
       >
         <div className='flex flex-col justify-center items-center gap-4'>
           <div className='flex flex-col justify-center items-center gap-4 mb-2'>
-            <p className='text-xl'>{t('modal.how_use_trail')}</p>
-            <ul className='text-lg list-disc pl-6'>
+            <p className={`text-${fontSize}-xl`}>{t('modal.how_use_trail')}</p>
+            <ul className={`text-${fontSize}-lg list-disc pl-6`}>
               <li>
                 <div className='flex items-center gap-2'>
                   <span>{t('modal.how_use_trail1')}</span>

@@ -17,6 +17,7 @@ import ArrowUpIcon from 'icons/ArrowUpIcon';
 import BaseTextarea from 'Components/Base/BaseTextarea';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ForumPostHolder() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function ForumPostHolder() {
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [blockCommentFetching, setBlockCommentFetching] = useState(false);
+  const { fontSize } = useFontSize();
 
   const fetchPostItem = async () => {
     try {
@@ -150,9 +152,7 @@ function ForumPostHolder() {
         .then((response) => {
           fetchCommentItems();
         })
-        .catch((error) => {
-          // console.log(error);
-        });
+        .catch((error) => {});
     }
   };
 
@@ -171,9 +171,7 @@ function ForumPostHolder() {
           fetchCommentItems();
           handleCommentClose();
         })
-        .catch((error) => {
-          // console.log(error);
-        });
+        .catch((error) => {});
     } else {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('modal.permission_error')));
@@ -229,7 +227,7 @@ function ForumPostHolder() {
         <div className='flex flex-col gap-4'>
           <ForumPost key={1} currentData={post} locationShare={locationShareLink()} />
           <div className='flex justify-start items-center gap-4 p-2'>
-            <span className='w-fit'>{t('forum.sort_by')}</span>
+            <span className={`w-fit text-${fontSize}-base`}>{t('forum.sort_by')}</span>
             <BaseSelect
               disabledLabel={true}
               disabledParentFull={true}
@@ -278,8 +276,10 @@ function ForumPostHolder() {
                 <div className='flex flex-col gap-2'>
                   <div className='flex justify-between'>
                     <div className='flex items-center gap-2'>
-                      <div>{item.username}</div>
-                      <div>- {item.created_at && item.created_at.split('T')[0]}</div>
+                      <span className={`text-${fontSize}-base`}>{item.username}</span>
+                      <span className={`text-${fontSize}-base`}>
+                        - {item.created_at && item.created_at.split('T')[0]}
+                      </span>
                     </div>
                   </div>
                   <div className='break-anywhere'>{item.content}</div>
@@ -289,7 +289,7 @@ function ForumPostHolder() {
                       onClick={() => handleLikeClick(event, item.id, item.like)}
                     >
                       <ArrowUpIcon className='h-6 w-6' />
-                      <span>{item.like}</span>
+                      <span className={`text-${fontSize}-base`}>{item.like}</span>
                     </div>
                   </div>
                 </div>

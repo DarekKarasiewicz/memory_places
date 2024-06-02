@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import UploadIcon from 'icons/UploadIcon';
 import UploadedImagesDisplay from './UploadedImagesDisplay';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const BaseImageUpload = ({ fileSize }) => {
   const dispatch = useDispatch();
   const images = useSelector(selectAddObjectImage).images;
@@ -18,14 +20,11 @@ const BaseImageUpload = ({ fileSize }) => {
   const MAX_FILE_SIZE = fileSize * 1024 * 1024;
   const fixedFileSize = MAX_FILE_SIZE / 1048576;
   const MAX_FILES = 3;
+  const { fontSize } = useFontSize();
 
   const handleClick = () => {
     fileInputRef.current.click();
   };
-
-  useEffect(() => {
-    console.log('Component re-rendered. Current images:', images);
-  }, [images]);
 
   const validateImagesQuantity = (uploadedImagesLength) => {
     const allFilesLenght = uploadedImagesLength + images.length;
@@ -119,9 +118,13 @@ const BaseImageUpload = ({ fileSize }) => {
         onClick={handleClick}
       >
         <UploadIcon />
-        <p>{t('common.drag_info1')}</p>
-        <p>{t('common.drag_info2', { value: fixedFileSize })}</p>
-        {showError === true && <p className='text-red-500 text-sm mt-2'>{errorMsg}</p>}
+        <p className={`text-${fontSize}-base`}>{t('common.drag_info1')}</p>
+        <p className={`text-${fontSize}-base`}>
+          {t('common.drag_info2', { value: fixedFileSize })}
+        </p>
+        {showError === true && (
+          <p className={`text-red-500 text-${fontSize}-sm mt-2`}>{errorMsg}</p>
+        )}
         <input
           multiple
           className='hidden'

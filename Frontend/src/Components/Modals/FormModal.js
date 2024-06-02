@@ -25,6 +25,7 @@ import WebIcon from 'icons/WebIcon';
 import WikiIcon from 'icons/WikiIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function FormModal(props) {
   const addPlaceLocation = useSelector(selectAddPlaceLocation);
@@ -53,6 +54,7 @@ function FormModal(props) {
   const [period, setPeriod] = useState([]);
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
+  const { fontSize } = useFontSize();
 
   const fetchSortOfItems = async () => {
     try {
@@ -265,15 +267,15 @@ function FormModal(props) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((response) => {})
-      .catch((error) => {});
+      .then(() => {})
+      .catch(() => {});
   };
 
   const deletePlaceImages = (imageId) => {
     axios
       .delete(`http://localhost:8000/memo_places/place_image/${imageId}/`)
-      .then((response) => {})
-      .catch((error) => {});
+      .then(() => {})
+      .catch(() => {});
   };
 
   const getPlaceImages = async (placeId) => {
@@ -414,7 +416,9 @@ function FormModal(props) {
               {formValidation.isValidLat === false && (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
+                  <span className={`text-${fontSize}-base`}>
+                    {t('admin.common.field_required')}
+                  </span>
                 </span>
               )}
             </div>
@@ -438,12 +442,14 @@ function FormModal(props) {
               {formValidation.isValidLng === false && (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
+                  <span className={`text-${fontSize}-base`}>
+                    {t('admin.common.field_required')}
+                  </span>
                 </span>
               )}
             </div>
-            <div className='px-2 pb-2 flex flex-col justify-center items-center mt-2 gap-2'>
-              <span>{t('common.or2')}</span>
+            <div className='px-2 pb-2 flex flex-col justify-center items-center gap-2'>
+              <span className={`text-${fontSize}-base`}>{t('common.or2')}</span>
               <BaseButton
                 breakWidth={true}
                 name={t('common.location_select')}
@@ -476,7 +482,9 @@ function FormModal(props) {
               {formValidation.isValidSortof === false && (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
+                  <span className={`text-${fontSize}-base`}>
+                    {t('admin.common.field_required')}
+                  </span>
                 </span>
               )}
             </div>
@@ -500,7 +508,9 @@ function FormModal(props) {
               {formValidation.isValidType === false && (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
+                  <span className={`text-${fontSize}-base`}>
+                    {t('admin.common.field_required')}
+                  </span>
                 </span>
               )}
             </div>
@@ -528,14 +538,16 @@ function FormModal(props) {
               {formValidation.isValidPeriod === false ? (
                 <span className='text-red-500 flex items-center gap-2'>
                   <AlertIcon className='h-6 w-6' color='#ef4444' />
-                  <span>{t('admin.common.field_required')}</span>
+                  <span className={`text-${fontSize}-base`}>
+                    {t('admin.common.field_required')}
+                  </span>
                 </span>
               ) : (
                 <span></span>
               )}
             </div>
             <div className='mt-1 flex flex-col gap-1'>
-              <p>{t('common.useful_links')}</p>
+              <p className={`text-${fontSize}-base`}>{t('common.useful_links')}</p>
               <div className='flex justify-center items-center gap-2'>
                 <WikiIcon />
                 <BaseInput
@@ -580,7 +592,7 @@ function FormModal(props) {
                 ref={nameRef}
                 isValid={formValidation.isValidName}
               />
-              <div className='flex justify-between px-2'>
+              <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                 {formValidation.isValidName === false ? (
                   <span className='text-red-500 flex items-center gap-2'>
                     <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -611,7 +623,7 @@ function FormModal(props) {
                 }}
                 isValid={formValidation.isValidDescription}
               />
-              <div className='flex justify-between px-2'>
+              <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                 {formValidation.isValidDescription === false ? (
                   <span className='text-red-500 flex items-center gap-2'>
                     <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -625,7 +637,7 @@ function FormModal(props) {
             </div>
           </div>
         </div>
-        <div className='p-2 flex gap-4 justify-center'>
+        <div className='px-2 pb-2 flex gap-4 justify-center'>
           <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => handleModalClose()} />
           <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleConfirm} />
         </div>

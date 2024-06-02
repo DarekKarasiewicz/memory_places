@@ -1,30 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-
+import { useFontSize } from './FontSizeContext';
 import ArrowUpIcon from 'icons/ArrowUpIcon';
 import ArrowDownIcon from 'icons/ArrowDownIcon';
-import ThemeIcon from 'icons/ThemeIcon';
+import FontSizeIcon from 'icons/FontSizeIcon';
 
-import { useTheme } from './ThemeContext';
-import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
-
-function ThemeSwitcher() {
+function FontSizeSwitcher(props) {
+  const { fontSize, setFontSize } = useFontSize();
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
-  const { fontSize } = useFontSize();
 
-  const handleThemeChange = (value) => {
-    toggleTheme(value);
+  const handleFontSizeChange = (value) => {
+    setFontSize(value);
     setIsOpen(false);
   };
 
-  const theme_options = [
-    { label: t('user.color1'), value: 'light', indicator: 'bg-white' },
-    { label: t('user.color2'), value: 'dark', indicator: 'bg-black' },
-    // { label: t('user.color3'), value: 'contrast', indicator: 'bg-yellow-500'}
+  const font_options = [
+    { label: t('user.font1'), value: 'base' },
+    { label: t('user.font2'), value: 'big' },
   ];
 
   const parentItem = {
@@ -63,7 +58,7 @@ function ThemeSwitcher() {
             aria-expanded='true'
             onClick={() => setIsOpen(!isOpen)}
           >
-            <ThemeIcon className='h-6 w-6' />
+            <FontSizeIcon className='h-6 w-6' />
             {isOpen ? (
               <ArrowUpIcon className={'h-7 w-7'} />
             ) : (
@@ -79,19 +74,16 @@ function ThemeSwitcher() {
               animate='visible'
             >
               <div>
-                {theme_options.map((option) => (
+                {font_options.map((option) => (
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     key={option.value}
-                    onClick={() => handleThemeChange(option.value)}
+                    onClick={() => handleFontSizeChange(option.value)}
                     className={`${
-                      option.value === theme ? 'text-contrastColor font-bold ' : ''
+                      option.value === fontSize ? 'text-contrastColor font-bold ' : ''
                     }hover:text-contrastColor px-4 py-2 flex justify-center items-center gap-2 text-sm text-center cursor-pointer`}
                     role='menuitem'
                   >
-                    <div
-                      className={`h-5 w-5 shadow border shrink-0 ${option.indicator} rounded-full`}
-                    ></div>
                     <span className={`text-${fontSize}-sm`}>{option.label}</span>
                   </motion.div>
                 ))}
@@ -104,4 +96,4 @@ function ThemeSwitcher() {
   );
 }
 
-export default ThemeSwitcher;
+export default FontSizeSwitcher;

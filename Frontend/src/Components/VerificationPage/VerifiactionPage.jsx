@@ -10,11 +10,14 @@ import Loader from 'Components/Loader/Loader';
 import CheckIcon from 'icons/CheckIcon';
 import App from 'App';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const VerifiactionPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     axios
@@ -40,7 +43,7 @@ const VerifiactionPage = () => {
               <div className='flex flex-col items-center gap-6 -mt-20'>
                 <CheckIcon className='w-40' />
                 <p className='text-6xl mb-3'>{t('user.verification_info')}</p>
-                <p className='text-2xl mb-2'>{t('user.verification_info2')}</p>
+                <p className={`text-${fontSize}-2xl mb-2`}>{t('user.verification_info2')}</p>
                 <Link to='/' className='flex justify-center items-center'>
                   <BaseButton name={t('user.go_to_mainpage')} className={'w-56'} btnBg='blue' />
                 </Link>

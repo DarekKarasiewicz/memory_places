@@ -13,6 +13,7 @@ import UserMenu from './UserMenu/UserMenu';
 import MenuIcon from 'icons/MenuIcon';
 import CancelIcon from 'icons/CancelIcon';
 import ThemeSwitcher from 'Components/ThemeSwitcher/ThemeSwitcher';
+import FontSizeSwitcher from 'Components/FontSizeSwitcher/FontSizeSwitcher';
 
 function Navbar() {
   const [isActive, setIsActive] = useState(false);
@@ -117,6 +118,7 @@ function Navbar() {
           ></img>
         </div>
         <div className='flex gap-3 items-center'>
+          <FontSizeSwitcher />
           <ThemeSwitcher />
           <UserMenu />
           <MapFilter />

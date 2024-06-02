@@ -12,6 +12,7 @@ import { drawingEventsActions, selectDrawingEvents } from 'Redux/drawingEventsSl
 import { drawingToolsActions, selectDrawingTools } from 'Redux/drawingToolsSlice.jsx';
 import { updateTrailActions } from 'Redux/updateTrailSlice.jsx';
 import { selectApprovalModal } from 'Redux/approvalModalSlice.jsx';
+import { selectAdvancedObject } from 'Redux/advancedObjectSlice.jsx';
 
 import App from 'App';
 import UserPlacesMenu from 'Pages/MemoryPlaces/User/UserPlacesMenu.jsx';
@@ -24,6 +25,7 @@ import Infobar from 'Components/Navbar/Infobar.jsx';
 import TrailFormModal from 'Components/Modals/TrailFormModal.jsx';
 import TrailGuideModal from 'Components/Modals/TrailGuideModal.js';
 import ApprovalModal from 'Components/Modals/ApprovalModal.js';
+import AdvancedInfoBox from './GoogleMap/AdvancedInfoBox/AdvancedInfoBox.js';
 
 function MemoryPlaces() {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ function MemoryPlaces() {
   const addPlaceData = useSelector(selectAddPlaceLocation);
   const userPlacesData = useSelector(selectUserPlaces);
   const addTrailData = useSelector(selectAddTrail);
+  const advancedObject = useSelector(selectAdvancedObject);
   const { t } = useTranslation();
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
@@ -115,6 +118,8 @@ function MemoryPlaces() {
           closeModal={handleTrailUpdateFormModalVisability}
         />
       )}
+
+      {advancedObject.isAdvancedObjectOpen && <AdvancedInfoBox />}
 
       {approvalModalData.isApprovalModalOpen && <ApprovalModal />}
 

@@ -14,6 +14,8 @@ import BaseButton from 'Components/Base/BaseButton';
 import FilterIcon from 'icons/FilterIcon';
 import CancelIcon from 'icons/CancelIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function MapFilter() {
   const [isActive, setIsActive] = useState(false);
   const [sortOf, setSortOf] = useState([]);
@@ -28,6 +30,7 @@ function MapFilter() {
   const filterTrailsLength = useSelector((state) => state.allMapTrails.filterItemsLength);
   const filterItemsLength = filterPlacesLength + filterTrailsLength;
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const fetchSortOfItems = async () => {
     try {
@@ -173,7 +176,9 @@ function MapFilter() {
           className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-mainBgColor text-textColor rounded-s-lg z-10 shadow-xl'
         >
           <div className='flex flex-col gap-y-4 justify-start items-center w-full'>
-            <div className='text-2xl border-b-2 border-textColor p-2 w-1/2 text-center'>
+            <div
+              className={`text-${fontSize}-2xl border-b-2 border-textColor p-2 w-1/2 text-center`}
+            >
               <span>{t('common.filter1')}</span>
               <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>
             </div>

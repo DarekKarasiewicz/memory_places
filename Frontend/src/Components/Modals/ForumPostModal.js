@@ -12,8 +12,10 @@ import BaseModal from 'Components/Base/BaseModal';
 import BaseInput from 'Components/Base/BaseInput';
 import BaseTextarea from 'Components/Base/BaseTextarea';
 import BaseButton from 'Components/Base/BaseButton';
+import AlertIcon from 'icons/AlertIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ForumPostModal() {
   const titleRef = useRef(null);
@@ -25,6 +27,7 @@ function ForumPostModal() {
   const [isValidTitle, setIsValidTitle] = useState(null);
   const [isValidDesc, setIsValidDesc] = useState(null);
   const forumData = useSelector(selectForumData);
+  const { fontSize } = useFontSize();
 
   const closeModal = () => {
     dispatch(modalsActions.changeIsForumPostModalOpen());
@@ -85,16 +88,27 @@ function ForumPostModal() {
     <>
       <BaseModal title={t('forum.modal_add_post')} closeModal={closeModal}>
         <div className='flex flex-col px-2 py-4 gap-2'>
-          <BaseInput
-            type='text'
-            label={t('forum.title')}
-            ref={titleRef}
-            onChange={() => {
-              validateTitle(titleRef.current.value);
-            }}
-            onBlur={() => validateTitle(titleRef.current.value)}
-          />
-          <div className='overflow-auto'>
+          <div className='flex flex-col gap-1'>
+            <BaseInput
+              type='text'
+              label={t('forum.title')}
+              ref={titleRef}
+              onChange={() => {
+                validateTitle(titleRef.current.value);
+              }}
+              onBlur={() => validateTitle(titleRef.current.value)}
+              isValid={isValidTitle}
+            />
+            {isValidTitle === false ? (
+              <span className='text-red-500 flex items-center gap-2'>
+                <AlertIcon className='h-6 w-6' color='#ef4444' />
+                <span className={`text-${fontSize}-base`}>{t('admin.common.field_required')}</span>
+              </span>
+            ) : (
+              <span></span>
+            )}
+          </div>
+          <div className='flex flex-col gap-1 overflow-auto'>
             <BaseTextarea
               rows='10'
               width=''
@@ -105,7 +119,16 @@ function ForumPostModal() {
               }}
               onBlur={() => validateDescription(descRef.current.value)}
               secondLabel={t('common.description-max')}
+              isValid={isValidDesc}
             />
+            {isValidDesc === false ? (
+              <span className='text-red-500 flex items-center gap-2'>
+                <AlertIcon className='h-6 w-6' color='#ef4444' />
+                <span className={`text-${fontSize}-base`}>{t('admin.common.field_required')}</span>
+              </span>
+            ) : (
+              <span></span>
+            )}
           </div>
           <div className='flex justify-center mt-2 gap-4'>
             <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => closeModal()} />

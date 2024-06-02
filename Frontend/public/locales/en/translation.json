@@ -70,7 +70,9 @@
         "not_verified_place": "Unverified place",
         "not_verified_trail": "Unverified trail",
         "reset_password_email": "An email regarding password reset has been sent to your email address.",
-        "pass_changed_success": "Your password has been successfully changed"
+        "pass_changed_success": "Your password has been successfully changed",
+        "no_images": "No images available for this element.",
+        "given_email_exists": "A user account with this email address already exists."
     },
     "forum": {
         "comment_content": "Comment-Content",
@@ -182,9 +184,8 @@
         "none": "None",
         "notificiation_info": "All - all notifications will be displayed in user notification section. \n Important - Only important notifications will be displayed like (Consideration of point reporting, ...). \n None - No message will be displayed.",
         "notificiation_level": "Notificiations level:",
-        "font1": "Big",
-        "font2": "Medium",
-        "font3": "Small",
+        "font1": "Normal",
+        "font2": "Large",
         "color1": "Light theme",
         "color2": "Dark theme",
         "color3": "Contrast",
