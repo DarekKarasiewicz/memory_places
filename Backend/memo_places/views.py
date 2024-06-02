@@ -56,7 +56,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         try:
             serializer.is_valid(raise_exception=True)
         except:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.is_valid().errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = get_object_or_404(User,email=request.data['email'])
         if not user.confirmed:
