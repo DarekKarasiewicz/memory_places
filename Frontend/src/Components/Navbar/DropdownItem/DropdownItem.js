@@ -6,9 +6,12 @@ import MapIcon from 'icons/MapIcon';
 import ForumIcon from 'icons/ForumIcon';
 import UserIcon from 'icons/UserIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function DropdownItem({ icon, name, onClick }) {
   const [isHovering, setIsHovering] = useState(false);
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const iconComponents = {
     map: <MapIcon className='h-8 w-8' />,
@@ -47,9 +50,13 @@ function DropdownItem({ icon, name, onClick }) {
             animate='visible'
             variants={variantsToFade}
             transition={{ duration: 0.5 }}
-            className='h-12 w-auto absolute left-6 bg-mainBgColor text-textColor pointer-events-none z-0 px-2 flex justify-end rounded-lg items-center leading-4'
+            className='h-12 w-auto absolute left-6 bg-mainBgColor text-textColor pointer-events-none z-0 px-2 flex justify-end rounded-lg items-center'
           >
-            <span className='ml-6 capitalize text-left'>
+            <span
+              className={`ml-6 capitalize text-left text-${fontSize}-base ${
+                fontSize === 'base' ? 'leading-4' : 'leading-5'
+              }`}
+            >
               {name ? name : t('common.not_given_name')}
             </span>
           </motion.div>

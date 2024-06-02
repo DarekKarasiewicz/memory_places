@@ -27,6 +27,7 @@ import BaseImageUpload from 'Components/Base/BaseImageUpload/BaseImageUpload';
 import AlertIcon from 'icons/AlertIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function AdminTrailActionSection({ action, trailId }) {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function AdminTrailActionSection({ action, trailId }) {
   const [cordsPosition, setCordsPosition] = useState(null);
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
+  const { fontSize } = useFontSize();
 
   const fetchTypeItems = async () => {
     try {
@@ -321,7 +323,9 @@ function AdminTrailActionSection({ action, trailId }) {
   return (
     <>
       <div className='px-24 py-12 bg-secondaryBgColor text-textColor min-h-[calc(100vh-5rem)] flex flex-col gap-6 h-full relative'>
-        <div className='flex justify-start ml-6 items-center gap-4 text-4xl font-bold'>
+        <div
+          className={`flex justify-start ml-6 items-center gap-4 text-${fontSize}-4xl font-bold`}
+        >
           <PinIcon />
           <span>{actionTitle}</span>
         </div>
@@ -344,7 +348,7 @@ function AdminTrailActionSection({ action, trailId }) {
                     onBlur={() => validateName(nameRef.current.value)}
                     readOnly={isReadOnly}
                   />
-                  <div className='flex justify-between px-2'>
+                  <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                     {!isValidName ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -373,7 +377,9 @@ function AdminTrailActionSection({ action, trailId }) {
                     {!isValidType ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.field_required')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -395,7 +401,9 @@ function AdminTrailActionSection({ action, trailId }) {
                     {!isValidPeriod ? (
                       <span className='text-red-500 flex items-center gap-2'>
                         <AlertIcon className='h-6 w-6' color='#ef4444' />
-                        <span>{t('admin.common.field_required')}</span>
+                        <span className={`text-${fontSize}-base`}>
+                          {t('admin.common.field_required')}
+                        </span>
                       </span>
                     ) : (
                       <span></span>
@@ -405,7 +413,7 @@ function AdminTrailActionSection({ action, trailId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.lat_lng_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.lat_lng_info')}</p>
               <BaseButton
                 breakWidth={true}
                 className='w-fit'
@@ -416,7 +424,7 @@ function AdminTrailActionSection({ action, trailId }) {
               />
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.desc_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.desc_info')}</p>
               <div className='flex flex-col gap-2'>
                 <BaseTextarea
                   rows='12'
@@ -431,7 +439,7 @@ function AdminTrailActionSection({ action, trailId }) {
                   }}
                   readOnly={isReadOnly}
                 />
-                <div className='flex justify-between px-2'>
+                <div className={`flex justify-between px-2 text-${fontSize}-base`}>
                   {!isValidDesc ? (
                     <span className='text-red-500 flex items-center gap-2'>
                       <AlertIcon className='h-6 w-6' color='#ef4444' />
@@ -445,7 +453,7 @@ function AdminTrailActionSection({ action, trailId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('common.useful_links')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('common.useful_links')}</p>
               <div className='flex flex-col gap-2'>
                 <div className='flex justify-center items-center gap-2'>
                   <WikiIcon />
@@ -470,7 +478,7 @@ function AdminTrailActionSection({ action, trailId }) {
               </div>
             </div>
             <div className='flex flex-col gap-4 bg-thirdBgColor p-10'>
-              <p className='text-xl'>{t('admin.common.verification_info')}</p>
+              <p className={`text-${fontSize}-xl`}>{t('admin.common.verification_info')}</p>
               <BaseRadioGroup
                 options={verificationOptions}
                 selectedValue={toVerification}

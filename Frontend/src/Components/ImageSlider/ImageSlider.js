@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ArrowLeftIcon from 'icons/ArrowLeftIcon';
 import ArrowRightIcon from 'icons/ArrowRightIcon';
@@ -8,6 +9,7 @@ function ImageSlider({ slides }) {
   const [translation, setTranslation] = useState(0);
   const slidesLength = slides.length;
   const [isAnyImages, setIsAnyImages] = useState(false);
+  const { t } = useTranslation();
 
   const nextSlide = () => {
     setCurrentSlide(currentSlide !== slidesLength - 1 ? currentSlide + 1 : currentSlide);
@@ -80,7 +82,7 @@ function ImageSlider({ slides }) {
         </>
       ) : (
         <div className='flex justify-center items-center h-full w-full'>
-          <p>No images available for this element.</p>
+          <p>{t('common.no_images')}</p>
         </div>
       )}
     </section>

@@ -9,7 +9,11 @@ import CommentIcon from 'icons/CommentIcon';
 import ContactIcon from 'icons/ContactIcon';
 import WebChangesIcon from 'icons/admin/WebChangesIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function AdminMenuItem(props) {
+  const { fontSize } = useFontSize();
+
   const iconComponents = {
     statistics: <StatisticsIcon />,
     userGroup: <UserGroupIcon />,
@@ -34,7 +38,7 @@ function AdminMenuItem(props) {
         onClick={props.onClick}
       >
         {IconComponent}
-        <span className='leading-5 flex-grow'>{props.name}</span>
+        <span className={`text-${fontSize}-base leading-5 flex-grow`}>{props.name}</span>
       </div>
     </>
   );

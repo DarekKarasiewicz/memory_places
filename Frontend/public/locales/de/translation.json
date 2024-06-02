@@ -70,7 +70,9 @@
         "not_verified_place": "Nicht verifizierter Ort",
         "not_verified_trail": "Nicht verifizierte Strecke",
         "reset_password_email": "Eine E-Mail bezüglich der Zurücksetzung Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet.",
-        "pass_changed_success": "Ihr Passwort wurde erfolgreich geändert"
+        "pass_changed_success": "Ihr Passwort wurde erfolgreich geändert",
+        "no_images": "Keine Bilder verfügbar für dieses Element.",
+        "given_email_exists": "Ein Benutzerkonto mit dieser E-Mail-Adresse existiert bereits."
     },
     "forum": {
         "comment_content": "Kommentarinhalt",
@@ -182,9 +184,8 @@
         "none": "Keine",
         "notification_info": "Alle - Alle Benachrichtigungen werden im Benachrichtigungsbereich des Benutzers angezeigt. \n Wichtig - Es werden nur wichtige Benachrichtigungen angezeigt, wie (Berichterstattung über Gedenkstättenpunkte, ...). \n Keine - Es werden keine Nachrichten angezeigt.",
         "notification_level": "Benachrichtigungsstufe",
-        "font1": "Groß",
-        "font2": "Mittel",
-        "font3": "Klein",
+        "font1": "Normal",
+        "font2": "Groß",
         "color1": "Helles Thema",
         "color2": "Dunkles Thema",
         "color3": "Kontrast",

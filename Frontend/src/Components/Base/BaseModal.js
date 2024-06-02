@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function BaseModal(props) {
+  const { fontSize } = useFontSize();
   const parentItem = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -27,7 +30,9 @@ function BaseModal(props) {
           animate='visible'
         >
           {props.title && (
-            <div className='text-center border-b-2 border-textColor pb-4 text-2xl font-bold'>
+            <div
+              className={`text-center border-b-2 border-textColor pb-4 text-${fontSize}-2xl font-bold`}
+            >
               {props.title}
             </div>
           )}

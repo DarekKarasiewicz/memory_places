@@ -21,6 +21,7 @@ import adminDataReducer from './adminDataSlice';
 import forumDataReducer from './forumDataSlice';
 import approvalModalReducer from './approvalModalSlice';
 import addObjectImageReducer from './addObjectImageSlice';
+import advancedObjectReducer from './advancedObjectSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -50,6 +51,7 @@ export const store = configureStore({
     forumData: forumDataReducer,
     approvalModal: approvalModalReducer,
     addObjectImage: addObjectImageReducer,
+    advancedObject: advancedObjectReducer,
   },
   middleware: customizedMiddleware,
 });

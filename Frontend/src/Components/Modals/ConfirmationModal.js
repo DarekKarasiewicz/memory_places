@@ -7,12 +7,15 @@ import { confirmationModalActions, selectConfirmationModal } from 'Redux/confirm
 import CheckIcon from 'icons/CheckIcon';
 import CancelIcon from 'icons/CancelIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ConfirmationModal() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectConfirmationModal);
   const { type } = modalData;
   const { t } = useTranslation();
   const [progress, setProgress] = useState(100);
+  const { fontSize } = useFontSize();
 
   const handleConfirmationModalVisibility = () => {
     dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -51,20 +54,20 @@ function ConfirmationModal() {
             } `}
           >
             <div className='flex justify-center items-center px-4 py-3 rounded-xl'>
-              <div className='flex gap-2 justify-center items-center text-textColor min-w-64'>
+              <div
+                className={`flex gap-2 justify-center items-center text-textColor min-w-64 text-${fontSize}-xl`}
+              >
                 {type === 'success' ? (
                   <>
                     <CheckIcon color='#22c55e' className='h-12 w-12' />
-                    <span className='text-xl text-green-500 font-bold'>
+                    <span className='text-green-500 font-bold'>
                       {t('admin.content.alert_success')}
                     </span>
                   </>
                 ) : (
                   <>
                     <CancelIcon color='#ef4444' className='h-12 w-12' />
-                    <span className='text-xl text-red-500 font-bold'>
-                      {t('admin.content.alert_error')}
-                    </span>
+                    <span className='text-red-500 font-bold'>{t('admin.content.alert_error')}</span>
                   </>
                 )}
               </div>

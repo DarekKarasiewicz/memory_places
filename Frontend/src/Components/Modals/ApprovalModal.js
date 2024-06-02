@@ -12,12 +12,14 @@ import TrashIcon from 'icons/TrashIcon';
 import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ApprovalModal() {
   const dispatch = useDispatch();
   const approvalData = useSelector(selectApprovalModal);
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
+  const { fontSize } = useFontSize();
 
   const handleSumbit = async () => {
     const objectToDelete = approvalData.type === 'place' ? 'places' : 'path';
@@ -58,10 +60,12 @@ function ApprovalModal() {
         >
           <div className='flex flex-col gap-2 justify-center items-center text-textColor'>
             <TrashIcon className='h-20 w-20' />
-            <span className='text-2xl font-bold'>{t('user.delete-title')}</span>
+            <span className={`text-${fontSize}-2xl font-bold`}>{t('user.delete-title')}</span>
           </div>
           <div className='flex justify-center items-center my-4'>
-            <span className='text-2xl text-center text-textColor'>{t('user.delete_info')}</span>
+            <span className={`text-${fontSize}-2xl text-center text-textColor`}>
+              {t('user.delete_info')}
+            </span>
           </div>
           <div className='flex justify-center items-center gap-4'>
             <BaseButton

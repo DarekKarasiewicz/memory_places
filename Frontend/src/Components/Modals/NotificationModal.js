@@ -9,12 +9,15 @@ import AlertCircleIcon from 'icons/dialog/AlertCircleIcon';
 import CheckCircleIcon from 'icons/dialog/CheckCircleIcon';
 import WarningCircleIcon from 'icons/dialog/WarningCircleIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function NotificationModal() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectNotificationModal);
   const { type, title } = modalData;
   const { t } = useTranslation();
   const [iconComponent, setIconComponent] = useState(null);
+  const { fontSize } = useFontSize();
 
   const handleNotificationModalVisibility = () => {
     dispatch(notificationModalActions.changeIsNotificationModalOpen());
@@ -40,9 +43,9 @@ function NotificationModal() {
         transition={{ duration: 0.25, ease: 'easeOut' }}
       >
         <div className='flex justify-center items-center'>
-          <div className='flex flex-col justify-center items-center gap-2 text-xl'>
+          <div className={`flex flex-col justify-center items-center gap-2 text-${fontSize}-2xl`}>
             {iconComponent}
-            <span className='normal-case font-medium text-2xl'>{title}</span>
+            <span className='normal-case font-medium'>{title}</span>
           </div>
         </div>
         <div className='flex justify-center gap-2 mb-2'>

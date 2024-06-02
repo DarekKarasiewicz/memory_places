@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import LanguageSwitcher from 'Components/LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from 'Components/ThemeSwitcher/ThemeSwitcher';
+import FontSizeSwitcher from 'Components/FontSizeSwitcher/FontSizeSwitcher';
 import CancelIcon from 'icons/CancelIcon';
 import MenuIcon from 'icons/MenuIcon';
 import DropdownItem from 'Components/Navbar/DropdownItem/DropdownItem';
@@ -16,6 +17,7 @@ import i18n from 'i18n';
 import 'moment/locale/pl';
 import 'moment/locale/ru';
 import 'moment/locale/de';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ContentNavbar({ showLogo }) {
   const [isActive, setIsActive] = useState(false);
@@ -25,6 +27,7 @@ function ContentNavbar({ showLogo }) {
   const [lang, setLang] = useState(i18n.language);
   const [date, setDate] = useState(false);
   const wrapperRef = useRef(null);
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     moment.locale(lang);
@@ -100,9 +103,9 @@ function ContentNavbar({ showLogo }) {
         {showLogo ? (
           <div className='flex items-center gap-3 ml-4'>
             <section className='w-8 h-8 flex justify-center items-center'>
-              <img src='../../assets/memory_places_logo.png' alt='memorial place logo'></img>
+              <img src='/assets/memory_places_logo.png' alt='memorial place logo'></img>
             </section>
-            <div className='text-3xl ml-4'>
+            <div className={`text-${fontSize}-3xl ml-4`}>
               {t('admin.common.welcome', { user: user.username })}
             </div>
           </div>
@@ -133,13 +136,16 @@ function ContentNavbar({ showLogo }) {
                 </motion.ul>
               )}
             </div>
-            <div className='text-3xl'>{t('admin.common.welcome', { user: user.username })}</div>
+            <div className={`text-${fontSize}-3xl`}>
+              {t('admin.common.welcome', { user: user.username })}
+            </div>
           </div>
         )}
 
         <div className='flex'>
           <div className='flex justify-end items-center gap-6 py-2 pr-4 border-r-2'>
-            <span className='capitalize font-semibold'>{date}</span>
+            <span className={`capitalize font-semibold text-${fontSize}-base`}>{date}</span>
+            <FontSizeSwitcher />
             <LanguageSwitcher variant='admin_dashboard' />
             <ThemeSwitcher />
           </div>

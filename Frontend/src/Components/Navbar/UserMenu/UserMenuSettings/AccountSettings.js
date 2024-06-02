@@ -12,6 +12,8 @@ import UserIcon from 'icons/UserIcon';
 import AccountIcon from 'icons/AccountIcon';
 import AlertIcon from 'icons/AlertIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function AccountSettings() {
   const [isValidUsername, setIsValidUsername] = useState(null);
   const [isValidEmail, setIsValidEmail] = useState(null);
@@ -21,6 +23,7 @@ function AccountSettings() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = cookies.user;
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     if (user) {
@@ -105,9 +108,9 @@ function AccountSettings() {
 
   return (
     <motion.div variants={parentItem} initial='hidden' animate='visible'>
-      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+      <div className='flex items-center gap-2 border-b-2 border-textColor px-2 pb-2'>
         <AccountIcon />
-        <span>{t('user.account')}</span>
+        <span className={`text-${fontSize}-2xl`}>{t('user.account')}</span>
       </div>
       <div className='flex flex-col justify-center gap-2 my-4 items-center'>
         <div className='relative'>
@@ -117,8 +120,8 @@ function AccountSettings() {
           </motion.div>
         </div>
         <div className='flex flex-col justify-center items-center leading-5'>
-          <span className='text-xl'>{user.username}</span>
-          <span className='text-lg normal-case'>
+          <span className={`text-${fontSize}-xl`}>{user.username}</span>
+          <span className={`text-${fontSize}-lg normal-case`}>
             Account type: {user.admin ? t('user.admin') : t('user.user')}
           </span>
         </div>
@@ -138,7 +141,7 @@ function AccountSettings() {
           {isValidUsername === false && (
             <span className='text-red-500 flex items-center gap-2'>
               <AlertIcon className='h-6 w-6' color='#ef4444' />
-              <p className='text-base'>{t('user.name_error')}</p>
+              <p className={`text-${fontSize}-base`}>{t('user.name_error')}</p>
             </span>
           )}
         </div>
@@ -156,7 +159,7 @@ function AccountSettings() {
           {isValidEmail === false && (
             <span className='text-red-500 flex items-center gap-2'>
               <AlertIcon className='h-6 w-6' color='#ef4444' />
-              <p className='text-base'>{t('user.email_error')}</p>
+              <p className={`text-${fontSize}-base`}>{t('user.email_error')}</p>
             </span>
           )}
         </div>

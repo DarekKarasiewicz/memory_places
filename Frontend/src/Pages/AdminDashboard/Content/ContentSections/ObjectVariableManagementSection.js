@@ -14,6 +14,7 @@ import HelpIcon from 'icons/HelpIcon';
 import RefreshIcon from 'icons/RefreshIcon';
 
 import { registerAppChanges } from 'utils';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function ObjectVariableManagementSection() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function ObjectVariableManagementSection() {
   const [cookies] = useCookies(['user']);
   const modalData = useSelector(selectAdminData);
   const { isVariablesChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const pushValuesToTranslate = (...elements) => {
     setTranslateValue((prevValues) => [...new Set([...prevValues, ...elements])]);
@@ -140,8 +142,8 @@ function ObjectVariableManagementSection() {
     <>
       <div className='flex justify-between items-center'>
         <div className='flex flex-col gap-1'>
-          <span className='text-3xl'>{t('admin.common.var_manage_title')}</span>
-          <span className='text-md'>{t('admin.content.variable_info')}</span>
+          <span className={`text-${fontSize}-3xl`}>{t('admin.common.var_manage_title')}</span>
+          <span className={`text-${fontSize}-base`}>{t('admin.content.variable_info')}</span>
         </div>
         <div className='flex items-center gap-4'>
           <motion.div
@@ -163,7 +165,7 @@ function ObjectVariableManagementSection() {
                 variants={parentItem}
                 initial='hidden'
                 animate='visible'
-                className='absolute w-96 top-12 p-4 right-0 bg-mainBgColor text-textColor shadow-itemShadow flex flex-col gap-2'
+                className={`absolute w-96 top-12 p-4 right-0 bg-mainBgColor text-textColor shadow-itemShadow flex flex-col gap-2 text-${fontSize}-base`}
               >
                 <span>{t('admin.content.place_var_info')}</span>
                 <span>{t('admin.content.place_var_info2')}</span>

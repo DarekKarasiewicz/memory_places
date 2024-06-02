@@ -2,8 +2,11 @@ import { useTranslation } from 'react-i18next';
 
 import UserIcon from 'icons/UserIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ForumPlace({ currentData, onClick }) {
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   if (!currentData || currentData.length === 0) {
     return null;
@@ -20,11 +23,13 @@ function ForumPlace({ currentData, onClick }) {
         onClick={onClick}
       >
         <div className='flex justify-start'>
-          <div className='flex items-center gap-2'>
+          <div className={`flex items-center gap-2 text-${fontSize}-base`}>
             <UserIcon className='h-6 w-6' />
-            <div>{currentData.username}</div>
-            <div>- {currentData.creation_date.split('T')[0]}</div>
-            {isNew && <div className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</div>}
+            <span>{currentData.username}</span>
+            <span>- {currentData.creation_date.split('T')[0]}</span>
+            {isNew && (
+              <span className='rounded-lg bg-thirdBgColor py-1 px-2'>{t('forum.new')}</span>
+            )}
           </div>
         </div>
         <div className='flex gap-2'>
@@ -35,22 +40,21 @@ function ForumPlace({ currentData, onClick }) {
               className='w-full h-full object-cover'
             />
           </div>
-          <div className='w-2/3'>
-            <div className='text-xl'>{currentData.place_name}</div>
-            <div>{currentData.description}</div>
+          <div className='w-2/3 flex flex-col gap-2'>
+            <span className={`text-${fontSize}-xl`}>{currentData.place_name}</span>
+            <span className={`text-${fontSize}-base`}>{currentData.description}</span>
           </div>
         </div>
-        <div className='flex items-center gap-2 my-2'>
-          {/* <span>{currentData.kind} - </span> */}
+        <div className={`flex items-center gap-2 my-2 text-${fontSize}-xs`}>
           {currentData.sortof_value && (
-            <span className='p-1 bg-red-600 text-xs rounded-lg'>
+            <span className='p-1 bg-red-600 rounded-lg'>
               {t(`modal.${currentData.sortof_value}`)}
             </span>
           )}
-          <span className='p-1 bg-green-600 text-xs rounded-lg'>
+          <span className='p-1 bg-green-600 rounded-lg'>
             {t(`modal.${currentData.type_value}`)}
           </span>
-          <span className='p-1 bg-yellow-600 text-xs rounded-lg'>
+          <span className='p-1 bg-yellow-600 rounded-lg'>
             {t(`modal.${currentData.period_value}`)}
           </span>
         </div>

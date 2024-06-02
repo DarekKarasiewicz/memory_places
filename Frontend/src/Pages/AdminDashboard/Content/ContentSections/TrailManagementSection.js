@@ -8,6 +8,8 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminTileStat from '../Charts/AdminTileStat';
 import TrailTable from '../Tables/TrailTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function TrailManagementSection() {
   const { t } = useTranslation();
   const [trails, setTrails] = useState([]);
@@ -15,6 +17,7 @@ function TrailManagementSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isTrailsChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchTrailItems = async () => {
     try {
@@ -115,8 +118,8 @@ function TrailManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.trail_manage_title')}</span>
-        <span className='text-md'>{t('admin.content.all_trails_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.trail_manage_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.all_trails_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>

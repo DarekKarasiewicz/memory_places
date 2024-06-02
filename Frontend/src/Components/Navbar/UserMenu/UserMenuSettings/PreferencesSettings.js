@@ -7,6 +7,7 @@ import PreferencesIcon from 'icons/PreferencesIcon';
 
 import i18n from 'i18n';
 import { useTheme } from 'Components/ThemeSwitcher/ThemeContext';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function PreferencesSettings() {
   const [selectedFontSizeOption, setSelectedFontSizeOption] = useState('');
@@ -14,6 +15,7 @@ function PreferencesSettings() {
   const themeRef = useRef();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     languageRef.current.value = i18n.language;
@@ -40,13 +42,9 @@ function PreferencesSettings() {
     // { label: t('user.color3'), value: 'contrast1' },
   ];
 
-  {
-    /* Add maybe options for specific numbers like 12px, 14px, 16px, etc ... */
-  }
   const font_size_options = [
-    { label: t('user.font1'), value: 'big' },
-    { label: t('user.font2'), value: 'medium' },
-    { label: t('user.font3'), value: 'small' },
+    { label: t('user.font1'), value: 'base' },
+    { label: t('user.font2'), value: 'big' },
   ];
 
   const parentItem = {
@@ -63,9 +61,9 @@ function PreferencesSettings() {
 
   return (
     <motion.div variants={parentItem} initial='hidden' animate='visible'>
-      <div className='border-b-2 border-textColor pr-2 pb-2 pl-2 text-2xl flex gap-2'>
+      <div className='flex items-center gap-2 border-b-2 border-textColor px-2 pb-2'>
         <PreferencesIcon />
-        <span>{t('user.preferences')}</span>
+        <span className={`text-${fontSize}-2xl`}>{t('user.preferences')}</span>
       </div>
       <div className='flex flex-col items-center py-4 gap-4'>
         <div className='flex flex-col items-center gap-4 w-1/2'>

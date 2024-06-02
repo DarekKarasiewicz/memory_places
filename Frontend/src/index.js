@@ -18,6 +18,7 @@ import MemoryPlaces from 'Pages/MemoryPlaces/MemoryPlaces.js';
 import PasswordResetPage from 'Components/PasswordResetPage/PasswordResetPage.js';
 
 import { ThemeProvider } from './Components/ThemeSwitcher/ThemeContext.js';
+import { FontSizeProvider } from 'Components/FontSizeSwitcher/FontSizeContext.js';
 import './index.css';
 
 function ProtectedRoute({ role, roles, element }) {
@@ -132,7 +133,9 @@ root.render(
         <Provider store={store}>
           <APIProvider apiKey={googleApiKey} libraries={['places']}>
             <ThemeProvider>
-              <AppUrls />
+              <FontSizeProvider>
+                <AppUrls />
+              </FontSizeProvider>
             </ThemeProvider>
           </APIProvider>
         </Provider>

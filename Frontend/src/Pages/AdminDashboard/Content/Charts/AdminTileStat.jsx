@@ -13,7 +13,11 @@ import TrailIcon from 'icons/TrailIcon';
 import PostIcon from 'icons/PostIcon';
 import CommentIcon from 'icons/CommentIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function AdminTileStat(props) {
+  const { fontSize } = useFontSize();
+
   const iconComponents = {
     userGroup: <UserGroupIcon />,
     places: <PlacesIcon />,
@@ -34,12 +38,12 @@ function AdminTileStat(props) {
   return (
     <>
       <div className='flex flex-col justify-between rounded-lg h-40 px-6 py-6 bg-mainBgColor'>
-        <span className='flex justify-start items-center gap-2 text-2xl leading-6'>
+        <span className={`flex justify-start items-center gap-2 text-${fontSize}-2xl leading-6`}>
           {IconComponent ? IconComponent : null}
-          <span className=''>{props.title}</span>
+          <span>{props.title}</span>
         </span>
         <div className='flex justify-between mx-4'>
-          <span className='text-3xl font-semibold'>{props.value}</span>
+          <span className={`text-${fontSize}-3xl font-semibold`}>{props.value}</span>
         </div>
       </div>
     </>

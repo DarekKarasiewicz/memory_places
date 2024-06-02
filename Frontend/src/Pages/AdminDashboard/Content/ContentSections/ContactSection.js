@@ -7,12 +7,15 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 import ContactTable from '../Tables/ContactTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ContactSection() {
   const { t } = useTranslation();
   const [contactData, setContactData] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isContactChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchContactItems = async () => {
     try {
@@ -67,8 +70,8 @@ function ContactSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.contact_title')}</span>
-        <span className='text-md'>{t('admin.content.contact_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.contact_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.contact_info')}</span>
       </div>
       <div className='w-full flex flex-col gap-3'>
         <ContactTable data={contactData} columns={contactColumns} />

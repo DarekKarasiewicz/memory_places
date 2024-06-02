@@ -105,7 +105,7 @@ function AdminMenu() {
       <div className='flex flex-col gap-8 items-center'>
         <section className='w-32 h-32 mt-4 flex justify-center items-center'>
           <img
-            src='./assets/memory_places_logo.png'
+            src='/assets/memory_places_logo.png'
             alt='memorial place logo'
             className='h-full w-auto'
           ></img>

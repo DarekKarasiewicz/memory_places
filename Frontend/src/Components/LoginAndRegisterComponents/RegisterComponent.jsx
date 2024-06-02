@@ -55,6 +55,13 @@ const RegisterComponent = ({ setIsLogging }) => {
           dispatch(notificationModalActions.changeTitle(t('common.verify_account')));
           dispatch(notificationModalActions.changeIsNotificationModalOpen());
           setIsLogging(true);
+        })
+        .error((error) => {
+          if (error.response.data.error === 'User exist') {
+            dispatch(notificationModalActions.changeType('alert'));
+            dispatch(notificationModalActions.changeTitle(t('common.given_email_exists')));
+            dispatch(notificationModalActions.changeIsNotificationModalOpen());
+          }
         });
     } else {
       dispatch(notificationModalActions.changeType('alert'));

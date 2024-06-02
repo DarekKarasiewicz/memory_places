@@ -8,6 +8,8 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminTileStat from '../Charts/AdminTileStat';
 import CommentsTable from '../Tables/CommentsTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function CommentManagementSection() {
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
@@ -15,6 +17,7 @@ function CommentManagementSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isCommentsChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchCommentItems = async () => {
     try {
@@ -112,8 +115,8 @@ function CommentManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.comment_manage_title')}</span>
-        <span className='text-md'>{t('admin.content.all_comment_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.comment_manage_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.all_comment_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>

@@ -20,9 +20,12 @@ import WaysideShrineIcon from 'icons/places_icons/WaysideShrineIcon';
 import EditIcon from 'icons/EditIcon';
 import TrashIcon from 'icons/TrashIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const UserPlaceItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();
@@ -81,8 +84,10 @@ const UserPlaceItem = (props) => {
         {IconComponent}
       </div>
       <div className='w-7/12 flex flex-col mx-2'>
-        <h2 className='truncate font-semibold h-full'>{props.place.place_name}</h2>
-        <p className='text-sm'>{props.place.creation_date}</p>
+        <h2 className={`truncate font-semibold h-full text-${fontSize}-base`}>
+          {props.place.place_name}
+        </h2>
+        <p className={`text-${fontSize}-sm`}>{props.place.creation_date}</p>
       </div>
       {props.place.verified === false && (
         <div className='w-3/12 flex justify-end items-center gap-2 mr-2'>

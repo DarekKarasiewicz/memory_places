@@ -4,8 +4,12 @@ import BaseButton from 'Components/Base/BaseButton';
 import BaseModal from 'Components/Base/BaseModal';
 import FAQItems from './FAQItem.js/FAQItems';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function FAQ(props) {
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
+
   const FAQ_text = [
     {
       title: 'Test article 1',
@@ -24,9 +28,9 @@ function FAQ(props) {
   return (
     <>
       <BaseModal title={t('user.FAQ_title')}>
-        <div className='flex flex-col gap-4 max-h-[40rem] overflow-auto scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600 rounded-[24px]  h-auto p-4 relative'>
+        <div className='flex flex-col gap-4 max-h-[40rem] overflow-auto scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600 rounded-[24px] h-auto p-4 relative'>
           <div className='mb-3 text-left'>
-            <span className='text-lg break-keep'>{t('user.FAQ_subtitle')}</span>
+            <span className={`text-${fontSize}-lg break-keep`}>{t('user.FAQ_subtitle')}</span>
           </div>
           <div className='flex flex-col gap-2'>
             {FAQ_text.map((item, key) => (

@@ -7,12 +7,15 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 
 import HistoryTable from '../Tables/HistoryTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function ChangesHistorySection() {
   const { t } = useTranslation();
   const [changesData, setChangesData] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isHistoryChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchHistoryItems = async () => {
     try {
@@ -76,8 +79,8 @@ function ChangesHistorySection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.history_title')}</span>
-        <span className='text-md'>{t('admin.content.history_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.history_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.history_info')}</span>
       </div>
       <div className='w-full flex flex-col gap-3'>
         <HistoryTable data={changesData} columns={changesColumns} />

@@ -8,12 +8,15 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminMultiDataBarChart from '../Charts/AdminMultiDataBarChart';
 import AdminTileStat from '../Charts/AdminTileStat';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function StatisticsSection() {
   const { t } = useTranslation();
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isStatisticsChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchStatisticItems = async () => {
     try {
@@ -141,8 +144,8 @@ function StatisticsSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.statistics_title')}</span>
-        <span className='text-md'>{t('admin.content.statistics_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.statistics_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.statistics_info')}</span>
       </div>
       <div className='grid grid-cols-5 grid-rows-9 gap-6 h-screen'>
         <AdminTileStat

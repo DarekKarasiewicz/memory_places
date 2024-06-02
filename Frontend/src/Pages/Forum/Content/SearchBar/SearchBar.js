@@ -5,9 +5,12 @@ import { useTranslation } from 'react-i18next';
 import SearchIcon from 'icons/SearchIcon';
 import CancelIcon from 'icons/CancelIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function SearchBar({ onSearchClick }) {
   const inputRef = useRef(null);
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   const clearSearchBar = () => {
     inputRef.current.value = '';
@@ -40,7 +43,7 @@ function SearchBar({ onSearchClick }) {
             <input
               type='text'
               placeholder={t('common.search')}
-              className='h-10 w-full shadow-itemShadow rounded-lg pl-3 py-3 pr-9 focus:outline-contrastColor text-black'
+              className={`h-10 w-full shadow-itemShadow rounded-lg pl-3 py-3 pr-9 focus:outline-contrastColor text-black text-${fontSize}-base`}
               ref={inputRef}
             />
             <CancelIcon

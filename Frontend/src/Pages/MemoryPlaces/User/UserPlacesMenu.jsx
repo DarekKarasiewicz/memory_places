@@ -4,21 +4,17 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
 import { selectUserPlaces, userPlacesActions } from 'Redux/userPlacesSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
-import { deletePlace } from 'Redux/allMapPlacesSlice';
-import { deleteTrail } from 'Redux/allMapTrailsSlice';
 
 import UserObjectsList from './UserObjectsList';
 import CancelIcon from 'icons/CancelIcon';
 import PlaceIcon from 'icons/PlaceIcon';
 import TrailIcon from 'icons/TrailIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const UserMenu = () => {
-  const filterPlaces = useSelector((state) => state.allMapPlaces.filterItems);
-  const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
-  const updatePlaceData = useSelector(selectUpdatePlace);
   const dispatch = useDispatch();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
@@ -26,6 +22,7 @@ const UserMenu = () => {
   const [userTrails, setUserTrails] = useState(null);
   const userPlaceData = useSelector(selectUserPlaces);
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     axios
@@ -95,7 +92,7 @@ const UserMenu = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-mainBgColor pb-5 shadow-xl flex flex-col gap-4`}
+      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-mainBgColor pb-4 shadow-xl flex flex-col gap-2`}
     >
       <div className='h-12 my-2 mx-4 flex justify-between items-center'>
         <motion.div
@@ -105,7 +102,9 @@ const UserMenu = () => {
         >
           <CancelIcon />
         </motion.div>
-        <div className='w-full text-xl font-bold flex justify-center items-center normal-case text-textColor'>
+        <div
+          className={`w-full text-${fontSize}-xl font-bold flex justify-center items-center normal-case text-textColor`}
+        >
           {userPlaceData.isTrailActive ? t('user.your_trails') : t('user.your_memory_places')}
         </div>
         <div className='flex flex-row'>

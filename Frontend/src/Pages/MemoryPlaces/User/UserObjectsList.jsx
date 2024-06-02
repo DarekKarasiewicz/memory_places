@@ -4,9 +4,12 @@ import { useTranslation } from 'react-i18next';
 import UserPlaceItem from './UserPlaceItem';
 import UserTrailItem from './UserTrailItem';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const UserPlacesList = ({ userPlaces, userTrails, isTrailActive }) => {
   const [clicked, setClicked] = useState(null);
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     setClicked(null);
@@ -15,7 +18,9 @@ const UserPlacesList = ({ userPlaces, userTrails, isTrailActive }) => {
   const displayPlacesList = () => {
     if (userPlaces.length < 1) {
       return (
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-xl'>
+        <div
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-${fontSize}-xl`}
+        >
           {t('common.place_warning')}
         </div>
       );
@@ -36,7 +41,9 @@ const UserPlacesList = ({ userPlaces, userTrails, isTrailActive }) => {
   const displayTrailsList = () => {
     if (userTrails.length < 1) {
       return (
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-xl'>
+        <div
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-textColor whitespace-nowrap text-${fontSize}-xl`}
+        >
           {t('common.trail_warning')}
         </div>
       );

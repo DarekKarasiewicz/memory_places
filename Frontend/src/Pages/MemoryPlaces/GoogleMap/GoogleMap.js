@@ -23,16 +23,18 @@ import { addPlaceActions } from 'Redux/addPlaceSlice';
 import { selectAddTrail } from 'Redux/addTrailSlice.jsx';
 import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { advancedObjectActions } from 'Redux/advancedObjectSlice';
 
 import AddPlaceButton from 'Pages/MemoryPlaces/AddPlace/AddPlaceButton.jsx';
 import Loader from 'Components/Loader/Loader.js';
 import BaseButton from 'Components/Base/BaseButton.js';
-import AdvancedInfoBox from './AdvancedInfoBox/AdvancedInfoBox.js';
 import GoogleMapPin from './GoogleMapPin.jsx';
 import DrawingControl from './TrailDrawing/DrawingControl.jsx';
 import { useDrawingManager } from './TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from './MapOverlay/Polyline.jsx';
 import AlertIcon from 'icons/AlertIcon.jsx';
+
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 const GoogleMap = () => {
   const dispatch = useDispatch();
@@ -54,17 +56,14 @@ const GoogleMap = () => {
   const [trailInfoBoxVisibility, setTrailInfoBoxVisibility] = useState(false);
   const [currentPlace, setCurrentPlace] = useState([]);
   const [currentTrail, setCurrentTrail] = useState([]);
-  const [currentPlaceData, setCurrentPlaceData] = useState([]);
-  const [currentTrailData, setCurrentTrailData] = useState([]);
   const filterItems = useSelector((state) => state.allMapPlaces.filterItems);
   const filteredTrails = useSelector((state) => state.allMapTrails.filterItems);
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
-  const [kind, setKind] = useState(null);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-  const [loadingObject, setLoadingObject] = useState(false);
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -172,49 +171,34 @@ const GoogleMap = () => {
     dispatch(modalsActions.changeIsFormModalOpen());
   };
 
-  const fetchSelectedPlaceInfo = async () => {
+  const fetchSelectedPlaceInfo = async (id) => {
     if (!currentPlace) return;
 
-    setLoadingObject(true);
-
     try {
-      const response = await axios.get(
-        `http://localhost:8000/memo_places/places/pk=${currentPlace.id}`,
-      );
-      setCurrentPlaceData(response.data);
-      dispatch(modalsActions.changeIsAdvancedInfoOpen());
+      const response = await axios.get(`http://localhost:8000/memo_places/places/pk=${id}`);
+      return response.data;
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
-    } finally {
-      setLoadingObject(false);
     }
   };
 
   const fetchSelectedTrailInfo = async () => {
     if (!currentTrail) return;
 
-    setLoadingObject(true);
-
     try {
       const response = await axios.get(
         `http://localhost:8000/memo_places/path/pk=${currentTrail.id}`,
       );
-      setCurrentTrailData(response.data);
-      dispatch(modalsActions.changeIsAdvancedInfoOpen());
+      return response.data;
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.axios_warning')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
-    } finally {
-      setLoadingObject(false);
     }
   };
 
-  const handleAdvancedInfoBoxVisability = () => {
-    dispatch(modalsActions.changeIsAdvancedInfoOpen());
-  };
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
@@ -281,7 +265,7 @@ const GoogleMap = () => {
             </AdvancedMarker>
           ))
         ) : (
-          <p>{t('google_maps.no_items')}</p>
+          <p className={`text-${fontSize}-base`}>{t('google_maps.no_items')}</p>
         )}
         {filteredTrails && filteredTrails.length > 0 ? (
           filteredTrails.map((trail) => (
@@ -295,7 +279,7 @@ const GoogleMap = () => {
             />
           ))
         ) : (
-          <p>{t('google_maps.no_items')}</p>
+          <p className={`text-${fontSize}-base`}>{t('google_maps.no_items')}</p>
         )}
 
         {placeInfoBoxVisibility && (
@@ -308,7 +292,9 @@ const GoogleMap = () => {
               {currentPlace.verified !== true && (
                 <div className='flex justify-center items-center gap-2 bg-yellow-500 rounded-lg p-2 w-full'>
                   <AlertIcon color='#000' />
-                  <span className='text-base font-semibold'>{t('common.not_verified_place')}</span>
+                  <span className={`text-${fontSize}-base font-semibold`}>
+                    {t('common.not_verified_place')}
+                  </span>
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}
@@ -319,7 +305,9 @@ const GoogleMap = () => {
                   className='w-full h-full object-cover'
                 ></img>
               </section>
-              <section className='flex flex-col gap-1 justify-center items-center text-sm'>
+              <section
+                className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
+              >
                 <span className='text-center font-bold'>{currentPlace.place_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
@@ -334,10 +322,17 @@ const GoogleMap = () => {
                 className='text-sm my-1'
                 btnBg='blue'
                 name={t('common.more_info')}
-                onClick={() => {
+                onClick={async () => {
                   closePlaceInfoBox();
-                  setKind('place');
-                  fetchSelectedPlaceInfo();
+                  try {
+                    const placeData = await fetchSelectedPlaceInfo(currentPlace.id);
+
+                    dispatch(advancedObjectActions.changePlace(placeData));
+                    dispatch(advancedObjectActions.changeKind('place'));
+                    dispatch(advancedObjectActions.changeIsAdvancedObjectOpen());
+                  } catch (error) {
+                    console.error('Failed to fetch place data');
+                  }
                 }}
               />
             </div>
@@ -357,7 +352,9 @@ const GoogleMap = () => {
               {currentTrail.verified !== true && (
                 <div className='flex justify-center items-center gap-2 bg-yellow-500 rounded-lg p-2 w-full'>
                   <AlertIcon color='#000' />
-                  <span className='text-base font-semibold'>{t('common.not_verified_trail')}</span>
+                  <span className={`text-${fontSize}-base font-semibold`}>
+                    {t('common.not_verified_trail')}
+                  </span>
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}
@@ -368,7 +365,9 @@ const GoogleMap = () => {
                   className='w-full h-full object-cover'
                 ></img>
               </section>
-              <section className='flex flex-col gap-1 my-1 justify-center items-center text-sm'>
+              <section
+                className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
+              >
                 <span className='text-center font-bold'>{currentTrail.path_name}</span>
                 <span>
                   <span className='italic font-medium'>{t('common.created')}</span>{' '}
@@ -383,23 +382,21 @@ const GoogleMap = () => {
                 className='text-sm my-1'
                 btnBg='blue'
                 name={t('common.more_info')}
-                onClick={() => {
+                onClick={async () => {
                   closeTrailInfoBox();
-                  setKind('trail');
-                  fetchSelectedTrailInfo();
+                  try {
+                    const trailData = await fetchSelectedTrailInfo(currentTrail.id);
+
+                    dispatch(advancedObjectActions.changePlace(trailData));
+                    dispatch(advancedObjectActions.changeKind('trail'));
+                    dispatch(advancedObjectActions.changeIsAdvancedObjectOpen());
+                  } catch (error) {
+                    console.log('Failed to fetch trail data');
+                  }
                 }}
               />
             </div>
           </InfoWindow>
-        )}
-
-        {modalsData.isAdvancedInfoOpen && !loadingObject && (
-          <AdvancedInfoBox
-            placeData={currentPlaceData}
-            trailData={currentTrailData}
-            kind={kind}
-            closeInfo={handleAdvancedInfoBoxVisability}
-          />
         )}
       </Map>
     </div>

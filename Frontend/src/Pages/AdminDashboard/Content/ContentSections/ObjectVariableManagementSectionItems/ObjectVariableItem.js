@@ -11,6 +11,8 @@ import EditIcon from 'icons/EditIcon';
 import Trash2Icon from 'icons/Trash2Icon';
 import PlusIcon from 'icons/PlusIcon';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   { itemsName, items, itemsBase, error },
   ref,
@@ -21,6 +23,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   const [editIndex, setEditIndex] = useState(null);
   const inputRef = useRef(null);
   const baseData = itemsBase;
+  const { fontSize } = useFontSize();
 
   useEffect(() => {
     setData(items);
@@ -154,9 +157,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
             value: valuePreparation(item.name),
             order: item.order,
           })
-          .then((response) => {
-            //console.log(response);
-          })
+          .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();
           });
@@ -170,9 +171,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
             name: item.name,
             order: item.order,
           })
-          .then((response) => {
-            //console.log(response);
-          })
+          .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();
           });
@@ -183,9 +182,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
       dataDeleted.forEach((item) => {
         axios
           .delete(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}`)
-          .then((response) => {
-            //console.log(response);
-          })
+          .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();
           });
@@ -200,13 +197,15 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   return (
     <>
       <div className='bg-mainBgColor p-4 flex flex-col gap-4'>
-        <span className='text-2xl'>
+        <span className={`text-${fontSize}-2xl`}>
           {t(`admin.content.${itemsName}`)} <strong>({data.length})</strong>
         </span>
         <hr />
         <div className='flex justify-center items-center mb-2'>
           <div className='w-1/2'>
-            <label className='block pl-1 pb-1 text-base'>{t('admin.content.select_preview')}</label>
+            <label className={`block pl-1 pb-1 text-${fontSize}-base`}>
+              {t('admin.content.select_preview')}
+            </label>
             <select className='block rounded-l-lg w-full rounded-r-lg p-2 shadow border-2 text-black cursor-pointer'>
               {data.length > 0 ? (
                 <>
@@ -246,12 +245,12 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
                       {editIndex === index ? (
                         <input
                           type='text'
-                          className='text-black py-2 px-3 rounded-lg'
+                          className={`text-black py-2 px-3 rounded-lg text-${fontSize}-base`}
                           defaultValue={item.name}
                           ref={inputRef}
-                        ></input>
+                        />
                       ) : (
-                        <span className='text-lg leading-5'>{item.name}</span>
+                        <span className={`text-${fontSize}-lg leading-5`}>{item.name}</span>
                       )}
                     </div>
                     <div className='flex justify-center items-center gap-1 mr-2'>
@@ -289,7 +288,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
               whileHover={{ scale: 1.05 }}
             >
               <PlusIcon className='h-8 w-8' />
-              <span>{t('admin.content.add_element')}</span>
+              <span className={`text-${fontSize}-base`}>{t('admin.content.add_element')}</span>
             </motion.div>
           </div>
         </div>

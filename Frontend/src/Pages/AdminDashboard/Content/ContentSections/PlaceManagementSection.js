@@ -8,6 +8,8 @@ import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
 import AdminTileStat from '../Charts/AdminTileStat';
 import PlacesTable from '../Tables/PlacesTable';
 
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+
 function PlaceManagementSection() {
   const { t } = useTranslation();
   const [places, setPlaces] = useState([]);
@@ -15,6 +17,7 @@ function PlaceManagementSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isPlacesChanged } = modalData;
+  const { fontSize } = useFontSize();
 
   const fetchPlaceItems = async () => {
     try {
@@ -127,8 +130,8 @@ function PlaceManagementSection() {
   return (
     <>
       <div className='flex flex-col gap-1'>
-        <span className='text-3xl'>{t('admin.common.place_manage_title')}</span>
-        <span className='text-md'>{t('admin.content.all_places_info')}</span>
+        <span className={`text-${fontSize}-3xl`}>{t('admin.common.place_manage_title')}</span>
+        <span className={`text-${fontSize}-base`}>{t('admin.content.all_places_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
         <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>

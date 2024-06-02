@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import DropdownItem from 'Components/Navbar/DropdownItem/DropdownItem';
+import FontSizeSwitcher from 'Components/FontSizeSwitcher/FontSizeSwitcher';
 import LanguageSwitcher from 'Components/LanguageSwitcher/LanguageSwitcher';
 import ThemeSwitcher from 'Components/ThemeSwitcher/ThemeSwitcher';
 import UserMenu from 'Components/Navbar/UserMenu/UserMenu';
@@ -120,6 +121,7 @@ function ContentNavbar({ showLogo }) {
         <div className='flex'>
           <div className='flex justify-between items-center py-2 pr-4 border-r-2'>
             <div className='flex justify-end items-center gap-6'>
+              <FontSizeSwitcher />
               <LanguageSwitcher variant='admin_dashboard' />
               <ThemeSwitcher />
             </div>

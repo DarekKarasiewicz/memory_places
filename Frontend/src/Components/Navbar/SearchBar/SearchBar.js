@@ -11,6 +11,7 @@ import SearchClosedIcon from 'icons/SearchClosedIcon';
 import CancelIcon from 'icons/CancelIcon';
 
 import './AutocompleteStyles.css';
+import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function SearchBar() {
   const [isActive, setIsActive] = useState(false);
   const [searchedText, setSearchedText] = useState('');
   const { t } = useTranslation();
+  const { fontSize } = useFontSize();
   setKey(process.env.REACT_APP_API_KEY);
 
   useEffect(() => {
@@ -81,11 +83,11 @@ function SearchBar() {
             <input
               type='text'
               placeholder={t('common.search')}
-              className='h-10 w-80 shadow-itemShadow rounded-lg pl-3 py-3 pr-6 focus:outline-contrastColor'
+              className={`h-10 w-80 shadow-itemShadow rounded-lg pl-3 py-3 pr-6 focus:outline-contrastColor text-${fontSize}-base`}
               onChange={handleSearchChange}
               ref={inputRef}
               value={searchedText}
-            ></input>
+            />
             <CancelIcon
               className='h-5 w-5 absolute right-1 cursor-pointer'
               onClick={clearSearchBar}
