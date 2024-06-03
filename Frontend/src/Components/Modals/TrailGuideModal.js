@@ -32,52 +32,54 @@ function TrailGuideModal() {
   return (
     <>
       <motion.div
-        className='absolute top-4 right-4 p-4 bg-mainBgColor shadow-itemShadow text-textColor rounded-xl w-1/3'
+        className='absolute flex justify-center items-center h-full w-full'
         variants={parentItem}
         initial='hidden'
         animate='visible'
       >
-        <div className='flex flex-col justify-center items-center gap-4'>
-          <div className='flex flex-col justify-center items-center gap-4 mb-2'>
-            <p className={`text-${fontSize}-xl`}>{t('modal.how_use_trail')}</p>
-            <ul className={`text-${fontSize}-lg list-disc pl-6`}>
-              <li>
-                <div className='flex items-center gap-2'>
-                  <span>{t('modal.how_use_trail1')}</span>
-                  <DrawLineIcon />
-                </div>
-              </li>
-              <li>
-                <div className='flex items-center gap-2'>
-                  <span>{t('modal.how_use_trail2')}</span>
-                  <UndoIcon />
-                </div>
-              </li>
-              <li>
-                <div className='flex items-center gap-2'>
-                  <span>{t('modal.how_use_trail3')}</span>
-                  <HandGrabIcon />
-                </div>
-              </li>
-              <li>
-                <div className='flex items-center gap-2'>
-                  <span>{t('modal.how_use_trail4')}</span>
-                  <AcceptIcon />
-                </div>
-              </li>
-              <li>
-                <div className='flex items-center gap-2'>
-                  <span>{t('modal.how_use_trail5')}</span>
-                  <CancelIcon />
-                </div>
-              </li>
-            </ul>
+        <div className='p-4 bg-mainBgColor shadow-itemShadow text-textColor rounded-xl w-1/2 max-xl:w-3/4'>
+          <div className='flex flex-col justify-center items-center gap-4'>
+            <div className='flex flex-col justify-center items-center gap-4 mb-2'>
+              <p className={`text-${fontSize}-xl`}>{t('modal.how_use_trail')}</p>
+              <ul className={`text-${fontSize}-lg list-disc pl-6`}>
+                <li>
+                  <div className='flex items-center gap-2'>
+                    <span>{t('modal.how_use_trail1')}</span>
+                    <DrawLineIcon />
+                  </div>
+                </li>
+                <li>
+                  <div className='flex items-center gap-2'>
+                    <span>{t('modal.how_use_trail2')}</span>
+                    <UndoIcon />
+                  </div>
+                </li>
+                <li>
+                  <div className='flex items-center gap-2'>
+                    <span>{t('modal.how_use_trail3')}</span>
+                    <HandGrabIcon />
+                  </div>
+                </li>
+                <li>
+                  <div className='flex items-center gap-2'>
+                    <span>{t('modal.how_use_trail4')}</span>
+                    <AcceptIcon />
+                  </div>
+                </li>
+                <li>
+                  <div className='flex items-center gap-2'>
+                    <span>{t('modal.how_use_trail5')}</span>
+                    <CancelIcon />
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <BaseButton
+              name={t('common.close')}
+              btnBg='red'
+              onClick={() => dispatch(modalsActions.changeIsTrailGuideModalOpen())}
+            />
           </div>
-          <BaseButton
-            name={t('common.close')}
-            btnBg='red'
-            onClick={() => dispatch(modalsActions.changeIsTrailGuideModalOpen())}
-          />
         </div>
       </motion.div>
     </>

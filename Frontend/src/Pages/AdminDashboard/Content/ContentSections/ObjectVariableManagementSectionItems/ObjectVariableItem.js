@@ -241,11 +241,11 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
                         onClick={() => changeOrder(index, index + 1)}
                       />
                     </div>
-                    <div className='flex justify-center items-center'>
+                    <div className='flex justify-center items-center w-9/12'>
                       {editIndex === index ? (
                         <input
                           type='text'
-                          className={`text-black py-2 px-3 rounded-lg text-${fontSize}-base`}
+                          className={`text-black py-2 px-3 rounded-lg text-${fontSize}-base w-full`}
                           defaultValue={item.name}
                           ref={inputRef}
                         />
@@ -253,7 +253,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
                         <span className={`text-${fontSize}-lg leading-5`}>{item.name}</span>
                       )}
                     </div>
-                    <div className='flex justify-center items-center gap-1 mr-2'>
+                    <div className='flex justify-center items-center gap-1 mr-2 w-2/12 pl-2'>
                       {editIndex === index ? (
                         <>
                           <CheckIcon
