@@ -58,7 +58,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
             return Response(serializer.is_valid().errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = get_object_or_404(User,email=request.data['email'])
-        if not user.confirmed:
+        if (not user.confirmed) or (user.active ==False):
             return Response({"detail": "User not verified."}, status=status.HTTP_400_BAD_REQUEST)
 
         return super().post(request, *args, **kwargs)
