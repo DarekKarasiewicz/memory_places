@@ -13,7 +13,7 @@ const PageNotFound = () => {
   return (
     <App>
       <div className='bg-mainBgColor text-textColor flex justify-center items-center w-screen h-screen font-sans'>
-        <div className='flex flex-col items-center gap-6 -mt-20'>
+        <div className='flex flex-col items-center text-center gap-6 -mt-20'>
           <p className='text-[250px] font-bold'>404</p>
           <p className='text-6xl -mt-20'>{t('user.error404_title')}</p>
           <p className={`text-${fontSize}-2xl mt-4 mb-2`}>{t('user.error404_info')}</p>

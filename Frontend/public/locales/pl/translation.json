@@ -72,7 +72,17 @@
         "reset_password_email": "Na Twój adres e-mail została wysłana wiadomość dotycząca resetowania hasła.",
         "pass_changed_success": "Twoje hasło zostało pomyślnie zmienione",
         "no_images": "Brak dostępnych obrazów dla tego elementu.",
-        "given_email_exists": "Istnieje już konto z tym adresem e-mail."
+        "given_email_exists": "Istnieje już konto z tym adresem e-mail.",
+        "faq1_title": "Jak zaznaczyć miejsce na mapie?",
+        "faq1_info": "W formularzu dodawania miejsca należy wcisnąć przycisk “wybierz miejsce”, następnie należy kliknąć w wybrane miejsce na mapie i zatwierdzić wybraną lokalizację. Koordynaty same dodadzą się do formularza",
+        "faq2_title": "Czy moje miejsca są widoczne dla wszystkich?",
+        "faq2_info" : "Wszystkie zweryfikowane miejsca są ogólno dostępne i widoczne dla wszystkich odwiedzających naszą stronę, natomiast miejsca niezweryfikowane widoczne są jedynie dla użytkownika który je dodał.",
+        "faq3_title": "Jak zaznaczyć szlak na mapie?",
+        "faq3_info": "Aby dodać szlak do formularza należy nacisnąć przycisk “zaznacz szlak”, następnie w menu na górze mapy wybierz opcję rysowania szlaku, klikając kolejno wybrane lokacje na mapie, aby zakończyć rysowanie należy kliknąć ostatni punkt szlaku. Tak utworzony szlak można modyfikować przesuwając białe punkty na narysowanym szlaku, modyfikacje można cofnąć lub przywrócić używając strzałek w górnym menu. Jeżeli utworzony szlak nam odpowiada należy zatwierdzić go przyciskiem w górnym menu.",
+        "faq4_title": "Dlaczego nie mogę usunąć albo edytować miejsca.",
+        "faq4_info": "Wszystkie zweryfikowane miejsca i szlaki mają zablokowane opcję usuwania lub edycji w celu uniknięcia manipulacji danych. Aby odblokować możliwość edycji swoich obiektów należy skontaktować się z administracją strony za pomocą sekcji “Skontaktuj się z nami”.",
+        "faq5_title": "Skąd mam pewność, że informacje na stronie są prawdziwe?",
+        "faq5_info": "Udostępniona baza danych jest budowana przez społeczność a administracja strony rzetelnie weryfikuje wprowadzone informacje, jednakże nie jesteśmy w stanie zapewnić 100% pewności do poprawności danych."
     },
     "forum": {
         "comment_content": "Zawartość komentarza",

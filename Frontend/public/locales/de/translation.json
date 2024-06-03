@@ -72,7 +72,17 @@
         "reset_password_email": "Eine E-Mail bezüglich der Zurücksetzung Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet.",
         "pass_changed_success": "Ihr Passwort wurde erfolgreich geändert",
         "no_images": "Keine Bilder verfügbar für dieses Element.",
-        "given_email_exists": "Ein Benutzerkonto mit dieser E-Mail-Adresse existiert bereits."
+        "given_email_exists": "Ein Benutzerkonto mit dieser E-Mail-Adresse existiert bereits.",
+        "faq1_title": "Wie markiere ich einen Ort auf der Karte?",
+        "faq1_info": "Im Formular zum Hinzufügen eines Ortes sollten Sie die Schaltfläche 'Ort auswählen' drücken, dann auf den ausgewählten Ort auf der Karte klicken und den ausgewählten Standort bestätigen. Die Koordinaten werden automatisch zum Formular hinzugefügt.",
+        "faq2_title": "Sind meine Orte für alle sichtbar?",
+        "faq2_info": "Alle verifizierten Orte sind öffentlich zugänglich und für alle Besucher unserer Website sichtbar. Nicht verifizierte Orte sind jedoch nur für den Benutzer sichtbar, der sie hinzugefügt hat.",
+        "faq3_title": "Wie markiere ich einen Wanderweg auf der Karte?",
+        "faq3_info": "Um einen Wanderweg dem Formular hinzuzufügen, klicken Sie auf die Schaltfläche 'Wanderweg markieren', wählen Sie dann im Kartenmenü die Option zum Zeichnen eines Wanderwegs aus. Klicken Sie nacheinander auf die ausgewählten Standorte auf der Karte. Um das Zeichnen abzuschließen, klicken Sie auf den letzten Punkt des Wanderwegs. Der erstellte Wanderweg kann durch Verschieben der weißen Punkte auf dem gezeichneten Weg geändert werden. Änderungen können mit den Pfeilen im oberen Menü rückgängig gemacht oder wiederhergestellt werden. Wenn der erstellte Wanderweg Ihnen gefällt, bestätigen Sie ihn mit der Schaltfläche im oberen Menü.",
+        "faq4_title": "Warum kann ich Orte nicht löschen oder bearbeiten?",
+        "faq4_info": "Alle verifizierten Orte und Wanderwege haben die Option zum Löschen oder Bearbeiten blockiert, um eine Manipulation der Daten zu verhindern. Um die Möglichkeit zur Bearbeitung Ihrer Objekte freizuschalten, kontaktieren Sie bitte die Website-Administration über den Abschnitt 'Kontaktiere uns'.",
+        "faq5_title": "Wie kann ich sicher sein, dass die Informationen auf der Website korrekt sind?",
+        "faq5_info": "Die bereitgestellte Datenbank wird von der Gemeinschaft erstellt, und die Website-Administration überprüft die eingegebenen Informationen gründlich. Wir können jedoch keine 100% ige Genauigkeit der Daten garantieren."
     },
     "forum": {
         "comment_content": "Kommentarinhalt",

@@ -176,6 +176,7 @@ function AdminForumActionModal() {
               type='text'
               label={t('forum.title')}
               ref={titleRef}
+              maxLength={100}
               onChange={() => {
                 validateTitle(titleRef.current.value);
               }}
@@ -189,6 +190,7 @@ function AdminForumActionModal() {
               width=''
               label={'Zawartość'}
               ref={descRef}
+              maxLength={1000}
               onChange={() => {
                 validateDescription(descRef.current.value);
               }}

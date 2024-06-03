@@ -21,6 +21,10 @@ function LanguageSwitcher(props) {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    setLanguage(i18n.language);
+  }, [i18n.language]);
+
   const lang_options = [
     { label: t('user.pl'), value: 'pl', image: '../../assets/flags/pl.png', alt: t('user.pl') },
     { label: t('user.en'), value: 'en', image: '../../assets/flags/en.png', alt: t('user.en') },

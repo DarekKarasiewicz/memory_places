@@ -152,23 +152,23 @@ function ObjectVerificationTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-2 mx-2 gap-2'>
+              <td className='flex my-2 mx-2 gap-2 max-2xl:py-4 max-xl:py-6'>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() => handlePlaceConfirmation(row.original.id, row.original.kind_value)}
                 >
                   <CheckIcon className='h-5 w-5' />
                   <span>{t('admin.common.confirm')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() => handlePlaceDismiss(row.original.id, row.original.kind_value)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.common.dismiss')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() =>
                     navigate(
                       `/adminDashboard/${
@@ -181,7 +181,7 @@ function ObjectVerificationTable({ data, columns }) {
                   <span className='w-min'>{t('admin.content.more_info')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
                   onClick={() =>
                     navigate(
                       `/adminDashboard/${

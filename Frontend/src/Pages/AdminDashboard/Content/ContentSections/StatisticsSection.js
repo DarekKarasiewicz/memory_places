@@ -147,7 +147,7 @@ function StatisticsSection() {
         <span className={`text-${fontSize}-3xl`}>{t('admin.common.statistics_title')}</span>
         <span className={`text-${fontSize}-base`}>{t('admin.content.statistics_info')}</span>
       </div>
-      <div className='grid grid-cols-5 grid-rows-9 gap-6 h-screen'>
+      <div className='grid grid-cols-5 xl:max-2xl:grid-cols-3 max-xl:grid-cols-2 grid-rows-9 gap-6 h-full'>
         <AdminTileStat
           title={t('admin.content.all_users_count')}
           value={statistics.allUsers}
@@ -173,14 +173,14 @@ function StatisticsSection() {
           value={statistics.allComments}
           icon='comment'
         />
-        <div className='col-span-5 row-span-3 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
+        <div className='col-span-5 xl:max-2xl:col-span-3 max-xl:col-span-2 row-span-3 min-h-[400px] max-h-[400px] shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminMultiDataBarChart
             title={t('admin.content.all_object_graph')}
             data={statistics.objectsData}
             labels={['users', 'places', 'trails']}
           />
         </div>
-        <div className='col-span-5 row-span-3 shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
+        <div className='col-span-5 xl:max-2xl:col-span-3 max-xl:col-span-2 row-span-3 min-h-[400px] max-h-[400px] shadow rounded-lg h-auto p-4 pt-16 relative bg-mainBgColor'>
           <AdminMultiDataBarChart
             title={t('admin.content.forum_object_graph')}
             data={statistics.forumData}

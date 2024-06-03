@@ -134,7 +134,7 @@ function PlaceManagementSection() {
         <span className={`text-${fontSize}-base`}>{t('admin.content.all_places_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
-        <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>
+        <div className='grid grid-cols-3 max-xl:grid-cols-2 gap-6 w-full p-6 bg-thirdBgColor'>
           <AdminTileStat
             title={t('admin.content.all_places')}
             value={statistics.allPlaces}

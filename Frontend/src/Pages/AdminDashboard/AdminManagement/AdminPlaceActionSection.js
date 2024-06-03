@@ -462,8 +462,8 @@ function AdminPlaceActionSection({ action, placeId }) {
           <span>{actionTitle}</span>
         </div>
         <hr />
-        <div className='flex gap-6'>
-          <div className='flex flex-col gap-6 w-2/4'>
+        <div className='flex gap-6 max-2xl:flex-col-reverse h-full'>
+          <div className='flex flex-col gap-6 w-2/4 max-2xl:w-full'>
             <div className='bg-thirdBgColor p-10'>
               <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-2'>
@@ -472,6 +472,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     name='nameInput'
                     label={t('common.name')}
                     ref={nameRef}
+                    maxLength={50}
                     isValid={isValidName}
                     onChange={() => {
                       validateName(nameRef.current.value);
@@ -698,7 +699,7 @@ function AdminPlaceActionSection({ action, placeId }) {
               />
             </div>
           </div>
-          <div className='w-1/2 h-3/4 flex flex-col gap-4'>
+          <div className='w-1/2 h-3/4 max-2xl:h-[75vh] max-2xl:w-full flex flex-col gap-4'>
             <AdminGoogleMap action={currentAction} placePosition={placePosition} kind='place' />
             {action !== 'view' ? (
               <BaseImageUpload fileSize={5} />

@@ -62,10 +62,10 @@ const UserTrailItem = (props) => {
       key={props.trail.id}
       onClick={directToTrailOnMap}
     >
-      <div className='w-2/12 flex justify-center items-center text-center ml-2'>
-        <TrailIcon />
+      <div className='w-2/12 lg:max-xl:w-1/12 flex justify-center items-center text-center ml-2'>
+        <TrailIcon className='w-1/2 lg:max-xl:w-full' />
       </div>
-      <div className='w-7/12 flex flex-col mx-2'>
+      <div className='w-7/12 lg:max-xl:w-8/12 flex flex-col mx-2'>
         <h2 className={`truncate font-semibold h-full text-${fontSize}-base`}>
           {props.trail.path_name}
         </h2>

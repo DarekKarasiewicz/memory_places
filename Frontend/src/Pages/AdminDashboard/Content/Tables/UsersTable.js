@@ -141,12 +141,12 @@ function UsersTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-2 p-2'>
+              <td className='flex gap-2 py-2'>
                 {row.original.id !== cookies.user.user_id ? (
                   <>
                     {user.admin && (
                       <span
-                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                         onClick={() => handleUserRole(row.original.id, row.original.place_name)}
                       >
                         <SettingsIcon className='h-5 w-5' />
@@ -155,7 +155,7 @@ function UsersTable({ data, columns }) {
                     )}
 
                     <span
-                      className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                      className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                       onClick={() => handlePasswordReset(row.original.id, row.original.place_name)}
                     >
                       <PassIcon className='h-5 w-5' />
@@ -164,7 +164,7 @@ function UsersTable({ data, columns }) {
 
                     {row.original.active ? (
                       <span
-                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                         onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
                       >
                         <BlockIcon className='h-5 w-5' />
@@ -172,7 +172,7 @@ function UsersTable({ data, columns }) {
                       </span>
                     ) : (
                       <span
-                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                        className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                         onClick={() => handleUserUnlock(row.original.id, row.original.place_name)}
                       >
                         <UnlockIcon className='h-5 w-5' />
@@ -181,7 +181,7 @@ function UsersTable({ data, columns }) {
                     )}
                   </>
                 ) : (
-                  <span>{t('admin.content.cannot_change_info')}</span>
+                  <span className='max-2xl:py-4'>{t('admin.content.cannot_change_info')}</span>
                 )}
               </td>
             </tr>

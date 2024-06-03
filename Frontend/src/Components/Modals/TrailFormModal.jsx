@@ -420,6 +420,7 @@ const TrailFormModal = (props) => {
               name='nameInput'
               label={t('common.name')}
               value={addTrailData.path_name}
+              maxLength={50}
               onBlur={() => {
                 dispatch(addTrailActions.changeName(nameRef.current.value));
                 validateName(nameRef.current.value);

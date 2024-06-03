@@ -72,7 +72,17 @@
         "reset_password_email": "An email regarding password reset has been sent to your email address.",
         "pass_changed_success": "Your password has been successfully changed",
         "no_images": "No images available for this element.",
-        "given_email_exists": "A user account with this email address already exists."
+        "given_email_exists": "A user account with this email address already exists.",
+        "faq1_title": "How to mark a place on the map?",
+        "faq1_info": "In the place adding form, you should press the 'choose a place' button, then click on the selected place on the map and confirm the chosen location. The coordinates will automatically be added to the form.",
+        "faq2_title": "Are my places visible to everyone?",
+        "faq2_info": "All verified places are publicly available and visible to all visitors to our website. However, unverified places are only visible to the user who added them.",
+        "faq3_title": "How to mark a trail on the map?",
+        "faq3_info": "To add a trail to the form, press the 'mark a trail' button, then in the map menu, choose the option to draw a trail. Click on the selected locations on the map sequentially. To finish drawing, click the last point of the trail. The created trail can be modified by moving the white points on the drawn trail. Modifications can be undone or restored using the arrows in the top menu. If the created trail suits you, confirm it with the button in the top menu.",
+        "faq4_title": "Why can't I delete or edit places?",
+        "faq4_info": "All verified places and trails have the delete or edit option blocked to prevent data manipulation. To unlock the ability to edit your objects, please contact the site administration using the 'Contact us' section.",
+        "faq5_title": "How can I be sure that the information on the website is accurate?",
+        "faq5_info": "The provided database is built by the community, and the site administration thoroughly verifies the entered information. However, we cannot guarantee 100% accuracy of the data."
     },
     "forum": {
         "comment_content": "Comment-Content",

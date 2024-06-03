@@ -126,7 +126,7 @@ function ForumContent() {
 
   return (
     <>
-      <div className='w-3/5 flex flex-col gap-6'>
+      <div className='w-3/5 sm:max-xl:w-full xl:max-2xl:w-4/5 flex flex-col gap-6'>
         {places && (
           <div>
             <SearchBar onSearchClick={handleSearchPlaces} />

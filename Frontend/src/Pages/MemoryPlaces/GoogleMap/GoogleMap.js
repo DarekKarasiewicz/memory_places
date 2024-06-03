@@ -202,7 +202,7 @@ const GoogleMap = () => {
   return isLoaded && isPositionLoaded ? (
     <div
       className={`absolute bottom-0 h-screen transition-transform delay-150 ${
-        userPlacesData.isOpen ? 'right-0 w-2/3' : 'left-0 w-screen'
+        userPlacesData.isOpen ? 'right-0 w-2/3 xl:w-3/5 lg:w-3/5 md:w-3/5' : 'left-0 w-screen'
       }`}
     >
       <Map

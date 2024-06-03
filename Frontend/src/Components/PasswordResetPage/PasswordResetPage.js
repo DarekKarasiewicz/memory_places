@@ -130,7 +130,7 @@ const PasswordResetPage = () => {
                 </Link>
               </div>
             ) : (
-              <div className='flex flex-col items-center gap-6'>
+              <div className='flex flex-col items-center text-center gap-6'>
                 <CheckIcon className='w-40' />
                 <p className='text-6xl mb-3'>{t('common.pass_changed_success')}</p>
                 <Link to='/' className='flex justify-center items-center'>

@@ -93,6 +93,7 @@ function ForumPostModal() {
               type='text'
               label={t('forum.title')}
               ref={titleRef}
+              maxLength={100}
               onChange={() => {
                 validateTitle(titleRef.current.value);
               }}
@@ -114,6 +115,7 @@ function ForumPostModal() {
               width=''
               label={t('common.description')}
               ref={descRef}
+              maxLength={1000}
               onChange={() => {
                 validateDescription(descRef.current.value);
               }}

@@ -12,27 +12,35 @@ function FAQ(props) {
 
   const FAQ_text = [
     {
-      title: 'Test article 1',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis lorem convallis nibh tincidunt congue quis sed dui. Maecenas ultricies, sapien sed vestibulum congue, dui metus mollis justo, vitae tristique sem mauris quis ipsum. Nulla hendrerit consequat mauris, vel semper risus blandit non. Donec at congue quam. Phasellus maximus, lorem eu varius iaculis, dolor dui gravida leo, at cursus eros sapien nec sem. In eget nisi pharetra, tincidunt dui eget, aliquet elit. Aenean quis nunc ut dolor dapibus tempor. Donec facilisis molestie nisi, id venenatis ligula semper ac.',
+      title: t('common.faq1_title'),
+      desc: t('common.faq1_info'),
     },
     {
-      title: 'Test article 2 with longer title to check if it works',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis lorem convallis nibh tincidunt congue quis sed dui. Maecenas ultricies, sapien sed vestibulum congue, dui metus mollis justo, vitae tristique sem mauris quis ipsum. Nulla hendrerit consequat mauris, vel semper risus blandit non.',
+      title: t('common.faq2_title'),
+      desc: t('common.faq2_info'),
     },
     {
-      title: 'Test article 3',
-      desc: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut vehicula eu nunc a finibus. Nam tempus vestibulum neque quis facilisis. Etiam fermentum velit sit amet blandit varius.',
+      title: t('common.faq3_title'),
+      desc: t('common.faq3_info'),
+    },
+    {
+      title: t('common.faq4_title'),
+      desc: t('common.faq4_info'),
+    },
+    {
+      title: t('common.faq5_title'),
+      desc: t('common.faq5_info'),
     },
   ];
 
   return (
     <>
       <BaseModal title={t('user.FAQ_title')}>
-        <div className='flex flex-col gap-4 max-h-[40rem] overflow-auto scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600 rounded-[24px] h-auto p-4 relative'>
+        <div className='flex flex-col gap-4 max-h-[40rem] overflow-auto rounded-[24px] h-auto p-4 relative'>
           <div className='mb-3 text-left'>
             <span className={`text-${fontSize}-lg break-keep`}>{t('user.FAQ_subtitle')}</span>
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             {FAQ_text.map((item, key) => (
               <FAQItems key={key} title={item.title} desc={item.desc} />
             ))}

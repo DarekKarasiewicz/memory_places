@@ -20,6 +20,7 @@ const BaseInput = forwardRef(function BaseInput(props, ref) {
           placeholder={props.placeholder ? props.placeholder : ''}
           name={props.name}
           defaultValue={props.value}
+          maxLength={props.maxLength}
           ref={ref}
           onBlur={props.onBlur}
           onChange={props.onChange}

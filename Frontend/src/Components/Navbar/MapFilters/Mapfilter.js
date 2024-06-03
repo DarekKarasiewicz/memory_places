@@ -161,8 +161,8 @@ function MapFilter() {
         whileHover={{ scale: 1.05 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`h-12 w-12 flex justify-center items-center cursor-pointer ${
-          isActive ? 'right-72 absolute mr-3 top-2' : ''
+        className={`h-12 w-12 flex justify-center items-center cursor-pointer bg-mainBgColor ${
+          isActive ? 'right-72 absolute top-2' : ''
         }`}
         onClick={handleClick}
       >
@@ -176,9 +176,7 @@ function MapFilter() {
           className='absolute top-0 right-0 flex gap-2 w-72 h-screen p-3 bg-mainBgColor text-textColor rounded-s-lg z-10 shadow-xl'
         >
           <div className='flex flex-col gap-y-4 justify-start items-center w-full'>
-            <div
-              className={`text-${fontSize}-2xl border-b-2 border-textColor p-2 w-1/2 text-center`}
-            >
+            <div className={`text-${fontSize}-2xl border-b-2 border-textColor p-2 text-center`}>
               <span>{t('common.filter1')}</span>
               <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>
             </div>

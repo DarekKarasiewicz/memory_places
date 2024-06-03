@@ -103,6 +103,7 @@ function ContactForm(props) {
             type='text'
             label={t('forum.title')}
             ref={titleRef}
+            maxLength={50}
             onChange={() => {
               validateTitle(titleRef.current.value);
             }}

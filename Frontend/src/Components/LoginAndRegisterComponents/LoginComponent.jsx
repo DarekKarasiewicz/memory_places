@@ -185,7 +185,7 @@ const LoginComponent = () => {
       <BaseButton
         type='submit'
         name={t('common.sign_in')}
-        className='mt-5 mb-5'
+        className='my-5'
         btnBg='blue'
         onClick={handleSubmit}
       />
