@@ -184,7 +184,7 @@ function ObjectVariableManagementSection() {
         </div>
       </div>
       <div className='flex flex-col gap-8'>
-        <div className='grid grid-cols-3 gap-6 w-full'>
+        <div className='grid grid-cols-3 xl:max-2xl:grid-cols-2 max-xl:grid-cols-1 gap-6 w-full'>
           <ObjectVariableItem
             itemsName='sortof'
             items={sortOf}
