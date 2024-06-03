@@ -35,7 +35,7 @@ def json_bool(str):
     return str.lower() == "true"
 
 
-class Place_view(viewsets.ModelViewSet):
+class PlaceView(viewsets.ModelViewSet):
     model = Place
     serializer_class = Places_serailizer
 
@@ -156,7 +156,7 @@ class Place_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
-class Place_image_view(viewsets.ModelViewSet):
+class PlaceImageView(viewsets.ModelViewSet):
     model = PlaceImage
     serializer_class= PlaceImage_serializer
 
@@ -207,7 +207,7 @@ class Place_image_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(placeimage_object)
         return Response(serializer.data) 
 
-class Path_view(viewsets.ModelViewSet):
+class PathView(viewsets.ModelViewSet):
     model = Path
     serializer_class = Path_serailizer
 
@@ -319,7 +319,7 @@ class Path_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(path_object)
         return Response(serializer.data)
 
-class Path_image_view(viewsets.ModelViewSet):
+class PathImageView(viewsets.ModelViewSet):
     model = PathImage
     serializer_class= PathImage_serializer 
 
@@ -370,7 +370,7 @@ class Path_image_view(viewsets.ModelViewSet):
         serializer = self.serializer_class(pathimage_object)
         return Response(serializer.data) 
 
-class User_view(viewsets.ModelViewSet):
+class UserView(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
 
@@ -451,7 +451,6 @@ class User_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        # user_object = User.objects.get(id=kwargs['pk'])
         try:
             isinstance(int(kwargs["pk"]), int)
             user_object = self.model.objects.get(id=kwargs["pk"])
@@ -513,7 +512,7 @@ class NoneVerifiedPathView(NoneVerifiedBaseView):
     model = Path 
     serializer_class = Path_serailizer
 
-class Questions_view(viewsets.ModelViewSet):
+class QuestionsView(viewsets.ModelViewSet):
     model = Question
     serializer_class = Questions_serializer
 
@@ -555,7 +554,6 @@ class Questions_view(viewsets.ModelViewSet):
                 question_object = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(question_object, many=False)
             case "user":
-                # user_object = get_object_or_404(User, pk=value)
                 question_object = self.model.objects.filter(user=value)
                 serializer = self.serializer_class(question_object, many=True)
             case "title":
@@ -606,7 +604,7 @@ class Questions_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Changes_view(viewsets.ModelViewSet):
+class ChangesView(viewsets.ModelViewSet):
     model = Change
     serializer_class = Changes_serializer
     http_method_names = ["get"]
@@ -670,15 +668,15 @@ class CategoryBaseView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Types_view(CategoryBaseView):
+class TypesView(CategoryBaseView):
     serializer_class = Types_serializer
     model = Type
 
 
-class Sortofs_view(CategoryBaseView):
+class SortofsView(CategoryBaseView):
     serializer_class = Sortof_serializer
     model = Sortof
 
-class Periods_view(CategoryBaseView):
+class PeriodsView(CategoryBaseView):
     serializer_class = Period_serializer
     model = Period

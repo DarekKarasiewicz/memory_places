@@ -3,7 +3,6 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core.mail import send_mail
-from rest_framework.renderers import JSONRenderer
 from django.template.loader import render_to_string
 
 from .serializers import (
@@ -65,7 +64,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
         return super().post(request, *args, **kwargs)
 
 
-class Place_view(viewsets.ModelViewSet):
+class PlaceView(viewsets.ModelViewSet):
     model = Place
     serializer_class = Places_serailizer
 
@@ -181,7 +180,7 @@ class Place_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Place_image_view(viewsets.ModelViewSet):
+class PlaceImageView(viewsets.ModelViewSet):
     model = PlaceImage
     serializer_class= PlaceImage_serializer
 
@@ -224,7 +223,7 @@ class Place_image_view(viewsets.ModelViewSet):
 
         return Response({"detail": "Succes"})
 
-class Path_image_view(viewsets.ModelViewSet):
+class PathImageView(viewsets.ModelViewSet):
     model = PathImage
     serializer_class= PathImage_serializer 
 
@@ -267,7 +266,7 @@ class Path_image_view(viewsets.ModelViewSet):
 
         return Response({"detail": "Succes"})
 
-class Path_view(viewsets.ModelViewSet):
+class PathView(viewsets.ModelViewSet):
     model = Path
     serializer_class = Path_serailizer
 
@@ -399,7 +398,7 @@ class ShortPathView(ShortBaseView):
     model = Path 
     serializer_class = Short_Path_serailizer
 
-class Outside_user_view(viewsets.ModelViewSet):
+class OutsideUserView(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
     http_method_names = ["post"]
@@ -434,7 +433,7 @@ class VerificationMail(viewsets.ModelViewSet):
         return Response("User activate")
 
 
-class User_view(viewsets.ModelViewSet):
+class UserView(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
 
@@ -516,7 +515,7 @@ class User_view(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Contact_us(viewsets.ModelViewSet):
+class ContactUs(viewsets.ModelViewSet):
     model = Question
     http_method_names = ["post", "get"]
     serializer_class = Questions_serializer
@@ -570,7 +569,7 @@ class Changes(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class Reset_password(viewsets.ModelViewSet):
+class ResetPassword(viewsets.ModelViewSet):
     model = User
     serializer_class = User_serializer
     http_method_names = ["put","get"]
@@ -631,16 +630,16 @@ class CategoryBaseView(viewsets.ModelViewSet):
         return self.model.objects.all()
 
 
-class Types_view(CategoryBaseView):
+class TypesView(CategoryBaseView):
     serializer_class = Types_serializer
     model = Type
 
 
-class Sortofs_view(CategoryBaseView):
+class SortofsView(CategoryBaseView):
     serializer_class = Sortof_serializer
     model = Sortof
 
 
-class Periods_view(CategoryBaseView):
+class PeriodsView(CategoryBaseView):
     serializer_class = Period_serializer
     model = Period

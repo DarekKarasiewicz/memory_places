@@ -8,21 +8,21 @@ from rest_framework_simplejwt.views import (
 
 
 router = routers.DefaultRouter()
-router.register(r"places", views.Place_view, "place")
-router.register(r"path", views.Path_view, "path")
+router.register(r"places", views.PlaceView, "place")
+router.register(r"path", views.PathView, "path")
 router.register(r"short_places", views.ShortPlaceView, "short_place")
 router.register(r"short_path", views.ShortPathView, "short_path")
-router.register(r"users", views.User_view, "user")
-router.register(r"outside_users", views.Outside_user_view, "outside_user")
+router.register(r"users", views.UserView, "user")
+router.register(r"outside_users", views.OutsideUserView, "outside_user")
 router.register(r"user_verifi", views.VerificationMail, "user_verifi")
-router.register(r"contact_us", views.Contact_us, "contact_us")
-router.register(r"reset_password", views.Reset_password, "reset_password")
-router.register(r"types", views.Types_view, "types")
-router.register(r"sortofs", views.Sortofs_view, "sortofs")
-router.register(r"periods", views.Periods_view, "periods")
+router.register(r"contact_us", views.ContactUs, "contact_us")
+router.register(r"reset_password", views.ResetPassword, "reset_password")
+router.register(r"types", views.TypesView, "types")
+router.register(r"sortofs", views.SortofsView, "sortofs")
+router.register(r"periods", views.PeriodsView, "periods")
 router.register(r"changes", views.Changes, "changes")
-router.register(r"place_image", views.Place_image_view, "placeimage_place")
-router.register(r"path_image", views.Path_image_view, "pathimage_place")
+router.register(r"place_image", views.PlaceImageView, "placeimage_place")
+router.register(r"path_image", views.PathImageView, "pathimage_place")
 
 urlpatterns = [
     path("token/", views.MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
