@@ -121,23 +121,23 @@ function PlacesTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-2'>
+              <td className='flex justify-center items-center gap-2 py-2 max-2xl:py-4 max-xl:py-6'>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => navigate('/adminDashboard/placeView/' + row.original.id)}
                 >
                   <SettingsIcon className='h-5 w-5' />
                   <span>{t('admin.content.more_info')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => handleAdminActionModal(row.original.id, row.original.place_name)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => navigate('/adminDashboard/placeEdit/' + row.original.id)}
                 >
                   <EditIcon className='h-5 w-5' />

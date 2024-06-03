@@ -83,7 +83,7 @@ function SearchBar() {
             <input
               type='text'
               placeholder={t('common.search')}
-              className={`h-10 w-80 shadow-itemShadow rounded-lg pl-3 py-3 pr-6 focus:outline-contrastColor text-${fontSize}-base`}
+              className={`h-10 w-80 sm:max-lg:w-60 shadow-itemShadow rounded-lg pl-3 py-3 pr-6 focus:outline-contrastColor text-${fontSize}-base`}
               onChange={handleSearchChange}
               ref={inputRef}
               value={searchedText}

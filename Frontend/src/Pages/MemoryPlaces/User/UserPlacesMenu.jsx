@@ -92,7 +92,7 @@ const UserMenu = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-1/3 h-screen bg-mainBgColor pb-4 shadow-xl flex flex-col gap-2`}
+      className={`absolute bottom-0 left-0 w-1/3 xl:w-2/5 lg:w-2/5 md:w-2/5 h-screen bg-mainBgColor pb-4 shadow-xl flex flex-col gap-2`}
     >
       <div className='h-12 my-2 mx-4 flex justify-between items-center'>
         <motion.div

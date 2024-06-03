@@ -581,6 +581,7 @@ function FormModal(props) {
                 name='nameInput'
                 label={t('common.name')}
                 value={addPlaceData.place_name}
+                maxLength={50}
                 onBlur={() => {
                   dispatch(addPlaceActions.changeName(nameRef.current.value));
                   validateName(nameRef.current.value);
@@ -637,7 +638,7 @@ function FormModal(props) {
             </div>
           </div>
         </div>
-        <div className='px-2 pb-2 flex gap-4 justify-center'>
+        <div className='p-2 flex gap-4 justify-center'>
           <BaseButton name={t('common.cancel')} btnBg='red' onClick={() => handleModalClose()} />
           <BaseButton name={t('common.confirm')} btnBg='blue' onClick={handleConfirm} />
         </div>

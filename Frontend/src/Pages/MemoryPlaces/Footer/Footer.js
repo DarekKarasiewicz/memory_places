@@ -13,7 +13,7 @@ function Footer() {
     <>
       <footer
         className={`${
-          userPlacesData.isOpen ? 'w-2/3 right-0' : 'w-full'
+          userPlacesData.isOpen ? 'w-2/3 xl:w-3/5 lg:w-3/5 md:w-3/5 right-0' : 'w-full'
         } absolute bottom-0 flex items-center justify-center h-8 bg-mainBgColor text-textColor text-sm font-bold drop-shadow-sm shadow-itemShadow`}
       >
         <span

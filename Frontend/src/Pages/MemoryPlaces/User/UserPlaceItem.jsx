@@ -58,14 +58,14 @@ const UserPlaceItem = (props) => {
   };
 
   const iconComponents = {
-    1: <ArchaeologicalSiteIcon className='w-1/2' />,
-    2: <BattlefieldIcon className='w-1/2' />,
-    3: <BurialSiteIcon className='w-1/2' />,
-    4: <CivilCemeteryIcon className='w-1/2' />,
-    5: <ExecutionSiteIcon className='w-1/2' />,
-    6: <HistoricalMonumentIcon className='w-1/2' />,
-    7: <WarCemeteryIcon className='w-1/2' />,
-    8: <WaysideShrineIcon className='w-1/2' />,
+    1: <ArchaeologicalSiteIcon className='w-1/2 lg:max-xl:w-full' />,
+    2: <BattlefieldIcon className='w-1/2 lg:max-xl:w-full' />,
+    3: <BurialSiteIcon className='w-1/2 lg:max-xl:w-full' />,
+    4: <CivilCemeteryIcon className='w-1/2 lg:max-xl:w-full' />,
+    5: <ExecutionSiteIcon className='w-1/2 lg:max-xl:w-full' />,
+    6: <HistoricalMonumentIcon className='w-1/2 lg:max-xl:w-full' />,
+    7: <WarCemeteryIcon className='w-1/2 lg:max-xl:w-full' />,
+    8: <WaysideShrineIcon className='w-1/2 lg:max-xl:w-full' />,
   };
 
   const IconComponent = iconComponents[props.place.type] || t('common.no_image_error');
@@ -80,10 +80,10 @@ const UserPlaceItem = (props) => {
       key={props.place.id}
       onClick={directToPlaceOnMap}
     >
-      <div className='w-2/12 flex justify-center items-center text-center ml-2'>
+      <div className='w-2/12 lg:max-xl:w-1/12 flex justify-center items-center text-center ml-2'>
         {IconComponent}
       </div>
-      <div className='w-7/12 flex flex-col mx-2'>
+      <div className='w-7/12 lg:max-xl:w-8/12 flex flex-col mx-2'>
         <h2 className={`truncate font-semibold h-full text-${fontSize}-base`}>
           {props.place.place_name}
         </h2>

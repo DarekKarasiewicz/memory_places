@@ -135,9 +135,9 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
     <div
       className={` ${
         adminActionData.adminMapExtended
-          ? 'absolute top-0 left-0 right-0 mx-auto mt-8 transform h-[85vh] w-[96vw] z-50 bg-black'
+          ? 'absolute top-0 left-0 right-0 mx-auto mt-8 transform h-[85vh] lg:max-2xl:h-[80vh] w-[96vw] z-50 bg-black'
           : 'relative w-full h-1/2'
-      } transition-transform delay-150`}
+      } lg:max-2xl:h-full transition-transform delay-150`}
     >
       <Map
         center={position}

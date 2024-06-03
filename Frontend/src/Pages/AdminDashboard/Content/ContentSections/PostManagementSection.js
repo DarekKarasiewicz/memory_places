@@ -87,6 +87,13 @@ function PostManagementSection() {
     {
       header: t('admin.content.title'),
       accessorKey: 'title',
+      cell: (props) => {
+        if (props.getValue().length > 30) {
+          return props.getValue().substring(0, 27) + ' ...';
+        } else {
+          return props.getValue();
+        }
+      },
     },
     {
       header: t('admin.content.like'),
@@ -116,7 +123,7 @@ function PostManagementSection() {
         <span className={`text-${fontSize}-base`}>{t('admin.content.all_post_info')}</span>
       </div>
       <div className='flex flex-col gap-8'>
-        <div className='grid grid-cols-3 gap-6 w-full p-6 bg-thirdBgColor'>
+        <div className='grid grid-cols-3 max-xl:grid-cols-2 gap-6 w-full p-6 bg-thirdBgColor'>
           <AdminTileStat
             title={t('admin.content.all_posts')}
             value={statistics.allPosts}

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
@@ -10,21 +10,17 @@ import { useTheme } from 'Components/ThemeSwitcher/ThemeContext';
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function PreferencesSettings() {
-  const [selectedFontSizeOption, setSelectedFontSizeOption] = useState('');
   const languageRef = useRef();
   const themeRef = useRef();
+  const fontRef = useRef();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const { fontSize } = useFontSize();
+  const { fontSize, setFontSize } = useFontSize();
 
   useEffect(() => {
     languageRef.current.value = i18n.language;
     themeRef.current.value = theme;
   }, []);
-
-  const handleSelectFontSizeChange = (value) => {
-    setSelectedFontSizeOption(value);
-  };
 
   const lang_options = [
     { label: t('user.pl'), value: 'pl' },
@@ -33,13 +29,9 @@ function PreferencesSettings() {
     { label: t('user.ru'), value: 'ru' },
   ];
 
-  {
-    /* contrast theme(#1 - black background + white font,#2 - black background + yellow font,#3 - yellow background + black font)*/
-  }
   const app_theme_options = [
     { label: t('user.color1'), value: 'light' },
     { label: t('user.color2'), value: 'dark' },
-    // { label: t('user.color3'), value: 'contrast1' },
   ];
 
   const font_size_options = [
@@ -84,9 +76,9 @@ function PreferencesSettings() {
           <BaseSelect
             label={t('user.font_size')}
             name='FontSize'
-            value={selectedFontSizeOption}
+            ref={fontRef}
             options={font_size_options}
-            onChange={handleSelectFontSizeChange}
+            onChange={() => setFontSize(fontRef.current.value)}
           />
         </div>
       </div>

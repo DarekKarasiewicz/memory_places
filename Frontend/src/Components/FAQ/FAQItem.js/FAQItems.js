@@ -16,7 +16,7 @@ function FAQItems(props) {
 
   return (
     <>
-      <div className='flex flex-col rounded-xl border'>
+      <div className='flex flex-col bg-secondaryBgColor rounded-xl'>
         <div
           onClick={handleItemVisibility}
           className='flex justify-between items-center cursor-pointer px-4 py-2'

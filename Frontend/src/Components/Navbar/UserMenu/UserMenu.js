@@ -149,7 +149,7 @@ function UserMenu({ altVersion, isAdminPage }) {
         {isActive && (
           <motion.ul
             className={`bg-mainBgColor text-textColor shadow-itemShadow rounded-lg flex flex-col gap-2 absolute w-52 p-4 z-10 ${
-              filteredMenuItems ? 'mt-2 top-16 right-2' : 'top-12 right-0'
+              filteredMenuItems ? 'mt-2 top-12 right-2' : 'right-0'
             }`}
             variants={parentItem}
             initial='hidden'

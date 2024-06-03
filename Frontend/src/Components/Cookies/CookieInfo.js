@@ -25,11 +25,17 @@ function CookiesInfo(props) {
             <span className={`text-${fontSize}-lg break-keep`}>{t('common.cookie_info')}</span>
           </div>
           <div className='flex justify-center gap-4 mb-3'>
-            <BaseButton name={t('common.cookie_accept')} btnBg='blue' onClick={props.closeModal} />
+            <BaseButton
+              name={t('common.cookie_accept')}
+              btnBg='blue'
+              onClick={props.closeModal}
+              breakWidth={true}
+            />
             <BaseButton
               name={t('common.cookie_cancel')}
               btnBg='red'
               onClick={() => window.location.reload()}
+              breakWidth={true}
             />
           </div>
         </div>

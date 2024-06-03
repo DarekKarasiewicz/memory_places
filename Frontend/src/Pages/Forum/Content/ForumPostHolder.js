@@ -214,7 +214,7 @@ function ForumPostHolder() {
 
   return (
     <>
-      <div className='w-3/5 flex flex-col gap-6'>
+      <div className='w-3/5 sm:max-xl:w-full xl:max-2xl:w-4/5 flex flex-col gap-6'>
         <div className='flex gap-2'>
           <BaseButton
             name={t('admin.common.back')}
@@ -247,6 +247,7 @@ function ForumPostHolder() {
                   type='text'
                   name='contentInput'
                   rows={`${isActive ? '4' : '1'}`}
+                  maxLength={1000}
                   className={`${isActive ? 'max-h-32' : 'h-12'}`}
                   placeholder={t('forum.add_comment')}
                   onSelect={() => setIsActive(true)}

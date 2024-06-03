@@ -108,7 +108,7 @@ function AdminMenu() {
             src='/assets/memory_places_logo.png'
             alt='memorial place logo'
             className='h-full w-auto'
-          ></img>
+          />
         </section>
         <section className='flex flex-col gap-4'>
           {filteredMenuItems.map((item, index) => (

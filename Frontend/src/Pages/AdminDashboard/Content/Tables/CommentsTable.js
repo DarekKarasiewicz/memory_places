@@ -112,9 +112,9 @@ function CommentsTable({ data, columns }) {
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
-              <td className='flex my-1 gap-2'>
+              <td className='flex gap-2 py-2 '>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => {
                     dispatch(adminActions.changeIsAdminForumModalOpen(true));
                     dispatch(adminActions.changeForumKindType('comment'));
@@ -126,14 +126,14 @@ function CommentsTable({ data, columns }) {
                   <span>{t('admin.content.more_info')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => handleAdminActionModal(row.original.id)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>
                 </span>
                 <span
-                  className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
+                  className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
                   onClick={() => {
                     dispatch(adminActions.changeIsAdminForumModalOpen(true));
                     dispatch(adminActions.changeForumKindType('comment'));

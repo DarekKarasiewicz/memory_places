@@ -44,8 +44,5 @@ module.exports = {
         itemShadowWithoutTop: 'var(--itemShadowWithoutTop)'
       },
     },
-  },
-  plugins: [
-    require('tailwind-scrollbar'),
-  ],
+  }
 }

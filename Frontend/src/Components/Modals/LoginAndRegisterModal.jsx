@@ -44,7 +44,7 @@ const LoginAndRegisterModal = (props) => {
   }, [wrapperRef]);
 
   return (
-    <BaseModal title={title} closeModal={props.closeModal} width='1/3'>
+    <BaseModal title={title} closeModal={props.closeModal} width='w-1/3'>
       <div className='flex flex-col p-2 items-center' ref={wrapperRef}>
         {isLogging ? <LoginComponent /> : <RegisterComponent setIsLogging={setIsLogging} />}
         {isLogging ? (
@@ -60,7 +60,7 @@ const LoginAndRegisterModal = (props) => {
         ) : (
           <p
             onClick={handleIsLogging}
-            className={`cursor-pointer text-blue-400 hover:text-blue-600 hover:underline text-${fontSize}-3xl`}
+            className={`cursor-pointer text-blue-400 hover:text-blue-600 hover:underline text-${fontSize}-base`}
           >
             {t('common.sign_account')}
           </p>

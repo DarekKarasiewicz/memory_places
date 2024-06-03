@@ -79,7 +79,7 @@ function Navbar() {
     <>
       <nav
         className={`relative flex justify-between p-2 bg-mainBgColor shadow-xl ${
-          userPlacesData.isOpen ? 'w-2/3 float-right' : ''
+          userPlacesData.isOpen ? 'right-0 w-2/3 xl:w-3/5 lg:w-3/5 md:w-3/5 float-right' : ''
         }`}
       >
         <div className='flex gap-2 items-center'>
@@ -108,7 +108,7 @@ function Navbar() {
               </motion.ul>
             )}
           </div>
-          <SearchBar />
+          {!userPlacesData.isOpen && <SearchBar />}
         </div>
         <div className='absolute top-0 left-1/2 transform -translate-x-1/2 w-20 bg-mainBgColor flex justify-center rounded-b-xl shadow-itemShadowBottom'>
           <img
@@ -118,8 +118,12 @@ function Navbar() {
           ></img>
         </div>
         <div className='flex gap-3 items-center'>
-          <FontSizeSwitcher />
-          <ThemeSwitcher />
+          {!userPlacesData.isOpen && (
+            <>
+              <FontSizeSwitcher />
+              <ThemeSwitcher />
+            </>
+          )}
           <UserMenu />
           <MapFilter />
         </div>

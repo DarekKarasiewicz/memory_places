@@ -40,7 +40,7 @@ const VerifiactionPage = () => {
         ) : (
           <>
             <div className='bg-mainBgColor text-textColor flex justify-center items-center w-screen h-screen font-sans'>
-              <div className='flex flex-col items-center gap-6 -mt-20'>
+              <div className='flex flex-col items-center text-center gap-6 -mt-20'>
                 <CheckIcon className='w-40' />
                 <p className='text-6xl mb-3'>{t('user.verification_info')}</p>
                 <p className={`text-${fontSize}-2xl mb-2`}>{t('user.verification_info2')}</p>
