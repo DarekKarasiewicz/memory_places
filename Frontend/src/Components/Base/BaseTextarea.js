@@ -7,13 +7,12 @@ const BaseTextarea = forwardRef(function BaseTextarea(props, ref) {
 
   return (
     <>
-      {props.label && (
+      {(props.label || props.secondLabel) && (
         <div className='flex justify-between items-center'>
           <label className={`block pl-1 pb-1 text-${fontSize}-base`}>{props.label}</label>
           <label className={`block pr-1 text-${fontSize}-sm`}>{props.secondLabel}</label>
         </div>
       )}
-
       <textarea
         className={`block w-${
           props.width ? props.width : 'full'

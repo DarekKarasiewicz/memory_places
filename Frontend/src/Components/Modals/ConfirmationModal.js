@@ -12,14 +12,10 @@ import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 function ConfirmationModal() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectConfirmationModal);
-  const { type } = modalData;
+  const { type, content } = modalData;
   const { t } = useTranslation();
   const [progress, setProgress] = useState(100);
   const { fontSize } = useFontSize();
-
-  const handleConfirmationModalVisibility = () => {
-    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-  };
 
   useEffect(() => {
     const decrementAmount = (100 / 5000) * 50;
@@ -32,7 +28,8 @@ function ConfirmationModal() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      handleConfirmationModalVisibility();
+      dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+      dispatch(confirmationModalActions.clearData());
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -61,13 +58,15 @@ function ConfirmationModal() {
                   <>
                     <CheckIcon color='#22c55e' className='h-12 w-12' />
                     <span className='text-green-500 font-bold'>
-                      {t('admin.content.alert_success')}
+                      {content ? t(`admin.content.${content}`) : t('admin.content.alert_success')}
                     </span>
                   </>
                 ) : (
                   <>
                     <CancelIcon color='#ef4444' className='h-12 w-12' />
-                    <span className='text-red-500 font-bold'>{t('admin.content.alert_error')}</span>
+                    <span className='text-red-500 font-bold'>
+                      {content ? t(`admin.content.${content}`) : t('admin.content.alert_error')}
+                    </span>
                   </>
                 )}
               </div>

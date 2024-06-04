@@ -20,6 +20,7 @@ function ChangesHistorySection() {
   const fetchHistoryItems = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/changes`);
+      console.log(response.data);
       const changesItems = response.data
         .map((obj, index) => {
           const target = obj.changes_json.target ? obj.changes_json.target : '';

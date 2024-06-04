@@ -25,7 +25,6 @@ function ForumPostHolder() {
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState(null);
   const sortRef = useRef(null);
-  const [isSortChanged, setisSortChanged] = useState(false);
   const { placeid, postid } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -66,26 +65,24 @@ function ForumPostHolder() {
     try {
       let commentEndpointUrl = `http://localhost:8000/memo_places_forum/comment/post=${postid}`;
 
-      if (isSortChanged) {
-        const sortMapping = {
-          like_asc: 'like',
-          like_desc: '-like',
-          old: 'created_at',
-          new: '-created_at',
-        };
+      let queryParameters = [];
 
-        const sortParam = sortMapping[sortType];
-        if (sortParam) {
-          commentEndpointUrl += `?sort=${sortParam}`;
-        }
+      if (sortType === 'like_asc') {
+        queryParameters.push(`sort=like`);
+      } else if (sortType === 'like_desc') {
+        queryParameters.push(`sort=-like`);
+      } else if (sortType === 'old') {
+        queryParameters.push(`sort=created_at`);
+      } else if (sortType === 'new') {
+        queryParameters.push(`sort=-created_at`);
       }
 
       if (page !== undefined) {
-        if (commentEndpointUrl.includes('?')) {
-          commentEndpointUrl += `&page=${page}`;
-        } else {
-          commentEndpointUrl += `?page=${page}`;
-        }
+        queryParameters.push(`page=${page}`);
+      }
+
+      if (queryParameters.length > 0) {
+        commentEndpointUrl += `?${queryParameters.join('&')}`;
       }
 
       const response = await axios.get(commentEndpointUrl);
@@ -95,14 +92,24 @@ function ForumPostHolder() {
         return;
       }
 
-      if (comment.length === 0) {
-        setComment(response.data);
-      } else {
-        if (commentEndpointUrl.includes('sort')) {
+      const isDataSame = response.data.every((newPost) =>
+        comment.some((existingPost) => existingPost.id === newPost.id),
+      );
+
+      if (!isDataSame) {
+        if (comment.length === 0 || commentEndpointUrl.includes('sort')) {
           setComment(response.data);
         } else {
           setComment((prevComments) => [...prevComments, ...response.data]);
         }
+      } else {
+        if (commentEndpointUrl.includes('sort')) {
+          setComment(response.data);
+        } else {
+          setBlockCommentFetching(true);
+        }
+      } else {
+        setBlockCommentFetching(true);
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -135,7 +142,7 @@ function ForumPostHolder() {
           fetchCommentItems();
         })
         .catch((error) => {
-          if (error.response.data.error === 'User already liked this comment') {
+          if (error.response.data.Error === 'User already liked this comment') {
             handleDislikeClick(commentId, itemLike);
           }
         });
@@ -167,7 +174,7 @@ function ForumPostHolder() {
         .then((response) => {
           dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
           dispatch(confirmationModalActions.changeType('success'));
-          registerAppChanges('Utworzono komentarz o ID', user);
+          registerAppChanges(t('admin.changes_messages.comment_added'), user, response.data.id);
           fetchCommentItems();
           handleCommentClose();
         })
@@ -180,7 +187,6 @@ function ForumPostHolder() {
   };
 
   const changeCommentSortOption = (sortType) => {
-    setisSortChanged(true);
     fetchCommentItemsAdvanced(sortType);
   };
 
@@ -248,6 +254,7 @@ function ForumPostHolder() {
                   name='contentInput'
                   rows={`${isActive ? '4' : '1'}`}
                   maxLength={1000}
+                  secondLabel={`${isActive ? t('common.max_length', { value: 1000 }) : ''}`}
                   className={`${isActive ? 'max-h-32' : 'h-12'}`}
                   placeholder={t('forum.add_comment')}
                   onSelect={() => setIsActive(true)}

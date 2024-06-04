@@ -26,6 +26,7 @@ const LoginForm = ({
         type='text'
         label='Email'
         name='email'
+        maxLength={255}
         placeholder={t('log_reg_form.example_mail')}
         ref={emailRef}
         className={isValidEmail === false ? 'bg-red-400' : ''}

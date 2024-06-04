@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions, selectNotificationModal } from 'Redux/notificationModalSlice';
+import { globalDataActions } from 'Redux/globalDataSlice';
 
 import BaseButton from 'Components/Base/BaseButton';
 import AlertCircleIcon from 'icons/dialog/AlertCircleIcon';
@@ -20,6 +21,7 @@ function NotificationModal() {
   const { fontSize } = useFontSize();
 
   const handleNotificationModalVisibility = () => {
+    dispatch(globalDataActions.changeBlockWrapperRef(false));
     dispatch(notificationModalActions.changeIsNotificationModalOpen());
   };
 
@@ -52,7 +54,7 @@ function NotificationModal() {
           <BaseButton
             name={t('common.close')}
             btnBg='red'
-            onClick={handleNotificationModalVisibility}
+            onClick={() => handleNotificationModalVisibility()}
           />
         </div>
       </motion.div>

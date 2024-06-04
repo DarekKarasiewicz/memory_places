@@ -25,7 +25,7 @@ const PasswordResetPage = () => {
   const { fontSize } = useFontSize();
 
   const handlePasswordChange = () => {
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
     setIsValidPassword(passwordRegex.test(passwordRef.current.value));
   };
 

@@ -47,28 +47,28 @@ function ForumContentPosts({ placeId }) {
     try {
       let postEndpointUrl = `http://localhost:8000/memo_places_forum/post/place=${placeId}`;
 
+      let queryParameters = [];
+
       if (search) {
-        postEndpointUrl += `?title=${search}`;
+        queryParameters.push(`title=${search}`);
       }
 
       if (sortType === 'like_asc') {
-        postEndpointUrl += `?sort=like`;
+        queryParameters.push(`sort=like`);
       } else if (sortType === 'like_desc') {
-        postEndpointUrl += `?sort=-like`;
+        queryParameters.push(`sort=-like`);
       } else if (sortType === 'old') {
-        postEndpointUrl += `?sort=created_at`;
+        queryParameters.push(`sort=created_at`);
       } else if (sortType === 'new') {
-        postEndpointUrl += `?sort=-created_at`;
-      } else {
-        postEndpointUrl += '';
+        queryParameters.push(`sort=-created_at`);
       }
 
       if (page !== undefined) {
-        if (postEndpointUrl.includes('?')) {
-          postEndpointUrl += `&page=${page}`;
-        } else {
-          postEndpointUrl += `?page=${page}`;
-        }
+        queryParameters.push(`page=${page}`);
+      }
+
+      if (queryParameters.length > 0) {
+        postEndpointUrl += `?${queryParameters.join('&')}`;
       }
 
       const response = await axios.get(postEndpointUrl);
@@ -87,13 +87,17 @@ function ForumContentPosts({ placeId }) {
       );
 
       if (!isDataSame) {
-        if (posts.length === 0 || postEndpointUrl.includes('title')) {
+        if (posts.length === 0 || postEndpointUrl.includes('title') || search === '') {
           setPosts(response.data);
         } else {
           setPosts((prevPosts) => [...prevPosts, ...response.data]);
         }
       } else {
-        setBlockPostFetching(true);
+        if (search || postEndpointUrl.includes('sort') || response.data.length !== 0) {
+          setPosts(response.data);
+        } else {
+          setBlockPostFetching(true);
+        }
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));

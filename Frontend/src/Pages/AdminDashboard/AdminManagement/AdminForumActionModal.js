@@ -145,7 +145,7 @@ function AdminForumActionModal() {
     } else {
       if (validateFormComment) {
         axios
-          .put(`http://127.0.0.1:8000/memo_places_forum/comment/${modalAdmin.post_id}/`, {
+          .put(`http://127.0.0.1:8000/memo_places_forum/comment/${modalAdmin.comment_id}/`, {
             content: descRef.current.value,
           })
           .then(() => {
@@ -153,7 +153,11 @@ function AdminForumActionModal() {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             dispatch(adminDataActions.updateIsCommentsChanged(true));
-            registerAppChanges('admin.changes_messages.comment_edited', user, modalAdmin.post_id);
+            registerAppChanges(
+              'admin.changes_messages.comment_edited',
+              user,
+              modalAdmin.comment_id,
+            );
           })
           .catch(() => {
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -176,7 +180,7 @@ function AdminForumActionModal() {
               type='text'
               label={t('forum.title')}
               ref={titleRef}
-              maxLength={100}
+              maxLength={64}
               onChange={() => {
                 validateTitle(titleRef.current.value);
               }}
@@ -184,7 +188,7 @@ function AdminForumActionModal() {
               readOnly={isReadOnly}
             />
           )}
-          <div className='overflow-auto'>
+          <div>
             <BaseTextarea
               rows='10'
               width=''
@@ -195,7 +199,7 @@ function AdminForumActionModal() {
                 validateDescription(descRef.current.value);
               }}
               onBlur={() => validateDescription(descRef.current.value)}
-              secondLabel={t('common.description-max')}
+              secondLabel={t('common.max_length', { value: 1000 })}
               readOnly={isReadOnly}
             />
           </div>

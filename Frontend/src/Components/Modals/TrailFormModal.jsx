@@ -137,10 +137,14 @@ const TrailFormModal = (props) => {
   }, []);
 
   const handleSelectTrail = () => {
-    if (props.type === 'update' && confirm(t('common.trail_change_warning'))) {
-      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
-      dispatch(addTrailActions.changeIsSelecting(true));
-      return;
+    if (props.type === 'update') {
+      if (confirm(t('common.trail_change_warning'))) {
+        dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+        dispatch(addTrailActions.changeIsSelecting(true));
+        return;
+      } else {
+        return;
+      }
     }
     dispatch(modalsActions.changeIsTrailFormOpen());
     dispatch(addTrailActions.changeIsSelecting(true));
@@ -186,9 +190,9 @@ const TrailFormModal = (props) => {
     props.closeModal();
   };
 
-  const sendTrailImages = (placeId, image) => {
+  const sendTrailImages = (pathId, image) => {
     const formData = new FormData();
-    formData.append('place', placeId);
+    formData.append('path', pathId);
     formData.append('img', image);
 
     axios
@@ -203,7 +207,7 @@ const TrailFormModal = (props) => {
 
   const deleteTrailImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/path_image/pk=${imageId}/`)
+      .delete(`http://localhost:8000/memo_places/path_image/${imageId}/`)
       .then((response) => {})
       .catch((error) => {});
   };
@@ -262,6 +266,7 @@ const TrailFormModal = (props) => {
             dispatch(drawingEventsActions.reset());
             dispatch(drawingToolsActions.reset());
             dispatch(addTrailActions.reset());
+            dispatch(addObjectImageActions.reset());
             dispatch(updateTrailActions.reset());
             dispatch(formValidationActions.reset());
             dispatch(userPlacesActions.changeIsOpen());
@@ -295,6 +300,12 @@ const TrailFormModal = (props) => {
             drawingEvents.events.forEach((listener) =>
               window.google.maps.event.removeListener(listener),
             );
+
+            addObjectImageData.images.forEach((image) => {
+              sendTrailImages(response.data.id, image);
+            });
+
+            dispatch(addObjectImageActions.reset());
             dispatch(drawingEventsActions.reset());
             dispatch(drawingToolsActions.reset());
             dispatch(addTrailActions.reset());
@@ -392,6 +403,7 @@ const TrailFormModal = (props) => {
               <BaseInput
                 type='text'
                 name='wikiLinkInput'
+                maxLength={2048}
                 value={addTrailData.wiki_link}
                 onBlur={() => {
                   dispatch(addTrailActions.changeWikiLink(wikiLinkRef.current.value));
@@ -404,6 +416,7 @@ const TrailFormModal = (props) => {
               <BaseInput
                 type='text'
                 name='topicLinkInput'
+                maxLength={2048}
                 value={addTrailData.topic_link}
                 onBlur={() => {
                   dispatch(addTrailActions.changeTopicLink(topicLinkRef.current.value));
@@ -420,7 +433,7 @@ const TrailFormModal = (props) => {
               name='nameInput'
               label={t('common.name')}
               value={addTrailData.path_name}
-              maxLength={50}
+              maxLength={64}
               onBlur={() => {
                 dispatch(addTrailActions.changeName(nameRef.current.value));
                 validateName(nameRef.current.value);
@@ -441,7 +454,7 @@ const TrailFormModal = (props) => {
               ) : (
                 <span></span>
               )}
-              <span>{inputLength} / 50</span>
+              <span>{inputLength} / 64</span>
             </div>
           </div>
           <BaseImageUpload fileSize={2} />
@@ -449,7 +462,7 @@ const TrailFormModal = (props) => {
             <BaseTextarea
               rows='12'
               label={t('common.description')}
-              secondLabel={t('common.description-max')}
+              secondLabel={t('common.max_length', { value: 1000 })}
               maxLength={1000}
               ref={descriptionRef}
               value={addTrailData.description}

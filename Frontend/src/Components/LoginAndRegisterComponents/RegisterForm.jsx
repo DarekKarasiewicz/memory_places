@@ -32,6 +32,7 @@ const RegisterForm = ({
         type='text'
         label={t('common.username')}
         name='Username'
+        maxLength={32}
         ref={usernameRef}
         onBlur={handleBlurUsername}
         className={isValidUsername === false ? 'bg-red-400' : ''}
@@ -46,6 +47,7 @@ const RegisterForm = ({
         type='text'
         label='Email'
         name='email'
+        maxLength={255}
         placeholder={t('log_reg_form.example_mail')}
         ref={emailRef}
         onBlur={handleBlurEmail}

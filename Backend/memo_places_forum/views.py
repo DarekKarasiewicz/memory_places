@@ -58,7 +58,7 @@ class CommentView(viewsets.ModelViewSet):
             case "post":
                 comments = self.model.objects.filter(post=value)
             case _:
-                return Response({"error": "Invalid request"}, status=400)
+                return Response({"Error": "Invalid request"}, status=400)
 
         if sort_order:
             comments = comments.order_by(sort_order)
@@ -78,7 +78,7 @@ class CommentView(viewsets.ModelViewSet):
                 case "like":
                     user = get_object_or_404(User, id=data["user"])
                     if UserCommentLike.objects.filter(user=user, comment=comment_object).exists():
-                        return Response({'error': 'User already liked this comment'}, status=404)                    
+                        return Response({'Error': 'User already liked this comment'}, status=404)                    
                     UserCommentLike(
                         user = user,
                         comment = comment_object
@@ -90,7 +90,7 @@ class CommentView(viewsets.ModelViewSet):
                         UserCommentLike.objects.filter(user=user, comment=comment_object).delete()
                         comment_object.like = comment_object.like - 1
                     else:
-                        return Response({'error': "User don't liked this comment"}, status=404)                    
+                        return Response({'Error': "User don't liked this comment"}, status=404)                    
                 case _:
                     pass
 
@@ -149,7 +149,6 @@ class PostView(viewsets.ModelViewSet):
             
         sort_order = f"{order}{sort_key}" if sort_key else None
         posts = self.model.objects.all()
-        print(keys)
         for key, value in keys.items():
             match key:
                 case "pk":
@@ -185,7 +184,7 @@ class PostView(viewsets.ModelViewSet):
                 case "like":
                     user = get_object_or_404(User, id=data["user"])
                     if UserPostLike.objects.filter(user=user, post_id=post_object.id).exists():
-                        return Response({'error': 'User already liked this post'}, status=404)                    
+                        return Response({'Error': 'User already liked this post'}, status=404)                    
                     UserPostLike(
                         user = user,
                         post = post_object
@@ -197,7 +196,7 @@ class PostView(viewsets.ModelViewSet):
                         UserPostLike.objects.filter(user=user, post_id=post_object.id).delete()
                         post_object.like = post_object.like - 1
                     else:
-                        return Response({'error': "User don't liked this post"}, status=404)                    
+                        return Response({'Error': "User don't liked this post"}, status=404)                    
                 case _:
                     pass
 

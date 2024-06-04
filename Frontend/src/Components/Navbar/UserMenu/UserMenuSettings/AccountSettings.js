@@ -16,10 +16,8 @@ import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
 function AccountSettings() {
   const [isValidUsername, setIsValidUsername] = useState(null);
-  const [isValidEmail, setIsValidEmail] = useState(null);
   const [cookies] = useCookies(['user']);
   const usernameRef = useRef(null);
-  const emailRef = useRef(null);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = cookies.user;
@@ -28,17 +26,11 @@ function AccountSettings() {
   useEffect(() => {
     if (user) {
       if (usernameRef.current) usernameRef.current.value = user.username;
-      if (emailRef.current) emailRef.current.value = user.email;
     }
   }, []);
 
   const handleUserNameChange = () => {
     setIsValidUsername(usernameRef.current.value.length > 0);
-  };
-
-  const handleEmailChange = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setIsValidEmail(emailRegex.test(emailRef.current.value));
   };
 
   const checkIsUsernameChanged = () => {
@@ -50,29 +42,16 @@ function AccountSettings() {
     }
   };
 
-  const checkIsEmailChanged = () => {
-    const newEmail = emailRef.current.value;
-    if (user.email !== newEmail) {
-      return newEmail;
-    } else {
-      return null;
-    }
-  };
-
   const checkIsDataChanged = () => {
-    return checkIsEmailChanged() !== null || checkIsUsernameChanged() !== null;
+    return checkIsUsernameChanged() !== null;
   };
 
   const handleSumbit = (e) => {
     e.preventDefault();
     if (checkIsDataChanged()) {
-      const changedEmail = checkIsEmailChanged();
       const changedUsername = checkIsUsernameChanged();
 
       const newData = {};
-      if (changedEmail !== null) {
-        newData.email = changedEmail;
-      }
       if (changedUsername !== null) {
         newData.username = changedUsername;
       }
@@ -133,6 +112,7 @@ function AccountSettings() {
             placeholder={t('common.username')}
             name='nameInput'
             label={t('common.username')}
+            maxLength={32}
             isValid={isValidUsername}
             ref={usernameRef}
             onBlur={handleUserNameChange}
@@ -145,25 +125,7 @@ function AccountSettings() {
             </span>
           )}
         </div>
-        <div className='w-full flex flex-col gap-2'>
-          <BaseInput
-            type='text'
-            placeholder='Email'
-            name='emailInput'
-            label='Email'
-            isValid={isValidEmail}
-            ref={emailRef}
-            onBlur={handleEmailChange}
-            onChange={handleEmailChange}
-          />
-          {isValidEmail === false && (
-            <span className='text-red-500 flex items-center gap-2'>
-              <AlertIcon className='h-6 w-6' color='#ef4444' />
-              <p className={`text-${fontSize}-base`}>{t('user.email_error')}</p>
-            </span>
-          )}
-        </div>
-        {isValidUsername || isValidEmail ? (
+        {isValidUsername ? (
           <BaseButton
             name={t('user.confirm')}
             className='mt-4'

@@ -131,7 +131,7 @@ function TrailTable({ data, columns }) {
                 </span>
                 <span
                   className='flex justify-center items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer w-1/3'
-                  onClick={() => handleAdminActionModal(row.original.id, row.original.place_name)}
+                  onClick={() => handleAdminActionModal(row.original.id, row.original.path_name)}
                 >
                   <CancelIcon className='h-5 w-5' />
                   <span>{t('admin.content.delete')}</span>

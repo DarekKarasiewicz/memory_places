@@ -51,7 +51,11 @@ function App({ children, altVersion }) {
 
   useEffect(() => {
     if (!user || !user.user_id) {
-      setShowCookiesInfo(true);
+      if (localStorage.getItem('cookiesAccepted')) {
+        setShowCookiesInfo(false);
+      } else {
+        setShowCookiesInfo(true);
+      }
     }
   }, []);
 

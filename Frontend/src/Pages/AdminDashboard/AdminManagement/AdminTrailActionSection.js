@@ -13,6 +13,7 @@ import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
 import { selectDrawingTools, drawingToolsActions } from 'Redux/drawingToolsSlice';
 import { selectDrawingEvents, drawingEventsActions } from 'Redux/drawingEventsSlice';
+import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
 
 import PinIcon from 'icons/PinIcon';
 import BaseInput from 'Components/Base/BaseInput';
@@ -25,6 +26,7 @@ import WikiIcon from 'icons/WikiIcon';
 import AdminGoogleMap from './AdminGoogleMap';
 import BaseImageUpload from 'Components/Base/BaseImageUpload/BaseImageUpload';
 import AlertIcon from 'icons/AlertIcon';
+import ImageSlider from 'Components/ImageSlider/ImageSlider';
 
 import { registerAppChanges } from 'utils';
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
@@ -58,6 +60,8 @@ function AdminTrailActionSection({ action, trailId }) {
   const drawingTools = useSelector(selectDrawingTools);
   const drawingEvents = useSelector(selectDrawingEvents);
   const { fontSize } = useFontSize();
+  const addObjectImageData = useSelector(selectAddObjectImage);
+  const [baseImages, setBaseImages] = useState([]);
 
   const fetchTypeItems = async () => {
     try {
@@ -112,6 +116,9 @@ function AdminTrailActionSection({ action, trailId }) {
   };
 
   useEffect(() => {
+    fetchTypeItems();
+    fetchPeriodItems();
+
     if (action === 'edit' || action === 'view') {
       const getTrailItems = async (trailId) => {
         try {
@@ -127,6 +134,20 @@ function AdminTrailActionSection({ action, trailId }) {
           webLinkRef.current.value = response.data.topic_link;
           setToVerification(response.data.verified === true ? 'false' : 'true');
           setCordsPosition(response.data.coordinates);
+          dispatch(addTrailActions.setTrailCoords(JSON.parse(response.data.coordinates)));
+
+          getTrailImages(response.data.id)
+            .then((imageData) => {
+              const modifiedImageData = imageData.map((image) => ({
+                ...image,
+                name: image.img.split('/').pop(),
+              }));
+              setBaseImages(modifiedImageData);
+              dispatch(addObjectImageActions.setImages(modifiedImageData));
+            })
+            .catch((error) => {
+              console.error('Error fetching path images:', error);
+            });
 
           validateName(nameRef.current.value);
           validateDescription(descRef.current.value);
@@ -150,11 +171,12 @@ function AdminTrailActionSection({ action, trailId }) {
         setCurrentAction(action);
       }
 
+      setBaseImages([]);
       getTrailItems(trailId);
     }
     dispatch(addPlacelocationActions.clearLocation());
     dispatch(addTrailActions.reset());
-  }, []);
+  }, [action]);
 
   const handleNameChange = () => {
     if (nameRef.current) {
@@ -205,13 +227,17 @@ function AdminTrailActionSection({ action, trailId }) {
     return setIsValidPeriod(false);
   };
 
+  const validateCoords = () => {
+    return addTrailData.coordinates.length > 0 ? true : false;
+  };
+
   const validateForm = () => {
     if (
       isValidName === true &&
       isValidDesc === true &&
       isValidType === true &&
       isValidPeriod === true &&
-      addTrailData.coordinates.length > 0
+      validateCoords() === true
     ) {
       return true;
     }
@@ -226,12 +252,16 @@ function AdminTrailActionSection({ action, trailId }) {
       behavior: 'smooth',
     });
 
-    if (action === 'edit' && confirm(t('common.trail_change_warning'))) {
-      dispatch(modalsActions.changeIsTrailUpdateFormOpen());
-      dispatch(addTrailActions.changeIsSelecting(true));
-      dispatch(adminActions.changeAdminGoogleMapExtension(true));
-      document.body.style.overflow = 'hidden';
-      return;
+    if (action === 'edit') {
+      if (confirm(t('common.trail_change_warning'))) {
+        dispatch(modalsActions.changeIsTrailUpdateFormOpen());
+        dispatch(addTrailActions.changeIsSelecting(true));
+        dispatch(adminActions.changeAdminGoogleMapExtension(true));
+        document.body.style.overflow = 'hidden';
+        return;
+      } else {
+        return;
+      }
     }
     dispatch(modalsActions.changeIsTrailFormOpen());
     dispatch(adminActions.changeAdminGoogleMapExtension(true));
@@ -239,19 +269,71 @@ function AdminTrailActionSection({ action, trailId }) {
     document.body.style.overflow = 'hidden';
   };
 
+  const sendTrailImages = (pathId, image) => {
+    const formData = new FormData();
+    formData.append('path', pathId);
+    formData.append('img', image);
+
+    axios
+      .post(`http://localhost:8000/memo_places/path_image/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const deleteTrailImages = (imageId) => {
+    axios
+      .delete(`http://localhost:8000/memo_places/path_image/${imageId}/`)
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const getTrailImages = async (trailId) => {
+    const response = await axios.get(
+      `http://127.0.0.1:8000/memo_places/path_image/path=${trailId}`,
+    );
+
+    return response.data;
+  };
+
+  const findImageChanges = (oldItems, newItems) => {
+    return oldItems.filter((item) => !newItems.includes(item));
+  };
+
+  const findImagesWithoutId = (newArray) => {
+    return newArray.filter((newItem) => !newItem.id);
+  };
+
   const handleConfirm = () => {
     const isFormValid = validateForm();
+
     if (isFormValid) {
       const currentDate = new Date();
       const shouldBeVerificated = toVerification === 'true';
       const setValidationDate = shouldBeVerificated ? null : currentDate.toISOString().slice(0, 10);
 
       if (action === 'edit') {
+        const itemsToDelete = findImageChanges(baseImages, addObjectImageData.images);
+        const itemsToAdd = findImagesWithoutId(addObjectImageData.images);
+
+        itemsToDelete.forEach((image) => {
+          deleteTrailImages(image.id);
+        });
+
+        itemsToAdd.forEach((image) => {
+          sendTrailImages(image.id, image);
+        });
+
         axios
           .put(`http://127.0.0.1:8000/admin_dashboard/path/${trailId}/`, {
+            user: parseInt(user.user_id),
             path_name: nameRef.current.value,
             description: descRef.current.value,
             type: typeRef.current.value,
+            coordinates: JSON.stringify(addTrailData.coordinates),
             period: periodRef.current.value,
             wiki_link: wikiLinkRef.current.value,
             topic_link: webLinkRef.current.value,
@@ -266,6 +348,7 @@ function AdminTrailActionSection({ action, trailId }) {
               window.google.maps.event.removeListener(listener),
             );
             dispatch(addTrailActions.reset());
+            dispatch(addObjectImageActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges('admin.changes_messages.place_edit', user, trailId);
@@ -279,7 +362,7 @@ function AdminTrailActionSection({ action, trailId }) {
       } else {
         axios
           .post(`http://127.0.0.1:8000/admin_dashboard/path/`, {
-            user: user.user_id,
+            user: parseInt(user.user_id),
             path_name: nameRef.current.value,
             coordinates: JSON.stringify(addTrailData.coordinates),
             description: descRef.current.value,
@@ -290,11 +373,16 @@ function AdminTrailActionSection({ action, trailId }) {
             verified: !shouldBeVerificated,
             verified_date: setValidationDate,
           })
-          .then(() => {
+          .then((response) => {
             drawingTools.now[0].geometry.setMap(null);
             drawingEvents.events.forEach((listener) =>
               window.google.maps.event.removeListener(listener),
             );
+            addObjectImageData.images.forEach((image) => {
+              sendTrailImages(response.data.id, image);
+            });
+
+            dispatch(addObjectImageActions.reset());
             dispatch(addTrailActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
@@ -314,11 +402,6 @@ function AdminTrailActionSection({ action, trailId }) {
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
-
-  useEffect(() => {
-    fetchTypeItems();
-    fetchPeriodItems();
-  }, []);
 
   return (
     <>
@@ -340,7 +423,7 @@ function AdminTrailActionSection({ action, trailId }) {
                     name='nameInput'
                     label={t('common.name')}
                     ref={nameRef}
-                    maxLength={50}
+                    maxLength={64}
                     isValid={isValidName}
                     onChange={() => {
                       validateName(nameRef.current.value);
@@ -358,7 +441,7 @@ function AdminTrailActionSection({ action, trailId }) {
                     ) : (
                       <span></span>
                     )}
-                    <span>{inputLength} / 50</span>
+                    <span>{inputLength} / 64</span>
                   </div>
                 </div>
                 <div className='flex justify-start items-center gap-4'>
@@ -430,7 +513,7 @@ function AdminTrailActionSection({ action, trailId }) {
                 <BaseTextarea
                   rows='12'
                   label={t('common.description')}
-                  secondLabel={t('common.description-max')}
+                  secondLabel={t('common.max_length', { value: 1000 })}
                   ref={descRef}
                   maxLength={1000}
                   isValid={isValidDesc}
@@ -461,6 +544,7 @@ function AdminTrailActionSection({ action, trailId }) {
                   <BaseInput
                     type='text'
                     name='wikiLinkInput'
+                    maxLength={2048}
                     ref={wikiLinkRef}
                     onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
@@ -471,6 +555,7 @@ function AdminTrailActionSection({ action, trailId }) {
                   <BaseInput
                     type='text'
                     name='topicLinkInput'
+                    maxLength={2048}
                     ref={webLinkRef}
                     onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
@@ -490,7 +575,13 @@ function AdminTrailActionSection({ action, trailId }) {
           </div>
           <div className='w-1/2 h-3/4 max-2xl:h-[75vh] max-2xl:w-full flex flex-col gap-4'>
             <AdminGoogleMap action={currentAction} kind='trail' cordsPosition={cordsPosition} />
-            <BaseImageUpload fileSize={5} />
+            {action !== 'view' ? (
+              <BaseImageUpload fileSize={5} />
+            ) : (
+              <div className='h-1/2'>
+                <ImageSlider slides={baseImages} />
+              </div>
+            )}
           </div>
         </div>
         <hr />
@@ -508,6 +599,7 @@ function AdminTrailActionSection({ action, trailId }) {
               dispatch(drawingEventsActions.reset());
               dispatch(drawingToolsActions.reset());
               dispatch(addTrailActions.reset());
+              setBaseImages([]);
               navigate(-1);
             }}
           />

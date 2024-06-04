@@ -186,6 +186,7 @@ function MapFilter() {
                 label={t('common.name')}
                 name={t('common.name')}
                 value={textValue}
+                maxLength={64}
                 onChange={handleTextValueChange}
               />
               <BaseSelect

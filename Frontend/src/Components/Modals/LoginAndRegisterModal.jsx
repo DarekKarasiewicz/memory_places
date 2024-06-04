@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { modalsActions } from 'Redux/modalsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectGlobalData } from 'Redux/globalDataSlice';
 
 import BaseModal from 'Components/Base/BaseModal';
 import LoginComponent from 'Components/LoginAndRegisterComponents/LoginComponent';
@@ -16,6 +17,7 @@ const LoginAndRegisterModal = (props) => {
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
   const { fontSize } = useFontSize();
+  const globalData = useSelector(selectGlobalData);
 
   useEffect(() => {
     setTitle(t('common.sign_in'));
@@ -36,12 +38,14 @@ const LoginAndRegisterModal = (props) => {
         dispatch(modalsActions.changeIsLoginAndRegisterOpen());
       }
     }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [wrapperRef]);
+    if (!globalData.blockWrapperRef) {
+      console.log('reloaded');
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [wrapperRef, globalData.blockWrapperRef]);
 
   return (
     <BaseModal title={title} closeModal={props.closeModal} width='w-1/3'>

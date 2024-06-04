@@ -12,6 +12,7 @@ import { adminActions } from 'Redux/adminActionSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
 import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
+import { modalsActions } from 'Redux/modalsSlice';
 
 import PinIcon from 'icons/PinIcon';
 import BaseInput from 'Components/Base/BaseInput';
@@ -147,6 +148,10 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   useEffect(() => {
+    fetchSortOfItems();
+    fetchTypeItems();
+    fetchPeriodItems();
+
     if (action === 'edit' || action === 'view') {
       const getPlaceItems = async (placeId) => {
         try {
@@ -206,6 +211,7 @@ function AdminPlaceActionSection({ action, placeId }) {
         setCurrentAction(action);
       }
 
+      setBaseImages([]);
       getPlaceItems(placeId);
     }
     dispatch(addPlacelocationActions.clearLocation());
@@ -299,6 +305,8 @@ function AdminPlaceActionSection({ action, placeId }) {
       validateLat(addPlaceLocation.lat);
       validateLng(addPlaceLocation.lng);
     }
+    latRef.current.value = addPlaceLocation.lat;
+    lngRef.current.value = addPlaceLocation.lng;
     setLat(addPlaceLocation.lat);
     setLng(addPlaceLocation.lng);
   }, [addPlaceLocation]);
@@ -316,6 +324,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   };
 
   const handleModalClose = () => {
+    setBaseImages([]);
     dispatch(addObjectImageActions.reset());
     navigate(-1);
   };
@@ -337,7 +346,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const deletePlaceImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/place_image/pk=${imageId}/`)
+      .delete(`http://localhost:8000/memo_places/place_image/${imageId}/`)
       .then(() => {})
       .catch(() => {});
   };
@@ -426,6 +435,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
             dispatch(addObjectImageActions.reset());
             dispatch(addPlaceActions.reset());
+            dispatch(addPlacelocationActions.clearLocation());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             dispatch(adminDataActions.updateIsPlacesChanged(true));
@@ -445,12 +455,6 @@ function AdminPlaceActionSection({ action, placeId }) {
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
-
-  useEffect(() => {
-    fetchSortOfItems();
-    fetchTypeItems();
-    fetchPeriodItems();
-  }, []);
 
   return (
     <>
@@ -472,7 +476,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     name='nameInput'
                     label={t('common.name')}
                     ref={nameRef}
-                    maxLength={50}
+                    maxLength={64}
                     isValid={isValidName}
                     onChange={() => {
                       validateName(nameRef.current.value);
@@ -490,7 +494,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     ) : (
                       <span></span>
                     )}
-                    <span>{inputLength} / 50</span>
+                    <span>{inputLength} / 64</span>
                   </div>
                 </div>
                 <div className='flex justify-start items-center gap-4'>
@@ -641,7 +645,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                 <BaseTextarea
                   rows='12'
                   label={t('common.description')}
-                  secondLabel={t('common.description-max')}
+                  secondLabel={t('common.max_length', { value: 1000 })}
                   ref={descRef}
                   maxLength={1000}
                   isValid={isValidDesc}
@@ -673,6 +677,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     type='text'
                     name='wikiLinkInput'
                     ref={wikiLinkRef}
+                    maxLength={2048}
                     onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
                   />
@@ -683,6 +688,7 @@ function AdminPlaceActionSection({ action, placeId }) {
                     type='text'
                     name='topicLinkInput'
                     ref={webLinkRef}
+                    maxLength={2048}
                     onChange={() => wikiLinkRef.current.value}
                     readOnly={isReadOnly}
                   />

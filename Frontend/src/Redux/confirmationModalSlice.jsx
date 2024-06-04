@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   type: '',
+  content: '',
   isConfirmationModalOpen: false,
 };
 
@@ -12,8 +13,15 @@ export const confirmationModalSlice = createSlice({
     changeType: (state, action) => {
       state.type = action.payload;
     },
+    changeContent: (state, action) => {
+      state.content = action.payload;
+    },
     changeIsConfirmationModalOpen: (state) => {
       state.isConfirmationModalOpen = !state.isConfirmationModalOpen;
+    },
+    clearData: (state) => {
+      state.type = null;
+      state.content = '';
     },
   },
 });

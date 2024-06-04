@@ -21,10 +21,6 @@ function LanguageSwitcher(props) {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    setLanguage(i18n.language);
-  }, [i18n.language]);
-
   const lang_options = [
     { label: t('user.pl'), value: 'pl', image: '../../assets/flags/pl.png', alt: t('user.pl') },
     { label: t('user.en'), value: 'en', image: '../../assets/flags/en.png', alt: t('user.en') },
@@ -32,7 +28,7 @@ function LanguageSwitcher(props) {
     { label: t('user.ru'), value: 'ru', image: '../../assets/flags/ru.png', alt: t('user.ru') },
   ];
 
-  const parentItem = {
+  const parentItemAnimations = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
       opacity: 1,
@@ -43,6 +39,10 @@ function LanguageSwitcher(props) {
       },
     },
   };
+
+  useEffect(() => {
+    setLanguage(i18n.language);
+  }, [i18n.language]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -98,7 +98,7 @@ function LanguageSwitcher(props) {
                   ? 'right-2 rounded-lg bg-mainBgColor'
                   : '-left-1/2 bg-mainBgColor flex justify-center items-center rounded-lg'
               } absolute mt-2 w-24 shadow-itemShadow`}
-              variants={parentItem}
+              variants={parentItemAnimations}
               initial='hidden'
               animate='visible'
             >
