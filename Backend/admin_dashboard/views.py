@@ -99,7 +99,7 @@ class PlaceView(viewsets.ModelViewSet):
                 case "period":
                     places = self.model.objects.filter(period=value[0])
                 case "place_name":
-                    places = [x for x in places if re.match(value[0].lower(),x.place_name.lower())]
+                    places = places.filter(place_name__iregex=value[0].lower())
                 case _:
                     return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -266,7 +266,7 @@ class PathView(viewsets.ModelViewSet):
                 case "period":
                     paths = Place.objects.filter(period=value[0])
                 case "path_name":
-                    paths = [x for x in paths if re.match(value[0].lower(),x.path_name.lower())]
+                    paths = paths.filter(place_name__iregex=value[0].lower())
                 case _:
                     return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 

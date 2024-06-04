@@ -159,7 +159,7 @@ class PostView(viewsets.ModelViewSet):
             case "place":
                 posts = self.model.objects.filter(place=value)
             case "title":
-                posts = [x for x in posts if re.match(value.lower(), x.title.lower())]
+                posts = self.model.objects.filter(title__iregex=value.lower())
             case _:
                 return Response({"error": "Invalid request"}, status=400)
 

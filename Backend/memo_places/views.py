@@ -116,7 +116,7 @@ class PlaceView(viewsets.ModelViewSet):
                     serializer = self.serializer_class(place, many=False)
                     return Response(serializer.data)
                 case "place_name":
-                    places = [x for x in places if re.match(value[0].lower(),x.place_name.lower())]
+                    places = places.filter(place_name__iregex=value[0].lower())
                 case "user":
                     places = places.filter(user=value[0])
                 case "type":
@@ -314,7 +314,7 @@ class PathView(viewsets.ModelViewSet):
                     serializer = self.serializer_class(path, many=False)
                     return Response(serializer.data)
                 case "path_name":
-                    paths = [x for x in paths if re.match(value[0].lower(),x.path_name.lower())]
+                    paths = paths.filter(place_name__iregex=value[0].lower())
                 case "user":
                     paths = paths.filter(user=value[0])
                 case "type":
