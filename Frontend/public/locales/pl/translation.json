@@ -17,7 +17,7 @@
         "type": "Typ:",
         "period": "Okres:",
         "description": "Opis:",
-        "description-max": "maks. 1000 znaków",
+        "max_length": "maks. {{value}} znaków",
         "created": "Utworzony:",
         "founded": "Odnaleziony:",
         "founded_by": "Odkrył:",
@@ -308,6 +308,8 @@
             "memo_trail": "Dodaj szlaki",
             "delete_title": "Usuwanie miejsca pamięci",
             "delete_info": "Czy napewno chcesz usunąć miejsce o ID: {{id}} i nazwie: {{name}}?",
+            "delete_trail_title": "Usuwanie szlaku pamięci",
+            "delete_trail_info": "Czy napewno chcesz usunąć szlak o ID: {{id}} i nazwie: {{name}}?",
             "block_title": "Blokowanie użytkownika",
             "block_info": "Czy napewno chcesz zablokować użytkownika o ID: {{id}} i nazwie: {{name}}?",
             "role_title": "Zmiana rolę użytkownika",
@@ -406,7 +408,8 @@
             "current_comments": "Komentarze z bieżącego miesiąca",
             "contact_info": "Zebrane zapytania od użytkowników w jednym miejscu!",
             "send_by": "Nadesłane przez",
-            "all_contact": "Wszystkie pytania"
+            "all_contact": "Wszystkie pytania",
+            "copy_clipboard": "Skopiowano do schowka"
         },
         "changes_messages": {
             "blocked": "Zablokowany użytkownik o ID {{element_id}}",

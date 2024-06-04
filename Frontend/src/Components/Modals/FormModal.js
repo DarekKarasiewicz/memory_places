@@ -553,6 +553,7 @@ function FormModal(props) {
                 <BaseInput
                   type='text'
                   name='wikiLinkInput'
+                  maxLength={2048}
                   value={addPlaceData.wiki_link}
                   onBlur={() => {
                     dispatch(addPlaceActions.changeWikiLink(wikiLinkRef.current.value));
@@ -565,6 +566,7 @@ function FormModal(props) {
                 <BaseInput
                   type='text'
                   name='topicLinkInput'
+                  maxLength={2048}
                   value={addPlaceData.topic_link}
                   onBlur={() => {
                     dispatch(addPlaceActions.changeTopicLink(topicLinkRef.current.value));
@@ -581,7 +583,7 @@ function FormModal(props) {
                 name='nameInput'
                 label={t('common.name')}
                 value={addPlaceData.place_name}
-                maxLength={50}
+                maxLength={64}
                 onBlur={() => {
                   dispatch(addPlaceActions.changeName(nameRef.current.value));
                   validateName(nameRef.current.value);
@@ -602,7 +604,7 @@ function FormModal(props) {
                 ) : (
                   <span></span>
                 )}
-                <span>{inputLength} / 50</span>
+                <span>{inputLength} / 64</span>
               </div>
             </div>
             <BaseImageUpload fileSize={5} />
@@ -610,7 +612,7 @@ function FormModal(props) {
               <BaseTextarea
                 rows='12'
                 label={t('common.description')}
-                secondLabel={t('common.description-max')}
+                secondLabel={t('common.max_length', { value: 1000 })}
                 maxLength={1000}
                 ref={descriptionRef}
                 value={addPlaceData.description}

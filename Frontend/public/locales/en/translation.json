@@ -17,7 +17,7 @@
         "type": "Type:",
         "period": "Period:",
         "description": "Description:",
-        "description-max": "max. 1000 characters",
+        "max_length": "max. {{value}} characters",
         "created": "Created:",
         "founded": "Founded:",
         "founded_by": "Founded by:",
@@ -308,6 +308,8 @@
             "memo_trail": "Add trail",
             "delete_title": "Deleting Memory Place",
             "delete_info": "Are you sure you want to delete the location with ID: {{id}} and name: {{name}}?",
+            "delete_trail_title": "Delete memory trail",
+            "delete_trail_info": "Are you sure you want to delete the trail with ID: {{id}} and name: {{name}}?",
             "block_title": "User Blocking",
             "block_info": "Are you sure you want to block the user with ID: {{id}} and name: {{name}}?",
             "role_title": "Change User Role",
@@ -406,7 +408,8 @@
             "current_comments": "Comments from the current month",
             "contact_info": "Collected user inquiries in one place!",
             "send_by": "Sent by",
-            "all_contact": "All questions"
+            "all_contact": "All questions",
+            "copy_clipboard": "Copied to clipboard"
         },
         "changes_messages": {
             "blocked": "Blocked user with ID {{element_id}}",

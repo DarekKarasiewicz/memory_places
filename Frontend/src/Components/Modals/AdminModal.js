@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import {
   selectAdminAction,
   deletePlaceItem,
+  deleteTrailItem,
   changeUserRole,
   blockUser,
   resetUserPassword,
@@ -50,6 +51,14 @@ function AdminModal({ closeModal }) {
       setIconComponent(<TrashIcon className='h-20 w-20' />);
     }
 
+    if (modalData.current_action === 'trail_delete') {
+      setTitle(t('admin.common.delete_trail_title'));
+      setDesc(
+        t('admin.common.delete_trail_info', { id: modalData.trail_id, name: modalData.trail_name }),
+      );
+      setIconComponent(<TrashIcon className='h-20 w-20' />);
+    }
+
     if (modalData.current_action === 'user_block') {
       setTitle(t('admin.common.block_title'));
       setDesc(t('admin.common.block_info', { id: modalData.user_id, name: modalData.user_name }));
@@ -85,8 +94,8 @@ function AdminModal({ closeModal }) {
     }
 
     if (modalData.current_action === 'comment_delete') {
-      setTitle(t('admin.common.comment_title'));
-      setDesc(t('admin.common.comment_info', { id: modalData.comment_id }));
+      setTitle(t('admin.common.delete_comment_title'));
+      setDesc(t('admin.common.delete_comment_info', { id: modalData.comment_id }));
       setIconComponent(<TrashIcon className='h-20 w-20' />);
     }
   }, []);
@@ -130,6 +139,20 @@ function AdminModal({ closeModal }) {
                     'admin.changes_messages.place_delete',
                     cookies.user,
                     modalData.place_id,
+                  );
+                }}
+              />
+            )}
+            {modalData.current_action === 'trail_delete' && (
+              <BaseButton
+                name={t('common.confirm')}
+                btnBg='blue'
+                onClick={() => {
+                  dispatch(deleteTrailItem(modalData.trail_id));
+                  registerAppChanges(
+                    'admin.changes_messages.trail_delete',
+                    cookies.user,
+                    modalData.trail_id,
                   );
                 }}
               />

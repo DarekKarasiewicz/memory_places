@@ -281,7 +281,8 @@ class PathView(viewsets.ModelViewSet):
         for i in data.keys():
             match i:
                 case "user":
-                    path_object.user = data["user"]
+                    user = get_object_or_404(User, id=data["user"])
+                    path_object.user = user
                 case "path_name":
                     path_object.path_name = data["path_name"]
                 case "description":

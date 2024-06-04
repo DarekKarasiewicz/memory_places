@@ -8,7 +8,6 @@ import { selectForumData, forumDataActions } from 'Redux/forumDataSlice';
 
 import ForumPlace from './ForumPlace';
 import SearchBar from './SearchBar/SearchBar';
-import BaseButton from 'Components/Base/BaseButton';
 
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
@@ -18,9 +17,6 @@ function ForumContent() {
   const { t } = useTranslation();
   const [places, setPlaces] = useState(null);
   const navigate = useNavigate();
-  const [searchedText, setSearchedText] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [blockPlaceFetching, setBlockPlaceFetching] = useState(false);
   const { fontSize } = useFontSize();
 
   const fetchPlaceItems = async () => {
@@ -45,37 +41,34 @@ function ForumContent() {
     }
   };
 
-  const fetchPlaceItemsAdvanced = async (search, page) => {
+  const fetchPlaceItemsAdvanced = async (search) => {
     try {
       let placesEndpointUrl = `http://localhost:8000/memo_places/places/`;
 
-      if (forumData.type_id) {
-        placesEndpointUrl += `type=${forumData.type_id}`;
-      }
-      if (forumData.period_id) {
-        placesEndpointUrl += `period=${forumData.period_id}`;
-      }
       if (search) {
-        placesEndpointUrl += `?place_name=${search}`;
+        placesEndpointUrl += `place_name=${search}`;
       }
 
-      //TO DO
-      //THERE IS NO PAGING TO PLACE OR TRAILS
-      // if (page !== undefined) {
-      //   if (placesEndpointUrl.includes('?')) {
-      //     placesEndpointUrl += `&page=${page}`;
-      //   } else {
-      //     placesEndpointUrl += `?page=${page}`;
-      //   }
-      // }
+      if (forumData.type_id) {
+        if (placesEndpointUrl.includes('place_name')) {
+          placesEndpointUrl += `?type=${forumData.type_id}`;
+        } else {
+          placesEndpointUrl += `type=${forumData.type_id}`;
+        }
+      }
+      if (forumData.period_id) {
+        if (placesEndpointUrl.includes('place_name')) {
+          placesEndpointUrl += `?period=${forumData.period_id}`;
+        } else {
+          placesEndpointUrl += `period=${forumData.period_id}`;
+        }
+      }
 
       const response = await axios.get(placesEndpointUrl);
 
       if (response.data.length === 0) {
         if (placesEndpointUrl.includes('place_name')) {
           setPlaces([]);
-        } else {
-          setBlockPlaceFetching(true);
         }
         return;
       }
@@ -91,7 +84,9 @@ function ForumContent() {
           setPlaces((prevPlaces) => [...prevPlaces, ...response.data]);
         }
       } else {
-        setBlockPlaceFetching(true);
+        if (search) {
+          setPlaces(response.data);
+        }
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -101,15 +96,11 @@ function ForumContent() {
   };
 
   const handleSearchPlaces = (value) => {
-    setSearchedText(value);
-    if (searchedText !== '') {
+    if (value) {
       fetchPlaceItemsAdvanced(value);
+    } else {
+      fetchPlaceItems();
     }
-  };
-
-  const loadNewPlaces = () => {
-    setCurrentPage(currentPage + 1);
-    fetchPlaceItemsAdvanced(null, currentPage + 1);
   };
 
   useEffect(() => {
@@ -152,16 +143,6 @@ function ForumContent() {
             className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-${fontSize}-4xl text-center`}
           >
             {t('forum.choose_category')}
-          </div>
-        )}
-        {places?.length > 0 && (
-          <div className='flex justify-center mt-2'>
-            <BaseButton
-              name={t('forum.more_places')}
-              btnBg='blue'
-              onClick={() => loadNewPlaces()}
-              disabled={blockPlaceFetching}
-            />
           </div>
         )}
       </div>

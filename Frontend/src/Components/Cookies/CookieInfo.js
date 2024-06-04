@@ -9,6 +9,13 @@ function CookiesInfo(props) {
   const { t } = useTranslation();
   const { fontSize } = useFontSize();
 
+  const userSetCookies = () => {
+    if (!localStorage.getItem('cookiesAccepted')) {
+      localStorage.setItem('cookiesAccepted', true);
+    }
+    props.closeModal();
+  };
+
   return (
     <>
       <div className='absolute flex w-full h-screen top-0 bg-black bg-opacity-80 z-40'>
@@ -28,7 +35,7 @@ function CookiesInfo(props) {
             <BaseButton
               name={t('common.cookie_accept')}
               btnBg='blue'
-              onClick={props.closeModal}
+              onClick={() => userSetCookies()}
               breakWidth={true}
             />
             <BaseButton

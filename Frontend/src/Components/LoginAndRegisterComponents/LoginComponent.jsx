@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { globalDataActions } from 'Redux/globalDataSlice';
 
 import LoginForm from './LoginForm';
 import BaseButton from 'Components/Base/BaseButton';
@@ -78,9 +79,11 @@ const LoginComponent = () => {
             dispatch(notificationModalActions.changeType('alert'));
             dispatch(notificationModalActions.changeTitle(t('common.login_error')));
           }
+          dispatch(globalDataActions.changeBlockWrapperRef(true));
           dispatch(notificationModalActions.changeIsNotificationModalOpen());
         });
     } else {
+      dispatch(globalDataActions.changeBlockWrapperRef(true));
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.check_inputs')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());

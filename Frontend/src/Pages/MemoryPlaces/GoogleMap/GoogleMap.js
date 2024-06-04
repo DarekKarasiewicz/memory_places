@@ -241,7 +241,7 @@ const GoogleMap = () => {
             <GoogleMapPin />
             {infowindowShown && (
               <InfoWindow anchor={marker} onCloseClick={closeInfoWindow}>
-                <div className='w-36 h-12 flex justify-center items-center'>
+                <div className='w-36 h-12 flex justify-center items-center overflow-hidden'>
                   <BaseButton
                     onClick={handleConfirm}
                     type='submit'
@@ -298,13 +298,13 @@ const GoogleMap = () => {
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}
-              <section className='w-72 h-52 overflow-hidden'>
+              {/* <section className='w-72 h-52 overflow-hidden'>
                 <img
                   src='https://placehold.co/300x300'
                   alt='placeholder-image'
                   className='w-full h-full object-cover'
                 ></img>
-              </section>
+              </section> */}
               <section
                 className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
               >
@@ -358,13 +358,13 @@ const GoogleMap = () => {
                 </div>
               )}
               {/* TODO when from backend will be array of images get first one and put it here */}
-              <section className='w-72 h-52 overflow-hidden'>
+              {/* <section className='w-72 h-52 overflow-hidden'>
                 <img
                   src='https://placehold.co/300x300'
                   alt='placeholder-image'
                   className='w-full h-full object-cover'
                 ></img>
-              </section>
+              </section> */}
               <section
                 className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
               >

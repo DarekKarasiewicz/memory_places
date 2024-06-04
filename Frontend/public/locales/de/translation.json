@@ -17,7 +17,7 @@
         "type": "Typ:",
         "period": "Zeitraum:",
         "description": "Beschreibung:",
-        "description-max": "max. 1000 Zeichen",
+        "max_length": "max. {{value}} Zeichen",
         "created": "Erstellt:",
         "founded": "Gegründet:",
         "founded_by": "Gefunden von:",
@@ -308,6 +308,8 @@
             "memo_trail": "Weg hinzufügen",
             "delete_title": "Löschen des Speicherorts",
             "delete_info": "Möchten Sie den Ort mit der ID: {{id}} und dem Namen: {{name}} wirklich löschen?",
+            "delete_trail_title": "Speicherpfad löschen",
+            "delete_trail_info": "Sind Sie sicher, dass Sie den Pfad mit der ID: {{id}} und dem Namen löschen wollen: {{name}}?",
             "block_title": "Benutzer blockieren",
             "block_info": "Sind Sie sicher, dass Sie den Benutzer mit der ID: {{id}} und dem Namen: {{name}} blockieren möchten?",
             "role_title": "Benutzerrolle ändern",
@@ -406,7 +408,8 @@
             "current_comments": "Kommentare vom laufenden Monat",
             "contact_info": "Gesammelte Benutzeranfragen an einem Ort!",
             "send_by": "Gesendet von",
-            "all_contact": "Alle Fragen"
+            "all_contact": "Alle Fragen",
+            "copy_clipboard": "In die Zwischenablage kopiert"
         },
         "changes_messages": {
             "blocked": "Benutzer mit ID {{element_id}} gesperrt",

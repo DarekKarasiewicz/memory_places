@@ -71,7 +71,7 @@ function ForumPostModal() {
           dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
           dispatch(confirmationModalActions.changeType('success'));
           closeModal();
-          registerAppChanges('Utworzono post o ID', user, titleRef.current.value);
+          registerAppChanges(t('admin.changes_messages.post_added'), user, response.data.id);
         })
         .catch(() => {
           dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -94,6 +94,7 @@ function ForumPostModal() {
               label={t('forum.title')}
               ref={titleRef}
               maxLength={100}
+              secondLabel={t('common.max_length', { value: 100 })}
               onChange={() => {
                 validateTitle(titleRef.current.value);
               }}
@@ -109,7 +110,7 @@ function ForumPostModal() {
               <span></span>
             )}
           </div>
-          <div className='flex flex-col gap-1 overflow-auto'>
+          <div className='flex flex-col gap-1'>
             <BaseTextarea
               rows='10'
               width=''
@@ -120,7 +121,7 @@ function ForumPostModal() {
                 validateDescription(descRef.current.value);
               }}
               onBlur={() => validateDescription(descRef.current.value)}
-              secondLabel={t('common.description-max')}
+              secondLabel={t('common.max_length', { value: 1000 })}
               isValid={isValidDesc}
             />
             {isValidDesc === false ? (

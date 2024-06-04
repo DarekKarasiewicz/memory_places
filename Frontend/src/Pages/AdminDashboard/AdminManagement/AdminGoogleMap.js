@@ -123,12 +123,6 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
     dispatch(adminActions.changeAdminGoogleMapExtension(false));
     dispatch(addPlacelocationActions.changeIsSelecting({ isSelecting: false }));
     document.body.style.overflow = 'auto';
-
-    if (updatePlaceData.isDataLoaded === true) {
-      dispatch(modalsActions.changeIsUpdateModalOpen());
-    } else {
-      dispatch(modalsActions.changeIsFormModalOpen());
-    }
   };
 
   return isLoaded && isPositionLoaded ? (

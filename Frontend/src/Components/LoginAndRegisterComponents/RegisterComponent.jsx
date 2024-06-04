@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { globalDataActions } from 'Redux/globalDataSlice';
 
 import RegisterForm from './RegisterForm';
 import BaseButton from 'Components/Base/BaseButton';
@@ -56,14 +57,16 @@ const RegisterComponent = ({ setIsLogging }) => {
           dispatch(notificationModalActions.changeIsNotificationModalOpen());
           setIsLogging(true);
         })
-        .error((error) => {
-          if (error.response.data.error === 'User exist') {
+        .catch((error) => {
+          dispatch(globalDataActions.changeBlockWrapperRef(true));
+          if (error.response.data.Error === 'User exist') {
             dispatch(notificationModalActions.changeType('alert'));
             dispatch(notificationModalActions.changeTitle(t('common.given_email_exists')));
             dispatch(notificationModalActions.changeIsNotificationModalOpen());
           }
         });
     } else {
+      dispatch(globalDataActions.changeBlockWrapperRef(true));
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.check_inputs')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());

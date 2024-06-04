@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { forumDataActions } from 'Redux/forumDataSlice';
+import { confirmationModalActions } from 'Redux/confirmationModalSlice';
 
 import UserIcon from 'icons/UserIcon';
 import ArrowUpIcon from 'icons/ArrowUpIcon';
@@ -39,7 +40,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
           dispatch(forumDataActions.changeRefreshPlaces(true));
         })
         .catch((error) => {
-          if (error.response.data.error === 'User already liked this post') {
+          if (error.response.data.Error === 'User already liked this post') {
             handleDislikeClick(commentId, itemLike);
           }
         });
@@ -62,6 +63,9 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
 
   const handleShareClick = (e) => {
     e.stopPropagation();
+    dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+    dispatch(confirmationModalActions.changeContent('copy_clipboard'));
+    dispatch(confirmationModalActions.changeType('success'));
     navigator.clipboard.writeText(locationShare);
   };
 

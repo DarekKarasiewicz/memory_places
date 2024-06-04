@@ -77,6 +77,7 @@ function ContactForm(props) {
           dispatch(notificationModalActions.changeTitle(t('user.contact_success')));
           dispatch(notificationModalActions.changeIsNotificationModalOpen());
           registerAppChanges('admin.changes_messages.contact_send', user);
+          dispatch(modalsActions.changeIsContactFormOpen());
         })
         .catch(() => {
           dispatch(notificationModalActions.changeType('alert'));
@@ -96,14 +97,21 @@ function ContactForm(props) {
         <div className='flex flex-col px-2 py-4 gap-2'>
           <div className={`text-${fontSize}-base`}>{t('user.contact_info')}</div>
           <div className='flex gap-4'>
-            <BaseInput type='text' label={t('common.name')} ref={nameRef} readOnly={true} />
-            <BaseInput type='text' label='Email' ref={emailRef} readOnly={true} />
+            <BaseInput
+              type='text'
+              label={t('common.name')}
+              maxLength={32}
+              ref={nameRef}
+              readOnly={true}
+            />
+            <BaseInput type='text' label='Email' maxLength={255} ref={emailRef} readOnly={true} />
           </div>
           <BaseInput
             type='text'
             label={t('forum.title')}
             ref={titleRef}
             maxLength={50}
+            secondLabel={t('common.max_length', { value: 50 })}
             onChange={() => {
               validateTitle(titleRef.current.value);
             }}
@@ -115,7 +123,7 @@ function ContactForm(props) {
               rows='10'
               label={t('common.description')}
               ref={descRef}
-              secondLabel={t('common.description-max')}
+              secondLabel={t('common.max_length', { value: 1000 })}
               onChange={() => {
                 validateDescription(descRef.current.value);
               }}
