@@ -132,11 +132,13 @@ class PostView(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match(r"(\w+)=(.+)", kwargs["pk"]).groups()
+        keys={key:[value]}
+        keys.update(request.query_params)
         page = int(request.query_params.get("page", 1))
         page_size = 15
         start = (page - 1) * page_size
         end = start + page_size
-
+        
         sort_key = request.query_params.get("sort", None)
         order = '-' if 'desc_' in kwargs["pk"] else ''
         
@@ -146,22 +148,21 @@ class PostView(viewsets.ModelViewSet):
             order = '-'
             
         sort_order = f"{order}{sort_key}" if sort_key else None
-
-        match key:
-            case "page":
-                posts = Post.objects.all()
-            case "pk":
-                post = get_object_or_404(self.model, id=value)
-                serializer = self.serializer_class(post, many=False)
-                return Response(serializer.data)
-            case "user":
-                posts = self.model.objects.filter(user=value)
-            case "place":
-                posts = self.model.objects.filter(place=value)
-            case "title":
-                posts = self.model.objects.filter(title__iregex=value.lower())
-            case _:
-                return Response({"error": "Invalid request"}, status=400)
+        print(keys)
+        for key, value in keys.items():
+            match key:
+                case "pk":
+                    post = get_object_or_404(self.model, id=value[0])
+                    serializer = self.serializer_class(post, many=False)
+                    return Response(serializer.data)
+                case "user":
+                    posts = self.model.objects.filter(user=value[0])
+                case "place":
+                    posts = self.model.objects.filter(place=value[0])
+                case "title":
+                    posts = self.model.objects.filter(title__iregex=value[0].lower())
+                case _:
+                    pass
 
         if sort_order:
             posts = posts.order_by(sort_order)
