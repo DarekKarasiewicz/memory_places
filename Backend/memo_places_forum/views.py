@@ -148,6 +148,7 @@ class PostView(viewsets.ModelViewSet):
             order = '-'
             
         sort_order = f"{order}{sort_key}" if sort_key else None
+        posts = self.model.objects.all()
         print(keys)
         for key, value in keys.items():
             match key:
@@ -156,11 +157,11 @@ class PostView(viewsets.ModelViewSet):
                     serializer = self.serializer_class(post, many=False)
                     return Response(serializer.data)
                 case "user":
-                    posts = self.model.objects.filter(user=value[0])
+                    posts = posts.filter(user=value[0])
                 case "place":
-                    posts = self.model.objects.filter(place=value[0])
+                    posts = posts.filter(place=value[0])
                 case "title":
-                    posts = self.model.objects.filter(title__iregex=value[0].lower())
+                    posts = posts.filter(title__iregex=value[0].lower())
                 case _:
                     pass
 
