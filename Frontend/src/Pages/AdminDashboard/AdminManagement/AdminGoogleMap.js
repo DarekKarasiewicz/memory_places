@@ -17,6 +17,7 @@ import { selectUpdatePlace } from 'Redux/updatePlaceSlice';
 import { selectAddTrail } from 'Redux/addTrailSlice.jsx';
 import { selectUpdateTrail } from 'Redux/updateTrailSlice.jsx';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
+import { selectModals } from 'Redux/modalsSlice.jsx';
 
 import BaseButton from 'Components/Base/BaseButton';
 import Loader from 'Components/Loader/Loader';
@@ -25,6 +26,7 @@ import DrawingControl from 'Pages/MemoryPlaces/GoogleMap/TrailDrawing/DrawingCon
 import Infobar from 'Components/Navbar/Infobar';
 import { useDrawingManager } from 'Pages/MemoryPlaces/GoogleMap/TrailDrawing/useDrawingManager.jsx';
 import { Polyline } from 'Pages/MemoryPlaces/GoogleMap/MapOverlay/Polyline.jsx';
+import TrailGuideModal from 'Components/Modals/TrailGuideModal';
 
 const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) => {
   const dispatch = useDispatch();
@@ -44,6 +46,7 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
   const { t } = useTranslation();
   const mapId = process.env.REACT_APP_MAP_ID;
   const drawingManager = useDrawingManager();
+  const modalData = useSelector(selectModals);
 
   useEffect(() => {
     if (action !== 'edit' && action !== 'view') {
@@ -72,6 +75,13 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
           { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
       }
+
+      if(addTrailData.coordinates && addTrailData.coordinates.length > 0){
+        const positions = addTrailData.coordinates;
+        setCords(positions);
+        setLatitude(positions[0].lat);
+        setLongitude(positions[0].lng);
+      }
     } else {
       if (placePosition) {
         setLatitude(placePosition.lat);
@@ -85,7 +95,7 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
         setLongitude(positions[0].lng);
       }
     }
-  }, [action, placePosition, position, cordsPosition]);
+  }, [action, placePosition, position, cordsPosition, addTrailData]);
 
   useEffect(() => {
     if (addTrailData && addTrailData.coordinates && kind === 'trail') {
@@ -215,6 +225,7 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
             path={cords}
           />
         )}
+        {modalData.isTrailGuideModalOpen && addTrailData.isSelecting ? <TrailGuideModal /> : null}
       </Map>
     </div>
   ) : (
