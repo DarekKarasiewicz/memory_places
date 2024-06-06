@@ -108,8 +108,6 @@ function ForumPostHolder() {
         } else {
           setBlockCommentFetching(true);
         }
-      } else {
-        setBlockCommentFetching(true);
       }
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
