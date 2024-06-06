@@ -349,6 +349,8 @@ function AdminTrailActionSection({ action, trailId }) {
             );
             dispatch(addTrailActions.reset());
             dispatch(addObjectImageActions.reset());
+            dispatch(drawingEventsActions.reset());
+            dispatch(drawingToolsActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             registerAppChanges('admin.changes_messages.place_edit', user, trailId);
@@ -384,6 +386,8 @@ function AdminTrailActionSection({ action, trailId }) {
 
             dispatch(addObjectImageActions.reset());
             dispatch(addTrailActions.reset());
+            dispatch(drawingEventsActions.reset());
+            dispatch(drawingToolsActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
             dispatch(confirmationModalActions.changeType('success'));
             dispatch(adminDataActions.updateIsTrailsChanged(true));
