@@ -94,23 +94,21 @@ const GoogleMap = () => {
   }, [location]);
 
   useEffect(() => {
-    const fetchPlacesAndFilter = async () => {
+    const fetchPlacesAndFilter = () => {
       if (user && user.user_id) {
-        await dispatch(fetchMapPlaces(user.user_id));
+        dispatch(fetchMapPlaces(user.user_id));
       } else {
-        await dispatch(fetchMapPlaces());
+        dispatch(fetchMapPlaces());
       }
-
       dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
     };
 
-    const fetchTrailsAndFilter = async () => {
+    const fetchTrailsAndFilter = () => {
       if (user && user.user_id) {
-        await dispatch(fetchMapTrails(user.user_id));
+        dispatch(fetchMapTrails(user.user_id));
       } else {
-        await dispatch(fetchMapTrails());
+        dispatch(fetchMapTrails());
       }
-
       dispatch(filterTrails({ type: 0, period: 0 }));
     };
 
