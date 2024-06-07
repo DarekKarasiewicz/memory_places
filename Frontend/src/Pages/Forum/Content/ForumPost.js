@@ -11,7 +11,7 @@ import ShareIcon from 'icons/ShareIcon';
 
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
-function ForumPost({ currentData, location, onClick, locationShare }) {
+function ForumPost({ postKey, currentData, onClick, locationShare }) {
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
@@ -72,7 +72,7 @@ function ForumPost({ currentData, location, onClick, locationShare }) {
   return (
     <>
       <div
-        key={currentData.id}
+        key={postKey}
         className='flex flex-col gap-2 hover:border-contrastColor hover:border-2 border-2 border-secondaryBgColor transition p-2 cursor-pointer rounded-lg'
         onClick={onClick}
       >

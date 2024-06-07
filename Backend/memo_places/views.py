@@ -338,7 +338,7 @@ class PathView(viewsets.ModelViewSet):
                 case "description":
                     path_object.description = data["description"]
                 case "coordinates":
-                    path_object.coordinates = (data["coordinates"],)
+                    path_object.coordinates = data["coordinates"]
                 case "type":
                     type_obj = Type.objects.get(pk=data["type"])
                     path_object.type = type_obj

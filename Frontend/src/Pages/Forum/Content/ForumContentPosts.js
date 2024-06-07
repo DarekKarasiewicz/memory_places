@@ -43,7 +43,7 @@ function ForumContentPosts({ placeId }) {
     }
   };
 
-  const fetchPostItemsAdvanced = async (search = null, sortType, page) => {
+  const fetchPostItemsAdvanced = async (search = '', sortType, page = 1) => {
     try {
       let postEndpointUrl = `http://localhost:8000/memo_places_forum/post/place=${placeId}`;
 
@@ -72,29 +72,30 @@ function ForumContentPosts({ placeId }) {
       }
 
       const response = await axios.get(postEndpointUrl);
+      const newData = response.data;
 
-      if (response.data.length === 0) {
-        if (postEndpointUrl.includes('title')) {
-          setPosts([]);
-        } else {
+      const isDataSame = newData.every((newPost) =>
+        posts.some((existingPost) => existingPost.id === newPost.id)
+      );
+
+      if (newData.length === 0) {
+        if (page > 1) {
           setBlockPostFetching(true);
+        } else {
+          setPosts([]);
         }
         return;
       }
-
-      const isDataSame = response.data.every((newPost) =>
-        posts.some((existingPost) => existingPost.id === newPost.id),
-      );
-
+  
       if (!isDataSame) {
-        if (posts.length === 0 || postEndpointUrl.includes('title') || search === '') {
-          setPosts(response.data);
+        if (page === 1) {
+          setPosts(newData);
         } else {
-          setPosts((prevPosts) => [...prevPosts, ...response.data]);
+          setPosts((prevPosts) => [...prevPosts, ...newData]);
         }
       } else {
-        if (search || postEndpointUrl.includes('sort') || response.data.length !== 0) {
-          setPosts(response.data);
+        if (search || postEndpointUrl.includes('sort')) {
+          setPosts(newData);
         } else {
           setBlockPostFetching(true);
         }
@@ -123,17 +124,20 @@ function ForumContentPosts({ placeId }) {
   };
 
   const changePostSortOption = (sortType) => {
-    fetchPostItemsAdvanced(searchedText, sortType);
+    setCurrentPage(1);
+    fetchPostItemsAdvanced(searchedText, sortType, 1);
+    setBlockPostFetching(false);
   };
-
+  
   const handleSearchPost = (value) => {
     setSearchedText(value);
     fetchPostItemsAdvanced(value);
   };
-
+  
   const loadNewPosts = () => {
-    setCurrentPage(currentPage + 1);
-    fetchPostItemsAdvanced(searchedText, sortRef.current.value, currentPage + 1);
+    const newPage = currentPage + 1;
+    setCurrentPage(newPage);
+    fetchPostItemsAdvanced(searchedText, sortRef.current.value, newPage);
   };
 
   useEffect(() => {
@@ -141,7 +145,7 @@ function ForumContentPosts({ placeId }) {
   }, []);
 
   useEffect(() => {
-    fetchPostItems();
+    fetchPostItemsAdvanced(searchedText, sortRef.current.value, currentPage);
     dispatch(forumDataActions.changeRefreshPlaces(false));
   }, [forumData.refresh_places]);
 
@@ -174,6 +178,7 @@ function ForumContentPosts({ placeId }) {
               options={sort_options}
               ref={sortRef}
               onChange={() => changePostSortOption(sortRef.current.value)}
+              readOnly={posts?.length > 0 ? false : true}
             />
           </div>
         </div>
@@ -183,6 +188,7 @@ function ForumContentPosts({ placeId }) {
               <>
                 {index !== 0 && <hr />}
                 <ForumPost
+                  postKey={`post_${index}`}
                   currentData={item}
                   locationShare={locationShareLink(item.id)}
                   onClick={() => navigate(`${location.pathname}/` + item.id)}
