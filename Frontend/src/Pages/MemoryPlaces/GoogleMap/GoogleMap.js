@@ -100,7 +100,7 @@ const GoogleMap = () => {
       } else {
         dispatch(fetchMapPlaces());
       }
-      dispatch(filterPlaces({ sortof: 0, type: 0, period: 0 }));
+      dispatch(filterPlaces({ name: '', sortof: 0, type: 0, period: 0 }));
     };
 
     const fetchTrailsAndFilter = () => {
@@ -109,7 +109,7 @@ const GoogleMap = () => {
       } else {
         dispatch(fetchMapTrails());
       }
-      dispatch(filterTrails({ type: 0, period: 0 }));
+      dispatch(filterTrails({ name: '', type: 0, period: 0 }));
     };
 
     fetchPlacesAndFilter();

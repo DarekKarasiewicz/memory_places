@@ -150,26 +150,30 @@ const AdvancedInfoBox = () => {
                 <span className='italic font-medium'>{t('common.founded_by')}</span>
                 <span>{objectData.username}</span>
               </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.wiki-link')}</span>
-                <a
-                  href={objectData.wiki_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.topic-link')}</span>
-                <a
-                  href={objectData.topic_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
+              {objectData.wiki_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.wiki-link')}</span>
+                  <a
+                    href={objectData.wiki_link}
+                    target='blank'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
+              {objectData.topic_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.topic-link')}</span>
+                  <a
+                    href={objectData.topic_link}
+                    target='blank'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
             </div>
             <div className='flex flex-col w-3/5 gap-4'>
               <section className='flex justify-center items-center'>

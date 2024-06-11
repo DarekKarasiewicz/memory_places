@@ -16,13 +16,13 @@ export const allMapTrailsSlice = createSlice({
   initialState,
   reducers: {
     filterTrails: (state, action) => {
-      const { name, type, period, sortof } = action.payload;
+      const { name, type, period } = action.payload;
 
       state.name = name;
       state.type = type;
       state.period = period;
 
-      if (name === '' && type === 0 && period === 0 && sortof === 0) {
+      if (name === '' && type === 0 && period === 0) {
         state.filterItems = state.allItems;
       } else {
         state.filterItems = state.allItems.filter((item) => {
@@ -32,7 +32,6 @@ export const allMapTrailsSlice = createSlice({
           return (
             (name === '' || itemName.includes(filterName)) &&
             (type === 0 || item.type === type) &&
-            (sortof === 0 || sortof === undefined) &&
             (period === 0 || item.period === period)
           );
         });

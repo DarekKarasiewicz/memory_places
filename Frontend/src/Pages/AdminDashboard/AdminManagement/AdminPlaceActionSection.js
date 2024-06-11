@@ -369,6 +369,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const handleConfirm = () => {
     const isFormValid = validateForm();
+
     if (isFormValid) {
       const currentDate = new Date();
       const shouldBeVerificated = toVerification === 'true';

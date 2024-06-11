@@ -75,7 +75,7 @@ function ForumContentPosts({ placeId }) {
       const newData = response.data;
 
       const isDataSame = newData.every((newPost) =>
-        posts.some((existingPost) => existingPost.id === newPost.id)
+        posts.some((existingPost) => existingPost.id === newPost.id),
       );
 
       if (newData.length === 0) {
@@ -86,7 +86,7 @@ function ForumContentPosts({ placeId }) {
         }
         return;
       }
-  
+
       if (!isDataSame) {
         if (page === 1) {
           setPosts(newData);
@@ -128,12 +128,12 @@ function ForumContentPosts({ placeId }) {
     fetchPostItemsAdvanced(searchedText, sortType, 1);
     setBlockPostFetching(false);
   };
-  
+
   const handleSearchPost = (value) => {
     setSearchedText(value);
     fetchPostItemsAdvanced(value);
   };
-  
+
   const loadNewPosts = () => {
     const newPage = currentPage + 1;
     setCurrentPage(newPage);

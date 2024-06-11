@@ -178,7 +178,9 @@ function MapFilter() {
           <div className='flex flex-col gap-y-4 justify-start items-center w-full'>
             <div className={`text-${fontSize}-2xl border-b-2 border-textColor p-2 text-center`}>
               <span>{t('common.filter1')}</span>
-              <span className='font-semibold'>{' (' + filterItemsLength + ')'}</span>
+              {filterItemsLength > 0 && (
+                <span className='font-semibold'>{`(${filterItemsLength})`}</span>
+              )}
             </div>
             <div className='flex flex-col gap-4 mb-2'>
               <BaseInput
@@ -211,7 +213,11 @@ function MapFilter() {
                 onChange={handleSelectPeriodChange}
               />
             </div>
-            <BaseButton onClick={handleFilterChange} btnBg='blue' name={t('common.filter2')} />
+            <BaseButton
+              onClick={() => handleFilterChange()}
+              btnBg='blue'
+              name={t('common.filter2')}
+            />
           </div>
         </motion.div>
       )}
