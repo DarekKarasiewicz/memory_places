@@ -113,7 +113,11 @@ PS C:\PATH_TO_YOUR_PROJECT\memory_places\Backend> pip install pillow
 - SVG icons: https://tablericons.com
 - Shadows: https://manuarora.in/boxshadows
 
+## License
+Memo_places is published under the Attribution-NonCommercial 4.0 International license.
+
 ## Authors
 - Sebastian Mackiewicz
 - Mikołaj Kusiński
 - Dariusz Karasiewicz
+  
