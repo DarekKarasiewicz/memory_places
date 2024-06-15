@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 import ArrowUpIcon from 'icons/ArrowUpIcon';
@@ -24,6 +25,9 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   const inputRef = useRef(null);
   const baseData = itemsBase;
   const { fontSize } = useFontSize();
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     setData(items);
@@ -152,11 +156,19 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     if (createItems.length !== 0) {
       createItems.forEach((item) => {
         axios
-          .post(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/`, {
-            name: item.name,
-            value: valuePreparation(item.name),
-            order: item.order,
-          })
+          .post(
+            `${appPath}/admin_dashboard/${itemsName}s/`,
+            {
+              name: item.name,
+              value: valuePreparation(item.name),
+              order: item.order,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();
@@ -167,10 +179,18 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     if (updateItems.length !== 0) {
       updateItems.forEach((item) => {
         axios
-          .put(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}/`, {
-            name: item.name,
-            order: item.order,
-          })
+          .put(
+            `${appPath}/admin_dashboard/${itemsName}s/${item.id}/`,
+            {
+              name: item.name,
+              order: item.order,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();
@@ -181,7 +201,11 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     if (dataDeleted.length !== 0) {
       dataDeleted.forEach((item) => {
         axios
-          .delete(`http://127.0.0.1:8000/admin_dashboard/${itemsName}s/${item.id}`)
+          .delete(`${appPath}/admin_dashboard/${itemsName}s/${item.id}`, {
+            headers: {
+              JWT: accessToken,
+            },
+          })
           .then((response) => {})
           .catch(() => {
             handleIfAnyErrorAppeared();

@@ -456,7 +456,7 @@ class UserView(viewsets.ModelViewSet):
         html_content = render_to_string(
             'verification_mail.html',
             {
-                "link": f"http://localhost:3000/userVerification/{serializer['id'].value}",
+                "link": f"{os.getenv('APP_URL_PATH')}/userVerification/{serializer['id'].value}",
                 "username": serializer['username'].value,
             }
         )
@@ -613,7 +613,7 @@ class ResetPassword(viewsets.ModelViewSet):
 
         html_message = render_to_string(
             'reset_password.html',
-            {"link": f"http://localhost:3000/userPasswordReset/{user.id}"}
+            {"link": f"{os.getenv('APP_URL_PATH')}/userPasswordReset/{user.id}"}
         )
 
         send_mail(

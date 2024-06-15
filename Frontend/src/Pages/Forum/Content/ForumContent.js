@@ -18,10 +18,11 @@ function ForumContent() {
   const [places, setPlaces] = useState(null);
   const navigate = useNavigate();
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchPlaceItems = async () => {
     try {
-      let placeEndpointUrl = 'http://localhost:8000/memo_places/places/';
+      let placeEndpointUrl = `${appPath}/memo_places/places/`;
 
       if (forumData.type_id) {
         placeEndpointUrl += `type=${forumData.type_id}`;
@@ -43,7 +44,7 @@ function ForumContent() {
 
   const fetchPlaceItemsAdvanced = async (search) => {
     try {
-      let placesEndpointUrl = `http://localhost:8000/memo_places/places/`;
+      let placesEndpointUrl = `${appPath}/memo_places/places/`;
 
       if (search) {
         placesEndpointUrl += `place_name=${search}`;

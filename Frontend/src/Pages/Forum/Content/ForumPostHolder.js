@@ -36,10 +36,11 @@ function ForumPostHolder() {
   const [currentPage, setCurrentPage] = useState(1);
   const [blockCommentFetching, setBlockCommentFetching] = useState(false);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchPostItem = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/memo_places_forum/post/pk=${postid}`);
+      const response = await axios.get(`${appPath}/memo_places_forum/post/pk=${postid}`);
       setPost(response.data);
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -50,9 +51,7 @@ function ForumPostHolder() {
 
   const fetchCommentItems = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/memo_places_forum/comment/post=${postid}`,
-      );
+      const response = await axios.get(`${appPath}/memo_places_forum/comment/post=${postid}`);
       setComment(response.data);
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -63,7 +62,7 @@ function ForumPostHolder() {
 
   const fetchCommentItemsAdvanced = async (sortType, page) => {
     try {
-      let commentEndpointUrl = `http://localhost:8000/memo_places_forum/comment/post=${postid}`;
+      let commentEndpointUrl = `${appPath}/memo_places_forum/comment/post=${postid}`;
 
       let queryParameters = [];
 
@@ -132,7 +131,7 @@ function ForumPostHolder() {
 
     if (user && user.user_id) {
       axios
-        .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
+        .put(`${appPath}/memo_places_forum/comment/${commentId}/`, {
           user: user.user_id,
           like: itemLike + 1,
         })
@@ -150,7 +149,7 @@ function ForumPostHolder() {
   const handleDislikeClick = (commentId, itemLike) => {
     if (user && user.user_id) {
       axios
-        .put(`http://127.0.0.1:8000/memo_places_forum/comment/${commentId}/`, {
+        .put(`${appPath}/memo_places_forum/comment/${commentId}/`, {
           user: user.user_id,
           dislike: itemLike - 1,
         })
@@ -164,7 +163,7 @@ function ForumPostHolder() {
   const handleCommentAdd = (postId) => {
     if (user && user.user_id) {
       axios
-        .post(`http://127.0.0.1:8000/memo_places_forum/comment/`, {
+        .post(`${appPath}/memo_places_forum/comment/`, {
           user: user.user_id,
           content: contentRef.current.value,
           post: postId,

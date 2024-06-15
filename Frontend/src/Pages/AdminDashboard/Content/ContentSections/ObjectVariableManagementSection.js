@@ -33,9 +33,11 @@ function ObjectVariableManagementSection() {
   const infoRef = useRef(null);
   const [translateValue, setTranslateValue] = useState([]);
   const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
   const modalData = useSelector(selectAdminData);
   const { isVariablesChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const pushValuesToTranslate = (...elements) => {
     setTranslateValue((prevValues) => [...new Set([...prevValues, ...elements])]);
@@ -43,7 +45,11 @@ function ObjectVariableManagementSection() {
 
   const fetchSortOfItems = async () => {
     try {
-      const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
+      const responseSort = await axios.get(`${appPath}/admin_dashboard/sortofs`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
       setSortOf(responseSort.data.sort((a, b) => (a.order > b.order ? 1 : -1)));
       setSortOfBase(responseSort.data);
       pushValuesToTranslate(...responseSort.data.map((item) => item.value));
@@ -56,7 +62,11 @@ function ObjectVariableManagementSection() {
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
+      const responseType = await axios.get(`${appPath}/admin_dashboard/types`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
       setType(responseType.data);
       setTypeBase(responseType.data);
       pushValuesToTranslate(...responseType.data.map((item) => item.value));
@@ -69,7 +79,11 @@ function ObjectVariableManagementSection() {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
+      const responsePeriod = await axios.get(`${appPath}/admin_dashboard/periods`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
       setPeriod(responsePeriod.data);
       setPeriodBase(responsePeriod.data);
       pushValuesToTranslate(...responsePeriod.data.map((item) => item.value));

@@ -39,7 +39,6 @@ const LoginAndRegisterModal = (props) => {
       }
     }
     if (!globalData.blockWrapperRef) {
-      console.log('reloaded');
       document.addEventListener('mousedown', handleClickOutside);
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);

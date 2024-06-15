@@ -12,7 +12,6 @@ import { adminActions } from 'Redux/adminActionSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions } from 'Redux/adminDataSlice';
 import { addObjectImageActions, selectAddObjectImage } from 'Redux/addObjectImageSlice';
-import { modalsActions } from 'Redux/modalsSlice';
 
 import PinIcon from 'icons/PinIcon';
 import BaseInput from 'Components/Base/BaseInput';
@@ -63,15 +62,21 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const accessToken = cookies.accessToken;
   const [currentAction, setCurrentAction] = useState('add');
   const [placePosition, setPlacePosition] = useState(null);
   const addObjectImageData = useSelector(selectAddObjectImage);
   const [baseImages, setBaseImages] = useState([]);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchSortOfItems = async () => {
     try {
-      const responseSort = await axios.get(`http://127.0.0.1:8000/admin_dashboard/sortofs`);
+      const responseSort = await axios.get(`${appPath}/admin_dashboard/sortofs`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
       const sortOfItems = responseSort.data
         .map((obj) => ({
           id: obj.id,
@@ -97,7 +102,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const responseType = await axios.get(`${appPath}/memo_places/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -123,7 +128,7 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const responsePeriod = await axios.get(`${appPath}/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -155,9 +160,11 @@ function AdminPlaceActionSection({ action, placeId }) {
     if (action === 'edit' || action === 'view') {
       const getPlaceItems = async (placeId) => {
         try {
-          const response = await axios.get(
-            `http://127.0.0.1:8000/admin_dashboard/places/pk=${placeId}`,
-          );
+          const response = await axios.get(`${appPath}/admin_dashboard/places/pk=${placeId}`, {
+            headers: {
+              JWT: accessToken,
+            },
+          });
 
           nameRef.current.value = response.data.place_name;
           descRef.current.value = response.data.description;
@@ -335,7 +342,7 @@ function AdminPlaceActionSection({ action, placeId }) {
     formData.append('img', image);
 
     axios
-      .post(`http://localhost:8000/memo_places/place_image/`, formData, {
+      .post(`${appPath}/memo_places/place_image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -346,15 +353,13 @@ function AdminPlaceActionSection({ action, placeId }) {
 
   const deletePlaceImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/place_image/${imageId}/`)
+      .delete(`${appPath}/memo_places/place_image/${imageId}/`)
       .then(() => {})
       .catch(() => {});
   };
 
   const getPlaceImages = async (placeId) => {
-    const response = await axios.get(
-      `http://127.0.0.1:8000/memo_places/place_image/place=${placeId}`,
-    );
+    const response = await axios.get(`${appPath}/memo_places/place_image/place=${placeId}`);
 
     return response.data;
   };
@@ -388,19 +393,27 @@ function AdminPlaceActionSection({ action, placeId }) {
         });
 
         axios
-          .put(`http://127.0.0.1:8000/admin_dashboard/places/${placeId}/`, {
-            place_name: nameRef.current.value,
-            description: descRef.current.value,
-            lat: latRef.current.value,
-            lng: lngRef.current.value,
-            sortof: sortOfRef.current.value,
-            type: typeRef.current.value,
-            period: periodRef.current.value,
-            wiki_link: wikiLinkRef.current.value,
-            topic_link: webLinkRef.current.value,
-            verified: !shouldBeVerificated,
-            verified_date: setValidationDate,
-          })
+          .put(
+            `${appPath}/admin_dashboard/places/${placeId}/`,
+            {
+              place_name: nameRef.current.value,
+              description: descRef.current.value,
+              lat: latRef.current.value,
+              lng: lngRef.current.value,
+              sortof: sortOfRef.current.value,
+              type: typeRef.current.value,
+              period: periodRef.current.value,
+              wiki_link: wikiLinkRef.current.value,
+              topic_link: webLinkRef.current.value,
+              verified: !shouldBeVerificated,
+              verified_date: setValidationDate,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then(() => {
             dispatch(addObjectImageActions.reset());
             dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
@@ -415,20 +428,28 @@ function AdminPlaceActionSection({ action, placeId }) {
           });
       } else {
         axios
-          .post(`http://127.0.0.1:8000/admin_dashboard/places/`, {
-            user: user.user_id,
-            place_name: nameRef.current.value,
-            description: descRef.current.value,
-            lat: latRef.current.value,
-            lng: lngRef.current.value,
-            sortof: sortOfRef.current.value,
-            type: typeRef.current.value,
-            period: periodRef.current.value,
-            wiki_link: wikiLinkRef.current.value,
-            topic_link: webLinkRef.current.value,
-            verified: !shouldBeVerificated,
-            verified_date: setValidationDate,
-          })
+          .post(
+            `${appPath}/admin_dashboard/places/`,
+            {
+              user: user.user_id,
+              place_name: nameRef.current.value,
+              description: descRef.current.value,
+              lat: latRef.current.value,
+              lng: lngRef.current.value,
+              sortof: sortOfRef.current.value,
+              type: typeRef.current.value,
+              period: periodRef.current.value,
+              wiki_link: wikiLinkRef.current.value,
+              topic_link: webLinkRef.current.value,
+              verified: !shouldBeVerificated,
+              verified_date: setValidationDate,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then((response) => {
             addObjectImageData.images.forEach((image) => {
               sendPlaceImages(response.data.id, image);

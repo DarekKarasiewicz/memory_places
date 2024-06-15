@@ -27,6 +27,7 @@ function AdminForumActionModal() {
   const modalAdmin = useSelector(selectAdminAction);
   const [actionTitle, setActionTitle] = useState(null);
   const [isReadOnly, setIsReadOnly] = useState(false);
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const closeModal = () => {
     dispatch(adminActions.changeIsAdminForumModalOpen(false));
@@ -66,9 +67,7 @@ function AdminForumActionModal() {
     if (modalAdmin.forum_kind_type === 'post') {
       const getPostItem = async (postItem) => {
         try {
-          const response = await axios.get(
-            `http://127.0.0.1:8000/memo_places_forum/post/pk=${postItem}`,
-          );
+          const response = await axios.get(`${appPath}/memo_places_forum/post/pk=${postItem}`);
           titleRef.current.value = response.data.title;
           descRef.current.value = response.data.content;
           validateTitle(titleRef.current.value);
@@ -94,7 +93,7 @@ function AdminForumActionModal() {
       const getCommentItem = async (commentItem) => {
         try {
           const response = await axios.get(
-            `http://127.0.0.1:8000/memo_places_forum/comment/pk=${commentItem}`,
+            `${appPath}/memo_places_forum/comment/pk=${commentItem}`,
           );
           descRef.current.value = response.data.content;
           validateDescription(descRef.current.value);
@@ -122,7 +121,7 @@ function AdminForumActionModal() {
     if (modalAdmin.forum_kind_type === 'post') {
       if (validateFormPost) {
         axios
-          .put(`http://127.0.0.1:8000/memo_places_forum/post/${modalAdmin.post_id}/`, {
+          .put(`${appPath}/memo_places_forum/post/${modalAdmin.post_id}/`, {
             title: titleRef.current.value,
             content: descRef.current.value,
           })
@@ -145,7 +144,7 @@ function AdminForumActionModal() {
     } else {
       if (validateFormComment) {
         axios
-          .put(`http://127.0.0.1:8000/memo_places_forum/comment/${modalAdmin.comment_id}/`, {
+          .put(`${appPath}/memo_places_forum/comment/${modalAdmin.comment_id}/`, {
             content: descRef.current.value,
           })
           .then(() => {

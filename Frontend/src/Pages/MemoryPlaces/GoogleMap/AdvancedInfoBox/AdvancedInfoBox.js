@@ -18,6 +18,7 @@ const AdvancedInfoBox = () => {
   const dispatch = useDispatch();
   const advancedObject = useSelector(selectAdvancedObject);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const getAllItemsImages = async (id) => {
     const currentKind = advancedObject.kind === 'place' ? 'place_image' : 'path_image';
@@ -25,7 +26,7 @@ const AdvancedInfoBox = () => {
 
     try {
       const responseItems = await axios.get(
-        `http://127.0.0.1:8000/memo_places/${currentKind}/${currentKind2}=${id}`,
+        `${appPath}/memo_places/${currentKind}/${currentKind2}=${id}`,
       );
 
       if (responseItems.data && responseItems.data.length > 0) {

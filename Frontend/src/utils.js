@@ -5,13 +5,14 @@ export function registerAppChanges(action, cookies, action_target = null) {
     name: action,
     role: cookies.admin ? 'admin' : cookies.master ? 'master_user' : 'user',
   };
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   if (action_target) {
     json.target = action_target;
   }
 
   axios
-    .post(`http://127.0.0.1:8000/memo_places/changes/`, {
+    .post(`${appPath}/memo_places/changes/`, {
       user: cookies.user_id,
       changes_json: json,
     })

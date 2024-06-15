@@ -16,10 +16,11 @@ function SecuritySettings() {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const handlePasswordReset = async () => {
     try {
-      await axios.get(`http://localhost:8000/memo_places/reset_password/pk=${user.user_id}`);
+      await axios.get(`${appPath}/memo_places/reset_password/pk=${user.user_id}`);
       dispatch(notificationModalActions.changeType('alert'));
       dispatch(notificationModalActions.changeTitle(t('common.reset_password_email')));
       dispatch(notificationModalActions.changeIsNotificationModalOpen());

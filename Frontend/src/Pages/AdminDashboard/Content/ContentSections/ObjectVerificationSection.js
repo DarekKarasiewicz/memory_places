@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
@@ -16,19 +17,37 @@ function ObjectVerificationSection() {
   const [statistics, setStatistics] = useState([]);
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
   const { isVerificationsChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchVerificationItems = async () => {
     try {
       const verificationPlaces = await axios.get(
-        `http://127.0.0.1:8000/admin_dashboard/not_verified_places/`,
+        `${appPath}/admin_dashboard/not_verified_places/`,
+        {
+          headers: {
+            JWT: accessToken,
+          },
+        },
       );
-      const verificationTrails = await axios.get(
-        `http://127.0.0.1:8000/admin_dashboard/not_verified_path/`,
-      );
-      const allPlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places/`);
-      const allTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path/`);
+      const verificationTrails = await axios.get(`${appPath}/admin_dashboard/not_verified_path/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const allPlaces = await axios.get(`${appPath}/admin_dashboard/places/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const allTrails = await axios.get(`${appPath}/admin_dashboard/path/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
 
       const rawCombinedVerificationData = [...verificationPlaces.data, ...verificationTrails.data];
       const rawCombinedAllData = [...allPlaces.data, ...allTrails.data];

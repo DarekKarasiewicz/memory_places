@@ -19,6 +19,7 @@ const RegisterComponent = ({ setIsLogging }) => {
   const usernameRef = useRef(null);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const handleBlurConfPassword = () => {
     setIsValidConfPassword(confPasswordRef.current.value === passwordRef.current.value);
@@ -48,7 +49,7 @@ const RegisterComponent = ({ setIsLogging }) => {
       };
 
       axios
-        .post(`http://localhost:8000/memo_places/users/`, newUser, {
+        .post(`${appPath}/memo_places/users/`, newUser, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(() => {

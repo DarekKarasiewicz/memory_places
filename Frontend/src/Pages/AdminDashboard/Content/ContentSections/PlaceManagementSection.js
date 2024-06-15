@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
@@ -18,10 +19,17 @@ function PlaceManagementSection() {
   const modalData = useSelector(selectAdminData);
   const { isPlacesChanged } = modalData;
   const { fontSize } = useFontSize();
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchPlaceItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
+      const response = await axios.get(`${appPath}/admin_dashboard/places`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
 
       const modifiedPlaceData = response.data.map((obj, index) => ({
         ...obj,

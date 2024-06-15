@@ -10,7 +10,6 @@ import AdminForumActionModal from './AdminManagement/AdminForumActionModal.js';
 import App from 'App.js';
 import ArrowLeftIcon from 'icons/ArrowLeftIcon.jsx';
 import ArrowRightIcon from 'icons/ArrowRightIcon.jsx';
-import TrailGuideModal from 'Components/Modals/TrailGuideModal.js';
 
 function AdminDashboard() {
   const dispatch = useDispatch();

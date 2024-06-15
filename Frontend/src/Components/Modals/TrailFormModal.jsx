@@ -51,10 +51,11 @@ const TrailFormModal = (props) => {
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/admin_dashboard/types`);
+      const responseType = await axios.get(`${appPath}/admin_dashboard/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -80,7 +81,7 @@ const TrailFormModal = (props) => {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/admin_dashboard/periods`);
+      const responsePeriod = await axios.get(`${appPath}/admin_dashboard/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -196,7 +197,7 @@ const TrailFormModal = (props) => {
     formData.append('img', image);
 
     axios
-      .post(`http://localhost:8000/memo_places/path_image/`, formData, {
+      .post(`${appPath}/memo_places/path_image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -207,15 +208,13 @@ const TrailFormModal = (props) => {
 
   const deleteTrailImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/path_image/${imageId}/`)
+      .delete(`${appPath}/memo_places/path_image/${imageId}/`)
       .then((response) => {})
       .catch((error) => {});
   };
 
   const getTrailImages = async (trailId) => {
-    const response = await axios.get(
-      `http://127.0.0.1:8000/memo_places/path_image/path=${trailId}`,
-    );
+    const response = await axios.get(`${appPath}/memo_places/path_image/path=${trailId}`);
 
     return response.data;
   };
@@ -243,7 +242,7 @@ const TrailFormModal = (props) => {
         });
 
         axios
-          .put(`http://localhost:8000/memo_places/path/${updateTrailData.trail.id}/`, {
+          .put(`${appPath}/memo_places/path/${updateTrailData.trail.id}/`, {
             user: user.user_id,
             path_name: addTrailData.path_name,
             description: addTrailData.description,
@@ -281,7 +280,7 @@ const TrailFormModal = (props) => {
         return;
       } else {
         axios
-          .post(`http://localhost:8000/memo_places/path/`, {
+          .post(`${appPath}/memo_places/path/`, {
             user: user.user_id,
             path_name: addTrailData.path_name,
             description: addTrailData.description,

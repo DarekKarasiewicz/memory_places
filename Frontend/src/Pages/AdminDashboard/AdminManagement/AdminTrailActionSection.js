@@ -54,6 +54,7 @@ function AdminTrailActionSection({ action, trailId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_trail_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const accessToken = cookies.accessToken;
   const [currentAction, setCurrentAction] = useState('add');
   const addTrailData = useSelector(selectAddTrail);
   const [cordsPosition, setCordsPosition] = useState(null);
@@ -62,10 +63,15 @@ function AdminTrailActionSection({ action, trailId }) {
   const { fontSize } = useFontSize();
   const addObjectImageData = useSelector(selectAddObjectImage);
   const [baseImages, setBaseImages] = useState([]);
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const responseType = await axios.get(`${appPath}/memo_places/types`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -91,7 +97,7 @@ function AdminTrailActionSection({ action, trailId }) {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const responsePeriod = await axios.get(`${appPath}/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -122,9 +128,11 @@ function AdminTrailActionSection({ action, trailId }) {
     if (action === 'edit' || action === 'view') {
       const getTrailItems = async (trailId) => {
         try {
-          const response = await axios.get(
-            `http://127.0.0.1:8000/admin_dashboard/path/pk=${trailId}`,
-          );
+          const response = await axios.get(`${appPath}/admin_dashboard/path/pk=${trailId}`, {
+            headers: {
+              JWT: accessToken,
+            },
+          });
 
           nameRef.current.value = response.data.path_name;
           descRef.current.value = response.data.description;
@@ -275,7 +283,7 @@ function AdminTrailActionSection({ action, trailId }) {
     formData.append('img', image);
 
     axios
-      .post(`http://localhost:8000/memo_places/path_image/`, formData, {
+      .post(`${appPath}/memo_places/path_image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -286,15 +294,13 @@ function AdminTrailActionSection({ action, trailId }) {
 
   const deleteTrailImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/path_image/${imageId}/`)
+      .delete(`${appPath}/memo_places/path_image/${imageId}/`)
       .then((response) => {})
       .catch((error) => {});
   };
 
   const getTrailImages = async (trailId) => {
-    const response = await axios.get(
-      `http://127.0.0.1:8000/memo_places/path_image/path=${trailId}`,
-    );
+    const response = await axios.get(`${appPath}/memo_places/path_image/path=${trailId}`);
 
     return response.data;
   };
@@ -328,18 +334,26 @@ function AdminTrailActionSection({ action, trailId }) {
         });
 
         axios
-          .put(`http://127.0.0.1:8000/admin_dashboard/path/${trailId}/`, {
-            user: parseInt(user.user_id),
-            path_name: nameRef.current.value,
-            description: descRef.current.value,
-            type: typeRef.current.value,
-            coordinates: JSON.stringify(addTrailData.coordinates),
-            period: periodRef.current.value,
-            wiki_link: wikiLinkRef.current.value,
-            topic_link: webLinkRef.current.value,
-            verified: !shouldBeVerificated,
-            verified_date: setValidationDate,
-          })
+          .put(
+            `${appPath}/admin_dashboard/path/${trailId}/`,
+            {
+              user: parseInt(user.user_id),
+              path_name: nameRef.current.value,
+              description: descRef.current.value,
+              type: typeRef.current.value,
+              coordinates: JSON.stringify(addTrailData.coordinates),
+              period: periodRef.current.value,
+              wiki_link: wikiLinkRef.current.value,
+              topic_link: webLinkRef.current.value,
+              verified: !shouldBeVerificated,
+              verified_date: setValidationDate,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then(() => {
             if (drawingTools.now.length != 0) {
               drawingTools.now[0].geometry.setMap(null);
@@ -363,18 +377,26 @@ function AdminTrailActionSection({ action, trailId }) {
           });
       } else {
         axios
-          .post(`http://127.0.0.1:8000/admin_dashboard/path/`, {
-            user: parseInt(user.user_id),
-            path_name: nameRef.current.value,
-            coordinates: JSON.stringify(addTrailData.coordinates),
-            description: descRef.current.value,
-            type: typeRef.current.value,
-            period: periodRef.current.value,
-            wiki_link: wikiLinkRef.current.value,
-            topic_link: webLinkRef.current.value,
-            verified: !shouldBeVerificated,
-            verified_date: setValidationDate,
-          })
+          .post(
+            `${appPath}/admin_dashboard/path/`,
+            {
+              user: parseInt(user.user_id),
+              path_name: nameRef.current.value,
+              coordinates: JSON.stringify(addTrailData.coordinates),
+              description: descRef.current.value,
+              type: typeRef.current.value,
+              period: periodRef.current.value,
+              wiki_link: wikiLinkRef.current.value,
+              topic_link: webLinkRef.current.value,
+              verified: !shouldBeVerificated,
+              verified_date: setValidationDate,
+            },
+            {
+              headers: {
+                JWT: accessToken,
+              },
+            },
+          )
           .then((response) => {
             drawingTools.now[0].geometry.setMap(null);
             drawingEvents.events.forEach((listener) =>

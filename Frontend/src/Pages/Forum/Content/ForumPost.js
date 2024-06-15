@@ -17,6 +17,7 @@ function ForumPost({ postKey, currentData, onClick, locationShare }) {
   const user = cookies.user;
   const dispatch = useDispatch();
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   if (!currentData || currentData.length === 0) {
     return null;
@@ -32,7 +33,7 @@ function ForumPost({ postKey, currentData, onClick, locationShare }) {
 
     if (user && user.user_id) {
       axios
-        .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
+        .put(`${appPath}/memo_places_forum/post/${commentId}/`, {
           user: user.user_id,
           like: itemLike + 1,
         })
@@ -50,7 +51,7 @@ function ForumPost({ postKey, currentData, onClick, locationShare }) {
   const handleDislikeClick = (commentId, itemLike) => {
     if (user && user.user_id) {
       axios
-        .put(`http://127.0.0.1:8000/memo_places_forum/post/${commentId}/`, {
+        .put(`${appPath}/memo_places_forum/post/${commentId}/`, {
           user: user.user_id,
           dislike: itemLike - 1,
         })

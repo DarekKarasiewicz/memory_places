@@ -26,6 +26,7 @@ function ContactForm(props) {
   const [isValidTitle, setIsValidTitle] = useState(null);
   const [isValidDesc, setIsValidDesc] = useState(null);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     if (cookies) {
@@ -69,7 +70,7 @@ function ContactForm(props) {
       };
 
       axios
-        .post('http://localhost:8000/memo_places/contact_us/', contact_form_req, {
+        .post(`${appPath}/memo_places/contact_us/`, contact_form_req, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(() => {

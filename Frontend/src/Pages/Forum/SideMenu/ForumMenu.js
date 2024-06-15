@@ -21,10 +21,11 @@ function ForumMenu() {
   const { fontSize } = useFontSize();
   const [showAllTypes, setShowAllTypes] = useState(false);
   const [showAllPeriods, setShowAllPeriods] = useState(false);
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const responseType = await axios.get(`${appPath}/memo_places/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -42,7 +43,7 @@ function ForumMenu() {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const responsePeriod = await axios.get(`${appPath}/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,

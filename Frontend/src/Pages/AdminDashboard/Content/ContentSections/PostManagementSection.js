@@ -18,10 +18,11 @@ function PostManagementSection() {
   const modalData = useSelector(selectAdminData);
   const { isPostsChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchPostItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/memo_places_forum/post/`);
+      const response = await axios.get(`${appPath}/memo_places_forum/post/`);
 
       const modifiedPostData = response.data.map((obj, index) => ({
         ...obj,

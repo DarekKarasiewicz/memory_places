@@ -29,12 +29,11 @@ function ForumContentPosts({ placeId }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [blockPostFetching, setBlockPostFetching] = useState(false);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchPostItems = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/memo_places_forum/post/place=${placeId}`,
-      );
+      const response = await axios.get(`${appPath}/memo_places_forum/post/place=${placeId}`);
       setPosts(response.data);
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -45,7 +44,7 @@ function ForumContentPosts({ placeId }) {
 
   const fetchPostItemsAdvanced = async (search = '', sortType, page = 1) => {
     try {
-      let postEndpointUrl = `http://localhost:8000/memo_places_forum/post/place=${placeId}`;
+      let postEndpointUrl = `${appPath}/memo_places_forum/post/place=${placeId}`;
 
       let queryParameters = [];
 

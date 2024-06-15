@@ -64,6 +64,7 @@ const GoogleMap = () => {
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -173,7 +174,7 @@ const GoogleMap = () => {
     if (!currentPlace) return;
 
     try {
-      const response = await axios.get(`http://localhost:8000/memo_places/places/pk=${id}`);
+      const response = await axios.get(`${appPath}/memo_places/places/pk=${id}`);
       return response.data;
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -186,9 +187,7 @@ const GoogleMap = () => {
     if (!currentTrail) return;
 
     try {
-      const response = await axios.get(
-        `http://localhost:8000/memo_places/path/pk=${currentTrail.id}`,
-      );
+      const response = await axios.get(`${appPath}/memo_places/path/pk=${currentTrail.id}`);
       return response.data;
     } catch (error) {
       dispatch(notificationModalActions.changeType('alert'));
@@ -295,14 +294,6 @@ const GoogleMap = () => {
                   </span>
                 </div>
               )}
-              {/* TODO when from backend will be array of images get first one and put it here */}
-              {/* <section className='w-72 h-52 overflow-hidden'>
-                <img
-                  src='https://placehold.co/300x300'
-                  alt='placeholder-image'
-                  className='w-full h-full object-cover'
-                ></img>
-              </section> */}
               <section
                 className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
               >
@@ -355,14 +346,6 @@ const GoogleMap = () => {
                   </span>
                 </div>
               )}
-              {/* TODO when from backend will be array of images get first one and put it here */}
-              {/* <section className='w-72 h-52 overflow-hidden'>
-                <img
-                  src='https://placehold.co/300x300'
-                  alt='placeholder-image'
-                  className='w-full h-full object-cover'
-                ></img>
-              </section> */}
               <section
                 className={`flex flex-col gap-1 justify-center items-center text-${fontSize}-sm`}
               >

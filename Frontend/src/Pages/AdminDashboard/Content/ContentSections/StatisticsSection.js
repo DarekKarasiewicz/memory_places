@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 import { adminDataActions, selectAdminData } from 'Redux/adminDataSlice';
@@ -17,14 +18,37 @@ function StatisticsSection() {
   const modalData = useSelector(selectAdminData);
   const { isStatisticsChanged } = modalData;
   const { fontSize } = useFontSize();
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchStatisticItems = async () => {
     try {
-      const responseUsers = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
-      const responsePlaces = await axios.get(`http://127.0.0.1:8000/admin_dashboard/places`);
-      const responseTrails = await axios.get(`http://127.0.0.1:8000/admin_dashboard/path`);
-      const responsePosts = await axios.get(`http://127.0.0.1:8000/memo_places_forum/post/`);
-      const responseComments = await axios.get(`http://127.0.0.1:8000/memo_places_forum/comment/`);
+      const responseUsers = await axios.get(`${appPath}/admin_dashboard/users`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const responsePlaces = await axios.get(`${appPath}/admin_dashboard/places`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const responseTrails = await axios.get(`${appPath}/admin_dashboard/path`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const responsePosts = await axios.get(`${appPath}/memo_places_forum/post/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
+      const responseComments = await axios.get(`${appPath}/memo_places_forum/comment/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
 
       const getItemDate = (date) => {
         return new Date(date).getMonth();

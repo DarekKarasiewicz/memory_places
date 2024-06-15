@@ -17,14 +17,20 @@ function UserManagementSection() {
   const [statistics, setStatistics] = useState([]);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
+  const accessToken = cookies.accessToken;
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isUsersChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchUserItems = useCallback(async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/admin_dashboard/users`);
+      const response = await axios.get(`${appPath}/admin_dashboard/users`, {
+        headers: {
+          JWT: accessToken,
+        },
+      });
 
       const modifiedUserData = response.data
         .filter((item) => !user.master || (user.master && !item.admin))
