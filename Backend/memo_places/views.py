@@ -36,7 +36,9 @@ from admin_dashboard.serializers import (
     Period_serializer,
 )
 from dotenv import load_dotenv
+from functools import wraps
 
+import jwt
 import os
 import re
 import secrets
@@ -44,8 +46,6 @@ import string
 
 
 load_dotenv()
-
-
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -438,7 +438,7 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return self.model.objects.none()  # change to .none() on production
+        return self.model.objects.none() 
 
     def create(self, request, *args, **kwargs):
         if self.model.user_exists(request.data["email"]):
@@ -472,13 +472,23 @@ class UserView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
+        token = request.headers.get("JWT")
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
+        decoded_token = jwt.decode(token, options={"verify_signature": False})
         match key:
             case "pk":
+                if int(decoded_token.get('pk', None)) != int(value):
+                    return Response(
+                            {"Error": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED
+                        )
                 user = get_object_or_404(self.model, id=value)
                 serializer = self.serializer_class(user, many=False)
             case "email":
                 value = str(value).replace("&", ".")
+                if str(decoded_token.get('email',None)) != str(value):
+                    return Response(
+                            {"Error": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED
+                        )
                 user = get_object_or_404(self.model, email=value)
                 serializer = self.serializer_class(user)
             case _:
@@ -486,11 +496,20 @@ class UserView(viewsets.ModelViewSet):
                 return Response(
                     {"Error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST
                 )
-        return Response(str(MyTokenObtainPairSerializer.get_token(user=user)))
+        token = MyTokenObtainPairSerializer.get_token(user=user)
+        refresh_token = str(token)
+        access_token = str(token.access_token)
+    
+        return Response({'refresh': refresh_token,'access': access_token})
 
     def update(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
-
+        token = request.headers.get("JWT")
+        decoded_token = jwt.decode(token, options={"verify_signature": False})
+        if int(decoded_token.get('id', None)) != (kwargs["pk"]):
+            return Response(
+                {"Error": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED
+            )
         data = request.data
         for i in data.keys():
             match i:
@@ -500,7 +519,11 @@ class UserView(viewsets.ModelViewSet):
         user_object.save()
 
         serializer = self.serializer_class(user_object)
-        return Response(str(MyTokenObtainPairSerializer.get_token(user=user_object)))
+        token = MyTokenObtainPairSerializer.get_token(user=user_object)
+        refresh_token = str(token)
+        access_token = str(token.access_token)
+    
+        return Response({'refresh': refresh_token,'access': access_token})
 
     def destroy(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
