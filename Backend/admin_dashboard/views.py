@@ -422,7 +422,18 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return self.model.objects.all()
+        token = self.request.headers.get("JWT")
+        try:
+            decoded_token = jwt.decode(token, options={"verify_signature": False})
+
+            if not decoded_token.get('admin', False):
+                return self.model.objects.none()
+
+            return self.model.objects.all()
+        except jwt.ExpiredSignatureError:
+                return self.model.objects.none()
+        except jwt.InvalidTokenError:
+                return self.model.objects.none()
 
     @authenticate
     def create(self, request, *args, **kwargs):

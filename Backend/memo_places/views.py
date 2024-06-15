@@ -438,7 +438,7 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = User_serializer
 
     def get_queryset(self):
-        return self.model.objects.all()  # change to .none() on production
+        return self.model.objects.none()  # change to .none() on production
 
     def create(self, request, *args, **kwargs):
         if self.model.user_exists(request.data["email"]):
