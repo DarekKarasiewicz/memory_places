@@ -23,7 +23,9 @@ from .serializers import (
 )
 from memo_places.models import Place, User, Question, Change, Sortof, Type, Period, Path, PlaceImage, PathImage
 from dotenv import load_dotenv
+from functools import wraps
 
+import jwt
 import os
 import re
 import secrets
@@ -34,6 +36,34 @@ import unicodedata
 def json_bool(str):
     return str.lower() == "true"
 
+def authenticate(f):
+    @wraps(f)
+    def wrapper(self, *args, **kwargs):
+        request = args[0]  
+        token = request.headers.get("JWT")
+
+        if not token:
+            return Response(
+                    {"Error": "Missing JWT token"}, status=status.HTTP_401_UNAUTHORIZED
+                )
+        try:
+            decoded_token = jwt.decode(token, options={"verify_signature": False})
+
+            if not decoded_token.get('admin', False):
+                return Response(
+                        {"Error": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED
+                    )
+
+            return f(self, *args, **kwargs)
+        except jwt.ExpiredSignatureError:
+                return Response(
+                        {"Error": "Token expired"}, status=status.HTTP_401_UNAUTHORIZED
+                    )
+        except jwt.InvalidTokenError:
+                return Response(
+                        {"Error": "Wrong token"}, status=status.HTTP_401_UNAUTHORIZED
+                    )
+    return wrapper
 
 class PlaceView(viewsets.ModelViewSet):
     model = Place
@@ -42,6 +72,7 @@ class PlaceView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all().filter(verified=True)
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
         type = get_object_or_404(Type, id=request.data["type"])
@@ -78,6 +109,7 @@ class PlaceView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         keys={key:[value]}
@@ -106,6 +138,7 @@ class PlaceView(viewsets.ModelViewSet):
         serializer = self.serializer_class(places, many=True)
         return Response(serializer.data)
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -149,6 +182,7 @@ class PlaceView(viewsets.ModelViewSet):
         serializer = self.serializer_class(place_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         place_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -163,6 +197,7 @@ class PlaceImageView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
 
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
@@ -178,6 +213,7 @@ class PlaceImageView(viewsets.ModelViewSet):
             case _:
                 return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         place_object = get_object_or_404(Place, id=request.data["place"])
         placeimage_object = self.model(
@@ -188,6 +224,7 @@ class PlaceImageView(viewsets.ModelViewSet):
         serializer = self.serializer_class(placeimage_object)
         return Response(serializer.data)
     
+    @authenticate
     def update(self, request, *args, **kwargs):
         placeimage_object = get_object_or_404(PlaceImage, id=request.data["id"])
         for i in request.data.keys():
@@ -201,6 +238,7 @@ class PlaceImageView(viewsets.ModelViewSet):
         serializer = self.serializer_class(placeimage_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         placeimage_object = get_object_or_404(PlaceImage, id =request.data["place"])
         placeimage_object.delete()
@@ -214,6 +252,7 @@ class PathView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all().filter(verified=True)
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         creator = get_object_or_404(User, id=request.data["user"])
         type = get_object_or_404(Type, id=request.data["type"])
@@ -247,6 +286,7 @@ class PathView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         keys={key:[value]}
@@ -274,6 +314,7 @@ class PathView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         path_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -313,6 +354,7 @@ class PathView(viewsets.ModelViewSet):
         serializer = self.serializer_class(path_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         path_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -327,6 +369,7 @@ class PathImageView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
     
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
@@ -342,6 +385,7 @@ class PathImageView(viewsets.ModelViewSet):
             case _:
                 return Response({"Error": "Invalid key"}, status=status.HTTP_400_BAD_REQUEST)
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         path_object = get_object_or_404(Path, id=request.data["place"])
         pathimage_object = self.model(
@@ -352,6 +396,7 @@ class PathImageView(viewsets.ModelViewSet):
         serializer = self.serializer_class(pathimage_object)
         return Response(serializer.data)
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         pathimage_object = get_object_or_404(PathImage, id=request.data["id"])
         for i in request.data.keys():
@@ -365,6 +410,7 @@ class PathImageView(viewsets.ModelViewSet):
         serializer = self.serializer_class(pathimage_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         pathimage_object = get_object_or_404(PathImage, id =request.data["place"])
         pathimage_object.delete()
@@ -378,6 +424,7 @@ class UserView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         data = request.data
         new_user = self.model.objects.create_user(
@@ -417,6 +464,7 @@ class UserView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
@@ -451,6 +499,7 @@ class UserView(viewsets.ModelViewSet):
                 )
         return Response(serializer.data)
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         try:
             isinstance(int(kwargs["pk"]), int)
@@ -489,6 +538,7 @@ class UserView(viewsets.ModelViewSet):
         serializer = self.serializer_class(user_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         user_object = self.model.objects.get(id=kwargs["pk"])
         user_object.delete()
@@ -520,6 +570,7 @@ class QuestionsView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         try:
             user_object = self.model.objects.get(email=request.data["email"])
@@ -548,6 +599,7 @@ class QuestionsView(viewsets.ModelViewSet):
         serializer = self.serializer_class(new_question)
         return Response(serializer.data)
 
+    @authenticate
     def retrieve(self, request, *args, **kwargs):
         key, value = re.match("(\w+)=(.+)", kwargs["pk"]).groups()
         match key:
@@ -574,6 +626,7 @@ class QuestionsView(viewsets.ModelViewSet):
                     )
         return Response(serializer.data)
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         question_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -597,6 +650,7 @@ class QuestionsView(viewsets.ModelViewSet):
         serializer = self.model(question_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         question_object = self.model.objects.get(id=kwargs["pk"])
         question_object.delete()
@@ -631,6 +685,7 @@ class CategoryBaseView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.model.objects.all()
 
+    @authenticate
     def create(self, request, *args, **kwargs):
         new_type = self.model(
             name=request.data["name"],
@@ -642,6 +697,7 @@ class CategoryBaseView(viewsets.ModelViewSet):
         serializer = self.serializer_class(new_type)
         return Response(serializer.data)
 
+    @authenticate
     def update(self, request, *args, **kwargs):
         type_object = self.model.objects.get(id=kwargs["pk"])
 
@@ -661,6 +717,7 @@ class CategoryBaseView(viewsets.ModelViewSet):
         serializer = self.serializer_class(type_object)
         return Response(serializer.data)
 
+    @authenticate
     def destroy(self, request, *args, **kwargs):
         type_object = self.model.objects.get(id=kwargs["pk"])
         type_object.delete()
