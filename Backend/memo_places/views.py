@@ -506,7 +506,7 @@ class UserView(viewsets.ModelViewSet):
         user_object = self.model.objects.get(id=kwargs["pk"])
         token = request.headers.get("JWT")
         decoded_token = jwt.decode(token, options={"verify_signature": False})
-        if int(decoded_token.get('pk', 0)) != (kwargs["pk"]):
+        if int(decoded_token.get('pk', 0)) != int(kwargs["pk"]):
             return Response(
                 {"Error": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED
             )
