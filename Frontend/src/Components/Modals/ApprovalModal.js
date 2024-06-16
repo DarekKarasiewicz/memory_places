@@ -20,13 +20,14 @@ function ApprovalModal() {
   const { t } = useTranslation();
   const [cookies] = useCookies(['user']);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const handleSumbit = async () => {
     const objectToDelete = approvalData.type === 'place' ? 'places' : 'path';
     const setProperInfoValue = approvalData.type === 'place' ? 'place' : 'trail';
 
     axios
-      .delete(`http://localhost:8000/memo_places/${objectToDelete}/${approvalData.id}/`)
+      .delete(`${appPath}/memo_places/${objectToDelete}/${approvalData.id}/`)
       .then(() => {
         if (approvalData.type === 'place') {
           dispatch(deletePlace(approvalData.id));

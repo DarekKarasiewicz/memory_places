@@ -31,8 +31,10 @@ function ObjectVerificationTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
   const [columnVisibility, setColumnVisibility] = useState({ id: false, kind_value: false });
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const table = useReactTable({
     data,
@@ -60,10 +62,18 @@ function ObjectVerificationTable({ data, columns }) {
     let currentDate = new Date();
 
     axios
-      .put(`http://127.0.0.1:8000/admin_dashboard/${checkKind}/${placeId}/`, {
-        verified: true,
-        verified_date: currentDate.toISOString().slice(0, 10),
-      })
+      .put(
+        `${appPath}/admin_dashboard/${checkKind}/${placeId}/`,
+        {
+          verified: true,
+          verified_date: currentDate.toISOString().slice(0, 10),
+        },
+        {
+          headers: {
+            JWT: accessToken,
+          },
+        },
+      )
       .then(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('success'));
@@ -80,7 +90,11 @@ function ObjectVerificationTable({ data, columns }) {
     const checkKind = kind_value === 'P' ? 'places' : 'path';
 
     axios
-      .delete(`http://127.0.0.1:8000/admin_dashboard/${checkKind}/${placeId}/`)
+      .delete(`${appPath}/admin_dashboard/${checkKind}/${placeId}/`, {
+        headers: {
+          JWT: accessToken,
+        },
+      })
       .then(() => {
         dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
         dispatch(confirmationModalActions.changeType('success'));

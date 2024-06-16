@@ -23,10 +23,11 @@ const UserMenu = () => {
   const userPlaceData = useSelector(selectUserPlaces);
   const { t } = useTranslation();
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
+      .get(`${appPath}/memo_places/short_places/user=${user.user_id}`)
       .then((response) => {
         setUserPlaces(response.data);
         dispatch(userPlacesActions.changeIsPlaceDataShouldReload(false));
@@ -38,7 +39,7 @@ const UserMenu = () => {
       });
 
     axios
-      .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
+      .get(`${appPath}/memo_places/short_path/user=${user.user_id}`)
       .then((response) => {
         setUserTrails(response.data);
         dispatch(userPlacesActions.changeIsTrailDataShouldReload(false));
@@ -53,7 +54,7 @@ const UserMenu = () => {
   useEffect(() => {
     if (userPlaceData.shouldPlaceDataReload === true) {
       axios
-        .get(`http://localhost:8000/memo_places/short_places/user=${user.user_id}`)
+        .get(`${appPath}/memo_places/short_places/user=${user.user_id}`)
         .then((response) => {
           setUserPlaces(response.data);
           dispatch(userPlacesActions.changeIsPlaceDataShouldReload(false));
@@ -69,7 +70,7 @@ const UserMenu = () => {
   useEffect(() => {
     if (userPlaceData.shouldTrailDataReload === true) {
       axios
-        .get(`http://localhost:8000/memo_places/short_path/user=${user.user_id}`)
+        .get(`${appPath}/memo_places/short_path/user=${user.user_id}`)
         .then((response) => {
           setUserTrails(response.data);
           dispatch(userPlacesActions.changeIsTrailDataShouldReload(false));

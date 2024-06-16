@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 import { confirmationModalActions } from './confirmationModalSlice';
 import { adminDataActions } from './adminDataSlice';
 
@@ -79,10 +80,11 @@ export const adminActions = adminActionSlice.actions;
 
 export const deletePlaceItem = (place_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
-
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const appPath = process.env.REACT_APP_URL_PATH;
+
   try {
-    await axios.delete(`http://localhost:8000/memo_places/places/${place_id}`);
+    await axios.delete(`${appPath}/memo_places/places/${place_id}`);
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsPlacesChanged(true));
     dispatch(adminDataActions.updateIsStatisticsChanged(true));
@@ -93,10 +95,11 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
 
 export const deleteTrailItem = (trail_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
-
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const appPath = process.env.REACT_APP_URL_PATH;
+
   try {
-    await axios.delete(`http://localhost:8000/memo_places/path/${trail_id}`);
+    await axios.delete(`${appPath}/memo_places/path/${trail_id}`);
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsTrailsChanged(true));
     dispatch(adminDataActions.updateIsStatisticsChanged(true));
@@ -107,6 +110,9 @@ export const deleteTrailItem = (trail_id) => async (dispatch) => {
 
 export const changeUserRole = (user_id, role) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
   var item;
 
   if (role === 'admin') {
@@ -120,8 +126,8 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
 
   try {
-    await axios.put(`http://localhost:8000/admin_dashboard/users/pk=${user_id}/`, item, {
-      headers: { 'Content-Type': 'application/json' },
+    await axios.put(`${appPath}/admin_dashboard/users/pk=${user_id}/`, item, {
+      headers: { 'Content-Type': 'application/json', JWT: accessToken },
     });
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsUsersChanged(true));
@@ -133,8 +139,16 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
 export const resetUserPassword = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
+
   try {
-    await axios.get(`http://localhost:8000/admin_dashboard/reset_password/pk=${user_id}`);
+    await axios.get(`${appPath}/admin_dashboard/reset_password/pk=${user_id}`, {
+      headers: {
+        JWT: accessToken,
+      },
+    });
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsUsersChanged(true));
   } catch (error) {
@@ -144,15 +158,18 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
 
 export const blockUser = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
+  const [cookies] = useCookies(['user']);
+  const accessToken = cookies.accessToken;
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
     await axios.put(
-      `http://localhost:8000/admin_dashboard/users/pk=${user_id}/`,
+      `${appPath}/admin_dashboard/users/pk=${user_id}/`,
       {
         active: false,
       },
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', JWT: accessToken },
       },
     );
 
@@ -166,10 +183,11 @@ export const blockUser = (user_id) => async (dispatch) => {
 export const unlockUser = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
     await axios.put(
-      `http://localhost:8000/admin_dashboard/users/pk=${user_id}/`,
+      `${appPath}/admin_dashboard/users/pk=${user_id}/`,
       {
         active: true,
       },
@@ -187,9 +205,10 @@ export const unlockUser = (user_id) => async (dispatch) => {
 export const deletePostItem = (post_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
-    await axios.delete(`http://127.0.0.1:8000/memo_places_forum/post/${post_id}`);
+    await axios.delete(`${appPath}/memo_places_forum/post/${post_id}`);
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsPostsChanged(true));
   } catch (error) {
@@ -200,9 +219,10 @@ export const deletePostItem = (post_id) => async (dispatch) => {
 export const deleteCommentItem = (comment_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
-    await axios.delete(`http://127.0.0.1:8000/memo_places_forum/comment/${comment_id}`);
+    await axios.delete(`${appPath}/memo_places_forum/comment/${comment_id}`);
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsCommentsChanged(true));
   } catch (error) {

@@ -28,6 +28,7 @@ function ForumPostModal() {
   const [isValidDesc, setIsValidDesc] = useState(null);
   const forumData = useSelector(selectForumData);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const closeModal = () => {
     dispatch(modalsActions.changeIsForumPostModalOpen());
@@ -61,7 +62,7 @@ function ForumPostModal() {
 
     if (isFormValid) {
       axios
-        .post(`http://127.0.0.1:8000/memo_places_forum/post/`, {
+        .post(`${appPath}/memo_places_forum/post/`, {
           user: parseInt(user.user_id),
           place: parseInt(forumData.place_id),
           title: titleRef.current.value,

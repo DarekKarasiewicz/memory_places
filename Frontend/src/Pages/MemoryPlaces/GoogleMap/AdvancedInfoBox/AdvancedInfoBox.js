@@ -18,6 +18,7 @@ const AdvancedInfoBox = () => {
   const dispatch = useDispatch();
   const advancedObject = useSelector(selectAdvancedObject);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const getAllItemsImages = async (id) => {
     const currentKind = advancedObject.kind === 'place' ? 'place_image' : 'path_image';
@@ -25,7 +26,7 @@ const AdvancedInfoBox = () => {
 
     try {
       const responseItems = await axios.get(
-        `http://127.0.0.1:8000/memo_places/${currentKind}/${currentKind2}=${id}`,
+        `${appPath}/memo_places/${currentKind}/${currentKind2}=${id}`,
       );
 
       if (responseItems.data && responseItems.data.length > 0) {
@@ -150,26 +151,30 @@ const AdvancedInfoBox = () => {
                 <span className='italic font-medium'>{t('common.founded_by')}</span>
                 <span>{objectData.username}</span>
               </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.wiki-link')}</span>
-                <a
-                  href={objectData.wiki_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
-              <section className='flex flex-col'>
-                <span className='italic font-medium'>{t('common.topic-link')}</span>
-                <a
-                  href={objectData.topic_link}
-                  target='blank'
-                  className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
-                >
-                  LINK
-                </a>
-              </section>
+              {objectData.wiki_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.wiki-link')}</span>
+                  <a
+                    href={objectData.wiki_link}
+                    target='blank'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
+              {objectData.topic_link && (
+                <section className='flex flex-col'>
+                  <span className='italic font-medium'>{t('common.topic-link')}</span>
+                  <a
+                    href={objectData.topic_link}
+                    target='blank'
+                    className='font-medium text-blue-600 dark:text-blue-500 hover:underline'
+                  >
+                    LINK
+                  </a>
+                </section>
+              )}
             </div>
             <div className='flex flex-col w-3/5 gap-4'>
               <section className='flex justify-center items-center'>

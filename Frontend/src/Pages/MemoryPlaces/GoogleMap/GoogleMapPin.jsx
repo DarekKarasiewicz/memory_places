@@ -10,14 +10,14 @@ import PlusIcon from 'icons/PlusIcon';
 
 const GoogleMapPin = ({ iconPath, isVerified }) => {
   const iconComponents = {
-    1: <ArchaeologicalSiteIcon className='h-8 w-8 -rotate-45' />,
-    2: <BattlefieldIcon className='h-8 w-8 -rotate-45' />,
-    3: <BurialSiteIcon className='h-8 w-8 -rotate-45' />,
-    4: <CivilCemeteryIcon className='h-8 w-8 -rotate-45' />,
-    5: <ExecutionSiteIcon className='h-8 w-8 -rotate-45' />,
-    6: <HistoricalMonumentIcon className='h-8 w-8 -rotate-45' />,
-    7: <WarCemeteryIcon className='h-8 w-8 -rotate-45' />,
-    8: <WaysideShrineIcon className='h-8 w-8 -rotate-45' />,
+    1: <CivilCemeteryIcon className='h-8 w-8 -rotate-45' />,
+    2: <BurialSiteIcon className='h-8 w-8 -rotate-45' />,
+    3: <HistoricalMonumentIcon className='h-8 w-8 -rotate-45' />,
+    4: <WaysideShrineIcon className='h-8 w-8 -rotate-45' />,
+    5: <BattlefieldIcon className='h-8 w-8 -rotate-45' />,
+    6: <ExecutionSiteIcon className='h-8 w-8 -rotate-45' />,
+    7: <ArchaeologicalSiteIcon className='h-8 w-8 -rotate-45' />,
+    8: <WarCemeteryIcon className='h-8 w-8 -rotate-45' />,
   };
 
   const IconComponent = iconComponents[iconPath] || <PlusIcon className='h-8 w-8 rotate-45' />;

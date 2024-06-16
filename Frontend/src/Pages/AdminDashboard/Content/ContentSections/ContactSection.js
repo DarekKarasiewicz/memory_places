@@ -16,12 +16,13 @@ function ContactSection() {
   const modalData = useSelector(selectAdminData);
   const { isContactChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchContactItems = async () => {
     try {
       //TO DO
       //endpoint to change when backend will be updated
-      const response = await axios.get(`http://localhost:8000/memo_places/contact_us`);
+      const response = await axios.get(`${appPath}/memo_places/contact_us`);
       const contactItems = response.data.map((obj, index) => {
         return {
           ...obj,

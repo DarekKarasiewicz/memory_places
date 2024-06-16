@@ -12,19 +12,15 @@ import LoginForm from './LoginForm';
 import BaseButton from 'Components/Base/BaseButton';
 import axios from 'axios';
 
-import useAuth from 'Hooks/useAuth';
-import useRefreshToken from 'Hooks/useRefreshToken';
-
 const LoginComponent = () => {
   const [isValidEmail, setIsValidEmail] = useState(null);
   const [isValidPassword, setIsValidPassword] = useState(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const dispatch = useDispatch();
-  const { setUserCredentials } = useAuth();
   const [cookies, setCookie] = useCookies(['user']);
   const { t } = useTranslation();
-  const refresh = useRefreshToken();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const handleBlurEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,7 +41,7 @@ const LoginComponent = () => {
       };
       axios
         .post(
-          'http://localhost:8000/memo_places/token/',
+          `${appPath}/memo_places/token/`,
           {
             email: `${user.email}`,
             password: `${user.password}`,
@@ -62,12 +58,15 @@ const LoginComponent = () => {
               email: refreshDecoded.email,
               admin: refreshDecoded.admin,
               master: refreshDecoded.master,
-              refreshToken: refreshDecoded.jti,
+              refreshToken: response.data.refresh,
+              accessToken: response.data.access,
             },
             {
               expires: new Date(refreshDecoded.exp * 1000),
+              path: '/',
             },
           );
+
           dispatch(modalsActions.changeIsLoginAndRegisterOpen());
           location.reload();
         })
@@ -106,15 +105,9 @@ const LoginComponent = () => {
         onSuccess={(credentialResponse) => {
           let decoded = jwtDecode(credentialResponse.credential);
           axios
-            .get(
-              `http://localhost:8000/memo_places/users/email%3D${decoded.email.replace(
-                /\./g,
-                '&',
-              )}`,
-              {
-                headers: { 'Content-Type': 'application/json' },
-              },
-            )
+            .get(`${appPath}/memo_places/users/email%3D${decoded.email.replace(/\./g, '&')}`, {
+              headers: { 'Content-Type': 'application/json', JWT: credentialResponse.credential },
+            })
             .then((response) => {
               const userDecoded = jwtDecode(response.data);
               setCookie(
@@ -137,7 +130,7 @@ const LoginComponent = () => {
               if (error.response.status === 404) {
                 axios
                   .post(
-                    'http://localhost:8000/memo_places/outside_users/',
+                    `${appPath}/memo_places/outside_users/`,
                     {
                       email: decoded.email,
                       username: decoded.name,

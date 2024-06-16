@@ -13,15 +13,17 @@ import AccountIcon from 'icons/AccountIcon';
 import AlertIcon from 'icons/AlertIcon';
 
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
+import { jwtDecode } from 'jwt-decode';
 
 function AccountSettings() {
   const [isValidUsername, setIsValidUsername] = useState(null);
-  const [cookies] = useCookies(['user']);
+  const [cookies, setCookie] = useCookies(['user']);
   const usernameRef = useRef(null);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = cookies.user;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     if (user) {
@@ -57,12 +59,31 @@ function AccountSettings() {
       }
 
       axios
-        .put(`http://localhost:8000/memo_places/users/${user.user_id}/`, newData, {
+        .put(`${appPath}/memo_places/users/${user.user_id}/`, newData, {
           headers: { 'Content-Type': 'application/json' },
         })
-        .then(() => {
-          //TO DO
-          //When refresh token function will be avaiable add it here + when eamil will be changed send verification mail
+        .then((response) => {
+          console.log(response.data);
+          const decodedData = jwtDecode(response.data);
+
+          setCookie(
+            'user',
+            {
+              ...user,
+              user_id: decodedData.user_id,
+              username: decodedData.username,
+              email: decodedData.email,
+              admin: decodedData.admin,
+              master: decodedData.master,
+              refreshToken: response.data.refresh,
+              accessToken: response.data.access,
+            },
+            {
+              expires: new Date(decodedData.exp * 1000),
+              path: '/',
+            },
+          );
+
           dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
           dispatch(confirmationModalActions.changeType('success'));
         })

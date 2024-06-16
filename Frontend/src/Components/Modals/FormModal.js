@@ -55,10 +55,11 @@ function FormModal(props) {
   const [inputLength, setInputLength] = useState(0);
   const [descLength, setDescLength] = useState(0);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchSortOfItems = async () => {
     try {
-      const responseSort = await axios.get(`http://127.0.0.1:8000/memo_places/sortofs`);
+      const responseSort = await axios.get(`${appPath}/memo_places/sortofs`);
       const sortOfItems = responseSort.data
         .map((obj) => ({
           id: obj.id,
@@ -84,7 +85,7 @@ function FormModal(props) {
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const responseType = await axios.get(`${appPath}/memo_places/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -110,7 +111,7 @@ function FormModal(props) {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const responsePeriod = await axios.get(`${appPath}/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -262,7 +263,7 @@ function FormModal(props) {
     formData.append('img', image);
 
     axios
-      .post(`http://localhost:8000/memo_places/place_image/`, formData, {
+      .post(`${appPath}/memo_places/place_image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -273,15 +274,13 @@ function FormModal(props) {
 
   const deletePlaceImages = (imageId) => {
     axios
-      .delete(`http://localhost:8000/memo_places/place_image/${imageId}/`)
+      .delete(`${appPath}/memo_places/place_image/${imageId}/`)
       .then(() => {})
       .catch(() => {});
   };
 
   const getPlaceImages = async (placeId) => {
-    const response = await axios.get(
-      `http://127.0.0.1:8000/memo_places/place_image/place=${placeId}`,
-    );
+    const response = await axios.get(`${appPath}/place_image/place=${placeId}`);
 
     return response.data;
   };
@@ -311,7 +310,7 @@ function FormModal(props) {
         });
 
         axios
-          .put(`http://localhost:8000/memo_places/places/${updatePlaceData.place.id}/`, {
+          .put(`${appPath}/memo_places/places/${updatePlaceData.place.id}/`, {
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,
             lat: lat,
@@ -342,7 +341,7 @@ function FormModal(props) {
           });
       } else {
         axios
-          .post(`http://localhost:8000/memo_places/places/`, {
+          .post(`${appPath}/memo_places/places/`, {
             user: user.user_id,
             place_name: addPlaceData.place_name,
             description: addPlaceData.description,

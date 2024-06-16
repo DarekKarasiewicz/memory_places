@@ -60,7 +60,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION":True, 
+    "BLACKLIST_AFTER_ROTATION":True,
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",
@@ -119,6 +119,11 @@ CORS_ORIGIN_WHITELIST = [
      'http://localhost:3000'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = [
+    'JWT',
+    'Content-Type',
+]
 
 #copy paste from previous project 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND') 

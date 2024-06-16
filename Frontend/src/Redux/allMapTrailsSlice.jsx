@@ -16,13 +16,13 @@ export const allMapTrailsSlice = createSlice({
   initialState,
   reducers: {
     filterTrails: (state, action) => {
-      const { name, type, period, sortof } = action.payload;
+      const { name, type, period } = action.payload;
 
       state.name = name;
       state.type = type;
       state.period = period;
 
-      if (name === '' && type === 0 && period === 0 && sortof === 0) {
+      if (name === '' && type === 0 && period === 0) {
         state.filterItems = state.allItems;
       } else {
         state.filterItems = state.allItems.filter((item) => {
@@ -32,7 +32,6 @@ export const allMapTrailsSlice = createSlice({
           return (
             (name === '' || itemName.includes(filterName)) &&
             (type === 0 || item.type === type) &&
-            (sortof === 0 || sortof === undefined) &&
             (period === 0 || item.period === period)
           );
         });
@@ -63,9 +62,10 @@ export const allMapTrailsSlice = createSlice({
 
 export const fetchMapTrails = (userId) => async (dispatch) => {
   dispatch(allMapTrailsSlice.actions.fetchMapTrailsStart());
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
-    const response = await axios.get('http://localhost:8000/memo_places/short_path/');
+    const response = await axios.get(`${appPath}/memo_places/short_path/`);
     const filteredTrails = response.data.filter(
       (item) => item.verified === true || item.user === userId,
     );

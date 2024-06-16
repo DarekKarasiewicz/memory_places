@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { useState, useRef } from 'react';
+import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
@@ -23,6 +24,9 @@ const PasswordResetPage = () => {
   const confirmPasswordRef = useRef(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
+  const [cookies, removeCookie] = useCookies(['user']);
+  const user = cookies.user;
 
   const handlePasswordChange = () => {
     const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
@@ -36,9 +40,13 @@ const PasswordResetPage = () => {
   const handlePasswordReset = async () => {
     if (isValidPassword && isValidConfirmPassword) {
       try {
-        await axios.put(`http://localhost:8000/memo_places/reset_password/pk=${id}/`, {
+        await axios.put(`${appPath}/memo_places/reset_password/pk=${id}/`, {
           password: passwordRef.current.value,
         });
+
+        if (user && user.user_id) {
+          removeCookie('user', { path: '/' });
+        }
         setIsSuccess(true);
       } catch (error) {
         setIsSuccess(false);

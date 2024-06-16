@@ -89,7 +89,6 @@ function UserMenu({ altVersion, isAdminPage }) {
   };
 
   const menuItems = [
-    // { icon: 'notification', name: t('user.notifications') },
     { icon: 'pin', name: t('user.your_memory_places'), func: handleUserPlacesVisability },
     { icon: 'settings', name: t('user.settings'), func: handleUserSettingsVisability },
     { icon: 'help', name: t('user.help'), func: handleFAQVisability },
@@ -155,7 +154,7 @@ function UserMenu({ altVersion, isAdminPage }) {
             initial='hidden'
             animate='visible'
           >
-            <li className={`capitalize text-${fontSize}-xl`}>{user.username}</li>
+            <li className={`capitalize text-${fontSize}-xl break-all`}>{user.username}</li>
             <li className={`uppercase text-${fontSize}-sm italic`}>
               {user.admin ? t('user.admin') : user.master ? t('user.master_user') : t('user.user')}
             </li>

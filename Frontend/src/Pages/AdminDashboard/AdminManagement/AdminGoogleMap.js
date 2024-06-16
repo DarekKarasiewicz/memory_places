@@ -76,7 +76,7 @@ const AdminGoogleMap = ({ action, kind, placePosition, cordsPosition, type }) =>
         );
       }
 
-      if(addTrailData.coordinates && addTrailData.coordinates.length > 0){
+      if (addTrailData.coordinates && addTrailData.coordinates.length > 0) {
         const positions = addTrailData.coordinates;
         setCords(positions);
         setLatitude(positions[0].lat);
