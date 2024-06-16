@@ -8,6 +8,7 @@ import { forumDataActions } from 'Redux/forumDataSlice';
 import { notificationModalActions } from 'Redux/notificationModalSlice';
 
 import TrendIcon from 'icons/TrendIcon';
+import BaseButton from 'Components/Base/BaseButton';
 
 import { useFontSize } from 'Components/FontSizeSwitcher/FontSizeContext';
 
@@ -18,10 +19,13 @@ function ForumMenu() {
   const [periods, setPeriods] = useState([]);
   const navigate = useNavigate();
   const { fontSize } = useFontSize();
+  const [showAllTypes, setShowAllTypes] = useState(false);
+  const [showAllPeriods, setShowAllPeriods] = useState(false);
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchTypeItems = async () => {
     try {
-      const responseType = await axios.get(`http://127.0.0.1:8000/memo_places/types`);
+      const responseType = await axios.get(`${appPath}/memo_places/types`);
       const typeItems = responseType.data
         .map((obj) => ({
           id: obj.id,
@@ -39,7 +43,7 @@ function ForumMenu() {
 
   const fetchPeriodItems = async () => {
     try {
-      const responsePeriod = await axios.get(`http://127.0.0.1:8000/memo_places/periods`);
+      const responsePeriod = await axios.get(`${appPath}/memo_places/periods`);
       const periodItems = responsePeriod.data
         .map((obj) => ({
           id: obj.id,
@@ -54,6 +58,9 @@ function ForumMenu() {
       dispatch(notificationModalActions.changeIsNotificationModalOpen());
     }
   };
+
+  const typesToShow = showAllTypes ? types : types.slice(0, 3);
+  const periodsToShow = showAllPeriods ? periods : periods.slice(0, 3);
 
   useEffect(() => {
     fetchTypeItems();
@@ -76,9 +83,9 @@ function ForumMenu() {
               <div className={`text-textColor text-${fontSize}-xl`}>{t('admin.content.type')}</div>
               <hr className='border-t-1 w-full border-textColor' />
               <div className='flex flex-col justify-start gap-2'>
-                {types.length > 0 && (
+                {typesToShow.length > 0 && (
                   <>
-                    {types.map((item, index) => (
+                    {typesToShow.map((item, index) => (
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
@@ -99,6 +106,15 @@ function ForumMenu() {
                     ))}
                   </>
                 )}
+                {types.length > 3 && (
+                  <div className='flex justify-center'>
+                    <BaseButton
+                      btnBg='blue'
+                      onClick={() => setShowAllTypes((prev) => !prev)}
+                      name={showAllTypes ? t('forum.show_less') : t('forum.show_more')}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -106,9 +122,9 @@ function ForumMenu() {
             <div className={`text-textColor text-${fontSize}-xl`}>{t('admin.content.period')}</div>
             <hr className='border-t-1 w-full border-textColor' />
             <div className='flex flex-col justify-start gap-2'>
-              {periods.length > 0 && (
+              {periodsToShow.length > 0 && (
                 <>
-                  {periods.map((item, index) => (
+                  {periodsToShow.map((item, index) => (
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       className={`flex items-center gap-3 p-1 text-textColor hover:text-cyan-600 cursor-pointer transition`}
@@ -127,6 +143,15 @@ function ForumMenu() {
                     </motion.div>
                   ))}
                 </>
+              )}
+              {periods.length > 3 && (
+                <div className='flex justify-center'>
+                  <BaseButton
+                    btnBg='blue'
+                    onClick={() => setShowAllPeriods((prev) => !prev)}
+                    name={showAllPeriods ? t('forum.show_less') : t('forum.show_more')}
+                  />
+                </div>
               )}
             </div>
           </div>

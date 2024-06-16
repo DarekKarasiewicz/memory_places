@@ -18,10 +18,11 @@ function CommentManagementSection() {
   const modalData = useSelector(selectAdminData);
   const { isCommentsChanged } = modalData;
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchCommentItems = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/memo_places_forum/comment/`);
+      const response = await axios.get(`${appPath}/memo_places_forum/comment/`);
 
       const modifiedCommentData = response.data.map((obj, index) => ({
         ...obj,

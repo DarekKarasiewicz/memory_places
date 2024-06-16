@@ -18,10 +18,11 @@ const VerifiactionPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
     axios
-      .put(`http://localhost:8000/memo_places/user_verifi/${id}/`)
+      .put(`${appPath}/memo_places/user_verifi/${id}/`)
       .then(() => {
         setIsLoading(false);
       })

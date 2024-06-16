@@ -6,7 +6,6 @@ import userPlacesReducer from './userPlacesSlice';
 import addPlaceReducer from './addPlaceSlice';
 import updatePlaceReducer from './updatePlaceSlice';
 import allMapPlacesReducer from './allMapPlacesSlice';
-import authReducer from './authSlice';
 import formValidationReducer from './formValidationSlice';
 import contentSectionReducer from './contentSectionSlice';
 import adminActionsReducer from './adminActionSlice';
@@ -37,7 +36,6 @@ export const store = configureStore({
     addPlace: addPlaceReducer,
     updatePlace: updatePlaceReducer,
     allMapPlaces: allMapPlacesReducer,
-    auth: authReducer,
     formValidation: formValidationReducer,
     contentSection: contentSectionReducer,
     adminActions: adminActionsReducer,

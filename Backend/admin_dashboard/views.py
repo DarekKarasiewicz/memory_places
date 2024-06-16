@@ -462,7 +462,7 @@ class UserView(viewsets.ModelViewSet):
 
         html_message = render_to_string(
             'verification_mail.html',
-            {"link": f"http://localhost:3000/userVerification/{serializer['id'].value}"}
+            {"link": f"{os.getenv('APP_URL_PATH')}/userVerification/{serializer['id'].value}"}
         )
 
         send_mail(

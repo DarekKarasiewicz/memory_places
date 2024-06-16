@@ -19,14 +19,13 @@ const UserTrailItem = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { fontSize } = useFontSize();
+  const appPath = process.env.REACT_APP_URL_PATH;
 
   const handleUpdateModalVisability = async (e) => {
     e.stopPropagation();
 
     try {
-      const response = await axios.get(
-        `http://localhost:8000/memo_places/path/pk=${props.trail.id}`,
-      );
+      const response = await axios.get(`${appPath}/memo_places/path/pk=${props.trail.id}`);
       dispatch(userPlacesActions.changeIsOpen());
       dispatch(updateTrailActions.changeUpdateTrail(response.data));
       dispatch(modalsActions.changeIsTrailUpdateFormOpen());

@@ -33,13 +33,6 @@ function ForumPlace({ currentData, onClick }) {
           </div>
         </div>
         <div className='flex gap-2'>
-          {/* <div className='w-1/3'>
-            <img
-              src='https://placehold.co/300x300'
-              alt='placeholder-image'
-              className='w-full h-full object-cover'
-            />
-          </div> */}
           <div className='w-full flex flex-col gap-2'>
             <span className={`text-${fontSize}-xl`}>{currentData.place_name}</span>
             <span className={`text-${fontSize}-base`}>{currentData.description}</span>
