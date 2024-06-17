@@ -15,7 +15,7 @@ function ChangesHistorySection() {
   const [changesData, setChangesData] = useState([]);
   const dispatch = useDispatch();
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const modalData = useSelector(selectAdminData);
   const { isHistoryChanged } = modalData;
   const { fontSize } = useFontSize();

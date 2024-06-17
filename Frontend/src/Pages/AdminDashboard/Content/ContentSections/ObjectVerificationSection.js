@@ -18,7 +18,7 @@ function ObjectVerificationSection() {
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const { isVerificationsChanged } = modalData;
   const { fontSize } = useFontSize();
   const appPath = process.env.REACT_APP_URL_PATH;
@@ -111,7 +111,7 @@ function ObjectVerificationSection() {
     }
   }, [isVerificationsChanged]);
 
-  const placeVerificationColumns = [
+  const verificationItemsColumns = [
     {
       header: t('admin.content.lp'),
       accessorKey: 'lp',
@@ -203,7 +203,7 @@ function ObjectVerificationSection() {
         </div>
         <hr />
         <div className='w-full flex flex-col gap-3'>
-          <ObjectVerificationTable data={verificationData} columns={placeVerificationColumns} />
+          <ObjectVerificationTable data={verificationData} columns={verificationItemsColumns} />
         </div>
       </div>
     </>

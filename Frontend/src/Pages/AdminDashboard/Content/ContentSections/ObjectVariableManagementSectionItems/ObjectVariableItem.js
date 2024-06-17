@@ -26,7 +26,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
   const baseData = itemsBase;
   const { fontSize } = useFontSize();
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   useEffect(() => {
@@ -154,6 +154,7 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     };
 
     if (createItems.length !== 0) {
+      console.log(cookies);
       createItems.forEach((item) => {
         axios
           .post(

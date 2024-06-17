@@ -17,7 +17,7 @@ function UserManagementSection() {
   const [statistics, setStatistics] = useState([]);
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const dispatch = useDispatch();
   const modalData = useSelector(selectAdminData);
   const { isUsersChanged } = modalData;

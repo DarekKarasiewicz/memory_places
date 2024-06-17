@@ -33,7 +33,7 @@ function ObjectVariableManagementSection() {
   const infoRef = useRef(null);
   const [translateValue, setTranslateValue] = useState([]);
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const modalData = useSelector(selectAdminData);
   const { isVariablesChanged } = modalData;
   const { fontSize } = useFontSize();

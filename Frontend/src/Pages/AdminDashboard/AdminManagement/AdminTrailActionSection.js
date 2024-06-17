@@ -54,7 +54,7 @@ function AdminTrailActionSection({ action, trailId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_trail_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const [currentAction, setCurrentAction] = useState('add');
   const addTrailData = useSelector(selectAddTrail);
   const [cordsPosition, setCordsPosition] = useState(null);

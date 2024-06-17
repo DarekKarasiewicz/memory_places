@@ -111,7 +111,7 @@ export const deleteTrailItem = (trail_id) => async (dispatch) => {
 export const changeUserRole = (user_id, role) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
   var item;
 
@@ -140,7 +140,7 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
@@ -159,7 +159,7 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
 export const blockUser = (user_id) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   try {

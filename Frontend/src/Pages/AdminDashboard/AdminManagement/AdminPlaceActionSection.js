@@ -62,7 +62,7 @@ function AdminPlaceActionSection({ action, placeId }) {
   const [actionTitle, setActionTitle] = useState(t('admin.common.memo_place_add'));
   const [cookies] = useCookies(['user']);
   const user = cookies.user;
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const [currentAction, setCurrentAction] = useState('add');
   const [placePosition, setPlacePosition] = useState(null);
   const addObjectImageData = useSelector(selectAddObjectImage);

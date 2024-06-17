@@ -20,7 +20,7 @@ function TrailManagementSection() {
   const { isTrailsChanged } = modalData;
   const { fontSize } = useFontSize();
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   const fetchTrailItems = async () => {

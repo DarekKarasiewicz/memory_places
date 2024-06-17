@@ -31,7 +31,7 @@ function ObjectVerificationTable({ data, columns }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const [cookies] = useCookies(['user']);
-  const accessToken = cookies.accessToken;
+  const accessToken = cookies.user.accessToken;
   const [columnVisibility, setColumnVisibility] = useState({ id: false, kind_value: false });
   const { fontSize } = useFontSize();
   const appPath = process.env.REACT_APP_URL_PATH;
