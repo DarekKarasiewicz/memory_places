@@ -154,7 +154,6 @@ const ObjectVariableItem = forwardRef(function PlaceVariableItem(
     };
 
     if (createItems.length !== 0) {
-      console.log(cookies);
       createItems.forEach((item) => {
         axios
           .post(

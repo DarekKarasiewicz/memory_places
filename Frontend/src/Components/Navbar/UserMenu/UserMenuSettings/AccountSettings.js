@@ -63,7 +63,6 @@ function AccountSettings() {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((response) => {
-          console.log(response.data);
           const decodedData = jwtDecode(response.data);
 
           setCookie(
