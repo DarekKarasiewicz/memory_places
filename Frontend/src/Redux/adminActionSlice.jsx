@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { confirmationModalActions } from './confirmationModalSlice';
 import { adminDataActions } from './adminDataSlice';
 
@@ -78,13 +77,18 @@ export const selectAdminAction = (state) => state.adminActions;
 
 export const adminActions = adminActionSlice.actions;
 
-export const deletePlaceItem = (place_id) => async (dispatch) => {
+export const deletePlaceItem = (place_id, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
-    await axios.delete(`${appPath}/memo_places/places/${place_id}`);
+    await axios.delete(`${appPath}/admin_dashboard/places/${place_id}`, {
+      headers: {
+        JWT: accessToken,
+      },
+    });
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsPlacesChanged(true));
     dispatch(adminDataActions.updateIsStatisticsChanged(true));
@@ -93,13 +97,18 @@ export const deletePlaceItem = (place_id) => async (dispatch) => {
   }
 };
 
-export const deleteTrailItem = (trail_id) => async (dispatch) => {
+export const deleteTrailItem = (trail_id, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
-    await axios.delete(`${appPath}/memo_places/path/${trail_id}`);
+    await axios.delete(`${appPath}/admin_dashboard/path/${trail_id}`, {
+      headers: {
+        JWT: accessToken,
+      },
+    });
     dispatch(confirmationModalActions.changeType('success'));
     dispatch(adminDataActions.updateIsTrailsChanged(true));
     dispatch(adminDataActions.updateIsStatisticsChanged(true));
@@ -108,9 +117,8 @@ export const deleteTrailItem = (trail_id) => async (dispatch) => {
   }
 };
 
-export const changeUserRole = (user_id, role) => async (dispatch) => {
+export const changeUserRole = (user_id, role, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
-  const [cookies] = useCookies(['user']);
   const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
   var item;
@@ -136,10 +144,9 @@ export const changeUserRole = (user_id, role) => async (dispatch) => {
   }
 };
 
-export const resetUserPassword = (user_id) => async (dispatch) => {
+export const resetUserPassword = (user_id, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
-  const [cookies] = useCookies(['user']);
   const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
@@ -156,9 +163,8 @@ export const resetUserPassword = (user_id) => async (dispatch) => {
   }
 };
 
-export const blockUser = (user_id) => async (dispatch) => {
+export const blockUser = (user_id, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
-  const [cookies] = useCookies(['user']);
   const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
@@ -180,9 +186,10 @@ export const blockUser = (user_id) => async (dispatch) => {
   }
 };
 
-export const unlockUser = (user_id) => async (dispatch) => {
+export const unlockUser = (user_id, cookies) => async (dispatch) => {
   dispatch(adminActionSlice.actions.changeIsAdminActionsModalOpen());
   dispatch(confirmationModalActions.changeIsConfirmationModalOpen());
+  const accessToken = cookies.user.accessToken;
   const appPath = process.env.REACT_APP_URL_PATH;
 
   try {
@@ -192,7 +199,7 @@ export const unlockUser = (user_id) => async (dispatch) => {
         active: true,
       },
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', JWT: accessToken },
       },
     );
     dispatch(confirmationModalActions.changeType('success'));

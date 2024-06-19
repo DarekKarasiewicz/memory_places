@@ -134,7 +134,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(deletePlaceItem(modalData.place_id));
+                  dispatch(deletePlaceItem(modalData.place_id, cookies));
                   registerAppChanges(
                     'admin.changes_messages.place_delete',
                     cookies.user,
@@ -148,7 +148,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(deleteTrailItem(modalData.trail_id));
+                  dispatch(deleteTrailItem(modalData.trail_id, cookies));
                   registerAppChanges(
                     'admin.changes_messages.trail_delete',
                     cookies.user,
@@ -162,7 +162,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(blockUser(modalData.user_id));
+                  dispatch(blockUser(modalData.user_id, cookies));
                   registerAppChanges(
                     'admin.changes_messages.blocked',
                     cookies.user,
@@ -176,7 +176,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(changeUserRole(modalData.user_id, roleRef.current.value));
+                  dispatch(changeUserRole(modalData.user_id, roleRef.current.value, cookies));
                   registerAppChanges(
                     'admin.changes_messages.user_role',
                     cookies.user,
@@ -190,7 +190,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(resetUserPassword(modalData.user_id));
+                  dispatch(resetUserPassword(modalData.user_id, cookies));
                   registerAppChanges(
                     'admin.changes_messages.reset_pass',
                     cookies.user,
@@ -204,7 +204,7 @@ function AdminModal({ closeModal }) {
                 name={t('common.confirm')}
                 btnBg='blue'
                 onClick={() => {
-                  dispatch(unlockUser(modalData.user_id));
+                  dispatch(unlockUser(modalData.user_id, cookies));
                   registerAppChanges(
                     'admin.changes_messages.unlocked',
                     cookies.user,
