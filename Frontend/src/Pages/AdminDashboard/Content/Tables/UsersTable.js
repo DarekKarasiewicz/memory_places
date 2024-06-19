@@ -147,7 +147,7 @@ function UsersTable({ data, columns }) {
                     {user.admin && (
                       <span
                         className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                        onClick={() => handleUserRole(row.original.id, row.original.place_name)}
+                        onClick={() => handleUserRole(row.original.id, row.original.username)}
                       >
                         <SettingsIcon className='h-5 w-5' />
                         <span className='w-fit'>{t('admin.content.change_role')}</span>
@@ -156,7 +156,7 @@ function UsersTable({ data, columns }) {
 
                     <span
                       className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                      onClick={() => handlePasswordReset(row.original.id, row.original.place_name)}
+                      onClick={() => handlePasswordReset(row.original.id, row.original.username)}
                     >
                       <PassIcon className='h-5 w-5' />
                       <span className='w-fit'>{t('admin.content.pass_reset')}</span>
@@ -165,7 +165,7 @@ function UsersTable({ data, columns }) {
                     {row.original.active ? (
                       <span
                         className='flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                        onClick={() => handleUserBlock(row.original.id, row.original.place_name)}
+                        onClick={() => handleUserBlock(row.original.id, row.original.username)}
                       >
                         <BlockIcon className='h-5 w-5' />
                         <span className='w-fit'>{t('admin.content.block')}</span>
@@ -173,7 +173,7 @@ function UsersTable({ data, columns }) {
                     ) : (
                       <span
                         className='flex gap-1 px-2 py-1 rounded-lg hover:bg-contrastColor transition cursor-pointer'
-                        onClick={() => handleUserUnlock(row.original.id, row.original.place_name)}
+                        onClick={() => handleUserUnlock(row.original.id, row.original.username)}
                       >
                         <UnlockIcon className='h-5 w-5' />
                         <span className='w-fit'>{t('admin.content.unlock')}</span>
